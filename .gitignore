@@ -131,6 +131,7 @@ dist
 .yarn/unplugged
 .yarn/build-state.yml
 .yarn/install-state.gz
+yarn.lock
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
