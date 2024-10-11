@@ -61,6 +61,7 @@ const useFetcherStates = () => {
 		} else {
 			defaultAlboBehaviour();
 		}
+		dispatch(setDisplayedPanelID(0));
 	}, [session, dispatch, vectorNames]);
 
 	useEffect(() => {
