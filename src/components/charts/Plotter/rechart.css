@@ -1,0 +1,109 @@
+.recharts-wrapper.chart {
+	width: 100%;
+	margin: 0px;
+	/* transform: translate(0px, 0); */
+}
+/* margin and padding doesnt work on g elements */
+.recharts-default-legend {
+	margin: 10px;
+}
+.recharts-legend-wrapper {
+	transform: translate(0px, -25px);
+	padding: 0px;
+}
+.myLegend {
+	position: absolute;
+	top: 10;
+	right: 0;
+}
+
+.recharts-layer.recharts-brush.myBrush > rect[fill="#fff"] {
+	fill: var(--primary-color2);
+	fill-opacity: 0.1;
+}
+
+.recharts-curve.recharts-tooltip-cursor {
+	/* transform: translate(0px, 0); */
+}
+.recharts-layer.recharts-brush.myBrushY {
+	position: absolute;
+	transform: translate(0px, 0px);
+	z-index: 10000;
+}
+.brushY-wrapper {
+	transition: transform 0.1s ease-in-out;
+}
+
+.recharts-layer.recharts-brush {
+	/* transform: translate(0, -2px); */
+}
+.recharts-layer.recharts-brush .recharts-brush-slide {
+	fill: var(--primary-color1) !important;
+	fill-opacity: 1 !important;
+}
+.recharts-layer.recharts-brush-traveller rect {
+	fill: var(--primary-color2);
+}
+
+.recharts-layer.recharts-cartesian-axis.recharts-yAxis.yAxis {
+	font-size: 0.8rem;
+}
+.recharts-layer.recharts-cartesian-axis.recharts-xAxis.xAxis {
+	font-size: 0.8rem;
+}
+.recharts-surface {
+	/* transform: translate(0px, 0px); */
+}
+
+@media (max-width: 380px) {
+	.recharts-legend-wrapper {
+		transform: translate(20px, -25px);
+		padding: 0px;
+	}
+	.recharts-surface {
+		/* transform: translate(0px, 0px); */
+	}
+}
+@media (min-width: 500px) {
+	.recharts-wrapper.chart {
+		width: 100%;
+	}
+	/* margin and padding doesnt work on g elements */
+	.recharts-default-legend {
+		margin: 10px;
+		/* transform:translate(-30px,0) */
+	}
+	.recharts-legend-wrapper {
+		transform: translate(20px, -30px);
+	}
+	.myLegend {
+		position: absolute;
+		top: 0;
+		right: 0;
+	}
+	.recharts-layer.recharts-brush.myBrush > rect[fill="#fff"] {
+		fill: var(--primary-color2);
+		fill-opacity: 0.1;
+	}
+
+	.recharts-layer.recharts-brush {
+		transform: translate(0, 4px);
+	}
+	.recharts-layer.recharts-brush .recharts-brush-slide {
+		fill: var(--primary-color1) !important;
+		fill-opacity: 1 !important;
+	}
+	.recharts-layer.recharts-brush-traveller rect {
+		fill: var(--primary-color2);
+	}
+
+	.recharts-layer.recharts-cartesian-axis.recharts-yAxis.yAxis {
+		font-size: 0.8rem;
+	}
+	.recharts-layer.recharts-cartesian-axis.recharts-xAxis.xAxis {
+		font-size: 0.8rem;
+	}
+	.recharts-brush-texts {
+		transform: translate(0px, 0px);
+	}
+}

@@ -1,0 +1,64 @@
+.edit-panel {
+	position: absolute;
+	left: 0;
+	top: 0;
+	min-width: 40rem;
+	min-height: 40rem;
+	background-color: var(--www-color-float-bg2);
+	z-index: 11;
+	border-radius: 10px;
+}
+
+.sim-button {
+	cursor: pointer;
+	width: 20rem;
+	line-height: 2.5rem;
+	height: 3rem;
+	align-self: center;
+	margin: 1rem 1rem;
+	color: white;
+	font-size: 1.4rem;
+	text-align: center;
+	box-shadow: 0px 0px 5px var(--neutral-color1);
+}
+.sim-button.save {
+	background-color: var(--primary-color1);
+}
+.sim-button.parse{
+    background-color: var(--risk-item-2);
+
+}
+.button-area {
+	display: flex;
+	justify-content: center;
+}
+.sim-button.cancel {
+	background-color: var(--risk-item-1);
+}
+
+.close-icon {
+	align-self: flex-end;
+	margin: 1rem;
+	cursor: pointer;
+}
+.entry {
+	display: flex;
+	justify-content: flex-start;
+	gap: 1rem;
+	margin: 1rem;
+}
+.entry h3 {
+	width: 6rem;
+}
+.json-pretty {
+	margin: 1rem;
+	height: 100%;
+	padding: 1rem;
+	border-radius: 10px;
+	background-color: var(--www-color-float-bg1);
+	color: var(--meteo-text);
+	font-size: 1.2rem;
+	overflow-y: scroll;
+	z-index: 12;
+}
+

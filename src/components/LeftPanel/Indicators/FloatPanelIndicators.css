@@ -1,0 +1,93 @@
+.clim-container {
+	display: flex;
+	flex-direction: column;
+	align-items: stretch;
+	justify-content: center;
+	background: var(--www-color-float-bg2);
+	border-radius: 0.7rem;
+	margin-bottom: 3.25rem;
+}
+.clim-info {
+	display: flex;
+	flex-direction: column;
+	font-size: 1.2rem;
+	color: var(--meteo-text);
+	padding: 1rem;
+}
+.clim-info h1 {
+	margin: 0;
+	font-size: 1.4rem;
+	font-family: "Inter-Bold", sens-serif;
+	font-weight: bold;
+}
+.clim-info strong {
+	font-family: "Inter-Bold", sens-serif;
+	font-weight: bold;
+}
+.clim-info p {
+	padding: 0.5rem 0 0.5rem 0;
+	font-family: "Inter", sens-serif;
+}
+.clim-data {
+	padding: 1rem;
+	display: flex;
+	align-items: center;
+	font-size: 1.6rem;
+	margin: 0rem 1rem;
+	color: var(--meteo-text);
+}
+.clim-container .clim-data:not(:first-child) {
+	border-top: solid 1px rgb(255 255 255 / 50%);
+}
+.clim-container .clim-data:last-child {
+	padding-right: 24px;
+}
+.clim-data p {
+	margin: 0.8rem;
+	font-size: 1.2rem;
+}
+.clim-data.icon {
+	padding: 0rem;
+	margin: 0rem;
+	width: 2.4rem;
+	height: 2.4rem;
+	margin-right: 1.3rem;
+	margin-left: -0.7rem;
+	background-color: transparent;
+}
+.flip-open {
+	position: absolute;
+	right: 0;
+	bottom: 0;
+	width: 24px;
+	height: 24px;
+	cursor: pointer;
+}
+.flip-open.hidden {
+	display: none;
+}
+.flip-close {
+	position: absolute;
+	right: 0;
+	top: 0;
+	width: 24px;
+	height: 24px;
+	cursor: pointer;
+}
+
+@media (min-width: 500px) {
+	.clim-container {
+		margin-bottom: 0;
+	}
+	.clim-data {
+		font-size: 1.2rem;
+	}
+	.clim-data p {
+		margin: 0.3rem;
+	}
+	.clim-data.icon {
+		padding: 0rem;
+		width: 2rem;
+		height: 2rem;
+	}
+}

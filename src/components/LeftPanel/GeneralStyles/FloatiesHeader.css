@@ -1,0 +1,42 @@
+.map-container-wrapper1.place-holder {
+	min-width: 100%;
+	min-height: 75%;
+}
+.risk-indicator-container-wrapper1.place-holder {
+	min-height: 154px;
+}
+.mosquito-container-wrap1.place-holder {
+	min-height: 96px;
+}
+.clim-container1.place1-holder {
+	min-height: 210px;
+}
+.news-container1.place-holder {
+	min-height: 250px;
+}
+@media (min-width: 500px) {
+	.map-container-wrapper1.place-holder {
+		min-height: unset;
+		height: 75%;
+	}
+	.risk-indicator-container1-wrap.place-holder {
+		min-height: unset;
+
+		height: 154px;
+	}
+	.mosquito-container-wrap1.place-holder {
+		min-height: unset;
+
+		height: 113px;
+	}
+	.clim-container1.place-holder {
+		min-height: unset;
+
+		height: 170px;
+	}
+	.news-container1.place-holder {
+		min-height: unset;
+
+		height: 242px;
+	}
+}

@@ -1,0 +1,69 @@
+.welcome-wrapper {
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+}
+
+.welcome-outer-box:hover {
+	filter: drop-shadow(5px 5px 5px var(--neutral-color1));
+}
+.welcome-outer-box h3 {
+	font-size: 1.8rem;
+	cursor: pointer;
+}
+.welcome-wrapper h1 {
+	font-size: 2.5rem;
+	margin: 5rem;
+}
+.logout {
+	 position: absolute;
+	right: 0;
+	top: 0; 
+	/* width: 300px; */
+	height: 40px;
+	border: none;
+	color: white;
+	margin: 1rem;
+	font-size: 1.4rem;
+	cursor: pointer;
+	align-self: flex-end;
+}
+.logo-div {
+	position: absolute;
+	width: 200px;
+	height: 200px;
+	left: 0;
+	top: 0;
+	margin-bottom: 20px;
+}
+.welcome-outer-box {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	position: relative; /* Ensure it's positioned to contain absolutely positioned children */
+	overflow: hidden; /* To ensure the pseudo-element's animation is contained */
+	width: 100%;
+	padding: 1rem;
+	margin: 0.5rem 0.5rem;
+	border-radius: 5px;
+	filter: drop-shadow(0 0 10px var(--neutral-color1));
+}
+
+.small-button {
+	width: 100px;
+	height: 30px;
+	border: none;
+	border-radius: 5px;
+	background-color: var(--primary-color1);
+	color: white;
+	font-size: 1rem;
+	cursor: pointer;
+	text-align: center;
+	padding: 1rem;
+}
+
+.welcome-outer-box p {
+	/* font-size: 1.6rem; */
+	/* margin: 1rem; */
+}

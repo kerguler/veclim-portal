@@ -1,0 +1,36 @@
+.circular-progressbar {
+	position: relative;
+	border: black !important;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	pointer-events: none;
+	z-index: 2000;
+}
+.circular-progressbar.wrapper.single {
+	position: absolute;
+	top: calc(50vh - 100px);
+	left: calc(50vw - 100px);
+	/* transform: translate(-50%, -50%); */
+	z-index: 5000;
+}
+.circular-progressbar.wrapper.left {
+	position: absolute;
+	top: calc(50vh - 100px);
+	left: calc(25vw - 100px);
+	/* transform: translate(-50%, -50%); */
+	z-index: 5000;
+}
+.circular-progressbar.wrapper.right {
+	position: absolute;
+	top: calc(50vh - 100px);
+	right: calc(25vw - 100px);
+	/* transform: translate(-50%, -50%); */
+	z-index: 5000;
+}
+.circular-progressbar.text {
+	text-align: center;
+}
+.circular-progressbar.text p {
+	font-size: 1.4rem;
+}

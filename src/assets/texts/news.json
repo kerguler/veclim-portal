@@ -1,0 +1,37 @@
+[
+	{
+		"id": 1,
+		"Title": "VEClim CCC at the EMCA XI International Conference",
+		"Content": "",
+		"Image": "./news_veclim_emca2023_sm.webp",
+		"url": "https://emme-care.cyi.ac.cy/veclim-presentation-by-care-c-researcher-at-the-2023-emca-xi-international-conference/"
+	},
+	{
+		"id": 2,
+		"Title": "New VEClim MODELS presented in EGU",
+		"Content": "",
+		"Image": "./news_EGU.webp",
+		"url": "https://meetingorganizer.copernicus.org/EGU23/EGU23-9509.html"
+	},
+	{
+		"id": 3,
+		"Title": "Wellcome Trust - new digital tools for climate impacts",
+		"Content": "",
+		"Image": "./news_wellcome-sm.webp",
+		"url": "https://wellcome.org/news/new-digital-tools-use-climate-data-better-predict-and-prepare-infectious-diseases-outbreaks"
+	},
+	{
+		"id": 4,
+		"Title": "CyI gets €500,000 Wellcome climate research grant",
+		"Content": "",
+		"Image": "./news_veclim_finmirror.webp",
+		"url": "https://www.financialmirror.com/2023/02/06/cyi-gets-e500000-wellcome-climate-research-grant/"
+	},
+	{
+		"id": 5,
+		"Title": "VEClim project announced! In a first for Cyprus...",
+		"Content": "",
+		"Image": "./news_veclim_press_release_sm.webp",
+		"url": "https://www.cyi.ac.cy/index.php/in-focus/in-a-first-for-cyprus-cyi-receives-funding-from-prestigious-wellcome-trust-to-predict-the-effects-of-climate-change-on-insect-borne-diseases.html"
+	}
+]

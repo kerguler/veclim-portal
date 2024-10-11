@@ -1,0 +1,27 @@
+.custom-tooltip {
+	background-color: white;
+	border: 1px solid var(--primary-color1);
+}
+.custom-tooltip p {
+	font-size: 1rem;
+	margin: 0.2rem 0.5rem;
+}
+.custom-tooltip h3 {
+	font-size: 1rem;
+	margin: 0.2rem 0.5rem;
+	text-align: center;
+}
+@media (min-width: 500px) {
+	.custom-tooltip {
+		background-color: white;
+		border: 1px solid var(--primary-color1);
+	}
+	.custom-tooltip p {
+		font-size: 1.2rem;
+	}
+	.custom-tooltip h3 {
+		font-size: 1.4rem;
+		margin: 0.2rem 0.5rem;
+		text-align: center;
+	}
+}

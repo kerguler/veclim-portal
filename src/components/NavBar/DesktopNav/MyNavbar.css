@@ -1,0 +1,122 @@
+.button {
+	position: relative;
+	overflow: hidden;
+}
+.button::before {
+	content: "";
+	position: absolute;
+	top: 0;
+	left: -150%; /* Start from the left */
+	width: 100%; /* Full width */
+	height: 100%; /* Full height */
+	background: linear-gradient(
+		120deg,
+		transparent 0%,
+		transparent 20%,
+		rgba(250, 219, 219, 0.7) 70%,
+
+		transparent 100%
+	);
+
+	animation: shimmer 3s infinite;
+	border-radius: 5px;
+}
+
+@keyframes shimmer {
+	0% {
+		left: -250%;
+		opacity: 0;
+	}
+
+	50% {
+		left: 100%;
+		opacity: 1;
+	}
+
+	100% {
+		left: 350%;
+		opacity: 0;
+	}
+}
+.my-navbar {
+	position: fixed;
+	z-index: 10;
+	width: 100vw;
+	background-color: white;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-between;
+	box-shadow: 0px 0px 6px 0px black;
+	padding: 6px 10px 4px 6px;
+	align-content: center;
+	flex-wrap: wrap;
+	z-index: 3003;
+}
+
+.logo-div {
+}
+.logo-div img {
+	width: 120px;
+	height: 36px;
+}
+.navbar-links {
+	display: flex;
+	align-items: flex-end;
+}
+.navbar-links a {
+	padding: 0.5rem 1.5rem;
+	background: white;
+	font-family: Inter-Bold, sens-serif;
+	font-weight: 700;
+	font-size: 1.4rem;
+	text-decoration: none;
+	color: var(--primary-color1);
+	text-align: center;
+}
+.navbar-links a.button {
+	background: linear-gradient(
+		90deg,
+		rgba(242, 124, 42, 1) 0%,
+		rgba(231, 84, 37, 1) 50%,
+		rgba(231, 84, 37, 1) 100%
+	);
+	color: white;
+	border-radius: 2rem;
+	padding: 0.5rem 1.5rem;
+	margin-left: 0.5rem;
+	align-self: center;
+}
+.navbar-links a.button.disabled {
+	background: linear-gradient(
+		90deg,
+		hsl(0, 0%, 58%) 0%,
+		rgb(100, 100, 100) 50%,
+		rgb(90, 90, 90) 100%
+	);
+	pointer-events: none;
+	cursor: default;
+}
+.navbar-links a.button span {
+	padding: 0.5rem 0rem;
+	width: 1.5rem;
+}
+
+.navbar-links a.button:hover,
+.navbar-links a.button.selected {
+	background: linear-gradient(
+		90deg,
+		var(--secondary-color2) 0%,
+		var(--secondary-color1) 50%,
+		var(--primary-color1) 100%
+	);
+	color: white;
+}
+
+.navbar-links a:hover,
+.navbar-links a.selected {
+	color: var(--primary-color2);
+}
+
+@media (min-width: 500px) {
+}

@@ -1,0 +1,139 @@
+/* @import "../styles/pageRows.css"; */
+
+.regular-row {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	/* margin: 0.5rem 0.5rem; */
+}
+
+.reverse {
+	flex-direction: column-reverse;
+}
+
+.regular-row.content p {
+	font-size: 1.4rem;
+	text-align: justify;
+	text-align-last: left;
+	padding: 0rem;
+	margin-bottom: 2rem;
+	line-height: 2rem;
+}
+.regular-row.content p.single-line {
+	text-align: left;
+	align-self: flex-start;
+}
+.regular-row.content p.citation {
+	font-size: 1.2rem;
+	font-style: italic;
+	margin-top: -2rem;
+	margin-bottom: 2rem;
+}	
+
+.regular-row.content h5 {
+	font-size: 2.4rem;
+	padding: 1rem 0rem;
+	line-height: 2.8rem;
+	text-align: center;
+}
+.regular-row.content h4 {
+	font-size: 3rem;
+	padding: 1rem 0rem;
+	line-height: 3.2rem;
+	text-align: center;
+}
+.regular-row.content h6 {
+	font-size: 1.8rem;
+	padding: 1rem 0rem;
+	line-height: 3.2rem;
+	text-align: center;
+}
+.regular-row.content ul {
+	font-size: 1.4rem;
+	text-align: left;
+	align-self: flex-start;
+	padding: 0rem;
+	margin-bottom: 2rem;
+	line-height: 2rem;
+	list-style-position: inside;
+}
+
+@media (min-width: 500px) {
+	.regular-row {
+		margin: 1rem 1rem;
+	}
+	.regular-row.content p {
+		font-size: 1.62vw;
+		text-align: justify;
+		text-align-last: left;
+		padding: 0rem;
+		margin-bottom: 2vw;
+		line-height: 2.5vw;
+	}
+	.regular-row.content p.citation {
+		font-size: 1.2vw;
+		margin-top: -3vw;
+	}	
+	.regular-row.content h4 {
+		font-size: 3vw;
+		padding: 1rem 0rem;
+		line-height: 3.2vw;
+		text-align: center;
+	}
+	.regular-row.content h5 {
+		font-size: 2.4vw;
+		margin-bottom: 2vw;
+		line-height: 2.6vw;
+		text-align: center;
+	}
+
+	.regular-row.content h6 {
+		font-size: 1.8vw;
+		line-height: 2.6vw;
+		margin-bottom: 2rem;
+		text-align: center;
+	}
+	.regular-row.content ul {
+		font-size: 1.62vw;
+	}
+}
+
+@media (min-width: 1000px) {
+	.regular-row.content p {
+		font-size: 1.6rem;
+		text-align: justify;
+		text-align-last: left;
+		padding: 0rem;
+		margin-bottom: 2rem;
+		line-height: 2.5rem;
+	}
+	.regular-row.content p.citation {
+		font-size: 1.2rem;
+		margin-top: -2rem;
+	}	
+	.regular-row.content strong {
+		font-family: "Inter-Bold", sans-serif;
+		font-weight: bold;
+	}
+	.regular-row.content h6 {
+		font-size: 1.8rem;
+		padding: 0rem;
+		/* margin: 0rem 1rem; */
+		line-height: 2.6rem;
+		text-align: center;
+	}
+	.regular-row.content h5 {
+		font-size: 2.4rem;
+		padding: 1rem 0rem;
+		line-height: 2.8rem;
+	}
+
+	.regular-row.content h4 {
+		font-size: 3rem;
+		padding: 1rem 0rem;
+		line-height: 3.2rem;
+	}
+	.regular-row.content ul {
+		font-size: 1.6rem;
+	}
+}

@@ -1,0 +1,57 @@
+.registration-page-wrapper {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	height: 100vh;
+	font-size: 1.6rem;
+}
+
+.registration-page-wrapper input {
+	width: 300px;
+	height: 40px;
+	padding: 10px;
+	margin-bottom: 20px;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	font-size: 1.2rem;
+}
+.registration-page-wrapper input:focus {
+	outline: none;
+	border-color: var(--primary-color2);
+}
+.register-submit-button {
+	width: 300px;
+	height: 40px;
+	border: none;
+	border-radius: 5px;
+	background-color: var(--primary-color1);
+	color: white;
+	font-size: 1.4rem;
+	cursor: pointer;
+	text-align: center;
+	padding: 1rem;
+}
+
+.register-submit-button:hover {
+	background-color: #0056b3;
+}
+
+.response-details {
+	font-size: 1.2rem;
+	margin: 1rem;
+}
+.logo-div {
+	position: absolute;
+	left: 0;
+	top: 0;
+}
+.message-row {
+	position: relative;
+}
+.message-row .message {
+	position: absolute;
+	bottom: 0px;
+	color: red;
+	font-size: 1.2rem;
+}

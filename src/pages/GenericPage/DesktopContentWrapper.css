@@ -1,0 +1,12 @@
+.page-wrapper {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+@media (min-width: 500px) {
+	.page-wrapper {
+		margin-left: 275px;
+		height: 95vh;
+		background: none;
+	}
+}

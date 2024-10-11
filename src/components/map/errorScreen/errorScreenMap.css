@@ -1,0 +1,31 @@
+.error-div-wrapper {
+	position: absolute;
+	bottom: 0px;
+	left: 0px;
+	z-index: 5000;
+	background-color: #000000a2;
+	color: white;
+	width: 100vw;
+	/* height: 20px; */
+}
+
+
+
+.error-inner-div {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+.error-inner-div h3{
+	text-align: center;
+	font-size: 2.4rem;
+	line-height: 3.5rem;
+}
+.error-inner-div p {
+	text-align: center;
+
+	font-size: 1.6rem;
+	line-height: 2.5rem;
+}

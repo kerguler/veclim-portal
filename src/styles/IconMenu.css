@@ -1,0 +1,71 @@
+.setting-icon {
+	position: fixed;
+	z-index: 8001;
+	right: 0.5rem;
+	top: 0.5rem;
+	color: white;
+}
+.settings-menu {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	z-index: 8009;
+	align-items: flex-end;
+
+	top: 3.5rem;
+	right: 0rem;
+	animation: appear 0.3s;
+	/* width: 50px; */
+	line-height: 1.5rem;
+}
+
+.settings-menu.links {
+	display: flex;
+	flex-direction: column;
+	animation: menu-slide-out-to-top-right 0.1s ease-in;
+	padding: 0.2rem 0.2rem;
+	color: var(--primary-color1);
+	/* min-width: 20rem; */
+	z-index: 8003;
+	background-color: var(--neutral-color1-0p8);
+	border-radius: 2rem;
+	box-shadow: 0px 0px 5px 1px;
+}
+
+@media (min-width: 500px) {
+	.settings-menu {
+		align-items: flex-end;
+		display: flex;
+		flex-direction: column;
+		z-index: 8009;
+		animation: appear 0.1s;
+		line-height: 1.5rem;
+		border-radius: 2rem;
+	}
+
+	.settings-menu.links {
+		display: flex;
+		flex-direction: column;
+		animation: appear 0.2s ease-in;
+		padding: 1rem 1rem;
+		color: var(--primary-color1);
+		min-width: 0;
+		z-index: 8003;
+	}
+
+	.setting-icon {
+		position: absolute;
+		display: flex;
+		flex-direction: column;
+		align-items: flex-end;
+		z-index: 8001;
+		left: 0rem;
+		top: 0rem;
+		width: 25rem;
+		color: black;
+		/* background:  url('../assets/icons/icons8-settings-50.png') contain white; */
+	}
+	.setting-icon svg {
+		color: black !important;
+	}
+}

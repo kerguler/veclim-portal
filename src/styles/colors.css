@@ -1,0 +1,84 @@
+:root {
+  --primary-color1: #1b3958;
+  --primary-color2: #f15a48;
+  --secondary-color1: #167997;
+  --secondary-color2: #50c0ad;
+  --secondary-color3: #c6e0ee;
+  --neutral-color1: #d1d3d4;
+  --neutral-color1-0p8: rgba(230, 231, 232, 0.9);
+  --neutral-color2: #e6e7e8;
+  --neutral-color3: #f1f2f2;
+  --secondary-color3-zpf: rgba(198, 224, 238, 0.5);
+  --www-color-float-bg1: #e0eef7;
+  --www-color-float-bg2: #c6e1f0;
+  --www-color-float-fg1: #1b3958;
+  --risk-container: rgba(255, 255, 255, 0.75);
+  --risk-item: #e6e7e8;
+  --risk-item-0: #fcc021;
+  --risk-item-1: #f27c2a;
+  --risk-item-2: #b42226;
+  --acc-item-0: #f27c2a;
+  --acc-item-1: #fcc021;
+  --acc-item-2: #50c0ad;
+  --meteo-text: #167997;
+}
+
+:root {
+  --mobile-nav-height: 14vh;
+  --map-width: 95%;
+}
+body::-webkit-scrollbar {
+  width: 0.3rem;
+}
+
+@keyframes scroll-from-top {
+  0% {
+    opacity: 0;
+    transform: translateY(-50px);
+  }
+  30% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0%);
+  }
+}
+@keyframes rotate-layover {
+  0% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(180deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes panel-open-from-left {
+  0% {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  90% {
+    transform: translateX(-2%);
+    opacity: 0.95;
+  }
+
+  100% {
+    transform: translateX(0%);
+    opacity: 1;
+  }
+}
+@keyframes scroll-from-bottom-left {
+  0% {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+
+  100% {
+    transform: translateY(0%);
+    opacity: 1;
+  }
+}

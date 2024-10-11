@@ -1,0 +1,53 @@
+.hover-menu-wrapper {
+	position: relative;
+	justify-self: center;
+	align-self: center;
+	background-color: transparent;
+	padding: 0.5rem 1.5rem;
+	/* background: white; */
+	font-family: "Inter-Bold", sens-serif;
+	font-weight: 700;
+	font-size: 1.4rem;
+	text-decoration: none;
+	color: var(--primary-color1);
+	text-align: center;
+}
+
+.hover-menu {
+	position: absolute;
+	display: flex;
+	flex-direction: column;
+	top: 0rem;
+	left: 11rem;
+	background-color: #ffffffa5;
+	border-radius: 2rem;
+	align-items: center;
+}
+@media (min-width: 500px) {
+	.hover-menu-wrapper {
+		position: relative;
+		align-self: center;
+		background-color: transparent;
+	}
+	.hover-menu {
+		position: absolute;
+		display: flex;
+		flex-direction: column;
+		top: 2.7rem;
+		left: 0rem;
+		background-color: transparent;
+		border-radius: 2rem;
+		align-items: unset;
+	}
+}
+/* 
+ .hover-menu a {
+	padding: 0.5rem 1.5rem;
+	background: white;
+	font-family: Inter-Bold, sens-serif;
+	font-weight: 700;
+	font-size: 1.4rem;
+	text-decoration: none;
+	color: var(--primary-color1);
+	text-align: center;
+}  */

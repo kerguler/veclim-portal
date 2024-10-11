@@ -1,0 +1,33 @@
+.app {
+	display: flex;
+	flex-direction: column;
+	width: 100vw;
+	height: 100vh;
+	overflow-x: hidden;
+}
+
+a {
+	text-decoration: auto;
+}
+.navbar {
+	display: none;
+}
+.navbar.mobile {
+	display: contents;
+}
+@media (min-width: 500px) {
+	.page-container {
+		height: 100%;
+		width: 100%;
+	}
+	.modal-parent {
+		position: relative;
+		z-index: 5000;
+	}
+	.navbar {
+		display: contents;
+	}
+	.navbar.mobile {
+		display: none;
+	}
+}

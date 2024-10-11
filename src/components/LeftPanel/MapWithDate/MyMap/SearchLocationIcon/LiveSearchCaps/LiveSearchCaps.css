@@ -1,0 +1,80 @@
+.city-list {
+	position: relative;
+	width: 97%;
+	height: 100px;
+	color: var(--primary-color1);
+	background-color: white;
+	/* border: 1px solid black; */
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+	overflow: scroll;
+	border-radius: 0.7rem;
+	padding-bottom: 0px;
+	box-shadow: 0px 0px 8px -2px black;
+}
+
+.city-list::-webkit-scrollbar {
+	width: 0.3rem;
+}
+.city-list-item {
+	width: 95%;
+	text-align: center;
+	line-height: 1.5rem;
+	font-size: 1.2rem;
+	padding: 0.5rem 0.5rem;
+}
+.city-list-item:hover {
+	background-color: var(--secondary-color2);
+}
+
+.search-bar-master-container {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.search-bar-container {
+	position: relative;
+	display: flex;
+	justify-content: center;
+	width: 100%;
+	padding: 0.5rem 0.1rem 0.5rem 0.1rem;
+	overflow: hidden;
+}
+
+.search-bar-container input {
+	width: 100%;
+	border-radius: 0.5rem;
+	line-height: 2.5rem;
+	font-size: 1.6rem;
+	/* margin: 1rem; */
+	text-align: center;
+	animation: slide-left 0.2s ease-in-out;
+	background-color: white;
+	color: var(--primary-color1);
+	border: 2px solid var(--www-color-float-bg2);
+}
+
+.search-bar-container.off input {
+	text-align: center;
+	/* animation: slide-left 0.5s ease-in-out reverse; */
+	background-color: white;
+	color: var(--primary-color1);
+	border: 2px solid var(--www-color-float-bg2);
+	transition: opacity 300ms, transform 300ms;
+	visibility: hidden;
+}
+
+.form-container {
+	width: 100%;
+}
+
+@media (min-width: 500px) {
+	.search-bar-container input {
+		border: none;
+		text-align: center;
+		animation: slide-left 0.2s ease-in-out;
+		background-color: white;
+	}
+}

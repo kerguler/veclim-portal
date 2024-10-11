@@ -1,0 +1,14 @@
+#panel-map .map {
+	width: 350px !important;
+	height: 350px !important;
+}
+
+#panel-map .map #coordinates {
+	top: 0;
+	background-image: unset;
+	background-color: var(--primary-color1);
+	align-items: flex-start;
+	height: 60px;
+}
+.welcome-outer-box .left {
+}

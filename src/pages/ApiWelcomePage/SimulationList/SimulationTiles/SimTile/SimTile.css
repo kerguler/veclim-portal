@@ -1,0 +1,52 @@
+.sim-list-item {
+	width: 90%;
+	min-height: 5rem;
+	display: flex;
+	border-radius: 5px;
+}
+.sim-list-item p {
+	color: black;
+}
+
+.tile-entry {
+	display: flex;
+	align-items: center;
+	width: 100%;
+}
+.tile-entry p {
+	font-size: 1.5rem;
+}
+
+.icon-area {
+	width: 100%;
+	display: flex;
+	justify-content: flex-end;
+	color: var(--meteo-text);
+	align-items: center;
+	margin-right: 1rem;
+}
+.sim-list-item:hover {
+	background-color: #b9dff1;
+	filter: drop-shadow(0px 0px 3px var(--neutral-color1));
+}
+.sim-list-item h3 {
+	font-size: 1.8rem;
+	color: black;
+}
+
+.sim-icon {
+	width: 2.5rem;
+	height: 2.5rem;
+	cursor: pointer;
+}
+.sim-icon path {
+	stroke: var(--meteo-text);
+}
+
+.sim-icon:hover path {
+	stroke: var(--primary-color1);
+}
+
+.icon-img:hover {
+	filter: drop-shadow(0px 0px 2px var(--neutral-color1));
+}

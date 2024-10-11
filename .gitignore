@@ -78,6 +78,9 @@ web_modules/
 .env.test.local
 .env.production.local
 .env.local
+.env*
+.cdsapirc*
+.cdsapirc
 
 # parcel-bundler cache (https://parceljs.org/)
 .cache
@@ -123,8 +126,22 @@ dist
 .vscode-test
 
 # yarn v2
+.yarn
 .yarn/cache
 .yarn/unplugged
 .yarn/build-state.yml
 .yarn/install-state.gz
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnp
+.pnp.js
 .pnp.*
+
+# Additional
+.vscode/
+.yalc/
+coverage/
+build/
+
+.DS_Store

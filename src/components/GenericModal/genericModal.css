@@ -1,0 +1,117 @@
+.modal-content-wrapper {
+	display: flex;
+	flex-direction: column;
+	position: absolute;
+	inset: 5vw;
+	z-index: 10005;
+	align-content: center;
+	align-items: center;
+	justify-content: space-between;
+	background-color: white;
+	height: fit-content;
+	border: 1px solid rgba(0, 0, 0, 0.3);
+	border-radius: 6px;
+	box-shadow: rgba(0, 0, 0, 0.3) 0px 3px 7px;
+}
+
+.modal-close-button {
+	background: url("https://cdn.iubenda.com/close.png") no-repeat scroll 0 0
+		transparent;
+	border: medium none;
+	display: block;
+	height: 24px;
+	position: absolute;
+	right: -9px;
+	top: -10px;
+	width: 23px;
+	cursor: pointer;
+	z-index: 10010;
+}
+
+.modal-background-generic {
+	position: absolute;
+	inset: 0rem;
+	background-color: rgba(19, 18, 18, 0.8);
+	z-index: 5004;
+}
+.modal-content-generic {
+	display: flex;
+	flex-direction: column;
+	background-color: transparent;
+	color: black;
+	padding: 5vw;
+	overflow: scroll;
+	height: 80vh;
+}
+
+.modal-action-bar {
+	display: flex;
+	margin: 1rem;
+	align-self: flex-end;
+	align-content: flex-end;
+}
+.modal-content-generic p {
+	font-size: 1.4rem;
+	text-align: justify;
+	line-height: 2.5rem;
+}
+.modal-content-generic h1 {
+	font-size: 2rem;
+	text-align: center;
+}
+.modal-content-generic a {
+	font-size: 1.4rem;
+	margin: 0rem 1rem;
+}
+.modal-button-generic {
+	display: flex;
+	background-color: rgb(75, 74, 74);
+	border-radius: 0.5rem;
+	align-self: flex-end;
+	box-shadow: 1px 1px 3px 1px rgb(60, 60, 60);
+	height: 3rem;
+	width: 7rem;
+	align-items: center;
+	justify-content: center;
+}
+.modal-button-generic.accept {
+	background-color: var(--primary-color1);
+}
+
+.modal-button-generic.decline {
+	background-color: var(--primary-color2);
+}
+
+.modal-button-generic:hover {
+	background-color: var(--primary-color2);
+}
+.modal-button-generic p {
+	color: white;
+}
+
+@media (min-width: 500px) {
+	.modal-content-wrapper {
+		inset: calc(2.4vw + 4vw);
+		height: fit-content;
+	}
+
+	.modal-content-generic {
+		padding: 2vw;
+		color: black;
+		z-index: 5002;
+		align-content: center;
+		align-items: center;
+		overflow: scroll;
+		height: 70vh;
+	}
+}
+
+.iubenda-embed:not(.no-brand):not(.iubenda-nostyle).internal {
+	padding-left: 20px !important;
+	margin: 0rem 0.2rem !important;
+}
+.iubenda-embed:not(.no-brand):not(.iubenda-nostyle).internal:hover {
+	box-shadow: 1px 1px 3px 1px black;
+	padding-left: 20px !important;
+	margin: 0rem 0.2rem !important;
+}

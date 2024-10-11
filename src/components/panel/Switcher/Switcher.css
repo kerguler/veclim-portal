@@ -1,0 +1,31 @@
+.switcher-arrows {
+	position: absolute;
+	top: 0%;
+	height: 80%;
+	z-index: 3000;
+	cursor: default;
+}
+
+.switcher-arrows.left {
+	left: 0%;
+	min-width: 3rem;
+	min-height: 10rem;
+}
+.switcher-arrows.right {
+	right: 0%;
+	min-width: 3rem;
+	min-height: 10rem;
+}
+.switcher-arrow {
+	width: 2.5rem;
+	height: 2.5rem;
+	position: absolute;
+	top: 50%;
+}
+.switcher-arrow.left {
+	transform: rotate(180deg);
+}
+.switcher-arrow.right {
+	transform: rotate(0deg);
+	right: 0%;
+}

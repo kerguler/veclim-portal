@@ -1,0 +1,12 @@
+.tooltip-element.search-icon{
+  text-align: right;
+  margin-top: -40px;
+  z-index: 8001;
+  cursor: pointer;
+}
+
+.locate-me-icon {
+  width: 40px;
+  height: 40px;
+  padding: 6px;
+}

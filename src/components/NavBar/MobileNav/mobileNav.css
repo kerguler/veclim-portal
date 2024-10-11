@@ -1,0 +1,73 @@
+@import url("styles/colors.css");
+
+.cover {
+	position: relative;
+}
+
+.overlay-pic {
+	/* position: fixed; */
+	position: fixed;
+	width: 130px;
+	height: 130px;
+	right: -15px;
+	top: -20px;
+	z-index: 4000;
+	object-fit: cover;
+}
+
+.overlay-pic img {
+	object-fit: cover;
+	max-width: 130px;
+	max-height: 130px;
+	animation: rotate-layover 120s infinite linear;
+}
+.map-page-icon {
+	position: fixed;
+	z-index: 5001;
+	right: 0.5rem;
+	top: 0.5rem;
+}
+.map-page-icon img {
+	filter: drop-shadow(0.5px 0.5px 0.3px #ffffff8b);
+}
+
+.mobile-header {
+	position: fixed;
+	z-index: 3000;
+	max-width: 100vw;
+	background: url("assets/images/dark_background.webp") center center/cover;
+	opacity: 1;
+	clip-path: polygon(0 0, 100% 0, 100% 85%, 0 60%);
+	/* overflow: visible; */
+	overflow: hidden;
+}
+
+.burger-menu {
+	display: flex;
+	top: 0;
+	justify-content: space-between;
+	padding: 0.1rem 0.1rem;
+	height: var(--mobile-nav-height);
+	width: 100vw;
+	background: url("assets/images/logos/VEClim-Logo-monochrome-white-200px.png")
+		center no-repeat;
+	background-position: 50% 20%;
+	background-size: 40%;
+	z-index: 7000;
+}
+.burger-menu img {
+	z-index: 4000;
+}
+
+.burger-icon {
+	height: 35px;
+	width: 35px;
+	color: white;
+	padding: 3px;
+	margin: 3px;
+	background-image: url("assets/icons/menu-white-32px.png");
+	background-size: 32px;
+	background-repeat: no-repeat;
+	background-position: center;
+	cursor: pointer;
+}

@@ -1,0 +1,84 @@
+{
+  "name": "veclim",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@devexpress/dx-react-chart": "^4.0.5",
+    "@devexpress/dx-react-chart-material-ui": "^4.0.5",
+    "@devexpress/dx-react-core": "^4.0.5",
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
+    "@kerguler/recharts": "2.10.3",
+    "@material-ui/core": "^4.12.4",
+    "@mui/material": "^5.14.11",
+    "@reduxjs/toolkit": "^1.9.5",
+    "@testing-library/jest-dom": "^5.16.5",
+    "@testing-library/react": "^13.4.0",
+    "classnames": "^2.3.2",
+    "jsoneditor": "^9.10.5",
+    "jsoneditor-react": "^3.1.2",
+    "leaflet": "^1.9.4",
+    "leaflet-compare": "^1.0.1",
+    "leaflet-control-geocoder": "^2.4.0",
+    "leaflet-side-by-side": "2.2.0",
+    "material-ui": "^0.20.2",
+    "mediaquery": "0.0.4",
+    "netcdfjs": "^2.0.2",
+    "popjson": "^1.2.6",
+    "react": "18.2.0",
+    "react-card-flip": "^1.2.0",
+    "react-cookie": "^6.1.1",
+    "react-cookie-consent": "^8.0.1",
+    "react-cookies": "^0.1.1",
+    "react-dom": "^18.2.0",
+    "react-ga": "^3.3.1",
+    "react-iubenda-policy": "^0.1.1",
+    "react-json-pretty": "^2.2.0",
+    "react-loading": "^2.0.3",
+    "react-localize-redux": "3.5.3",
+    "react-native": "0.72.3",
+    "react-native-permissions": "3.8.4",
+    "react-native-web": "0.19.6",
+    "react-overflow-indicator": "0.2.2",
+    "react-redux": "^8.0.7",
+    "react-router-dom": "^6.10.0",
+    "react-scripts": "5.0.1",
+    "redux-devtools-extension": "^2.13.9",
+    "redux-logger": "^3.0.6",
+    "redux-query": "^3.5.0-alpha.3",
+    "redux-toolkit": "^1.1.2",
+    "swr": "^2.1.5",
+    "web-vitals": "^2.1.4"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "jest": {
+    "coverageThreshold": {
+      "global": {
+        "lines": 80
+      }
+    }
+  }
+}

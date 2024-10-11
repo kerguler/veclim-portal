@@ -1,0 +1,83 @@
+
+.leaflet-container img.leaflet-tile {
+	mix-blend-mode: normal !important;
+}
+/* .leaflet-tile-container.leaflet-zoom-animated
+	> .leaflet-tile.leaflet-tile-loaded {
+	opacity: 0.6 !important;
+} */
+
+.leaflet-attribution-flag {
+	display: none !important;
+}
+
+
+
+.leaflet-control-attribution.leaflet-control {
+	right: 50vw !important;
+	transform: translateX(50%);
+	left: auto !important;
+}
+.leaflet-sbs-divider {
+	pointer-events: auto;
+}
+#map1 {
+	cursor: default !important;
+	/* transform:rotate(180deg); */
+}
+#coordinates {
+	display: none;
+	justify-content: center;
+	align-items: flex-end;
+	text-align: center;
+	position: absolute;
+	z-index: 5000;
+	font-size: 0.7rem;
+	right: 0px;
+	top: 45px;
+	width: 50px;
+	height: 60px;
+	color: white;
+	background-image: url("/src/assets/images/VEClim-drop.svg");
+	background-position: 0px 14px;
+	background-repeat: no-repeat;
+}
+.highlight-marker {
+	background-color: transparent;
+	border: 2px solid red;
+	border-radius: 0%;
+	/* width: 1rem; */
+	/* height: 1rem; */
+	cursor: default;
+	z-index: 3002;
+}
+.marker-red {
+	background-color: transparent;
+	border: 2px solid red;
+	border-radius: 0%;
+	/* width: 1rem; */
+	/* height: 1rem; */
+	color: green;
+	cursor: default;
+	z-index: 3002;
+}
+
+@media (min-width: 500px) {
+	#coordinates {
+		display: none;
+		justify-content: center;
+		align-items: flex-end;
+		text-align: center;
+		position: absolute;
+		z-index: 5000;
+		font-size: 1rem;
+		right: 0px;
+		top: 55px;
+		width: 70px;
+		height: 85px;
+		color: white;
+		background-image: url("/src/assets/images/VEClim-drop.svg");
+		background-repeat: no-repeat;
+		background-position: 0px 20px;
+	}
+}

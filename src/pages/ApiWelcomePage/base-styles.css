@@ -1,0 +1,163 @@
+.margin-t6 {
+	margin-top: 6rem;
+}
+.margin-t10 {
+	margin-top: 10rem;
+}
+.margin-t12 {
+	margin-top: 12rem;
+}
+.margin-t13 {
+	margin-top: 13rem;
+}
+.margin-t14 {
+	margin-top: 14rem;
+}
+
+.flex-column {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+}
+.flex-row {
+	display: flex;
+	flex-direction: row;
+	width: 90%;
+	/* margin: 1rem */
+}
+
+.primary1 {
+	background-color: var(--primary-color1);
+}
+.font-p1 {
+	color: var(--primary-color1);
+}
+.font-p2 {
+	color: var(--primary-color2);
+}
+.primary2 {
+	background-color: var(--primary-color2);
+}
+.float-fg1 {
+	color: var(--www-color-float-fg1);
+}
+.float-bg {
+	background-color: var(--www-color-float-bg1);
+}
+.float-bg2 {
+	background-color: var(--www-color-float-bg2);
+}
+.meteo-text {
+	color: var(--meteo-text);
+}
+.secondary1 {
+	background-color: var(--secondary-color1);
+}
+.justify-top {
+	justify-content: flex-start;
+}
+.lh-small {
+	line-height: 1.4rem;
+}
+.lh-medium {
+	line-height: 1.6rem;
+}
+.lh-large {
+	line-height: 1.8rem;
+}
+.secondary2 {
+	background-color: var(--secondary-color2);
+}
+.space-between {
+	justify-content: space-between;
+}
+.text-12 {
+	font-size: 1.2rem;
+}
+.text-14 {
+	font-size: 1.4rem;
+}
+.text-16 {
+	font-size: 1.6rem;
+}
+.center-h {
+	align-items: center;
+}
+.pad1 {
+	padding: 1rem;
+	overflow: hidden;
+}
+.center-rh {
+	justify-content: center;
+}
+.full-width {
+	width: 100%;
+}
+.fixed {
+	position: fixed;
+}
+.relative {
+	position: relative;
+}
+.center-v {
+	align-items: center;
+}
+.from-left {
+	animation: slideInLeft 0.2s ease-in-out forwards;
+}
+.flex-grow {
+	flex-grow: 1;
+}
+.small-text p {
+	font-size: 1.2rem;
+}
+.mb10 {
+	margin-bottom: 10px;
+}
+.br5 {
+	border-radius: 5px;
+}
+.scroll-y {
+	overflow-y: scroll;
+}
+.br-10{
+	border-radius:10px
+}
+
+.from-right {
+	animation: slideInRight 0.2s ease-in-out forwards;
+}
+
+.full-width {
+	width: 100%;
+}
+.wrap {
+	flex-wrap: wrap;
+}
+.full-height {
+	height: 100%;
+}
+@keyframes slideInLeft {
+	from {
+		left: -50%;
+		top: -25%;
+	}
+	to {
+		left: 0;
+		top: 0;
+	}
+}
+@keyframes slideInRight {
+	from {
+		right: -50%;
+		top: -25%;
+	}
+	to {
+		right: 0;
+		top: 0;
+	}
+}
+
+.divide-equal {
+	flex-basis: 50%;
+}

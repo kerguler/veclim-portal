@@ -1,0 +1,99 @@
+@import url("styles/colors.css");
+/*@import url("styles/index.css"); */
+
+.text-area {
+	margin-bottom: 1rem;
+	width: 100%;
+}
+.text-area h1 {
+	margin-bottom: 1rem;
+}
+.text-area strong,
+.text-area .strong {
+	font-family: "Inter", sens-serif;
+	font-weight: bold;
+}
+.chart-indicators {
+	display: flex;
+	flex-direction: column;
+	flex-wrap: wrap;
+	width: 100%;
+}
+.chart-indicators.placeholder {
+	min-height: 301px;
+	min-width: 240px;
+	box-shadow: unset;
+	filter: unset;
+}
+.chart-indicators .note {
+	float: right;
+	font-size: 1rem;
+}
+.chart-indicators p {
+	margin-left: 1rem;
+	margin-bottom: 0.5rem;
+	line-height: 1.4rem;
+	font-size: 1.2rem;
+}
+.chart-indicators div {
+	margin-right: 1rem;
+	margin-bottom: 0.5rem;
+	line-height: 1.4rem;
+	font-size: 1.2rem;
+	background-color: var(--www-color-float-bg1);
+	border-radius: 1rem;
+	width: 100%;
+}
+.chart-indicators ul {
+	margin: 0.5rem;
+	line-height: 1.2rem;
+	font-size: 1.2rem;
+	list-style-position: inside;
+	list-style-type: none;
+	text-indent: 2rem;
+}
+.chart-indicators .chart-indicators-row {
+	display: flex;
+	justify-content: flex-start;
+	align-items: baseline;
+	padding-top: 0.5rem;
+}
+.chart-indicators .chart-indicators-row p {
+	width: 40%;
+}
+.chart-indicators .chart-indicators-row div {
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	width: 60%;
+}
+.chart-indicators .chart-indicators-row div p {
+	margin: 0;
+	width: 100%;
+}
+.chart-indicators .chart-indicators-vector {
+	padding-top: 0.5rem;
+}
+
+@media (min-width: 500px) {
+	.chart-indicators p {
+		margin-bottom: 0.5rem;
+		line-height: 1.8rem;
+		font-size: 1.6rem;
+	}
+	.chart-indicators ul {
+		margin: 0.5rem;
+		line-height: 1.8rem;
+		font-size: 1.6rem;
+	}
+	.chart-indicators .note {
+		float: right;
+		font-size: 1.2rem;
+	}
+	.chart-indicators .chart-indicators-row {
+		padding-top: 0rem;
+	}
+	.chart-indicators .chart-indicators-vector {
+		padding-top: 0rem;
+	}
+}

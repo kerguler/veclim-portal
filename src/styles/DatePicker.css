@@ -1,0 +1,32 @@
+/* @import "./colors.css"; */
+.date-picker {
+	margin-top: 0.5rem;
+	display: flex;
+	justify-content: center;
+}
+
+.date-input {
+	color: var(--primary-color1);
+	font-family: "Inter";
+	border-radius: 1rem;
+	height: 2rem;
+	text-align: center;
+	border: none;
+	background: transparent;
+	font-weight: 800;
+}
+.left-arrow {
+	transform: scaleX(-1);
+}
+.date-arrow {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+}
+
+.date-input::-webkit-calendar-picker-indicator {
+	display: none;
+	background: transparent;
+	background-size: 100%;
+	/* Additional CSS styles for the icon */
+}

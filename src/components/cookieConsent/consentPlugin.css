@@ -1,0 +1,28 @@
+.button-consent {
+	align-self: flex-end;
+	box-shadow: 1px 1px 3px 1px rgb(60, 60, 60);
+	height: 3rem;
+	width: 10rem;
+	align-items: center;
+	justify-content: center;
+    color: white !important;
+
+	border: 1px solid var(--primary-color1) !important;
+	border-radius: 2rem !important;
+    background-color: var(--primary-color1) !important; 
+}
+.decline{
+	height: 3rem;
+	width: 10rem;
+	border: 1px solid var(--primary-color1) !important;
+	border-radius: 2rem !important;
+	color: var(--primary-color1) !important;
+    background-color: transparent !important; 
+}
+.button-consent:hover{
+    background-color: var(--secondary-color1)  !important;
+}
+.decline:hover{
+	border-color: var(--primary-color2) !important;
+    color: var(--primary-color2) !important;
+}
