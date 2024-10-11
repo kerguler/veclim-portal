@@ -10,4 +10,4 @@ RUN yarn install
 COPY . .
 
 EXPOSE ${REACT_APP_PORT}
-CMD ["npm", "start"]
+CMD ["yarn", "start"]
