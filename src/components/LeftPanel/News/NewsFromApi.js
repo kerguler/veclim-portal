@@ -19,12 +19,13 @@ const News = ({ width }) => {
 		clearTimeout(timerRef.current);
 		setReadMore((prevReadMore) => !prevReadMore);
 	};
+	const [displayReady, setDisplayReady] = useState(false);
+
 	const { isFetching, data, Error } = useFetchNewsDataQuery();
 	const [preloadedImages, setPreloadedImages] = useState([]);
 
 	const goToNexTSlide = useCallback(() => {
 		data &&
-			preloadedImages.length > 0 &&
 			data.forEach((news, index) => {
 				if (news.id === displayedArticleId) {
 					// console.log({ index });
@@ -35,7 +36,8 @@ const News = ({ width }) => {
 					}
 				}
 			});
-	}, [displayedArticleId, data, preloadedImages]);
+	}, [displayedArticleId, data]);
+
 	useEffect(() => {
 		const setTimerCallback = () => {
 			goToNexTSlide();
@@ -46,26 +48,25 @@ const News = ({ width }) => {
 		};
 
 		if (rotateShow) {
-			timerRef.current = setTimeout(setTimerCallback, 3000);
+			timerRef.current = setTimeout(setTimerCallback, 3500);
+			// timerRef.current = setTimeout(setTimerCallback, 3000);
 		} else {
 			clearTimerCallback();
 		}
 		return clearTimerCallback;
-	}, [goToNexTSlide, rotateShow]);
-
+	}, [goToNexTSlide, rotateShow, displayReady]);
 	useEffect(() => {
 		if (data) {
 			const preloadImages = async () => {
 				const images = [];
-				let icount = 0;
 				data.map(async (news, index) => {
 					const img = new Image();
 					img.src = news.image; // Preload the image
 
 					await img.decode(); // Wait for the image to load
-					images.push({ img: img, index: index, id: news.id }); // Store preloaded image in state
+					images[index] = { img: img, index: index, id: news.id };
 				});
-
+				setDisplayReady(true);
 				setPreloadedImages(images);
 			};
 			preloadImages();
@@ -86,7 +87,6 @@ const News = ({ width }) => {
 		clearTimeout(timerRef.current);
 		if (!rotateShow) clearTimeout(timerRef.current);
 	};
-	console.log("RERENDER NEWS COMPONENT");
 	useEffect(() => {
 		if (data && displayedArticleId === -1) {
 			setDisplayedArticleId(data[0].id);
@@ -108,43 +108,41 @@ const News = ({ width }) => {
 		output = <div>Error</div>;
 	} else {
 		// console.log("news Data", data);
-
-		output =
-			preloadedImages.length > 0 ? (
-				<div className="news-wrapper">
-					<RenderedContent
+		output = displayReady ? (
+			<div className="news-wrapper">
+				<RenderedContent
+					displayedArticleId={displayedArticleId}
+					handleLineClick={handleLineClick}
+					readMore={readMore}
+					handleReadMore={handleReadMore}
+					handleReadMoreLink={handleReadMoreLink}
+					news={data}
+					images={preloadedImages}
+				/>
+				<div className="lines-container">
+					<RenderedLines
 						displayedArticleId={displayedArticleId}
 						handleLineClick={handleLineClick}
-						readMore={readMore}
-						handleReadMore={handleReadMore}
-						handleReadMoreLink={handleReadMoreLink}
 						news={data}
-						images={preloadedImages}
 					/>
-					<div className="lines-container">
-						<RenderedLines
-							displayedArticleId={displayedArticleId}
-							handleLineClick={handleLineClick}
-							news={data}
-						/>
-					</div>
 				</div>
-			) : (
-				<div className="news-wrapper">
-					<div className="news-container">
-						<Skeleton times={6} noBorder={true} />
-						<h3>Rendering</h3>{" "}
-					</div>
-					<div className="lines-container">
-						{" "}
-						<RenderedLines
-							displayedArticleId={displayedArticleId}
-							handleLineClick={handleLineClick}
-							news={data}
-						/>{" "}
-					</div>
+			</div>
+		) : (
+			<div className="news-wrapper">
+				<div className="news-container">
+					<Skeleton times={6} noBorder={true} />
+					<h3>Rendering</h3>{" "}
 				</div>
-			);
+				<div className="lines-container">
+					{" "}
+					<RenderedLines
+						displayedArticleId={displayedArticleId}
+						handleLineClick={handleLineClick}
+						news={data}
+					/>{" "}
+				</div>
+			</div>
+		);
 	}
 	return output;
 };
