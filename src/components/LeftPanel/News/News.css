@@ -97,7 +97,10 @@
 	background-size: cover;
 	background-repeat: no-repeat;
 }
+.news-container-img h3{
+	text-align: center;
 
+}
 @media (min-width: 500px) {
 	.news-title {
 		height: 50px;

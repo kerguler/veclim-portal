@@ -9,7 +9,7 @@ const newsApi = createApi({
 	endpoints(builder) {
 		return {
 			fetchNewsData: builder.query({
-				providesTags: ["News"],
+				// providesTags: ["News"],
 
 				query: () => {
 					return {
