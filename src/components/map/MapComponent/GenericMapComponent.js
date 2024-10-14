@@ -95,7 +95,7 @@ function GenericMapComponent({ fitworld }) {
 
 	useEffect(() => {
 		const handleSepClick = (e) => {
-			p.prevClickPointRef && handleMapClick({ latlng: p.prevClickPointRef });
+			// p.prevClickPointRef && handleMapClick({ latlng: p.prevClickPointRef });
 			handleMarkers();
 			e.stopPropagation();
 		};
