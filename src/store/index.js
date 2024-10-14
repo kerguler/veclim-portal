@@ -8,7 +8,16 @@ import {
 	setShowSearchBar,
 	toggleShowSearchBar,
 } from "./slices/searchBarSlice";
-
+import {
+	setNews,
+	setPreloadedImages,
+	setDisplayReady,
+	setDisplayedArticleId,
+	setReadMore,
+	setRotateShow,
+	newsReducer,
+	setTimer,clearTimer
+} from "./slices/newsSlice";
 import {
 	fetcherReducer,
 	setFetcherStates,
@@ -30,7 +39,8 @@ import {
 	setRightMapLoaded,
 	setSwitchMap,
 	setTileArray,
-	setVectorName,setReadyToView
+	setVectorName,
+	setReadyToView,
 } from "./slices/fetcherSlice";
 import { languageReducer, changeLanguage } from "./slices/languageSlice";
 import {
@@ -145,6 +155,7 @@ export const store = configureStore({
 		slider: sliderReducer,
 		graphSwitch: graphSwitcherReducer,
 		fetcher: fetcherReducer,
+		news: newsReducer,
 	},
 	devTools: process.env.NODE_ENV !== "production",
 	middleware: (getDefaultMiddleware) => {
@@ -154,7 +165,7 @@ export const store = configureStore({
 			.concat(colorBarsApi.middleware)
 			.concat(newsApi.middleware)
 			.concat(loginRegisterApi.middleware)
-			.concat(simulationApi.middleware)//.concat(logger);
+			.concat(simulationApi.middleware); //.concat(logger);
 	},
 });
 setupListeners(store.dispatch);
@@ -182,6 +193,12 @@ export {
 
 export { useFetchNewsDataQuery } from "./apis/newsApi";
 export {
+	setDisplayReady,
+	setDisplayedArticleId,
+	setReadMore,
+	setRotateShow,
+	setPreloadedImages,
+	setNews,
 	setFetcherStates,
 	changeLanguage,
 	setLocationRequested,
@@ -266,5 +283,7 @@ export {
 	setRightMapLoaded,
 	setSwitchMap,
 	setTileArray,
-	setVectorName,setReadyToView
+	setVectorName,
+	setReadyToView,
+	setTimer,clearTimer
 };
