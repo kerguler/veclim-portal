@@ -48,12 +48,14 @@ const useFetcherStates = () => {
 	const [tiles, setTiles] = useState([]);
 	const [panels, setPanels] = useState([]);
 
-	const defaultAlboBehaviour = () => {
-		dispatch(setMapVector("albopictus"));
-		dispatch(setVectorName("albopictus"));
-	};
 
 	useEffect(() => {
+
+		const defaultAlboBehaviour = () => {
+			dispatch(setMapVector("albopictus"));
+			dispatch(setVectorName("albopictus"));
+		};
+
 		if (session === null || session === "") {
 		} else if (vectorNames.includes(session)) {
 			dispatch(setMapVector(session));

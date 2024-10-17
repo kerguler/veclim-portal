@@ -6,30 +6,23 @@ import MapAdjustmentsService from "../components/charts/services/MapAdjustmentsS
 import useMapResize from "./useMapResize";
 import { setCurrentMapCenter, setCurrentMapBounds } from "store";
 import { current } from "@reduxjs/toolkit";
+import useFetcherVariables from "./useFetcherVariables";
 function useMap(mapParRef) {
 	useMapResize();
 	const dispatch = useDispatch();
 
 	const pageTransition = useSelector((state) => state.location.pageTransition);
 	let m = mapParRef.current;
-	const tileArray = useSelector(
-		(state) => state.fetcher.fetcherStates.tileArray
-	);
-	const vectorName = useSelector(
-		(state) => state.fetcher.fetcherStates.vectorName
-	);
-	const switchMap = useSelector(
-		(state) => state.fetcher.fetcherStates.map.switchMap
-	);
-	const currentMapCenter = useSelector(
-		(state) => state.fetcher.fetcherStates.map.currentMapCenter
-	);
-	const currentMapZoom = useSelector(
-		(state) => state.fetcher.fetcherStates.map.currentMapZoom
-	);
-	const directMap = useSelector(
-		(state) => state.fetcher.fetcherStates.directMap
-	);
+
+	const {
+		tileArray,
+		vectorName,
+		switchMap,
+		currentMapCenter,
+		currentMapZoom,
+		directMap,
+		directInit,
+	} = useFetcherVariables();
 
 	useEffect(() => {
 		let p = mapParRef.current;
@@ -66,7 +59,10 @@ function useMap(mapParRef) {
 		directMap.display,
 		dispatch,
 		m.bounds,
-		mapParRef.current,
+		switchMap,
+		directInit,
+		mapParRef,
+		
 	]);
 }
 

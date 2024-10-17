@@ -2,6 +2,8 @@ import MapAdjustmentsService from "components/charts/services/MapAdjustmentsServ
 import { exception } from "react-ga";
 import { setTileArray } from "store";
 import { setReadyToView } from "store";
+import { setSwitchMap } from "store";
+import { setDisplayedPanelID } from "store";
 import { setDirectInit } from "store";
 import { setVectorName } from "store";
 import { setPanelOpen } from "store";

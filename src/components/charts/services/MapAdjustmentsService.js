@@ -101,6 +101,7 @@ class MapAdjustmentsService {
 	static handleMapClick(e, mapParRef, vectorName, dispatch) {
 		this.clickMap(e, mapParRef, vectorName, dispatch);
 		// TODO: MAY NEED TO REMOVE
+	
 		dispatch(setPanelInterfere(-1));
 	}
 	static clickMap = (e, mapParRef, vectorName, dispatch) => {

@@ -4,14 +4,7 @@ import { useDispatch } from "react-redux";
 import MapLeftMenu from "../components/MapLeftMenu/MapLeftMenu";
 import MapLogo from "../components/MapLogo/MapLogo";
 import {
-	setBrushRange,
-	setCurrentMapZoom,
-	setDirectInit,
 	setDirectInitError,
-	setMapVector,
-	setSuperUser,
-	setSwitchMap,
-	setTileArray,
 } from "../store";
 import { useEffect } from "react";
 
@@ -19,14 +12,10 @@ import { useState } from "react";
 import { useContext } from "react";
 import PanelContext from "context/panelsIcons";
 
-import MapAdjustmentsService from "components/charts/services/MapAdjustmentsService";
 import { useSelector } from "react-redux";
 import ErrorBoundary from "components/errorBoundary/ErrorBoundary";
 import useFetcherStates from "customHooks/useFetcherStates";
 import GenericMapComponent from "components/map/MapComponent/GenericMapComponent";
-import { setPanelOpen } from "../store";
-import { setVectorName } from "../store";
-import { setCurrentMapCenter } from "../store";
 function GenericMapPage() {
 	useFetcherStates();
 
@@ -36,10 +25,9 @@ function GenericMapPage() {
 	const readyToView = useSelector(
 		(state) => state.fetcher.fetcherStates.readyToView
 	);
-
-	// useEffect(() => {
-	// 	dispatch(setBrushRange({ startIndex: null, endIndex: null }));
-	// }, [dispatch, vectorName, readyToView]);
+// const directInit=useSelector((state)=>state.fetcher.fetcherStates.directInit)
+// 	useEffect(() => {
+// 	}, [directInit]);
 	return (
 		readyToView && (
 			<div className="wrappers-wrapper">

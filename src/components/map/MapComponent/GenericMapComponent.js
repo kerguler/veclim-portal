@@ -16,9 +16,10 @@ import useMapCoordinateUpdate from "customHooks/useMapCoordinateUpdate";
 import ErrorScreenMap from "../errorScreen/ErrorScreenMap";
 import { setCurrentMapZoom } from "store";
 import { setCurrentMapCenter } from "store";
-import { setDirectInit } from "store";
-import { setDirectMap } from "store";
 import TileNameDisplay from "../tileNameDisplay/TileNameDisplay";
+import { setDirectMap } from "store";
+import { setDisplayedPanelID } from "store";
+import useFetcherVariables from "customHooks/useFetcherVariables";
 
 function GenericMapComponent({ fitworld }) {
 	const {
@@ -35,7 +36,7 @@ function GenericMapComponent({ fitworld }) {
 		switchMap,
 		dispatch,
 		mapVector,
-	} = useGenericMapComponentSelectors();
+	} = useFetcherVariables();
 	const mapParameters = {
 		map: null,
 		center: currentMapCenter,
@@ -71,6 +72,8 @@ function GenericMapComponent({ fitworld }) {
 	}, [errorMessage]);
 	useMap(mapParRef);
 	useMapCoordinateUpdate(mapParRef);
+
+
 	useEffect(() => {
 		if (
 			mapPagePosition &&
@@ -90,12 +93,12 @@ function GenericMapComponent({ fitworld }) {
 				dispatch,
 				directMap
 			);
+		} else {
 		}
-	}, [directMap, vectorName, dispatch]);
 
-	useEffect(() => {
 		const handleSepClick = (e) => {
-			// p.prevClickPointRef && handleMapClick({ latlng: p.prevClickPointRef });
+			console.log("clicked on separator");
+
 			handleMarkers();
 			e.stopPropagation();
 		};
@@ -161,7 +164,6 @@ function GenericMapComponent({ fitworld }) {
 			tileMat.forEach((tile) => {
 				p.map.removeLayer(tile);
 			});
-
 			circularHandle &&
 				circularHandle.removeEventListener("click", handleSepClick);
 
@@ -180,7 +182,7 @@ function GenericMapComponent({ fitworld }) {
 		dispatch,
 		tileIcons,
 		p,
-		directMap,
+		directMap.display,
 		directInit,
 		fitworld,
 	]);
