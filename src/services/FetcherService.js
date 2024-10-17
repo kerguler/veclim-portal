@@ -100,7 +100,7 @@ class FetcherService {
 		if (lon == null || lat === null || lon === "" || lat === "") {
 			longi = MapAdjustmentsService.defaultCypCenter[1];
 			lati = MapAdjustmentsService.defaultCypCenter[0];
-		} else if (-90 <= lon && lon <= 90 && -180 <= lat && lat <= 180) {
+		} else if (-90 <= lat && lat <= 90 && -180 <= lon && lat <= lon) {
 			longi = lon;
 			lati = lat;
 		} else {
