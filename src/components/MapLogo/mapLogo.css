@@ -5,6 +5,7 @@
 	background-color: transparent;
 	color: white;
 	z-index: 5003;
+	user-select: none;
 }
 .image-container {
 	display: flex;

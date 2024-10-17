@@ -4,6 +4,7 @@
 	flex-direction: column-reverse;
 	bottom: 0;
 	z-index: 501;
+	user-select: none;
 }
 .icon-column {
 	position: absolute;
@@ -18,6 +19,7 @@
 	z-index: 5001;
 	animation: scroll-from-left 0.3s ease-in-out;
 	transition: all 0.3s ease-in-out;
+	user-select: none;
 }
 .panel-restrictive-wrapper {
 	position: absolute;
