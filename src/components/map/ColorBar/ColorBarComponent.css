@@ -6,7 +6,6 @@
 	left: 0.5rem;
 	z-index: 2000;
 	user-select: none;
-
 }
 .color-bar-rect {
 	width: 1.8rem;
@@ -22,7 +21,6 @@
 	display: flex;
 	flex-wrap: nowrap;
 	user-select: none;
-
 }
 .color-bar-colors {
 	display: flex;

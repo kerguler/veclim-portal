@@ -1,13 +1,7 @@
 import MapAdjustmentsService from "components/charts/services/MapAdjustmentsService";
-import { exception } from "react-ga";
 import { setTileArray } from "store";
-import { setReadyToView } from "store";
-import { setSwitchMap } from "store";
-import { setDisplayedPanelID } from "store";
-import { setDirectInit } from "store";
-import { setVectorName } from "store";
 import { setPanelOpen } from "store";
-import { setMapMenuOpen, setMapVector } from "store";
+import { setMapMenuOpen } from "store";
 import { setDirectMap } from "store";
 
 class FetcherService {
@@ -100,6 +94,7 @@ class FetcherService {
 		if (panels.length === 0) {
 			return;
 		}
+		console.log({lon,lat})
 		let heading = "No panel found";
 		let longi, lati;
 		if (lon == null || lat === null || lon === "" || lat === "") {

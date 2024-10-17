@@ -15,6 +15,9 @@ function useMapCoordinateUpdate(mapParRef) {
 	const switchMap = useSelector(
 		(state) => state.fetcher.fetcherStates.map.switchMap
 	);
+	const directInit = useSelector(
+		(state) => state.fetcher.fetcherStates.directInit
+	);
 	useEffect(() => {
 		function handleCoordinateUpdate(e) {
 			MapAdjustmentsService.updateCoordinates({
@@ -29,7 +32,7 @@ function useMapCoordinateUpdate(mapParRef) {
 		return () => {
 			p.map.off("mousemove", handleCoordinateUpdate);
 		};
-	}, [tileArray, vectorName, switchMap, dispatch, p.bounds]);
+	}, [tileArray, vectorName, switchMap, dispatch, p.bounds,directInit]);
 }
 
 export default useMapCoordinateUpdate;
