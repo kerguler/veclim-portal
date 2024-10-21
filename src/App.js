@@ -14,6 +14,7 @@ import LoginPage from "pages/LoginRegister/LoginPage/LoginPage";
 import RegistrationPage from "pages/LoginRegister/RegistrationPage/RegistrationPage";
 import { AvQueuePlayNext } from "material-ui/svg-icons";
 import ApiWelcomePage from "pages/ApiWelcomePage/ApiWelcomePage";
+import MapPackageLanding from "pages/MapPackageLanding";
 import GenericMapPage from "pages/GenericMapPage";
 function App() {
 	useUserLocation();
@@ -31,7 +32,7 @@ function App() {
 					{/* <Route path="/MapPage" element={<MapPage />} />{" "} */}
 					{/* <Route path="/MapPage/SandFly" element={<MapPageSandFly />} />{" "} */}
 					<Route path="/404" element={<NoPage />} />
-					<Route path="/MapPage" element={<GenericMapPage />} />
+					<Route path="/MapPage" element={<MapPackageLanding />} />
 					{/* <Route path="/login" element={<LoginPage />} />
 					<Route path="/RegistrationPage" element={<RegistrationPage />} />
 					<Route path="/ApiWelcome" element={<ApiWelcomePage />} /> */}

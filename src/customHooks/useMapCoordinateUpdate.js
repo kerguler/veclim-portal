@@ -2,22 +2,14 @@ import { useEffect } from "react";
 import MapAdjustmentsService from "../components/charts/services/MapAdjustmentsService";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
+import useFetcherVariables from "./useFetcherVariables";
 
 function useMapCoordinateUpdate(mapParRef) {
 	let p = mapParRef.current;
 	const dispatch = useDispatch();
-	const tileArray = useSelector(
-		(state) => state.fetcher.fetcherStates.tileArray
-	);
-	const vectorName = useSelector(
-		(state) => state.fetcher.fetcherStates.vectorName
-	);
-	const switchMap = useSelector(
-		(state) => state.fetcher.fetcherStates.map.switchMap
-	);
-	const directInit = useSelector(
-		(state) => state.fetcher.fetcherStates.directInit
-	);
+	const { vectorName, tileArray, switchMap, directInit } =
+		useFetcherVariables();
+
 	useEffect(() => {
 		function handleCoordinateUpdate(e) {
 			MapAdjustmentsService.updateCoordinates({
@@ -32,7 +24,7 @@ function useMapCoordinateUpdate(mapParRef) {
 		return () => {
 			p.map.off("mousemove", handleCoordinateUpdate);
 		};
-	}, [tileArray, vectorName, switchMap, dispatch, p.bounds,directInit]);
+	}, [tileArray, vectorName, switchMap, dispatch, p.bounds, directInit]);
 }
 
 export default useMapCoordinateUpdate;

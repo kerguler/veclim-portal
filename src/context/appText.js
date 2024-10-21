@@ -47,6 +47,9 @@ import { useDispatch, useSelector } from "react-redux";
 // import ChangesComponent from "../components/ChangesComponent";
 import { useLocation } from "react-router-dom";
 import { setDisplayedPanelID, setReadyToView } from "store";
+import { setMapVector } from "store";
+import { setTileArray } from "store";
+import { setVectorName } from "store";
 const TextContext = createContext();
 
 function TextProvider({ children }) {
@@ -111,6 +114,7 @@ function TextProvider({ children }) {
 						<h4>
 							<Link
 								onClick={() => {
+									dispatch(setMapVector("papatasi"));
 									MapAdjustmentsService.handleToMapPageTransition(
 										dispatch,
 										vectorName,
@@ -119,9 +123,14 @@ function TextProvider({ children }) {
 									dispatch(setReadyToView(false));
 									dispatch(setDisplayedPanelID(0));
 								}}
-								to="/MapPage?session=papatasi"
+								to="/MapPage"
 							>
-								<img src={imageSandFlyIcon} width="200px" height="200px"></img>
+								<img
+									alt="sandfly"
+									src={imageSandFlyIcon}
+									width="200px"
+									height="200px"
+								></img>
 							</Link>
 							<Link
 								onClick={() => {
@@ -130,7 +139,9 @@ function TextProvider({ children }) {
 										vectorName,
 										mapVector
 									);
-
+									dispatch(setTileArray(["colegg","colegg_ssp585"]));
+									dispatch(setVectorName("albopictus"));
+									dispatch(setMapVector("albopictus"));
 									dispatch(setReadyToView(false));
 									dispatch(setDisplayedPanelID(0));
 								}}

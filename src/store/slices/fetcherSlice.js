@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import PackageMapServices from "components/map/mapPackage/PackageMapServices";
 
 const fetcherSlice = createSlice({
 	name: "fetcher",
@@ -11,7 +12,7 @@ const fetcherSlice = createSlice({
 			availableTiles: [],
 			map: {
 				currentMapCenter: [35.1966527, 33.3217152],
-				currentMapZoom: 1,
+				currentMapZoom: 2,
 				mapLoaded: false,
 				leftMapLoaded: false,
 				rightMapLoaded: false,
@@ -21,8 +22,8 @@ const fetcherSlice = createSlice({
 					displayedPanelID: 0,
 				},
 				switchMap: true,
-				currentMapBounds: [],
-				currentMaxBounds: [],
+				currentMapBounds: PackageMapServices.worldBounds,
+				currentMaxBounds: PackageMapServices.worldBounds,
 				userPosition: { lat: null, lng: null },
 				globalPosition: { lat: null, lng: null },
 				mapPagePosition: { lat: 35.1966527, lng: 33.3217152 },

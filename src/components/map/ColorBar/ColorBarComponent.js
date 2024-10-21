@@ -10,13 +10,10 @@ import { useEffect } from "react";
 import { useState } from "react";
 import { useRef } from "react";
 function ColorBarComponent({ times }) {
-	const colorBarRef = useRef();
 	const panelOpen = useSelector(
 		(state) => state.fetcher.fetcherStates.map.leftMenu.panelOpen
 	);
-	const displayedPanelID = useSelector(
-		(state) => state.fetcher.fetcherStates.map.leftMenu.displayedPanelID
-	);
+
 	const panelTop = useSelector((state) => state.panel.panelTop);
 
 	const { data, error, isFetching } = useFetchColorBarsDataQuery();
@@ -28,8 +25,8 @@ function ColorBarComponent({ times }) {
 		rightBarRef = useRef();
 
 	const [style, setStyle] = useState([]);
-	const [webApp, setWebApp] = useState(null);
 	const dispatch = useDispatch();
+	const [extractedTile, setExtractedTile] = useState([]);
 
 	const handleDisplayTiles = (e, direction) => {
 		if (direction === "left") {
@@ -85,6 +82,23 @@ function ColorBarComponent({ times }) {
 			window.removeEventListener("resize", handleResize);
 		};
 	}, [panelOpen, panelTop, times]);
+	useEffect(() => {
+		if (!data) {
+			return;
+		}
+		if (!selectedTiles) return;
+
+		const extractedTile1 =
+			selectedTiles &&
+			selectedTiles.map((tile, index) => {
+				let acc;
+				if (tile in data) {
+					acc = { key: tile, ...data[tile] };
+					return acc;
+				}
+			});
+		setExtractedTile(extractedTile1);
+	}, [data, selectedTiles]);
 
 	let colors, labels;
 	if (isFetching) {
@@ -92,14 +106,9 @@ function ColorBarComponent({ times }) {
 	} else if (error) {
 		return <div></div>;
 	} else {
-		const extractedTile = selectedTiles.map((tile, index) => {
-			let acc;
-			if (tile in data) {
-				acc = { key: tile, ...data[tile] };
-				return acc;
-			}
-		});
-		if (extractedTile.length === 0) return <div></div>;
+		if (!extractedTile || extractedTile.length === 0) return <div></div>;
+		if (selectedTiles.length === 0) return <div></div>;
+		if (!data) return <div></div>;
 
 		colors = data[extractedTile[0].key].colors;
 		labels = data[extractedTile[0].key].labels;

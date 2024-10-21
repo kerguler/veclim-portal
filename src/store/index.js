@@ -40,7 +40,7 @@ import {
 	setSwitchMap,
 	setTileArray,
 	setVectorName,
-	setReadyToView,
+	setReadyToView,setBrushRange
 } from "./slices/fetcherSlice";
 import { languageReducer, changeLanguage } from "./slices/languageSlice";
 import {
@@ -110,7 +110,6 @@ import {
 } from "./slices/sliderSlice";
 import {
 	panelReducer,
-	setBrushRange,
 	setChartParameters,
 	appendToPlottedKeysChartParameters,
 	appendToLabelsChartParameters,

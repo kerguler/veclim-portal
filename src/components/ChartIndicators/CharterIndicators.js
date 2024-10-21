@@ -30,7 +30,7 @@ function ChartIndicators() {
 	}
 
 	var fdate = "";
-	if (data.date && "fcast-ts" in data) {
+	if (data && "fcast-ts" in data) {
 		var todate = new Date(data.date.date0);
 		todate.setDate(todate.getDate() + data["fcast-ts"].ecmwf.colegg.length);
 		fdate = (
@@ -46,7 +46,7 @@ function ChartIndicators() {
 	}
 
 	var coord = "";
-	if (data.location) {
+	if (data ) {
 		coord = (
 			<>
 				<p>
@@ -64,7 +64,7 @@ function ChartIndicators() {
 	}
 
 	var mosquito = "";
-	if (
+if (data){	if (
 		"presence" in data &&
 		"albopictus" in data.presence &&
 		data.presence.albopictus[0]
@@ -93,7 +93,7 @@ function ChartIndicators() {
 				<strong>No</strong> reports of the tiger mosquito
 			</p>
 		);
-	}
+	}}
 
 	const indicators = (
 		<>

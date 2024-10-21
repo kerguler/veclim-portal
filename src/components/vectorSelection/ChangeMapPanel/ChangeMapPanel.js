@@ -1,23 +1,15 @@
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import {
-	setSwitchMap,
-	setVectorName,
-	setTileArray,
-	setMapPagePosition,
-	setCurrentMapCenter,
-	setCurrentMapZoom,
-	setDisplayedPanelID,
-	setPanelOpen,
-	setPageTransition,
-} from "../../../store";
+import { setPageTransition, setSwitchMap } from "../../../store";
 import tileIconMoz from "assets/icons/map-page-right-menu/png/adult-32px.png";
 import tileIconFly from "assets/icons/map-page-right-menu/png/mosquito-3-32px.png";
 import useWindowSize from "customHooks/useWindowSize";
-import MapAdjustmentsService from "../../charts/services/MapAdjustmentsService";
+import PackageMapServices from "components/map/mapPackage/PackageMapServices";
 import { Link } from "react-router-dom";
 import "./ChangeMapPanel.css";
+import useMapStarter from "customHooks/useMapStarter";
 function ChangeMapPanel() {
+	const { mapStarter } = useMapStarter();
 	const dispatch = useDispatch();
 	const vectorName = useSelector(
 		(state) => state.fetcher.fetcherStates.vectorName
@@ -43,8 +35,11 @@ function ChangeMapPanel() {
 		),
 	};
 	const handleChangeTile = (desiredVector) => {
-		MapAdjustmentsService.handleMapSwitch(dispatch, vectorName, desiredVector);
+		console.log("desiredVector", desiredVector);
+
+		PackageMapServices.handleMapSwitch(dispatch, vectorName, desiredVector);
 		dispatch(setPageTransition(false));
+		dispatch(setSwitchMap(true));
 	};
 
 	const listVectors = vectorNames.map((vec, index) => {
@@ -55,7 +50,7 @@ function ChangeMapPanel() {
 		if (vec === "albopictus") {
 			linkText = "/MapPage";
 		} else {
-			linkText = "/MapPage?session=papatasi";
+			linkText = "/MapPage";
 		}
 		return (
 			<div key={index} className="description-row">

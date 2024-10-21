@@ -20,7 +20,7 @@ import TileNameDisplay from "../tileNameDisplay/TileNameDisplay";
 import { setDirectMap } from "store";
 import { setDisplayedPanelID } from "store";
 import useFetcherVariables from "customHooks/useFetcherVariables";
-
+import useMapStarter from "customHooks/useMapStarter";
 function GenericMapComponent({ fitworld }) {
 	const {
 		directInit,
@@ -72,7 +72,6 @@ function GenericMapComponent({ fitworld }) {
 	}, [errorMessage]);
 	useMap(mapParRef);
 	useMapCoordinateUpdate(mapParRef);
-
 
 	useEffect(() => {
 		if (
@@ -202,57 +201,3 @@ function GenericMapComponent({ fitworld }) {
 }
 
 export default GenericMapComponent;
-
-function useGenericMapComponentSelectors() {
-	const mapVector = useSelector(
-		(state) => state.fetcher.fetcherStates.mapVector
-	);
-	const dispatch = useDispatch();
-	const switchMap = useSelector(
-		(state) => state.fetcher.fetcherStates.map.switchMap
-	);
-	const pageTransition = useSelector((state) => state.location.pageTransition);
-	const currentMapCenter = useSelector(
-		(state) => state.fetcher.fetcherStates.map.currentMapCenter
-	);
-	const currentMapZoom = useSelector(
-		(state) => state.fetcher.fetcherStates.map.currentMapZoom
-	);
-	const currentMaxBounds = useSelector(
-		(state) => state.fetcher.fetcherStates.map.currentMaxBounds
-	);
-	const currentMapBounds = useSelector(
-		(state) => state.fetcher.fetcherStates.map.currentMapBounds
-	);
-	const vectorName = useSelector(
-		(state) => state.fetcher.fetcherStates.vectorName
-	);
-	const mapPagePosition = useSelector(
-		(state) => state.fetcher.fetcherStates.map.mapPagePosition
-	);
-	const directMap = useSelector(
-		(state) => state.fetcher.fetcherStates.directMap
-	);
-	const tileArray = useSelector(
-		(state) => state.fetcher.fetcherStates.tileArray
-	);
-	const directInit = useSelector(
-		(state) => state.fetcher.fetcherStates.directInit
-	);
-
-	return {
-		directInit,
-		tileArray,
-		directMap,
-		mapPagePosition,
-		vectorName,
-		currentMapBounds,
-		currentMaxBounds,
-		currentMapZoom,
-		currentMapCenter,
-		pageTransition,
-		switchMap,
-		dispatch,
-		mapVector,
-	};
-}

@@ -7,6 +7,7 @@ import HoverMenuMethods from "components/HoverMenuMethods/HoverMenuMethods";
 import MapAdjustmentsService from "components/charts/services/MapAdjustmentsService";
 import { useEffect } from "react";
 import { setReadyToView } from "store";
+import { setPanelOpen } from "store";
 function MyNavbar({ style }) {
 	const vectorName = useSelector(
 		(state) => state.fetcher.fetcherStates.vectorName
@@ -20,7 +21,7 @@ function MyNavbar({ style }) {
 	if (vectorName === "albopictus") {
 		linkText = "/MapPage";
 	} else {
-		linkText = "/MapPage?session=papatasi";
+		linkText = "/MapPage";
 	}
 
 	const handleMapBounds = () => {
@@ -29,6 +30,7 @@ function MyNavbar({ style }) {
 			vectorName,
 			mapVector
 		);
+		dispatch(setPanelOpen(false));
 		dispatch(setReadyToView(false));
 	};
 
