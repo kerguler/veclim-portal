@@ -53,7 +53,7 @@ function useMapBasicEvents(mapParRef, fitworld) {
 			p.map.off("move", handleMove);
 			p.map.off("mouseout", PackageMapServices.mouseOut, true);
 		};
-	}, [dispatch, mapParRef, p, vectorName]);
+	}, [dispatch, mapParRef, p, vectorName,]);
 
 	useEffect(() => {
 		if (fitworld) {

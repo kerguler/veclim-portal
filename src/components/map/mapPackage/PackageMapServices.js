@@ -108,11 +108,15 @@ class PackageMapServices {
 		dispatch(setPanelOpen(false));
 	}
 
-	static handleMapClick(e, mapParRef, vectorName, dispatch) {
+	static handleMapClick(e, mapParRef, vectorName, dispatch, directMap) {
 		this.clickMap(e, mapParRef, vectorName, dispatch);
 		// TODO: MAY NEED TO REMOVE
 
-		dispatch(setPanelInterfere(-1));
+		if (directMap) {
+			if (directMap.display === -2) dispatch(setPanelInterfere(-1));
+		} else {
+			dispatch(setPanelInterfere(-1));
+		}
 	}
 	static clickMap = (e, mapParRef, vectorName, dispatch) => {
 		let p = mapParRef.current;

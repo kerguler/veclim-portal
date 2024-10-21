@@ -29,7 +29,7 @@ function MapPackageComponent({ fitworld }) {
 		currentMapBounds,
 		currentMaxBounds,
 		currentMapZoom,
-		currentMapCenter,
+		currentMapCenter,mapPagePosition,directMap,vectorName
 	} = useFetcherVariables();
 	const mapParameters = {
 		map: null,
@@ -56,6 +56,29 @@ function MapPackageComponent({ fitworld }) {
 	useZoomActions(mapParRef)
 	useMapBasicEvents(mapParRef,fitworld)
 	
+	useEffect(() => {
+		if (
+			mapPagePosition &&
+			directMap.display !== -2 &&
+			directMap.display !== null
+		) {
+			let e = {
+				latlng: {
+					lat: directMap.lat,
+					lng: directMap.lon,
+				},
+			};
+			PackageMapServices.handleMapClick(
+				e,
+				mapParRef,
+				vectorName,
+				dispatch,
+				directMap
+			);
+		} 
+
+		return () => {};
+	}, [directMap, dispatch, vectorName]);
 
 	return (
 		<>
