@@ -1,9 +1,13 @@
 import "./CustomTooltip.css";
 
 function CustomTooltip({ active, payload, label, parameters }) {
-	if (active && payload && payload.length) {
+	const payload1 = Array.from(
+		new Map(payload.map((item) => [item.value, item])).values()
+	);
+	if (active && payload1 && payload1.length) {
 		//TODO:: fix the dodgy code coming up
 		//hard coded test based on variable names slice1 slice 2 and slice 3
+
 		const RenderedTooltipElement = ({ entry, index }) => {
 			if (entry.name === "slice1") {
 				return (
@@ -33,7 +37,7 @@ function CustomTooltip({ active, payload, label, parameters }) {
 			}
 		};
 
-		let renderedTooltipvalues = payload.map((entry, index) => {
+		let renderedTooltipvalues = payload1.map((entry, index) => {
 			if (parameters.labels) {
 				return (
 					<p key={`${entry.dataKey}-${index}`} style={{ color: entry.color }}>
