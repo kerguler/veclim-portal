@@ -94,7 +94,6 @@ class FetcherService {
 		if (panels.length === 0) {
 			return;
 		}
-		console.log({lon,lat})
 		let heading = "No panel found";
 		let longi, lati;
 		if (lon == null || lat === null || lon === "" || lat === "") {
