@@ -8,7 +8,7 @@ import { useEffect } from "react";
 
 import { useState } from "react";
 import { useContext } from "react";
-import PanelContext from "context/panelsIcons";
+import PanelContext, { PanelProvider } from "context/panelsIcons";
 
 import { useSelector } from "react-redux";
 import ErrorBoundary from "components/errorBoundary/ErrorBoundary";
@@ -25,15 +25,17 @@ function MapPackageLanding() {
 
 	return (
 		readyToView && (
-			<div className="wrappers-wrapper">
-				<MapLogo />
-				<div className="map-wrapper">
-					<MapLeftMenu></MapLeftMenu>
-					<ErrorBoundary>
-						<MapPackageComponent />
-					</ErrorBoundary>
+			<PanelProvider>
+				<div className="wrappers-wrapper">
+					<MapLogo />
+					<div className="map-wrapper">
+						<MapLeftMenu></MapLeftMenu>
+						<ErrorBoundary>
+							<MapPackageComponent />
+						</ErrorBoundary>
+					</div>
 				</div>
-			</div>
+			</PanelProvider>
 		)
 	);
 }
