@@ -22,6 +22,7 @@ import useTileHandler from "customHooks/MapPackage/useTileHandler";
 import useSeparatorActions from "customHooks/MapPackage/useSeparatorActions";
 import useZoomActions from "customHooks/useZoomActions";
 import useMapBasicEvents from "customHooks/MapPackage/useMapBasicEvents";
+import useLMapResize from "customHooks/MapPackage/useLMapResize";
 function MapPackageComponent({ fitworld }) {
 	const dispatch = useDispatch();
 	const {
@@ -29,7 +30,10 @@ function MapPackageComponent({ fitworld }) {
 		currentMapBounds,
 		currentMaxBounds,
 		currentMapZoom,
-		currentMapCenter,mapPagePosition,directMap,vectorName
+		currentMapCenter,
+		mapPagePosition,
+		directMap,
+		vectorName,
 	} = useFetcherVariables();
 	const mapParameters = {
 		map: null,
@@ -44,7 +48,7 @@ function MapPackageComponent({ fitworld }) {
 		minZoom: 1,
 		tiles: null,
 		tileMat: [],
-		sideBySide:null
+		sideBySide: null,
 	};
 
 	const mapParRef = useRef(mapParameters);
@@ -53,9 +57,9 @@ function MapPackageComponent({ fitworld }) {
 	useLMapCoordinateUpdate(mapParRef);
 	useTileHandler(mapParRef);
 	useSeparatorActions(mapParRef);
-	useZoomActions(mapParRef)
-	useMapBasicEvents(mapParRef,fitworld)
-	
+	useZoomActions(mapParRef);
+	useMapBasicEvents(mapParRef, fitworld);
+	useLMapResize(mapParRef);
 	useEffect(() => {
 		if (
 			mapPagePosition &&
@@ -75,7 +79,7 @@ function MapPackageComponent({ fitworld }) {
 				dispatch,
 				directMap
 			);
-		} 
+		}
 
 		return () => {};
 	}, [directMap, dispatch, vectorName]);
@@ -94,35 +98,35 @@ function MapPackageComponent({ fitworld }) {
 }
 
 export default MapPackageComponent;
-	// mapParRef.current.maxBounds = currentMaxBounds
-	// 	? L.latLngBounds(currentMaxBounds[0], currentMaxBounds[1])
-	// 	: null;
-	// useEffect(() => {
-	// 	if (vectorName === "papatasi") {
-	// 		p.center = PackageMapServices.defaultCypCenter;
-	// 	}
-	// });
+// mapParRef.current.maxBounds = currentMaxBounds
+// 	? L.latLngBounds(currentMaxBounds[0], currentMaxBounds[1])
+// 	: null;
+// useEffect(() => {
+// 	if (vectorName === "papatasi") {
+// 		p.center = PackageMapServices.defaultCypCenter;
+// 	}
+// });
 
-	// useEffect(() => {
-	// 	if (
-	// 		mapPagePosition &&
-	// 		directMap.display !== -2 &&
-	// 		directMap.display !== null
-	// 	) {
-	// 		let e = {
-	// 			latlng: {
-	// 				lat: directMap.lat,
-	// 				lng: directMap.lon,
-	// 			},
-	// 		};
-	// 		PackageMapServices.handleMapClick(
-	// 			e,
-	// 			mapParRef,
-	// 			vectorName,
-	// 			dispatch,
-	// 			directMap
-	// 		);
-	// 	} 
+// useEffect(() => {
+// 	if (
+// 		mapPagePosition &&
+// 		directMap.display !== -2 &&
+// 		directMap.display !== null
+// 	) {
+// 		let e = {
+// 			latlng: {
+// 				lat: directMap.lat,
+// 				lng: directMap.lon,
+// 			},
+// 		};
+// 		PackageMapServices.handleMapClick(
+// 			e,
+// 			mapParRef,
+// 			vectorName,
+// 			dispatch,
+// 			directMap
+// 		);
+// 	}
 
-	// 	return () => {};
-	// }, [directMap, dispatch, mapPagePosition, vectorName]);
+// 	return () => {};
+// }, [directMap, dispatch, mapPagePosition, vectorName]);

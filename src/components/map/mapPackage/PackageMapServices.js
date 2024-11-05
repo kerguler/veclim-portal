@@ -62,6 +62,8 @@ class PackageMapServices {
 
 		p.map.setMinZoom(tempMin);
 		p.minZoom = tempMin;
+		dispatch(setCurrentMapZoom(p.zoom));
+
 		// p.map.setView([p.center[0], p.center[1]], p.zoom);
 	}
 
@@ -273,6 +275,7 @@ class PackageMapServices {
 			p.center = currentMapCenter;
 			p.zoom = currentMapZoom;
 		} else {
+
 		}
 		bounds && dispatch(setCurrentMapBounds(boundsArray));
 
@@ -285,6 +288,7 @@ class PackageMapServices {
 		dispatch(setCurrentMapZoom(p.zoom));
 		dispatch(setCurrentMapCenter(p.center));
 		dispatch(setSwitchMap(false));
+		// this.markerHandler(mapParRef, 4, vectorName, dispatch);
 	}
 	static setMinZoom(mapParRef, vectorName) {
 		let p = mapParRef.current;
@@ -299,12 +303,15 @@ class PackageMapServices {
 			p.map.setZoom(newMinZoom);
 		}
 		p.map.setMinZoom(newMinZoom);
+		
 		p.minZoom = newMinZoom;
 		return newMinZoom;
 	}
 	static calculateZoomForBounds(mapParRef, bounds) {
 		// Get the size of the map container
+
 		if (bounds) {
+			console.log("bounds", bounds);
 			let p = mapParRef.current;
 			var size = p.map.getSize();
 			var zoom = p.map.getZoom();

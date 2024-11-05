@@ -157,7 +157,7 @@ function TextProvider({ children }) {
 									);
 									dispatch(setReadyToView(false));
 									dispatch(setDisplayedPanelID(6));
-									dispatch(setMapPagePosition({ lat: 33.75, lng: 110.0 }));
+									 dispatch(setMapPagePosition({ lat: 33.75, lng: 110.0 }));
 									dispatch(setPanelOpen(true));
 									dispatch(setMapMenuOpen(true));
 									dispatch(setSwitcher(true));

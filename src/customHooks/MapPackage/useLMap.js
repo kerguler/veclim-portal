@@ -14,16 +14,8 @@ function useLMap(mapParRef) {
 	const pageTransition = useSelector((state) => state.location.pageTransition);
 	let p = mapParRef.current;
 
-	const {
-		vectorName,
-		switchMap,
-		currentMapCenter,
-		currentMapZoom,
-		tileArray,
-		readyToView,
-		currentMapBounds,
-		mapVector,
-	} = useFetcherVariables();
+	const { vectorName, switchMap, currentMapCenter, currentMapZoom, mapVector } =
+		useFetcherVariables();
 
 	useEffect(() => {
 		p.map = L.map("map1", {
@@ -33,20 +25,18 @@ function useLMap(mapParRef) {
 		});
 
 		PackageMapServices.baseLayer.addTo(p.map);
-
 		return () => {
 			p.map && p.map.remove();
 		};
-	}, []);
+	}, [p]);
 
 	useEffect(() => {
 		p.map.setView(
 			{ lat: currentMapCenter[0], lng: currentMapCenter[1] },
 			currentMapZoom
 		);
-		// p.map.setMaxBounds(p.bounds);
 		console.log("we have come tyo readjust bounds");
-
+		
 		PackageMapServices.mapBounds(
 			mapParRef,
 			vectorName,
@@ -56,7 +46,13 @@ function useLMap(mapParRef) {
 			currentMapZoom,
 			dispatch
 		);
-	}, [dispatch, pageTransition, mapVector, switchMap]);
+	}, [
+		dispatch,
+		pageTransition,
+		switchMap,
+		vectorName,
+	]);
+
 }
 
 export default useLMap;

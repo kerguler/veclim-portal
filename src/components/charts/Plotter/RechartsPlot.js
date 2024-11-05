@@ -40,7 +40,9 @@ function RechartsPlot({ plotMat }) {
 	});
 	const argRef = useRef(args);
 	const dispatch = useDispatch();
-	const xBrushRange = useSelector((state) => state.panel.brushRange);
+	const xBrushRange = useSelector(
+		(state) => state.fetcher.fetcherStates.brushRange
+	);
 	const parameters = useSelector((state) => state.panel.chartParameters);
 	const brushData = useSelector((state) => state.panel.brushData);
 	useEffect(() => {
@@ -68,6 +70,7 @@ function RechartsPlot({ plotMat }) {
 	useYsliderPositioning(setTransform);
 
 	const handleBrushChange = (range) => {
+		console.log("range", range);
 		ChartCalculatorService.handleBrushChange(range, dispatch, plotMat);
 	};
 	const scrlPars = {
@@ -80,7 +83,7 @@ function RechartsPlot({ plotMat }) {
 	let s = scrlRef.current;
 	const brushDatay = useSelector((state) => state.panel.brushDatay);
 	useEffect(() => {
-		s.minmax={min:0,max:0};
+		s.minmax = { min: 0, max: 0 };
 		plotMat &&
 			plotMat.forEach((d) => {
 				parameters.plottedKeys.forEach((k) => {
@@ -90,7 +93,14 @@ function RechartsPlot({ plotMat }) {
 			});
 		s.brushDataY = { min: s.minmax.min, max: s.minmax.max };
 		dispatch(setBrushDatay(s.brushDataY));
-	},[plotMat, parameters.plottedKeys, dispatch, s.minmax.min, s.minmax.max,s]);
+	}, [
+		plotMat,
+		parameters.plottedKeys,
+		dispatch,
+		s.minmax.min,
+		s.minmax.max,
+		s,
+	]);
 
 	// const [brushDataY, setBrushDataY] = useState(s.brushDataY);
 	const handleBrushChangeY = (range) => {
@@ -139,7 +149,7 @@ function RechartsPlot({ plotMat }) {
 				/>
 				<Brush
 					key={"brushx"}
-					className="myBrush"
+					 className="myBrush"
 					dataKey="date"
 					height={15}
 					data={plotMat}

@@ -7,6 +7,7 @@ function useLMapCoordinateUpdate(mapParRef) {
 	let p = mapParRef.current;
 	const dispatch = useDispatch();
 const vectorName=useSelector(state=>state.fetcher.fetcherStates.vectorName)
+const mapVector=useSelector(state=>state.fetcher.fetcherStates.mapVector)
 	useEffect(() => {
 	
 		function handleCoordinateUpdate(e) {

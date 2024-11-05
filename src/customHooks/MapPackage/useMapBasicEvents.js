@@ -33,6 +33,7 @@ function useMapBasicEvents(mapParRef, fitworld) {
 			PackageMapServices.mouseOut(mapParRef);
 		};
 		const handleResize = () => {
+		
 			try {
 				PackageMapServices.resizeMap(mapParRef, vectorName, dispatch);
 			} catch (error) {

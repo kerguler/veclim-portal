@@ -21,14 +21,12 @@ function useTileHandler(mapParRef) {
 			tileIcons,
 			dispatch
 		);
-		console.log({ tilemat: tileMat });
 		PackageMapServices.handleDoubleMap(mapParRef, tileMat, tileArray, dispatch);
 
 		return () => {
 			TileLoaderService.removeTileStyles(tileMat);
 			tileMat.forEach((tile) => {
 				p.map.removeLayer(tile);
-				console.log({ removingLayer: tile });
 			});
 		};
 	}, [tileArray]);
