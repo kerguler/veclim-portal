@@ -1,5 +1,5 @@
-import { setBrushRange, setBrushData } from "../../../store";
-import { setBrushDatay } from "../../../store";
+import { setBrushRange, setBrushData } from "store";
+import { setBrushDatay } from "store";
 class ChartCalculatorService {
 	static handleMixedKeys(rawData, params) {
 		let r = rawData.current;

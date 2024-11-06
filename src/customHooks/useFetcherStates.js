@@ -3,7 +3,6 @@ import { useContext, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import PanelContext from "context/panelsIcons";
-import { setSuperUser } from "store";
 import "../styles/MapPage.css";
 import FetcherService from "services/FetcherService";
 
@@ -13,27 +12,17 @@ import { useState } from "react";
 import { setDisplayedPanelID } from "store";
 import { setDirectInitError } from "store";
 import { setDirectInit } from "store";
-import { setSwitchMap } from "store";
-import { setMapPagePosition } from "store";
-import { setBrushRange } from "store";
-import { setTileArray } from "store";
-import MapAdjustmentsService from "components/charts/services/MapAdjustmentsService";
 import { setReadyToView } from "store";
-import { setDirectMap } from "store";
 const useQuery = () => {
 	return new URLSearchParams(useLocation().search);
 };
 const useFetcherStates = () => {
-	const fetcherStates = useSelector((state) => state.fetcher.fetcherStates);
 	const dispatch = useDispatch();
 	const { panelDataAlbo, panelDataSand, tileIconsSand, tileIconsAlbo } =
 		useContext(PanelContext);
 	const vectorNames = useSelector((state) => state.vector.vectorNames);
 	const mapVector = useSelector(
 		(state) => state.fetcher.fetcherStates.mapVector
-	);
-	const vectorName = useSelector(
-		(state) => state.fetcher.fetcherStates.vectorName
 	);
 	const directMap = useSelector(
 		(state) => state.fetcher.fetcherStates.directMap

@@ -45,11 +45,26 @@ function RechartsPlot({ plotMat }) {
 	);
 	const parameters = useSelector((state) => state.panel.chartParameters);
 	const brushData = useSelector((state) => state.panel.brushData);
+	const brushDatay = useSelector((state) => state.panel.brushDatay);
+
+	const [transform, setTransform] = useState([0, 0]);
+	useYsliderPositioning(setTransform);
+	const scrlPars = {
+		minmaxId: { min: 0, max: 100 },
+		minmax: { min: 0, max: 0 },
+		scrollScl: 4.0,
+		brushDataY: { min: 0, max: 0 },
+	};
+	const scrlRef = useRef(scrlPars);
+	let s = scrlRef.current;
+
+	let d = dateRef.current && dateRef.current;
+	const keyRef = useRef([]);
 	useEffect(() => {
 		dispatch(setBrushData(plotMat));
 	}, [plotMat, dispatch]);
 
-	const [transform, setTransform] = useState([0, 0]);
+	
 	const formatYAxisTick = (value) => {
 		if (typeof value === "number") {
 			return value.toFixed(2);
@@ -57,7 +72,6 @@ function RechartsPlot({ plotMat }) {
 		return value; // If not a number, return it as is
 	};
 
-	let d = dateRef.current && dateRef.current;
 
 	ChartCalculatorService.decideBrushRange(
 		parameters,
@@ -67,21 +81,12 @@ function RechartsPlot({ plotMat }) {
 		xBrushRange
 	);
 
-	useYsliderPositioning(setTransform);
 
 	const handleBrushChange = (range) => {
 		console.log("range", range);
 		ChartCalculatorService.handleBrushChange(range, dispatch, plotMat);
 	};
-	const scrlPars = {
-		minmaxId: { min: 0, max: 100 },
-		minmax: { min: 0, max: 0 },
-		scrollScl: 4.0,
-		brushDataY: { min: 0, max: 0 },
-	};
-	const scrlRef = useRef(scrlPars);
-	let s = scrlRef.current;
-	const brushDatay = useSelector((state) => state.panel.brushDatay);
+
 	useEffect(() => {
 		s.minmax = { min: 0, max: 0 };
 		plotMat &&
@@ -102,11 +107,10 @@ function RechartsPlot({ plotMat }) {
 		s,
 	]);
 
-	// const [brushDataY, setBrushDataY] = useState(s.brushDataY);
 	const handleBrushChangeY = (range) => {
 		ChartCalculatorService.handleBrushChangeY(range, scrlRef, dispatch);
 	};
-	const keyRef = useRef([]);
+	
 
 	let renderedLines = parameters.plottedKeys.map((key, index) => {
 		let uniqueKey = `${key}-${index}`;

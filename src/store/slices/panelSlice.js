@@ -6,7 +6,6 @@ const panelSlice = createSlice({
 		displayedPanelID: 0,
 		panelOpen: false,
 		mapMenuOpen: false,
-		brushRange: { startIndex: null, endIndex: null },
 		chartParameters: {},
 		panelTop: 0,
 		panelInterfere: 0,
@@ -19,9 +18,7 @@ const panelSlice = createSlice({
 		setBrushDatay(state, action) {
 			state.brushDatay = action.payload;
 		},
-		setBrushRange(state, action) {
-			state.brushRange = { ...action.payload };
-		},
+
 		setDisplayTileNames(state, action) {
 			state.displayTileNames = action.payload;
 		},
@@ -43,9 +40,7 @@ const panelSlice = createSlice({
 		setMapMenuOpen(state, action) {
 			state.mapMenuOpen = action.payload;
 		},
-		setBrushRange(state, action) {
-			state.brushRange = { ...action.payload };
-		},
+
 		setChartParameters(state, action) {
 			state.chartParameters = { ...action.payload };
 		},
@@ -79,7 +74,6 @@ export const {
 	setDisplayedPanelID,
 	setPanelOpen,
 	setMapMenuOpen,
-	setBrushRange,
 	setChartParameters,
 	appendToPlottedKeysChartParameters,
 	appendToLabelsChartParameters,
@@ -88,6 +82,7 @@ export const {
 	setPanelInterfere,
 	setPanelTop,
 	setBrushData,
-	setDisplayTileNames,setBrushDatay
+	setDisplayTileNames,
+	setBrushDatay,
 } = panelSlice.actions;
 export const panelReducer = panelSlice.reducer;

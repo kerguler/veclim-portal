@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from "react-redux";
 import MapLeftMenu from "components/MapLeftMenu/MapLeftMenu";
 import MapLogo from "components/MapLogo/MapLogo";
 import {
-	setBrushRange,
 	setCurrentMapZoom,
 	setMapVector,
 	setSuperUser,
@@ -12,7 +11,6 @@ import {
 	setPanelOpen,
 	setSwitchMap,
 	setCurrentMapCenter,
-	setMapPagePosition,
 	setVectorName,
 	setDisplayedPanelID,
 } from "store";
@@ -36,7 +34,7 @@ function MapPageSandFly() {
 		dispatch(setPanelOpen(false));
 		dispatch(setDisplayedPanelID(1));
 		dispatch(setMapVector("papatasi"));
-		dispatch(setBrushRange({ startIndex: null, endIndex: null }));
+		// dispatch(setBrushRange({ startIndex: null, endIndex: null }));
 
 		if (vectorName === "albopictus") {
 			dispatch(setVectorName("papatasi"));

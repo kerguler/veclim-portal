@@ -19,7 +19,6 @@ function useLMapResize(mapParRef) {
 
 	useEffect(() => {
 		function handleResize() {
-			console.log("caught resize on useLMapResize");
 			if (mapParRef&& mapParRef.current.map) {
 				if (mapParRef.current.map.getZoom()<3 ){
 					PackageMapServices.setMinZoom(mapParRef,vectorName);			
