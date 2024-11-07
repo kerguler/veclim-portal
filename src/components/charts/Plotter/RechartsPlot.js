@@ -25,6 +25,7 @@ import CustomTooltip from "../chartComponents/CustomTooltip/CustomTooltip";
 import useYsliderPositioning from "customHooks/useYsliderPositioning";
 import ChartCalculatorService from "../services/ChartCalculatorService";
 import { setBrushDatay } from "store";
+import { setBrushRange } from "store";
 function RechartsPlot({ plotMat }) {
 	const args = {
 		years: { firstYear: null, lastYear: null },
@@ -43,10 +44,16 @@ function RechartsPlot({ plotMat }) {
 	const xBrushRange = useSelector((state) => state.panel.brushRange);
 	const parameters = useSelector((state) => state.panel.chartParameters);
 	const brushData = useSelector((state) => state.panel.brushData);
+	const vectorName = useSelector(
+		(state) => state.fetcher.fetcherStates.vectorName
+	);
 	useEffect(() => {
 		dispatch(setBrushData(plotMat));
-	}, [plotMat, dispatch]);
+	}, [plotMat, dispatch, vectorName]);
 
+	useEffect(() => {
+		dispatch(setBrushRange({ startIndex: 0, endIndex: plotMat.length - 1 }));
+	}, [vectorName, dispatch]);
 	const [transform, setTransform] = useState([0, 0]);
 	const formatYAxisTick = (value) => {
 		if (typeof value === "number") {
@@ -80,7 +87,7 @@ function RechartsPlot({ plotMat }) {
 	let s = scrlRef.current;
 	const brushDatay = useSelector((state) => state.panel.brushDatay);
 	useEffect(() => {
-		s.minmax={min:0,max:0};
+		s.minmax = { min: 0, max: 0 };
 		plotMat &&
 			plotMat.forEach((d) => {
 				parameters.plottedKeys.forEach((k) => {
@@ -90,7 +97,14 @@ function RechartsPlot({ plotMat }) {
 			});
 		s.brushDataY = { min: s.minmax.min, max: s.minmax.max };
 		dispatch(setBrushDatay(s.brushDataY));
-	},[plotMat, parameters.plottedKeys, dispatch, s.minmax.min, s.minmax.max,s]);
+	}, [
+		plotMat,
+		parameters.plottedKeys,
+		dispatch,
+		s.minmax.min,
+		s.minmax.max,
+		s,
+	]);
 
 	// const [brushDataY, setBrushDataY] = useState(s.brushDataY);
 	const handleBrushChangeY = (range) => {
@@ -115,6 +129,12 @@ function RechartsPlot({ plotMat }) {
 			</Line>
 		);
 	});
+
+	if (!plotMat || plotMat.length === 0) {
+		return <div>Loading data...</div>;
+	}
+	console.log({ brushData, xBrushRange, d });
+
 	return (
 		<ResponsiveContainer maxHeight={400} maxWidth={600}>
 			<LineChart

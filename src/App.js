@@ -14,29 +14,77 @@ import LoginPage from "pages/LoginRegister/LoginPage/LoginPage";
 import RegistrationPage from "pages/LoginRegister/RegistrationPage/RegistrationPage";
 import { AvQueuePlayNext } from "material-ui/svg-icons";
 import ApiWelcomePage from "pages/ApiWelcomePage/ApiWelcomePage";
-import GenericMapPage from "pages/GenericMapPage";
+import { Suspense, lazy } from "react";
+import PanelMap from "pages/ApiWelcomePage/PanelMap/PanelMap";
+import { PanelProvider } from "context/panelsIcons";
+import { TextProvider } from "context/appText";
+const GenericMapPage = lazy(() => import("pages/GenericMapPage"));
+
 function App() {
 	useUserLocation();
 	return (
 		<div className="app">
 			<div className="page-container">
 				<CookieHandler></CookieHandler>
-
-				<Routes>
-					<Route path="/" element={<GenericPage />} />
-					<Route path="/Project" element={<GenericPage />} />
-					<Route path="/Policy" element={<GenericPage />} />
-					<Route path="/Methods/TigerMosquito" element={<GenericPage />} />
-					<Route path="/Methods/SandFly" element={<GenericPage />} />
-					{/* <Route path="/MapPage" element={<MapPage />} />{" "} */}
-					{/* <Route path="/MapPage/SandFly" element={<MapPageSandFly />} />{" "} */}
-					<Route path="/404" element={<NoPage />} />
-					<Route path="/MapPage" element={<GenericMapPage />} />
-					{/* <Route path="/login" element={<LoginPage />} />
+				<Suspense fallback={<div>Loading...</div>}>
+					<Routes>
+						<Route
+							path="/"
+							element={
+								<TextProvider>
+									<GenericPage />
+								</TextProvider>
+							}
+						/>
+						<Route
+							path="/Project"
+							element={
+								<TextProvider>
+									<GenericPage />
+								</TextProvider>
+							}
+						/>
+						<Route
+							path="/Policy"
+							element={
+								<TextProvider>
+									<GenericPage />
+								</TextProvider>
+							}
+						/>
+						<Route
+							path="/Methods/TigerMosquito"
+							element={
+								<TextProvider>
+									<GenericPage />
+								</TextProvider>
+							}
+						/>
+						<Route
+							path="/Methods/SandFly"
+							element={
+								<TextProvider>
+									<GenericPage />{" "}
+								</TextProvider>
+							}
+						/>
+						{/* <Route path="/MapPage" element={<MapPage />} />{" "} */}
+						{/* <Route path="/MapPage/SandFly" element={<MapPageSandFly />} />{" "} */}
+						<Route path="/404" element={<NoPage />} />
+						<Route
+							path="/MapPage"
+							element={
+								<PanelProvider>
+									<GenericMapPage />
+								</PanelProvider>
+							}
+						/>
+						{/* <Route path="/login" element={<LoginPage />} />
 					<Route path="/RegistrationPage" element={<RegistrationPage />} />
 					<Route path="/ApiWelcome" element={<ApiWelcomePage />} /> */}
-					{/* <Route path="/CustomMaps" element={<Fetcher/>} /> */}
-				</Routes>
+						{/* <Route path="/CustomMaps" element={<Fetcher/>} /> */}
+					</Routes>{" "}
+				</Suspense>
 			</div>
 		</div>
 	);
