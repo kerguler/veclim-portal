@@ -156,19 +156,19 @@ function TextProvider({ children }) {
 										setCurrentMapBounds(MapAdjustmentsService.worldBounds)
 									);
 									dispatch(setReadyToView(false));
-									dispatch(setDisplayedPanelID(6));
-									 dispatch(setMapPagePosition({ lat: 33.75, lng: 110.0 }));
-									dispatch(setPanelOpen(true));
-									dispatch(setMapMenuOpen(true));
-									dispatch(setSwitcher(true));
-									dispatch(setTwinIndex(1));
-									dispatch(setCurrentMapZoom(6));
-									dispatch(setCurrentMapCenter([33.75, 110.0]));
-									dispatch(
-										setDirectMap({ lat: 33.75, lon: 110.0, display: 6 })
-									);
+									// dispatch(setDisplayedPanelID(6));
+									//  dispatch(setMapPagePosition({ lat: 33.75, lng: 110.0 }));
+									// dispatch(setPanelOpen(true));
+									// dispatch(setMapMenuOpen(true));
+									// dispatch(setSwitcher(true));
+									// dispatch(setTwinIndex(1));
+									dispatch(setCurrentMapZoom(3));
+									// dispatch(setCurrentMapCenter([33.75, 110.0]));
+									// dispatch(
+									// 	setDirectMap({ lat: 33.75, lon: 110.0, display: 6 })
+									// );
 								}}
-								to="/MapPage?session=albopictus&tile=colegg:colegg_ssp585"
+								to="/MapPage"
 							>
 								<img
 									alt="long-term"
