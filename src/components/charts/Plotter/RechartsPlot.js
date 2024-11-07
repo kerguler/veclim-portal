@@ -57,13 +57,28 @@ function RechartsPlot({ plotMat }) {
 		dispatch(setBrushRange({ startIndex: 0, endIndex: plotMat.length - 1 }));
 	}, [vectorName, dispatch]);
 	const [transform, setTransform] = useState([0, 0]);
+
+	const brushDatay = useSelector((state) => state.panel.brushDatay);
+
+	useYsliderPositioning(setTransform);
+	const scrlPars = {
+		minmaxId: { min: 0, max: 100 },
+		minmax: { min: 0, max: 0 },
+		scrollScl: 4.0,
+		brushDataY: { min: 0, max: 0 },
+	};
+	const scrlRef = useRef(scrlPars);
+	let s = scrlRef.current;
+
+	let d = dateRef.current && dateRef.current;
+	const keyRef = useRef([]);
+
 	const formatYAxisTick = (value) => {
 		if (typeof value === "number") {
 			return value.toFixed(2);
 		}
 		return value; // If not a number, return it as is
 	};
-
 
 	ChartCalculatorService.decideBrushRange(
 		parameters,
@@ -72,7 +87,6 @@ function RechartsPlot({ plotMat }) {
 		d,
 		xBrushRange
 	);
-
 
 	const handleBrushChange = (range) => {
 		console.log("range", range);
@@ -102,7 +116,6 @@ function RechartsPlot({ plotMat }) {
 	const handleBrushChangeY = (range) => {
 		ChartCalculatorService.handleBrushChangeY(range, scrlRef, dispatch);
 	};
-	
 
 	let renderedLines = parameters.plottedKeys.map((key, index) => {
 		let uniqueKey = `${key}-${index}`;
@@ -151,7 +164,7 @@ function RechartsPlot({ plotMat }) {
 				/>
 				<Brush
 					key={"brushx"}
-					 className="myBrush"
+					className="myBrush"
 					dataKey="date"
 					height={15}
 					data={plotMat}
