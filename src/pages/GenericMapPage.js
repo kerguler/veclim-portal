@@ -14,15 +14,8 @@ import { useSelector } from "react-redux";
 import ErrorBoundary from "components/errorBoundary/ErrorBoundary";
 import useFetcherStates from "customHooks/useFetcherStates";
 import GenericMapComponent from "components/map/MapComponent/GenericMapComponent";
-import useMapStarter from "customHooks/useMapStarter";
 function GenericMapPage() {
-	useMapStarter();
 
-	// useFetcherStates();
-
-	// const directInitError = useSelector(
-	// 	(state) => state.fetcher.fetcherStates.directInitError
-	// );
 	const readyToView = useSelector(
 		(state) => state.fetcher.fetcherStates.readyToView
 	);

@@ -17,10 +17,7 @@ import ErrorScreenMap from "../errorScreen/ErrorScreenMap";
 import { setCurrentMapZoom } from "store";
 import { setCurrentMapCenter } from "store";
 import TileNameDisplay from "../tileNameDisplay/TileNameDisplay";
-import { setDirectMap } from "store";
-import { setDisplayedPanelID } from "store";
 import useFetcherVariables from "customHooks/useFetcherVariables";
-import useMapStarter from "customHooks/useMapStarter";
 function GenericMapComponent({ fitworld }) {
 	const {
 		directInit,

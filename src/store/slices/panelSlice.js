@@ -9,7 +9,7 @@ const panelSlice = createSlice({
 		chartParameters: {},
 		panelTop: 0,
 		panelInterfere: 0,
-		brushData: null,
+		brushData: {min:0 , max:0},
 		brushDatay: { min: 0, max: 0 },
 		displayTileNames: { left: false, right: false, center: true },
 	},

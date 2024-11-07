@@ -16,7 +16,6 @@ function useMapStarter(startConditions) {
 	const dispatch = useDispatch();
 	const { readyToView, vectorName, mapVector, switchMap, tileArray } =
 		useFetcherVariables();
-	const fetcherStates = useSelector((state) => state.fetcher.fetcherStates);
 
 	useEffect(() => {
 		if (startConditions) {
@@ -33,7 +32,6 @@ function useMapStarter(startConditions) {
 				dispatch(setCurrentMapZoom(8));
 				dispatch(setReadyToView(true));
 				dispatch(setVectorName("papatasi"));
-				console.log({ fetcherStates });
 			} else {
 				dispatch(setReadyToView(true));
 			}
@@ -52,7 +50,6 @@ function useMapStarter(startConditions) {
 		dispatch(setMapVector(mapVector));
 		dispatch(setCurrentMapBounds(bounds));
 		dispatch(setReadyToView(true));
-		console.log({ fetcherStates });
 	}
 	return { mapStarter };
 }

@@ -46,6 +46,7 @@ function RechartsPlot({ plotMat }) {
 	);
 	const parameters = useSelector((state) => state.panel.chartParameters);
 	const brushData = useSelector((state) => state.panel.brushData);
+	const switchMap = useSelector((state) => state.fetcher.fetcherStates.switchMap);
 	const vectorName = useSelector(
 		(state) => state.fetcher.fetcherStates.vectorName
 	);
@@ -54,7 +55,7 @@ function RechartsPlot({ plotMat }) {
 	}, [plotMat, dispatch, vectorName]);
 
 	useEffect(() => {
-		dispatch(setBrushRange({ startIndex: 0, endIndex: plotMat.length - 1 }));
+		 dispatch(setBrushRange({ startIndex: 0, endIndex: plotMat.length - 1 }));
 	}, [vectorName, dispatch]);
 	const [transform, setTransform] = useState([0, 0]);
 

@@ -7,9 +7,7 @@ import tileIconFly from "assets/icons/map-page-right-menu/png/mosquito-3-32px.pn
 import PackageMapServices from "components/map/mapPackage/PackageMapServices";
 import { Link } from "react-router-dom";
 import "./ChangeMapPanel.css";
-import useMapStarter from "customHooks/useMapStarter";
 function ChangeMapPanel() {
-	const { mapStarter } = useMapStarter();
 	const dispatch = useDispatch();
 	const vectorName = useSelector(
 		(state) => state.fetcher.fetcherStates.vectorName

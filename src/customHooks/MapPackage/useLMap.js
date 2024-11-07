@@ -35,8 +35,7 @@ function useLMap(mapParRef) {
 			{ lat: currentMapCenter[0], lng: currentMapCenter[1] },
 			currentMapZoom
 		);
-		console.log("we have come tyo readjust bounds");
-		
+
 		PackageMapServices.mapBounds(
 			mapParRef,
 			vectorName,
@@ -46,13 +45,7 @@ function useLMap(mapParRef) {
 			currentMapZoom,
 			dispatch
 		);
-	}, [
-		dispatch,
-		pageTransition,
-		switchMap,
-		vectorName,
-	]);
-
+	}, [dispatch, pageTransition, switchMap, vectorName]);
 }
 
 export default useLMap;
