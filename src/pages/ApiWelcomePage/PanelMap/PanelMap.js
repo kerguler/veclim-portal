@@ -1,4 +1,4 @@
-import MapComponent2 from "components/map/MapComponent/MapComponent2";
+import MapComponent2 from "components/map/MapComponent/GenericMapComponent";
 import useMap from "customHooks/useMap";
 import { useRef } from "react";
 import { useState } from "react";

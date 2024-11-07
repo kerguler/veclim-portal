@@ -25,6 +25,7 @@ import CustomTooltip from "../chartComponents/CustomTooltip/CustomTooltip";
 import useYsliderPositioning from "customHooks/useYsliderPositioning";
 import ChartCalculatorService from "../services/ChartCalculatorService";
 import { setBrushDatay } from "store";
+import { setBrushRange } from "store";
 function RechartsPlot({ plotMat }) {
 	const args = {
 		years: { firstYear: null, lastYear: null },
@@ -45,26 +46,17 @@ function RechartsPlot({ plotMat }) {
 	);
 	const parameters = useSelector((state) => state.panel.chartParameters);
 	const brushData = useSelector((state) => state.panel.brushData);
-	const brushDatay = useSelector((state) => state.panel.brushDatay);
-
-	const [transform, setTransform] = useState([0, 0]);
-	useYsliderPositioning(setTransform);
-	const scrlPars = {
-		minmaxId: { min: 0, max: 100 },
-		minmax: { min: 0, max: 0 },
-		scrollScl: 4.0,
-		brushDataY: { min: 0, max: 0 },
-	};
-	const scrlRef = useRef(scrlPars);
-	let s = scrlRef.current;
-
-	let d = dateRef.current && dateRef.current;
-	const keyRef = useRef([]);
+	const vectorName = useSelector(
+		(state) => state.fetcher.fetcherStates.vectorName
+	);
 	useEffect(() => {
 		dispatch(setBrushData(plotMat));
-	}, [plotMat, dispatch]);
+	}, [plotMat, dispatch, vectorName]);
 
-	
+	useEffect(() => {
+		dispatch(setBrushRange({ startIndex: 0, endIndex: plotMat.length - 1 }));
+	}, [vectorName, dispatch]);
+	const [transform, setTransform] = useState([0, 0]);
 	const formatYAxisTick = (value) => {
 		if (typeof value === "number") {
 			return value.toFixed(2);
@@ -129,6 +121,12 @@ function RechartsPlot({ plotMat }) {
 			</Line>
 		);
 	});
+
+	if (!plotMat || plotMat.length === 0) {
+		return <div>Loading data...</div>;
+	}
+	console.log({ brushData, xBrushRange, d });
+
 	return (
 		<ResponsiveContainer maxHeight={400} maxWidth={600}>
 			<LineChart
