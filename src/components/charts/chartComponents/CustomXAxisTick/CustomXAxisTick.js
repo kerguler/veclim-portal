@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React from "react";
 import { useEffect } from "react";
 const CustomXAxisTick = ({ x, y, payload, argRef, brushData }) => {
 	const date = new Date(payload.value);

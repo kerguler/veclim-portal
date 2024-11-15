@@ -44,22 +44,15 @@ import imageSandFlyTime from "../assets/images/methods-sandfly-ts.webp";
 import MapAdjustmentsService from "components/charts/services/MapAdjustmentsService";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-// import ChangesComponent from "../components/ChangesComponent";
 import { useLocation } from "react-router-dom";
 import { setDisplayedPanelID, setReadyToView } from "store";
 import { setMapVector } from "store";
 import { setTileArray } from "store";
 import { setVectorName } from "store";
 import { setCurrentMapBounds } from "store";
-import { setMapPagePosition } from "store";
-import PackageMapServices from "components/map/mapPackage/PackageMapServices";
-import { setPanelOpen } from "store";
-import { setMapMenuOpen } from "store";
-import { setSwitcher } from "store";
-import { setTwinIndex } from "store";
-import { setDirectMap } from "store";
+
 import { setCurrentMapZoom } from "store";
-import { setCurrentMapCenter } from "store";
+
 const TextContext = createContext();
 
 function TextProvider({ children }) {

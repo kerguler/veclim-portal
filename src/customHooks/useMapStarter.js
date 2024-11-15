@@ -1,8 +1,6 @@
 import { setFetcherStates } from "store";
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
-import { useSelector } from "react-redux";
-import { useRef } from "react";
 import useFetcherVariables from "./useFetcherVariables";
 import PackageMapServices from "components/map/mapPackage/PackageMapServices";
 import { setReadyToView } from "store";
@@ -43,6 +41,7 @@ function useMapStarter(startConditions) {
 		mapVector,
 		startConditions,
 		switchMap,
+		
 	]);
 
 	function mapStarter({ vectorName, mapVector, bounds }) {
