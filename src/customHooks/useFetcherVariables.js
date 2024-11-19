@@ -30,6 +30,9 @@ function useFetcherVariables() {
 	const directMap = useSelector(
 		(state) => state.fetcher.fetcherStates.directMap
 	);
+	const directMapRight = useSelector(
+		(state) => state.fetcher.fetcherStates.directMapRight
+	);
 	const tileArray = useSelector(
 		(state) => state.fetcher.fetcherStates.tileArray
 	);
@@ -51,6 +54,7 @@ function useFetcherVariables() {
 		switchMap,
 		dispatch,
 		mapVector,
+		directMapRight,
 	};
 }
 export default useFetcherVariables;

@@ -1,8 +1,8 @@
 import { React } from "react";
 import "../styles/MapPage.css";
-import MapLeftMenu from "../components/MapLeftMenu/MapLeftMenu";
+import MapMenu from "../components/mapMenu/MapMenu";
 import MapLogo from "../components/MapLogo/MapLogo";
-import  { PanelProvider } from "context/panelsIcons";
+import { PanelProvider } from "context/panelsIcons";
 
 import { useSelector } from "react-redux";
 import ErrorBoundary from "components/errorBoundary/ErrorBoundary";
@@ -19,7 +19,8 @@ function MapPackageLanding() {
 				<div className="wrappers-wrapper">
 					<MapLogo />
 					<div className="map-wrapper">
-						<MapLeftMenu></MapLeftMenu>
+						<MapMenu direction="left"></MapMenu>
+						<MapMenu direction="right"></MapMenu>
 						<ErrorBoundary>
 							<MapPackageComponent />
 						</ErrorBoundary>

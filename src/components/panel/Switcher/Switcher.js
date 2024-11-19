@@ -1,67 +1,60 @@
-import React, { useRef, useContext, useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import PanelContext from "context/panelsIcons";
+import React, { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
 import "./Switcher.css";
 import RenderedPanel from "../RenderedPanel";
-import { setTwinArray } from "store";
-import { setChartParameters } from "store";
-import { setSwitcher } from "store";
-import { setTwinIndex } from "store";
-import updateNestedState from "services/updateNestedState";
-import { setDisplayedPanelID } from "store";
-import { setPanelOpen } from "store";
-import { setDirectInit } from "store";
 
-function Swithcer({ panelClassName }) {
-	const { panelData } = useContext(PanelContext);
-	const twinIndex = useSelector((state) => state.graphSwitch.twinIndex);
-	const displayedPanelID = useSelector(
-		(state) => state.fetcher.fetcherStates.map.leftMenu.displayedPanelID
-	);
+import useDirectorFun from "customHooks/useDirectorFun";
+
+function Swithcer({ direction, panelClassName }) {
+	console.log("SWITCHER");
+	const {
+		twinIndex,
+		displayedPanelID,
+		displayedIcons,
+		directMap,
+		directInit,
+		mapVector,
+		panelDataDir,
+		setTwinIndexDir,
+		setTwinArrayDir,
+		setSwitcherDir,
+		setDisplayedPanelIDDir,
+		setChartParametersDir,
+	} = useDirectorFun(direction);
 
 	const dispatch = useDispatch();
 
-	const displayedIcons = useSelector(
-		(state) => state.graphSwitch.displayedIcons
-	);
 	const [panelChart, setPanelChart] = useState(null);
 	const [panel, setPanel] = useState(null);
-	const directMap = useSelector(
-		(state) => state.fetcher.fetcherStates.directMap
-	);
-	const directInit = useSelector(
-		(state) => state.fetcher.fetcherStates.directInit
-	);
-	const mapVector = useSelector(
-		(state) => state.fetcher.fetcherStates.mapVector
-	);
+
 	useEffect(() => {
 		let desiredPanel;
+
 		if (directInit) {
 			displayedIcons.forEach((p) => {
 				if (p.id === directMap.display) {
 					if (p.panelArray.length > 0) {
 						if (p.panelArray.length > 1) {
-							dispatch(setTwinArray(p.panelArray.length));
-							dispatch(setSwitcher(true));
+							dispatch(setTwinArrayDir(p.panelArray.length));
+							dispatch(setSwitcherDir(true));
 						} else {
-							dispatch(setSwitcher(false));
+							dispatch(setSwitcherDir(false));
 						}
-						dispatch(setTwinIndex(0));
+						dispatch(setTwinIndexDir(0));
 						setPanelChart(true);
-						desiredPanel = panelData.filter((item) => {
+						desiredPanel = panelDataDir.filter((item) => {
 							if (item.id === p.panelArray[twinIndex]) {
 								return item;
 							} else {
 								return null;
 							}
 						});
-						dispatch(setDisplayedPanelID(p.id));
+						dispatch(setDisplayedPanelIDDir(p.id));
 						setPanel(desiredPanel[0].content);
-						dispatch(setChartParameters(desiredPanel[0].chartParameters));
+						dispatch(setChartParametersDir(desiredPanel[0].chartParameters));
 					} else {
 						setPanelChart(false);
-						desiredPanel = panelData.filter((item) => {
+						desiredPanel = panelDataDir.filter((item) => {
 							if (item.id === displayedPanelID) {
 								return item;
 							} else {
@@ -70,29 +63,29 @@ function Swithcer({ panelClassName }) {
 						});
 
 						setPanel(desiredPanel[0].content);
-						dispatch(setDisplayedPanelID(p.id));
+						dispatch(setDisplayedPanelIDDir(p.id));
 					}
 				} else if (p.panelArray.includes(directMap.display)) {
-					dispatch(setDisplayedPanelID(p.id));
+					dispatch(setDisplayedPanelIDDir(p.id));
 					if (p.panelArray.length > 1) {
-						dispatch(setTwinArray(p.panelArray.length));
-						dispatch(setTwinIndex(p.panelArray.indexOf(directMap.display)));
-						dispatch(setSwitcher(true));
+						dispatch(setTwinArrayDir(p.panelArray.length));
+						dispatch(setTwinIndexDir(p.panelArray.indexOf(directMap.display)));
+						dispatch(setSwitcherDir(true));
 					} else {
-						dispatch(setSwitcher(false));
+						dispatch(setSwitcherDir(false));
 					}
 
 					setPanelChart(true);
-					desiredPanel = panelData.filter((item) => {
+					desiredPanel = panelDataDir.filter((item) => {
 						if (item.id === directMap.display) {
 							return item;
 						} else {
 							return null;
 						}
 					});
-					dispatch(setDisplayedPanelID(p.id));
+					dispatch(setDisplayedPanelIDDir(p.id));
 					setPanel(desiredPanel[0].content);
-					dispatch(setChartParameters(desiredPanel[0].chartParameters));
+					dispatch(setChartParametersDir(desiredPanel[0].chartParameters));
 				}
 			});
 		} else {
@@ -100,13 +93,13 @@ function Swithcer({ panelClassName }) {
 				if (p.id === displayedPanelID) {
 					if (p.panelArray.length > 0) {
 						if (p.panelArray.length > 1) {
-							dispatch(setTwinArray(p.panelArray.length));
-							dispatch(setSwitcher(true));
+							dispatch(setTwinArrayDir(p.panelArray.length));
+							dispatch(setSwitcherDir(true));
 						} else {
-							dispatch(setSwitcher(false));
+							dispatch(setSwitcherDir(false));
 						}
 						setPanelChart(true);
-						desiredPanel = panelData.filter((item) => {
+						desiredPanel = panelDataDir.filter((item) => {
 							if (item.id === p.panelArray[twinIndex]) {
 								return item;
 							} else {
@@ -114,10 +107,10 @@ function Swithcer({ panelClassName }) {
 							}
 						});
 						setPanel(desiredPanel[0].content);
-						dispatch(setChartParameters(desiredPanel[0].chartParameters));
+						dispatch(setChartParametersDir(desiredPanel[0].chartParameters));
 					} else {
 						setPanelChart(false);
-						desiredPanel = panelData.filter((item) => {
+						desiredPanel = panelDataDir.filter((item) => {
 							if (item.id === displayedPanelID) {
 								return item;
 							} else {
@@ -127,9 +120,9 @@ function Swithcer({ panelClassName }) {
 						setPanel(desiredPanel[0].content);
 					}
 				} else if (p.panelArray.includes(displayedPanelID)) {
-					dispatch(setDisplayedPanelID(p.id));
+					dispatch(setDisplayedPanelIDDir(p.id));
 					let currentPanel = p.panelArray[twinIndex];
-					desiredPanel = panelData.filter((item) => {
+					desiredPanel = panelDataDir.filter((item) => {
 						if (item.id === currentPanel) {
 							return item;
 						} else {
@@ -137,7 +130,7 @@ function Swithcer({ panelClassName }) {
 						}
 					});
 					setPanel(desiredPanel[0].content);
-					dispatch(setChartParameters(desiredPanel[0].chartParameters));
+					dispatch(setChartParametersDir(desiredPanel[0].chartParameters));
 				}
 			});
 		}
@@ -145,15 +138,16 @@ function Swithcer({ panelClassName }) {
 		dispatch,
 		displayedIcons,
 		displayedPanelID,
-		panelData,
+		panelDataDir,
 		twinIndex,
 		directInit,
 		directMap.display,
 		mapVector,
+		
 	]);
-
 	return (
 		<RenderedPanel
+			direction={direction}
 			panelClassName={panelClassName}
 			panel={panel}
 			panelChart={panelChart}

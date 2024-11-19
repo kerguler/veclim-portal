@@ -1,5 +1,4 @@
-import { setBrushRange, setBrushData } from "store";
-import { setBrushDatay } from "store";
+
 class ChartCalculatorService {
 	static handleMixedKeys(rawData, params) {
 		let r = rawData.current;
@@ -137,9 +136,9 @@ class ChartCalculatorService {
 		}
 	}
 
-	static handleBrushChange = (range, dispatch, plotMat) => {
+	static handleBrushChange = (range, dispatch, plotMat,setBrushRangeDir) => {
 		dispatch(
-			setBrushRange({ startIndex: range.startIndex, endIndex: range.endIndex })
+			setBrushRangeDir({ startIndex: range.startIndex, endIndex: range.endIndex })
 		);
 	};
 	static createDateArray(rawData, params) {
@@ -180,7 +179,7 @@ class ChartCalculatorService {
 		}
 	};
 
-	static handleBrushChangeY(range, scrlRef, dispatch) {
+	static handleBrushChangeY(range, scrlRef, dispatch,setBrushDatayDir) {
 		let s = scrlRef.current && scrlRef.current;
 		if (scrlRef.current) {
 			s.brushDataY = {
@@ -202,7 +201,7 @@ class ChartCalculatorService {
 						),
 			};
 			dispatch(
-				setBrushDatay({
+				setBrushDatayDir({
 					min:
 						s.minmax.min +
 						(s.minmax.max - s.minmax.min) *

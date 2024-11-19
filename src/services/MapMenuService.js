@@ -1,7 +1,3 @@
-import { setChartParameters } from "store";
-import updateNestedState from "./updateNestedState";
-import { setDisplayedPanelID } from "store";
-import { setPanelOpen } from "store";
 class mapMenuService {
 	static handlePanel(
 		id,
@@ -13,16 +9,24 @@ class mapMenuService {
 		setPanel,
 		setPanelChart,
 		directInit,
-		panelOpen
+		panelOpen,
+		setDisplayedPanelID,
+		setPanelOpen,
+		setChartParameters,
+		panelInterfere
 	) {
+		console.log()
 		let p = panelOpenRef.current;
-
+		console.log({ panelData });
 		const defaultBehav = () => {
 			dispatch(setDisplayedPanelID(p));
+
+			console.log({ panel });
 			if (panel === panelData[p].content) {
 				if (id === -1) {
 				} else {
 					dispatch(setPanelOpen(false));
+
 					setPanel(null);
 					setPanelChart(null);
 				}
@@ -32,11 +36,14 @@ class mapMenuService {
 
 				if (Object.keys(panelData[p].chartParameters).length) {
 					dispatch(setChartParameters(panelData[p].chartParameters));
+
 					setPanelChart(true);
 				} else {
 					setPanelChart(null);
 				}
-				panelOpen || dispatch(setPanelOpen(true));
+				if (!panelOpen) {
+					dispatch(setPanelOpen(true));
+				}
 			}
 		};
 

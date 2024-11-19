@@ -29,13 +29,15 @@ function PanelProvider({ children }) {
 	);
 
 	const tileBase = process.env.REACT_APP_BASE_URL;
-
 	const tileIconRowHeadings = [
 		{ row: 1, label: "2010-2020" },
 		{ row: 2, label: "2090-2100 (SSP 2-4.5)" },
 		{ row: 3, label: "2090-2100 (SSP 5-8.5)" },
 		{ row: 4, label: "1980-1990" },
 	];
+
+	const parPickerRowHeadings = tileIconRowHeadings;
+
 	const tileIcons = [
 		{
 			key: "colegg",
@@ -424,7 +426,7 @@ function PanelProvider({ children }) {
 			),
 		},
 	];
-
+	const parPickerTileIcons = tileIcons;
 	const tileIconRowHeadingsSand = [{ row: 1, label: "2015" }];
 	const tileIconsSand = [
 		{
@@ -917,6 +919,59 @@ function PanelProvider({ children }) {
 			content: <ChangeMapPanel></ChangeMapPanel>,
 		},
 	];
+	const parPickerPanelData = [
+		{
+			id: 0,
+			key: "location_info",
+			decade: "",
+			icon: info,
+			chartParameters: {},
+
+			content: (
+				<div className="text-area">
+					<h1>Location Information</h1>
+					<div>
+						<ChartIndicators />
+					</div>
+				</div>
+			),
+		},
+		{
+			id: 1,
+			key: "seasonal_profile",
+			icon: seasonal,
+			chartParameters: {
+				chartType: "rechart",
+				initialSetting: "meteo-ts",
+				years: "2010-2019",
+				plottedKeys: ["atemp", "rehum", "precp"],
+				colors: ["#F15A48", "#50C0AD", "#1B3958"],
+				horizontalAxis: "date",
+				labels: ["Temperature (°C)", "Rel. humidity (%)", "Precipitation (mm)"],
+				lineSlice: [],
+			},
+
+			content: (
+				<div className="text-area">
+					<h1>Seasonal Profile</h1>
+					<div>
+						<p>
+							Decadal averages (2010-2020) of some of the environmental
+							variables obtained from the{" "}
+							<a
+								target="_blank"
+								rel="noreferrer"
+								href="https://cds.climate.copernicus.eu/cdsapp#!/dataset/reanalysis-era5-single-levels"
+							>
+								ERA5
+							</a>{" "}
+							dataset.
+						</p>
+					</div>
+				</div>
+			),
+		},
+	];
 	const panelDataSand = [
 		{
 			id: 0,
@@ -977,15 +1032,18 @@ function PanelProvider({ children }) {
 		{
 			id: 3,
 			chartParameters: {},
-			key:"sandfly_vector_selector",
+			key: "sandfly_vector_selector",
 			icon: model,
 			content: <ChangeMapPanel></ChangeMapPanel>,
 		},
 	];
 
 	const sharedValues = {
+		parPickerPanelData: parPickerPanelData,
 		panelData: mapVector === "albopictus" ? panelData : panelDataSand, // panelDataSand,
 		tileIcons: mapVector === "albopictus" ? tileIcons : tileIconsSand, // tileIconsSand,
+		parPickerTileIcons: parPickerTileIcons,
+		parPickerRowHeadings: parPickerRowHeadings,
 		tileIconsRowHeadings:
 			mapVector === "albopictus"
 				? tileIconRowHeadings

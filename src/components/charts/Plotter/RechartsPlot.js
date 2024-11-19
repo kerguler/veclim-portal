@@ -1,5 +1,4 @@
 import { useDispatch } from "react-redux";
-import { useSelector } from "react-redux";
 import { useState } from "react";
 import { useEffect } from "react";
 import {
@@ -15,7 +14,6 @@ import {
 	BrushY,
 } from "@kerguler/recharts";
 import { useRef } from "react";
-import { setBrushData } from "store";
 import "./RechartsPlot.css";
 import "./rechart.css";
 
@@ -24,13 +22,14 @@ import CustomLegend from "../chartComponents/CustomLegend/CustomLegend";
 import CustomTooltip from "../chartComponents/CustomTooltip/CustomTooltip";
 import useYsliderPositioning from "customHooks/useYsliderPositioning";
 import ChartCalculatorService from "../services/ChartCalculatorService";
-import { setBrushDatay } from "store";
-import { setBrushRange } from "store";
-function RechartsPlot({ plotMat }) {
+import useDirectorFun from "customHooks/useDirectorFun";
+
+function RechartsPlot({ direction, plotMat }) {
 	const args = {
 		years: { firstYear: null, lastYear: null },
 		date: null,
 	};
+	console.log("RechartsPlot ", direction);
 	const dateRef = useRef({
 		currentDate: null,
 		dStart: null,
@@ -41,25 +40,26 @@ function RechartsPlot({ plotMat }) {
 	});
 	const argRef = useRef(args);
 	const dispatch = useDispatch();
-	const xBrushRange = useSelector(
-		(state) => state.fetcher.fetcherStates.brushRange
-	);
-	const parameters = useSelector((state) => state.panel.chartParameters);
-	const brushData = useSelector((state) => state.panel.brushData);
-	const switchMap = useSelector((state) => state.fetcher.fetcherStates.switchMap);
-	const vectorName = useSelector(
-		(state) => state.fetcher.fetcherStates.vectorName
-	);
+
+	const {
+		chartParameters,
+		brushData,
+		vectorName,
+		setBrushRangeDir,
+		setBrushDatayDir,
+		setBrushDataDir,
+		brushDatay,
+		xBrushRange,
+	} = useDirectorFun(direction);
+
 	useEffect(() => {
-		dispatch(setBrushData(plotMat));
+		dispatch(setBrushDataDir(plotMat));
 	}, [plotMat, dispatch, vectorName]);
 
 	useEffect(() => {
-		 dispatch(setBrushRange({ startIndex: 0, endIndex: plotMat.length - 1 }));
+		dispatch(setBrushRangeDir({ startIndex: 0, endIndex: plotMat.length - 1 }));
 	}, [vectorName, dispatch]);
 	const [transform, setTransform] = useState([0, 0]);
-
-	const brushDatay = useSelector((state) => state.panel.brushDatay);
 
 	useYsliderPositioning(setTransform);
 	const scrlPars = {
@@ -82,7 +82,7 @@ function RechartsPlot({ plotMat }) {
 	};
 
 	ChartCalculatorService.decideBrushRange(
-		parameters,
+		chartParameters,
 		plotMat,
 		dispatch,
 		d,
@@ -90,35 +90,44 @@ function RechartsPlot({ plotMat }) {
 	);
 
 	const handleBrushChange = (range) => {
-		console.log("range", range);
-		ChartCalculatorService.handleBrushChange(range, dispatch, plotMat);
+		ChartCalculatorService.handleBrushChange(
+			range,
+			dispatch,
+			plotMat,
+			setBrushRangeDir
+		);
 	};
 
 	useEffect(() => {
 		s.minmax = { min: 0, max: 0 };
 		plotMat &&
 			plotMat.forEach((d) => {
-				parameters.plottedKeys.forEach((k) => {
+				chartParameters.plottedKeys.forEach((k) => {
 					if (d[k] < s.minmax.min) s.minmax.min = d[k];
 					if (d[k] > s.minmax.max) s.minmax.max = d[k];
 				});
 			});
 		s.brushDataY = { min: s.minmax.min, max: s.minmax.max };
-		dispatch(setBrushDatay(s.brushDataY));
+		dispatch(setBrushDatayDir(s.brushDataY));
 	}, [
 		plotMat,
-		parameters.plottedKeys,
+		chartParameters.plottedKeys,
 		dispatch,
+		s,
 		s.minmax.min,
 		s.minmax.max,
-		s,
 	]);
 
 	const handleBrushChangeY = (range) => {
-		ChartCalculatorService.handleBrushChangeY(range, scrlRef, dispatch);
+		ChartCalculatorService.handleBrushChangeY(
+			range,
+			scrlRef,
+			dispatch,
+			setBrushDatayDir
+		);
 	};
 
-	let renderedLines = parameters.plottedKeys.map((key, index) => {
+	let renderedLines = chartParameters.plottedKeys.map((key, index) => {
 		let uniqueKey = `${key}-${index}`;
 		keyRef.current.push(uniqueKey);
 		return (
@@ -127,7 +136,7 @@ function RechartsPlot({ plotMat }) {
 				key={uniqueKey}
 				type="monotone"
 				dataKey={key}
-				stroke={parameters.colors[index]}
+				stroke={chartParameters.colors[index]}
 				strokeWidth="1.5"
 				dot={false}
 			>
@@ -139,7 +148,6 @@ function RechartsPlot({ plotMat }) {
 	if (!plotMat || plotMat.length === 0) {
 		return <div>Loading data...</div>;
 	}
-	console.log({ brushData, xBrushRange, d });
 
 	return (
 		<ResponsiveContainer maxHeight={400} maxWidth={600}>
@@ -178,7 +186,7 @@ function RechartsPlot({ plotMat }) {
 
 				<Tooltip
 					contentStyle={{ margin: "20px" }}
-					content={<CustomTooltip parameters={parameters} />}
+					content={<CustomTooltip parameters={chartParameters} />}
 				/>
 				<Legend
 					key={"legend"}
@@ -195,7 +203,7 @@ function RechartsPlot({ plotMat }) {
 					align="top"
 					margin={10}
 					content={
-						<CustomLegend key={"customLegend"} parameters={parameters} />
+						<CustomLegend key={"customLegend"} parameters={chartParameters} />
 					}
 				/>
 				<g

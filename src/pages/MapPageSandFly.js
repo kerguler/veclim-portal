@@ -1,7 +1,7 @@
 import { React } from "react";
 import "styles/MapPage.css";
 import { useDispatch, useSelector } from "react-redux";
-import MapLeftMenu from "components/MapLeftMenu/MapLeftMenu";
+import MapLeftMenu from "components/mapMenu/MapMenu";
 import MapLogo from "components/MapLogo/MapLogo";
 import {
 	setCurrentMapZoom,

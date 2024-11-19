@@ -26,6 +26,7 @@ import ErrorScreenMap from "components/map/errorScreen/ErrorScreenMap";
 import { setDirectMap } from "store";
 import { setCurrentMaxBounds } from "store";
 import { setDisplayReady } from "store";
+import { setPanelInterfereRight } from "store";
 
 class PackageMapServices {
 	static baseLayer = L.tileLayer(
@@ -71,7 +72,6 @@ class PackageMapServices {
 		if (mapVector === "albopictus") {
 			dispatch(setCurrentMapBounds(PackageMapServices.worldBounds));
 			// dispatch(setDirectMap({ lon: null, lat: null, display: -2 }));
-			// bravo dunyanin en iy IF STATEMENTINI YAZDIN CICIM
 		} else if (mapVector === "papatasi") {
 			dispatch(setCurrentMapBounds(PackageMapServices.cyprusBounds));
 			// dispatch(setDirectMap({ lon: null, lat: null, display: -2 }));
@@ -110,7 +110,14 @@ class PackageMapServices {
 		dispatch(setPanelOpen(false));
 	}
 
-	static handleMapClick(e, mapParRef, vectorName, dispatch, directMap) {
+	static handleMapClick(
+		e,
+		mapParRef,
+		vectorName,
+		dispatch,
+		directMap,
+		directMapRight
+	) {
 		this.clickMap(e, mapParRef, vectorName, dispatch);
 		// TODO: MAY NEED TO REMOVE
 
@@ -118,6 +125,11 @@ class PackageMapServices {
 			if (directMap.display === -2) dispatch(setPanelInterfere(-1));
 		} else {
 			dispatch(setPanelInterfere(-1));
+		}
+		if (directMapRight) {
+			if (directMapRight.display === -2) dispatch(setPanelInterfereRight(null));
+		} else {
+			dispatch(setPanelInterfereRight(null));
 		}
 	}
 	static clickMap = (e, mapParRef, vectorName, dispatch) => {
@@ -275,7 +287,6 @@ class PackageMapServices {
 			p.center = currentMapCenter;
 			p.zoom = currentMapZoom;
 		} else {
-
 		}
 		bounds && dispatch(setCurrentMapBounds(boundsArray));
 
@@ -303,7 +314,7 @@ class PackageMapServices {
 			p.map.setZoom(newMinZoom);
 		}
 		p.map.setMinZoom(newMinZoom);
-		
+
 		p.minZoom = newMinZoom;
 		return newMinZoom;
 	}

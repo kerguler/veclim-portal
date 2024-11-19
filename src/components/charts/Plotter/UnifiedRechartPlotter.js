@@ -1,33 +1,30 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import ChartLoadingSkeleton from "components/skeleton/Skeleton";
-import {
-	appendToColorsChartParameters,
-	appendToLabelsChartParameters,
-	appendToPlottedKeysChartParameters,
-	setMapPagePosition,
-	spliceChartParametersForSlices,
-	useFetchTimeSeriesDataQuery,
-} from "store";
+import { useFetchTimeSeriesDataQuery } from "store";
 import RechartsPlot from "./RechartsPlot";
 import { useEffect } from "react";
+import { useState } from "react";
 import ErrorBoundary from "components/errorBoundary/ErrorBoundary";
 import MapAdjustmentsService from "components/charts/services/MapAdjustmentsService";
 import ChartCalculatorService from "../services/ChartCalculatorService";
 import { useRef } from "react";
-function UnifiedRechartPlotter({ dateArray }) {
-	const position = useSelector(
-		(state) => state.fetcher.fetcherStates.map.mapPagePosition
-	);
-	const vectorName = useSelector(
-		(state) => state.fetcher.fetcherStates.vectorName
-	);
-	const dispatch = useDispatch();
-	const params = useSelector((state) => {
-		return state.panel.chartParameters;
-	});
+import useDirectorFun from "customHooks/useDirectorFun";
+function UnifiedRechartPlotter({ dateArray, direction }) {
+	const {
+		vectorName,
+		chartParameters,
+		appendToColorsChartParametersDir,
+		mapPagePosition,
+		setMapPagePositionDir,
+		appendToLabelsChartParametersDir,
+		appendToPlottedKeysChartParametersDir,
+		spliceChartParametersForSlicesDir,
+	} = useDirectorFun(direction);
 
+	const dispatch = useDispatch();
+	console.log("UnifiedRechartPlotter");
 	const { data, error, isFetching } = useFetchTimeSeriesDataQuery({
-		position: JSON.stringify(position),
+		position: JSON.stringify(mapPagePosition),
 		vectorName: vectorName,
 		dateArray: dateArray,
 	});
@@ -42,40 +39,58 @@ function UnifiedRechartPlotter({ dateArray }) {
 	});
 	let r = rawData.current;
 	useEffect(() => {
-		if (!position) {
+		if (!mapPagePosition) {
 			if (vectorName === "albopictus") {
-				dispatch(setMapPagePosition(MapAdjustmentsService.defaultWorldCenter));
+				dispatch(
+					setMapPagePositionDir(MapAdjustmentsService.defaultWorldCenter)
+				);
 			} else {
-				dispatch(setMapPagePosition(MapAdjustmentsService.defaultCypCenter));
+				dispatch(setMapPagePositionDir(MapAdjustmentsService.defaultCypCenter));
 			}
 		}
-	}, [vectorName, dispatch, position]);
+	}, [vectorName, dispatch, mapPagePosition]);
+
 	useEffect(() => {
-		if (params.lineSlice.length > 0 && !params.plottedKeys.includes("slice1")) {
-			dispatch(appendToPlottedKeysChartParameters("slice1"));
-			dispatch(appendToPlottedKeysChartParameters("slice2"));
-			dispatch(appendToPlottedKeysChartParameters("slice3"));
-			dispatch(appendToLabelsChartParameters(params.sliceLabels));
-			dispatch(appendToColorsChartParameters(params.sliceColors));
-			dispatch(spliceChartParametersForSlices(0));
+		if (
+			chartParameters.lineSlice.length > 0 &&
+			!chartParameters.plottedKeys.includes("slice1")
+		) {
+			dispatch(appendToPlottedKeysChartParametersDir("slice1"));
+			dispatch(appendToPlottedKeysChartParametersDir("slice2"));
+			dispatch(appendToPlottedKeysChartParametersDir("slice3"));
+			dispatch(appendToLabelsChartParametersDir(chartParameters.sliceLabels));
+			dispatch(appendToColorsChartParametersDir(chartParameters.sliceColors));
+			dispatch(spliceChartParametersForSlicesDir(0));
 		}
 	});
-	const errorMessage = position.lat && (
+	const errorMessage = mapPagePosition.lat && (
 		<div className="error-container">
 			<p>
 				There is no data available for the position chosen lat:{" "}
-				{position.lat.toFixed(2)} lng: {position.lng.toFixed(2)}{" "}
+				{mapPagePosition.lat.toFixed(2)} lng: {mapPagePosition.lng.toFixed(2)}{" "}
 			</p>
 		</div>
 	);
 
 	let renderLineChart;
-
+	const [plotReady, setPlotReady] = useState(false);
+	useEffect(() => {
+		if (data) {
+			r.data = data;
+			console.log("DATA IS HERE");
+			ChartCalculatorService.createDateArray(rawData, chartParameters);
+			ChartCalculatorService.handleMixedKeys(rawData, chartParameters);
+			ChartCalculatorService.handleSlices(chartParameters, rawData);
+			setPlotReady(true);
+		} else {
+			setPlotReady(false);
+		}
+	}, [data]);
 	if (isFetching) {
 		renderLineChart = <ChartLoadingSkeleton times={4}></ChartLoadingSkeleton>;
 	} else if (error) {
 		renderLineChart = errorMessage;
-	} else if (Object.keys(params).length === 0) {
+	} else if (Object.keys(chartParameters).length === 0) {
 		return <div></div>;
 	} else {
 		if (!data || (vectorName === "papatasi" && !data["sim-ts"])) {
@@ -83,20 +98,26 @@ function UnifiedRechartPlotter({ dateArray }) {
 		}
 		if (
 			!data ||
-			(vectorName === "albopictus" && !data[params.initialSetting])
+			(vectorName === "albopictus" && !data[chartParameters.initialSetting])
 		) {
 			return errorMessage;
 		}
-		r.data = data;
 
-		ChartCalculatorService.createDateArray(rawData, params);
-		ChartCalculatorService.handleMixedKeys(rawData, params);
-		ChartCalculatorService.handleSlices(params, rawData);
+		// r.data = data;
+		// console.log("DATA IS HERE");
+		// ChartCalculatorService.createDateArray(rawData, chartParameters);
+		// ChartCalculatorService.handleMixedKeys(rawData, chartParameters);
+		// ChartCalculatorService.handleSlices(chartParameters, rawData);
 
-		renderLineChart = (
+		renderLineChart = plotReady ? (
 			<ErrorBoundary>
-				<RechartsPlot plotMat={r.dataToPlot}></RechartsPlot>
+				<RechartsPlot
+					direction={direction}
+					plotMat={r.dataToPlot}
+				></RechartsPlot>
 			</ErrorBoundary>
+		) : (
+			<ChartLoadingSkeleton times={4}></ChartLoadingSkeleton>
 		);
 	}
 

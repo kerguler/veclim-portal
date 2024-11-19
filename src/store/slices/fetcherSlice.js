@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import PackageMapServices from "components/map/mapPackage/PackageMapServices";
+import { set } from "react-ga";
 
 const fetcherSlice = createSlice({
 	name: "fetcher",
@@ -16,6 +17,12 @@ const fetcherSlice = createSlice({
 				mapLoaded: false,
 				leftMapLoaded: false,
 				rightMapLoaded: false,
+				rightMenu: {
+					menuIconDisplay: true,
+					panelOpen: false,
+					mapMenuOpen: false,
+					displayedPanelID: 0,
+				},
 				leftMenu: {
 					panelOpen: false,
 					mapMenuOpen: false,
@@ -29,14 +36,21 @@ const fetcherSlice = createSlice({
 				mapPagePosition: { lat: 35.1966527, lng: 33.3217152 },
 			},
 			brushRange: { startIndex: null, endIndex: null },
+			brushRangeRight: { startIndex: null, endIndex: null },
 			directMap: { lon: null, lat: null, display: -2 },
+			directMapRight: { lon: null, lat: null, display: -2 },
 			directInit: false,
+			directInitRight: false,
 			directInitError: { isError: false, message: "", type: "" },
 		},
 		fetcherError: null,
 		fetcherLoading: false,
 	},
 	reducers: {
+		setRightMenuIconDisplay(state, action) {
+			state.fetcherStates.map.rightMenu.menuIconDisplay = action.payload;
+		},
+
 		setReadyToView(state, action) {
 			state.fetcherStates.readyToView = action.payload;
 		},
@@ -91,11 +105,21 @@ const fetcherSlice = createSlice({
 		setBrushRange(state, action) {
 			state.fetcherStates.brushRange = action.payload;
 		},
+		setBrushRangeRight(state, action) {
+			state.fetcherStates.brushRangeRight = action.payload;
+		},
+
 		setDirectMap(state, action) {
 			state.fetcherStates.directMap = action.payload;
 		},
+		setDirectMapRight(state, action) {
+			state.fetcherStates.directMapRight = action.payload;
+		},
 		setDirectInit(state, action) {
 			state.fetcherStates.directInit = action.payload;
+		},
+		setDirectInitRight(state, action) {
+			state.fetcherStates.directInitRight = action.payload;
 		},
 		setDirectInitError(state, action) {
 			state.fetcherStates.directInitError = action.payload;
@@ -103,16 +127,29 @@ const fetcherSlice = createSlice({
 		setPanelOpen(state, action) {
 			state.fetcherStates.map.leftMenu.panelOpen = action.payload;
 		},
+		setRightPanelOpen(state, action) {
+			state.fetcherStates.map.rightMenu.panelOpen = action.payload;
+		},
 		setMapMenuOpen(state, action) {
 			state.fetcherStates.map.leftMenu.mapMenuOpen = action.payload;
 		},
+		setRightMapMenuOpen(state, action) {
+			state.fetcherStates.map.rightMenu.mapMenuOpen = action.payload;
+		},
 		setDisplayedPanelID(state, action) {
 			state.fetcherStates.map.leftMenu.displayedPanelID = action.payload;
+		},
+		setRightDisplayedPanelID(state, action) {
+			state.fetcherStates.map.rightMenu.displayedPanelID = action.payload;
 		},
 	},
 });
 
 export const {
+	setRightPanelOpen,
+	setRightDisplayedPanelID,
+	setRightMenuIconDisplay,
+	setRightMapMenuOpen,
 	setVectorName,
 	setFetcherStates,
 	setAvailableTiles,
@@ -137,5 +174,8 @@ export const {
 	setSwitchMap,
 	setUserPosition,
 	setReadyToView,
+	setBrushRangeRight,
+	setDirectInitRight,
+	setDirectMapRight,
 } = fetcherSlice.actions;
 export const fetcherReducer = fetcherSlice.reducer;

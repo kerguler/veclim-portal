@@ -1,18 +1,19 @@
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
-import { setDisplayedIcons } from "store";
-import { useSelector } from "react-redux";
-function useArrangePanels(panelData, handlePanel, displayedPanelID) {
+import useDirectorFun from "./useDirectorFun";
+function useArrangePanels(handlePanel, direction) {
+	const {
+		panelDataDir,
+		displayedPanelID,
+		directInit,
+		mapVector,
+		setDisplayedIconsDir,
+	} = useDirectorFun(direction);
 	const dispatch = useDispatch();
-	const mapVector = useSelector(
-		(state) => state.fetcher.fetcherStates.mapVector
-	);
-	const directInit = useSelector(
-		(state) => state.fetcher.fetcherStates.directInit
-	);
+
 	useEffect(() => {
-		const arrangePanels = (panelData) => {
-			const twinsNotDisplayed = panelData
+		const arrangePanels = (panelDataDir) => {
+			const twinsNotDisplayed = panelDataDir
 				.flatMap((item) => {
 					const panelTwins = item.chartParameters.twins;
 
@@ -34,7 +35,7 @@ function useArrangePanels(panelData, handlePanel, displayedPanelID) {
 				.filter((item) => item !== null);
 
 			let panelDataArranged = [];
-			panelDataArranged = panelData.map((panel) => {
+			panelDataArranged = panelDataDir.map((panel) => {
 				if (
 					"chartParameters" in panel &&
 					Object.keys(panel.chartParameters).length > 0
@@ -59,13 +60,13 @@ function useArrangePanels(panelData, handlePanel, displayedPanelID) {
 					return item;
 				}
 			});
-			dispatch(setDisplayedIcons(displayedPanels));
+			dispatch(setDisplayedIconsDir(displayedPanels));
 		};
 
-		arrangePanels(panelData);
-	}, [dispatch, panelData, mapVector, directInit]);
+		arrangePanels(panelDataDir);
+	}, [dispatch, panelDataDir, mapVector, directInit]);
 
-	const twinsNotDisplayed = panelData
+	const twinsNotDisplayed = panelDataDir
 		.flatMap((item) => {
 			const panelTwins = item.chartParameters.twins;
 
@@ -86,7 +87,7 @@ function useArrangePanels(panelData, handlePanel, displayedPanelID) {
 		})
 		.filter((item) => item !== null);
 
-	const icons = panelData.map((item) => {
+	const icons = panelDataDir.map((item) => {
 		if (twinsNotDisplayed.includes(item.id)) {
 			return <div key={item.id}></div>;
 		}

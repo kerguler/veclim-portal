@@ -23,17 +23,20 @@ import useSeparatorActions from "customHooks/MapPackage/useSeparatorActions";
 import useZoomActions from "customHooks/useZoomActions";
 import useMapBasicEvents from "customHooks/MapPackage/useMapBasicEvents";
 import useLMapResize from "customHooks/MapPackage/useLMapResize";
+import useDirectorFun from "customHooks/useDirectorFun";
 function MapPackageComponent({ fitworld }) {
+	console.log("MapPackageComponent");
 	const dispatch = useDispatch();
 	const {
 		tileArray,
 		currentMapBounds,
 		currentMaxBounds,
 		currentMapZoom,
-		currentMapCenter,
-		mapPagePosition,
 		directMap,
 		vectorName,
+		mapPagePosition,
+		currentMapCenter,
+		directMapRight,
 	} = useFetcherVariables();
 	const mapParameters = {
 		map: null,
@@ -62,9 +65,10 @@ function MapPackageComponent({ fitworld }) {
 	useLMapResize(mapParRef);
 	useEffect(() => {
 		if (
-			mapPagePosition &&
-			directMap.display !== -2 &&
-			directMap.display !== null
+			(mapPagePosition &&
+				directMap.display !== -2 &&
+				directMap.display !== null) ||
+			(directMapRight.display !== -2 && directMapRight.display !== null)
 		) {
 			let e = {
 				latlng: {
@@ -77,12 +81,13 @@ function MapPackageComponent({ fitworld }) {
 				mapParRef,
 				vectorName,
 				dispatch,
-				directMap
+				directMap,
+				directMapRight
 			);
 		}
 
 		return () => {};
-	}, [directMap, dispatch, vectorName]);
+	}, [directMap, directMapRight, dispatch, vectorName]);
 
 	return (
 		<>

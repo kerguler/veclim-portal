@@ -1,16 +1,14 @@
 import "./Panel.css";
 import closeIcon from "assets/icons/flip2-close-white.jpg";
 import classNames from "classnames";
-import { useDispatch, useSelector } from "react-redux";
-import { setPanelOpen } from "store";
-function Panel({ onClosed, children, className }) {
+import useDirectorFun from "customHooks/useDirectorFun";
+import { useDispatch,  } from "react-redux";
+function Panel({ onClosed, children, className,direction }) {
 	const dispatch = useDispatch();
-	const panelOpen = useSelector(
-		(state) => state.fetcher.fetcherStates.map.leftMenu.panelOpen
-	);
+	const {panelOpen,setPanelOpenDir} = useDirectorFun(direction);
 	const handleClick = () => {
 		onClosed();
-		dispatch(setPanelOpen(!panelOpen));
+		dispatch(setPanelOpenDir(!panelOpen));
 	};
 
 	const outerClassNames = classNames("panel-container", className);

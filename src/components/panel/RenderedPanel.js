@@ -1,20 +1,17 @@
 import Panel from "./Panel";
-import { useSelector, useDispatch } from "react-redux";
-import { setPanelOpen } from "store";
+import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { useRef } from "react";
 import { setPanelTop } from "store";
 import UnifiedRechartPlotter from "components/charts/Plotter/UnifiedRechartPlotter";
 import { useState } from "react";
 import rightArrow from "assets/icons/arrow-teal-16px.png";
-import { setTwinIndex } from "store";
 import "./Switcher/Switcher.css";
+import useDirectorFun from "customHooks/useDirectorFun";
 
-const RenderedPanel = ({ panel, panelChart, panelClassName }) => {
+const RenderedPanel = ({ panel, panelChart, panelClassName, direction }) => {
 	const dispatch = useDispatch();
-	const panelOpen = useSelector(
-		(state) => state.fetcher.fetcherStates.map.leftMenu.panelOpen
-	);
+	const { panelOpen, setPanelOpenDir } = useDirectorFun(direction);
 	const panelRef = useRef(null);
 	useEffect(() => {
 		const handleResize = () => {
@@ -36,20 +33,23 @@ const RenderedPanel = ({ panel, panelChart, panelClassName }) => {
 			dispatch(setPanelTop(panelRef.current.getBoundingClientRect().top));
 		}
 	});
+
 	const handlePanelClosed = (value) => {
-		dispatch(setPanelOpen(false));
+		dispatch(setPanelOpenDir(false));
 	};
+
 	return (
-		<span className="panel-restrictive-wrapper">
+		<span className={`panel-restrictive-wrapper ${direction}`}>
 			{panelOpen && (
 				<div ref={panelRef}>
 					<Panel
+						direction={direction}
 						className={panelClassName}
 						onClosed={() => handlePanelClosed(true)}
 					>
 						<div className="panel-content" style={{ userSelect: "none" }}>
 							{panel}
-							{panelChart && <RenderedPanelChart />}
+							{panelChart && <RenderedPanelChart direction={direction} />}
 						</div>{" "}
 					</Panel>
 				</div>
@@ -59,17 +59,18 @@ const RenderedPanel = ({ panel, panelChart, panelClassName }) => {
 };
 
 export default RenderedPanel;
-const RenderedPanelChart = () => {
+const RenderedPanelChart = ({ direction }) => {
+	const { switcher, twinIndex, setTwinIndexDir, twinArray } =
+		useDirectorFun(direction);
 	const dispatch = useDispatch();
 	const [showSwitcherArrows, setShowSwitcherArrows] = useState({
 		left: false,
 		right: false,
 	});
-	const switcherRefLeft = useRef();
-	const switcherRefRight = useRef();
-	const switcher = useSelector((state) => state.graphSwitch.switcher);
-	const twinIndex = useSelector((state) => state.graphSwitch.twinIndex);
-	const twinArray = useSelector((state) => state.graphSwitch.twinArray);
+
+	const switcherRefLeft = useRef(null);
+	const switcherRefRight = useRef(null);
+
 	useEffect(() => {
 		if (switcher) {
 			if (twinIndex === 0) {
@@ -86,14 +87,15 @@ const RenderedPanelChart = () => {
 		if (twinIndex === 0) {
 			return;
 		}
-		dispatch(setTwinIndex(twinIndex - 1));
+		dispatch(setTwinIndexDir(twinIndex - 1));
 	};
+
 	const handleNext = (params) => {
 		if (twinIndex === twinArray - 1) {
 			return;
 		}
 
-		dispatch(setTwinIndex(twinIndex + 1));
+		dispatch(setTwinIndexDir(twinIndex + 1));
 	};
 	let pointerRight, pointerLeft;
 
@@ -128,7 +130,7 @@ const RenderedPanelChart = () => {
 					/>
 				)}
 			</div>
-			{<UnifiedRechartPlotter />}
+			<UnifiedRechartPlotter direction={direction} />
 		</div>
 	);
 };
