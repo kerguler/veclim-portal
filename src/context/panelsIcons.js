@@ -21,6 +21,7 @@ import { useSelector } from "react-redux";
 import ChangeMapPanel from "../components/vectorSelection/ChangeMapPanel/ChangeMapPanel";
 import { useEffect } from "react";
 import { useState } from "react";
+import AlboParams from "components/AlboParams/AlboParams";
 const PanelContext = createContext();
 
 function PanelProvider({ children }) {
@@ -956,16 +957,7 @@ function PanelProvider({ children }) {
 					<h1>Seasonal Profile</h1>
 					<div>
 						<p>
-							Decadal averages (2010-2020) of some of the environmental
-							variables obtained from the{" "}
-							<a
-								target="_blank"
-								rel="noreferrer"
-								href="https://cds.climate.copernicus.eu/cdsapp#!/dataset/reanalysis-era5-single-levels"
-							>
-								ERA5
-							</a>{" "}
-							dataset.
+							<AlboParams />
 						</p>
 					</div>
 				</div>

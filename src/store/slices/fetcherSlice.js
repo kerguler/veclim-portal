@@ -28,6 +28,7 @@ const fetcherSlice = createSlice({
 					mapMenuOpen: false,
 					displayedPanelID: 0,
 				},
+				alboParams: { sliderValue: 50 },
 				switchMap: true,
 				currentMapBounds: PackageMapServices.worldBounds,
 				currentMaxBounds: PackageMapServices.worldBounds,
@@ -47,6 +48,9 @@ const fetcherSlice = createSlice({
 		fetcherLoading: false,
 	},
 	reducers: {
+		setAlboParamsSlider1Value(state, action) {
+			state.fetcherStates.map.alboParams.sliderValue = action.payload;
+		},
 		setRightMenuIconDisplay(state, action) {
 			state.fetcherStates.map.rightMenu.menuIconDisplay = action.payload;
 		},
@@ -146,6 +150,7 @@ const fetcherSlice = createSlice({
 });
 
 export const {
+	setAlboParamsSlider1Value,
 	setRightPanelOpen,
 	setRightDisplayedPanelID,
 	setRightMenuIconDisplay,

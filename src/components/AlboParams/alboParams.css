@@ -1,0 +1,23 @@
+.slider-row{
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    padding: 0.5rem;
+}
+.confirm-button{
+    
+    width:50%;
+    text-align: center;
+    border-radius: 1rem;
+    background-color: var(--primary-color1);
+    color: white;
+    box-shadow: 0 5px 5px 0 rgba(0,0,0,0.2);
+}
+.confirm-button:hover{
+    background-color: var(--primary-color2);
+    box-shadow: 0 5px 5px 0 rgba(0,0,0,0.4);
+}
+.confirm-button:active{
+    background-color: var(--primary-color2);
+    box-shadow: 5px 0px 5px 0 rgba(0,0,0,0.4);
+}

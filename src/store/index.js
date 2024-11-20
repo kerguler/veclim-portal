@@ -50,6 +50,7 @@ import {
 	setCurrentMaxBounds,
 	setDirectInitError,
 	fetcherReducer,
+	setAlboParamsSlider1Value,
 } from "./slices/fetcherSlice";
 import { languageReducer, changeLanguage } from "./slices/languageSlice";
 import {
@@ -235,6 +236,7 @@ export {
 	setBrushDatay,
 	setApiRegisterResponse,
 	setCsrfToken,
+	setAlboParamsSlider1Value,
 	setDetails,
 	setPassword,
 	setRememberLogin,
