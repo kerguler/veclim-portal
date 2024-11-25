@@ -38,7 +38,18 @@ import { setBrushData } from "store";
 import { setBrushDataRight } from "store";
 import { setPanelInterfere } from "store";
 import { setPanelInterfereRight } from "store";
+import { setPlotReadyLeft } from "store";
+import { setPlotReadyRight } from "store";
 function useDirectorFun(direction) {
+	// PLOT READY
+	const plotReadyLeft = useSelector(
+		(state) => state.fetcher.fetcherStates.chart.left.plotReady
+	);
+	const plotReadyRight = useSelector(
+		(state) => state.fetcher.fetcherStates.chart.right.plotReady
+	);
+	const plotReady = directorFun(direction, plotReadyLeft, plotReadyRight);
+
 	// TWIN INDEX
 	const twinIndexLeft = useSelector((state) => state.graphSwitch.twinIndex);
 	const twinIndexRight = useSelector(
@@ -264,7 +275,15 @@ function useDirectorFun(direction) {
 		setPanelInterfere,
 		setPanelInterfereRight
 	);
+
+	const setPlotReadyDir = directorFun(
+		direction,
+		setPlotReadyLeft,
+		setPlotReadyRight
+	);
 	return {
+		plotReady,
+		setPlotReadyDir,
 		setPanelInterfereDir,
 		setBrushDataDir,
 		switchMap,

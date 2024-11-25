@@ -3,6 +3,7 @@ import { setupListeners } from "@reduxjs/toolkit/query";
 import { coordinatesApi } from "./apis/coordinatesApi";
 import { timeSeriesApi } from "./apis/timeSeriesApi";
 import { colorBarsApi } from "./apis/colorBarsApi";
+import { alboApi } from "./apis/alboApi";
 import {
 	searchBarReducer,
 	setShowSearchBar,
@@ -20,6 +21,9 @@ import {
 	clearTimer,
 } from "./slices/newsSlice";
 import {
+	setSlider1EnabledRight,
+	setChartDatesLeft,
+	setChartDatesRight,
 	setDirectInit,
 	setDirectInitRight,
 	setDirectMap,
@@ -51,6 +55,9 @@ import {
 	setDirectInitError,
 	fetcherReducer,
 	setAlboParamsSlider1Value,
+	setAlboRequestPlot,
+	setPlotReadyLeft,
+	setPlotReadyRight,
 } from "./slices/fetcherSlice";
 import { languageReducer, changeLanguage } from "./slices/languageSlice";
 import {
@@ -138,7 +145,6 @@ import {
 import { newsApi } from "./apis/newsApi";
 import { simulationApi } from "./apis/simulationApi";
 
-import { composeWithDevTools } from "redux-devtools-extension";
 export const store = configureStore({
 	reducer: {
 		[coordinatesApi.reducerPath]: coordinatesApi.reducer,
@@ -147,6 +153,7 @@ export const store = configureStore({
 		[newsApi.reducerPath]: newsApi.reducer,
 		[loginRegisterApi.reducerPath]: loginRegisterApi.reducer,
 		[simulationApi.reducerPath]: simulationApi.reducer,
+		[alboApi.reducerPath]: alboApi.reducer,
 		login: loginReducer,
 		dashboard: dashboardReducer,
 		simulation: simulationReducer,
@@ -168,11 +175,13 @@ export const store = configureStore({
 			.concat(colorBarsApi.middleware)
 			.concat(newsApi.middleware)
 			.concat(loginRegisterApi.middleware)
-			.concat(simulationApi.middleware); //.concat(logger);
+			.concat(simulationApi.middleware)
+			.concat(alboApi.middleware); //.concat(logger);
 	},
 });
 setupListeners(store.dispatch);
 export { useFetchCoordinateDataQuery } from "./apis/coordinatesApi";
+export { useSubmitAlboDataMutation } from "./apis/alboApi";
 export {
 	useFetchTimeSeriesDataQuery,
 	useFetchTSDateRangeQuery,
@@ -196,6 +205,12 @@ export {
 
 export { useFetchNewsDataQuery } from "./apis/newsApi";
 export {
+	setSlider1EnabledRight,
+	setChartDatesLeft,
+	setChartDatesRight,
+	setPlotReadyLeft,
+	setPlotReadyRight,
+	setAlboRequestPlot,
 	setDisplayReady,
 	setDisplayedArticleId,
 	setReadMore,

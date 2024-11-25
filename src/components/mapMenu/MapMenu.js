@@ -9,7 +9,6 @@ import Switcher from "components/panel/Switcher/Switcher";
 import useArrangePanels from "customHooks/useArrangePanels";
 import useDirectorFun from "customHooks/useDirectorFun";
 function MapMenu({ direction }) {
-	console.log("MAPMANU");
 	const {
 		setMapMenuOpenDir,
 		mapMenuOpen,

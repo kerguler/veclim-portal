@@ -6,7 +6,6 @@ import RenderedPanel from "../RenderedPanel";
 import useDirectorFun from "customHooks/useDirectorFun";
 
 function Swithcer({ direction, panelClassName }) {
-	console.log("SWITCHER");
 	const {
 		twinIndex,
 		displayedPanelID,

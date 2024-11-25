@@ -28,6 +28,7 @@ const fetcherSlice = createSlice({
 					mapMenuOpen: false,
 					displayedPanelID: 0,
 				},
+
 				alboParams: { sliderValue: 50 },
 				switchMap: true,
 				currentMapBounds: PackageMapServices.worldBounds,
@@ -36,6 +37,16 @@ const fetcherSlice = createSlice({
 				globalPosition: { lat: null, lng: null },
 				mapPagePosition: { lat: 35.1966527, lng: 33.3217152 },
 			},
+			chart: {
+				left: { dates: { first: null, last: null }, plotReady: false },
+				right: {
+					dates: { first: null, last: null },
+					plotReady: false,
+					requestPlot: false,
+					sliders: { slider1: { enabled: true } },
+				},
+			},
+
 			brushRange: { startIndex: null, endIndex: null },
 			brushRangeRight: { startIndex: null, endIndex: null },
 			directMap: { lon: null, lat: null, display: -2 },
@@ -48,6 +59,24 @@ const fetcherSlice = createSlice({
 		fetcherLoading: false,
 	},
 	reducers: {
+		setSlider1EnabledRight(state, action) {
+			state.fetcherStates.chart.right.sliders.slider1.enabled = action.payload;
+		},
+		setChartDatesLeft(state, action) {
+			state.fetcherStates.chart.left.dates = action.payload;
+		},
+		setChartDatesRight(state, action) {
+			state.fetcherStates.chart.right.dates = action.payload;
+		},
+		setPlotReadyLeft(state, action) {
+			state.fetcherStates.chart.left.plotReady = action.payload;
+		},
+		setPlotReadyRight(state, action) {
+			state.fetcherStates.chart.right.plotReady = action.payload;
+		},
+		setAlboRequestPlot(state, action) {
+			state.fetcherStates.chart.right.requestPlot = action.payload;
+		},
 		setAlboParamsSlider1Value(state, action) {
 			state.fetcherStates.map.alboParams.sliderValue = action.payload;
 		},
@@ -150,6 +179,12 @@ const fetcherSlice = createSlice({
 });
 
 export const {
+	setSlider1EnabledRight,
+	setChartDatesLeft,
+	setChartDatesRight,
+	setPlotReadyLeft,
+	setPlotReadyRight,
+	setAlboRequestPlot,
 	setAlboParamsSlider1Value,
 	setRightPanelOpen,
 	setRightDisplayedPanelID,

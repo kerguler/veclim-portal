@@ -1,4 +1,3 @@
-
 class ChartCalculatorService {
 	static handleMixedKeys(rawData, params) {
 		let r = rawData.current;
@@ -34,6 +33,32 @@ class ChartCalculatorService {
 			});
 		}
 	}
+	static handleMixedKeysAlbo(rawData, params) {
+		let r = rawData.current;
+		if (!params.mixedKeys) {
+			r.rawDataToPlot = {
+				...r.data[params.initialSetting],
+			};
+		} else {
+			params.mixedKeys.forEach((item) => {
+				const { key, levels } = item;
+				let val = r.data;
+				if (val != null) {
+					levels.forEach((v) => {
+						if (v in val) {
+							val = val[v];
+						}
+					});
+
+					r.rawDataToPlot[key] = val;
+					if ("overlap" in r.data.test["fcast-ts"].ecmwf) {
+						console.log("OVERLAP FOUND");
+						r.rawDataToPlot.overlap = r.data.test["fcast-ts"].ecmwf.overlap;
+					}
+				}
+			});
+		}
+	}
 
 	static handleSlices(params, rawData) {
 		let tempStruct = {};
@@ -51,6 +76,77 @@ class ChartCalculatorService {
 			} else {
 				date1Index = r.dateArray.indexOf(r.rawDataToPlot.overlap[1]);
 				date2Index = r.dateArray.indexOf(r.rawDataToPlot.overlap[0]);
+			}
+			let unslicedLine = r.rawDataToPlot[params.lineSlice[0]];
+			r.rawDataToPlot.slice1 = unslicedLine.map((element, index) => {
+				if (index <= date1Index) {
+					return element;
+				} else {
+					return null;
+				}
+			});
+			r.rawDataToPlot.slice2 = unslicedLine.map((element, index) => {
+				if (index >= date1Index && index <= date2Index) {
+					return element;
+				} else {
+					return null;
+				}
+			});
+			r.rawDataToPlot.slice3 = unslicedLine.map((element, index) => {
+				if (index >= date2Index) {
+					return element;
+				} else {
+					return null;
+				}
+			});
+
+			r.dataToPlot = r.dateArray.map((date, index) => {
+				const entry = tempStruct;
+
+				for (const key in tempStruct) {
+					tempStruct[key] = r.rawDataToPlot[key][index]; // Assuming values1 and values2 have corresponding values
+				}
+
+				return { date, ...tempStruct };
+			});
+		} else {
+			r.dataToPlot = r.dateArray.map((date, index) => {
+				const entry = tempStruct;
+
+				for (const key in tempStruct) {
+					entry[key] = r.rawDataToPlot[key][index]; // Assuming values1 and values2 have corresponding values
+				}
+
+				return { date, ...entry };
+			});
+		}
+	}
+	static handleSlicesAlbo(params, rawData) {
+		let tempStruct = {};
+		let r = rawData.current;
+
+		params.plottedKeys.forEach((item) => {
+			tempStruct[item] = null;
+		});
+
+		if (params.lineSlice.length > 0) {
+			let date1Index, date2Index;
+			if (params.sliceDate1) {
+				date1Index = r.dateArray.indexOf(params.sliceDate1);
+				date2Index = r.dateArray.indexOf(params.sliceDate2);
+			} else {
+				console.log("we shold be here");
+
+				date1Index = r.dateArray.indexOf(
+					r.rawDataToPlot.overlap[1].replace(/_/g, "-")
+				);
+				date2Index = r.dateArray.indexOf(
+					r.rawDataToPlot.overlap[0].replace(/_/g, "-")
+				);
+				console.log({
+					date1: r.rawDataToPlot.overlap[1].replace(/_/g, "-"),
+					date2Index,
+				});
 			}
 			let unslicedLine = r.rawDataToPlot[params.lineSlice[0]];
 			r.rawDataToPlot.slice1 = unslicedLine.map((element, index) => {
@@ -136,11 +232,38 @@ class ChartCalculatorService {
 		}
 	}
 
-	static handleBrushChange = (range, dispatch, plotMat,setBrushRangeDir) => {
+	static handleBrushChange = (range, dispatch, plotMat, setBrushRangeDir) => {
 		dispatch(
-			setBrushRangeDir({ startIndex: range.startIndex, endIndex: range.endIndex })
+			setBrushRangeDir({
+				startIndex: range.startIndex,
+				endIndex: range.endIndex,
+			})
 		);
 	};
+
+	static createDateArrayAlbo(rawData, params, dates) {
+		let r = rawData.current;
+		let date0, date1;
+		if (params.date0) {
+			date0 = new Date(params.date0);
+			date1 = new Date(params.date1);
+		} else {
+			date0 = new Date(r.data.test.date.date0);
+			date1 = new Date(r.data.test.date.date1);
+		}
+		let currentDate = date0;
+		r.dateArray = [];
+		// WORKASROUND TILL KAMIL FIXES DATES IN ALBO
+		let counter = 0;
+		while (date0 <= date1) {
+			let formattedDate = this.formatDate(currentDate);
+			currentDate.setDate(currentDate.getDate() + 1);
+			r.dateArray.push(formattedDate);
+		}
+
+		console.log({ AlbodateArray: r.dateArray });
+	}
+
 	static createDateArray(rawData, params) {
 		let r = rawData.current;
 		let date0, date1;
@@ -179,7 +302,7 @@ class ChartCalculatorService {
 		}
 	};
 
-	static handleBrushChangeY(range, scrlRef, dispatch,setBrushDatayDir) {
+	static handleBrushChangeY(range, scrlRef, dispatch, setBrushDatayDir) {
 		let s = scrlRef.current && scrlRef.current;
 		if (scrlRef.current) {
 			s.brushDataY = {

@@ -941,24 +941,64 @@ function PanelProvider({ children }) {
 			id: 1,
 			key: "seasonal_profile",
 			icon: seasonal,
+			// chartParameters: {
+			// 	chartType: "rechart",
+			// 	initialSetting: "test",
+			// 	years: "ecmwf",
+			// 	// xbrushStart: -6,
+			// 	// xbrushEnd: 3,
+			// 	mixedKeys: [
+			// 		{
+			// 			key: "g1",
+			// 			levels: ["test", "colleg"],
+			// 		},
+			// 		{
+			// 			key: "g2",
+			// 			levels: ["test",  "coln2"],
+			// 		},
+			// 	],
+			// 	plottedKeys: ["g1", "g2"],
+			// 	colors: ["#1B3958", "#1B3958"],
+			// 	horizontalAxis: "date",
+			// 	lineSlice: ["g1"],
+			// 	labels: ["Larva forecast", "Decadal average"],
+			// 	sliceLabels: ["This year", "Overlap", "Forecast"],
+			// 	sliceColors: ["#50C0AD", "orange", "#F15A48"],
+			// },
 			chartParameters: {
 				chartType: "rechart",
-				initialSetting: "meteo-ts",
-				years: "2010-2019",
-				plottedKeys: ["atemp", "rehum", "precp"],
-				colors: ["#F15A48", "#50C0AD", "#1B3958"],
+				initialSetting: "test",
+				years: "ecmwf",
+				// xbrushStart: -6,
+				// xbrushEnd: 3,
+				mixedKeys: [
+					{
+						key: "g1",
+						levels: ["test", "fcast-ts", "ecmwf", "coln4f"],
+					},
+					{
+						key: "g2",
+						levels: ["test", "fcast-ts", "ecmwf", "colK"],
+					},
+					{
+						key: "g3",
+						levels: ["test", "fcast-ts", "ecmwf", "coln2"],
+					},
+				],
+				plottedKeys: ["g1", "g2", "g3"],
+				colors: ["#1B3958", "#1B3958", "#000000"],
 				horizontalAxis: "date",
-				labels: ["Temperature (°C)", "Rel. humidity (%)", "Precipitation (mm)"],
-				lineSlice: [],
+				lineSlice: ["g1"],
+				labels: ["Activity forecast", "Decadal activity"],
+				sliceLabels: ["This year", "Overlap", "Forecast"],
+				sliceColors: ["#50C0AD", "orange", "#F15A48"],
 			},
 
 			content: (
 				<div className="text-area">
 					<h1>Seasonal Profile</h1>
 					<div>
-						<p>
-							<AlboParams />
-						</p>
+						<AlboParams />
 					</div>
 				</div>
 			),

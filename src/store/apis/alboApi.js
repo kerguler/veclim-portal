@@ -3,44 +3,28 @@ import { getDateRange } from "./utils";
 const alboApi = createApi({
 	reducerPath: "alboInfo",
 	baseQuery: fetchBaseQuery({
-		baseUrl: "http://localhost:9000",
+		//  baseUrl: "http://localhost:8000/devapi/sim-runner/default-model-simulate",
+		baseUrl: "http://localhost:9000/run-albochik",
+		prepareHeaders: (headers) => {
+			headers.set("Content-Type", "application/json");
+			return headers;
+		},
 	}),
 	tagTypes: ["albo"],
 	endpoints(builder) {
 		return {
-			fetchTimeSeriesData: builder.query({
+			submitAlboData: builder.mutation({
 				// providesTags: ["TimeSeries"],
 
-				query: (data) => {
-					let location;
-					location = JSON.parse(data.position);
-                    const dataSent= { }
-					// const dateRange = `${"2024-01-01:2025-12-31"}`;
-					const dateRange = getDateRange(":");
-					const vectorName = data.vectorName;
-					let param;
-					if (vectorName === "albopictus") {
-						param = {
-							vec: "albopictus",
-							lon: location.lng,
-							lat: location.lat,
-							dates: dateRange,
-							opr: "ts",
-						};
-					} else {
-						param = {
-							vec: "papatasi",
-							lon: location.lng,
-							lat: location.lat,
-							dates: `${"2015-03-31:2015-12-31"}`,
-							opr: "ts",
-						};
-					}
+				query: (param) => {
+					const simulationData = {
+						param: param,
+					};
 
 					return {
 						url: "",
-						params: param,
-						method: "GET",
+						body: simulationData,
+						method: "POST",
 					};
 				},
 			}),
@@ -48,6 +32,5 @@ const alboApi = createApi({
 	},
 });
 
-export const { useFetchTimeSeriesDataQuery, useFetchTSDateRangeQuery } =
-	timeSeriesApi;
-export { timeSeriesApi };
+export const { useSubmitAlboDataMutation } = alboApi;
+export { alboApi };

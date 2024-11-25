@@ -1,8 +1,11 @@
 import "./ChartIndicators.css";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useFetchTimeSeriesDataQuery } from "store";
 import ChartLoadingSkeleton from "../skeleton/Skeleton";
 import { dateToString } from "store/apis/utils";
+import { setChartDatesLeft } from "store";
+import DisplayTimeSeries from "pages/ApiWelcomePage/Graphics/DisplayTimeSeries";
+import { setChartDatesRight } from "store";
 function ChartIndicators() {
 	const position = useSelector((state) => {
 		return state.fetcher.fetcherStates.map.mapPagePosition;
@@ -14,7 +17,7 @@ function ChartIndicators() {
 		position: JSON.stringify(position),
 		vectorName: vectorName,
 	});
-
+	const dispatch = useDispatch();
 	if (isFetching) {
 		return (
 			<>
@@ -28,9 +31,14 @@ function ChartIndicators() {
 	if (data === undefined) {
 		return null;
 	}
-
 	var fdate = "";
 	if (data && "fcast-ts" in data) {
+		dispatch(
+			setChartDatesLeft({ first: data.date.date0, last: data.date.date1 })
+		);
+		dispatch(
+			setChartDatesRight({ first: data.date.date0, last: data.date.date1 })
+		);
 		var todate = new Date(data.date.date0);
 		todate.setDate(todate.getDate() + data["fcast-ts"].ecmwf.colegg.length);
 		fdate = (
@@ -46,7 +54,7 @@ function ChartIndicators() {
 	}
 
 	var coord = "";
-	if (data ) {
+	if (data) {
 		coord = (
 			<>
 				<p>
@@ -64,36 +72,38 @@ function ChartIndicators() {
 	}
 
 	var mosquito = "";
-if (data){	if (
-		"presence" in data &&
-		"albopictus" in data.presence &&
-		data.presence.albopictus[0]
-	) {
-		mosquito = (
-			<>
+	if (data) {
+		if (
+			"presence" in data &&
+			"albopictus" in data.presence &&
+			data.presence.albopictus[0]
+		) {
+			mosquito = (
+				<>
+					<p>
+						Reports of the <strong>tiger mosquito</strong>
+					</p>
+					<ul>
+						{data.presence.albopictus.map((elm, i) => {
+							return (
+								<li key={i}>
+									<a target="_blank" rel="noreferrer" href={elm.citation.url}>
+										{elm.dataset}
+									</a>
+								</li>
+							);
+						})}
+					</ul>
+				</>
+			);
+		} else if ("presence" in data) {
+			mosquito = (
 				<p>
-					Reports of the <strong>tiger mosquito</strong>
+					<strong>No</strong> reports of the tiger mosquito
 				</p>
-				<ul>
-					{data.presence.albopictus.map((elm, i) => {
-						return (
-							<li key={i}>
-								<a target="_blank" rel="noreferrer" href={elm.citation.url}>
-									{elm.dataset}
-								</a>
-							</li>
-						);
-					})}
-				</ul>
-			</>
-		);
-	} else if ("presence" in data) {
-		mosquito = (
-			<p>
-				<strong>No</strong> reports of the tiger mosquito
-			</p>
-		);
-	}}
+			);
+		}
+	}
 
 	const indicators = (
 		<>

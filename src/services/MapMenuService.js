@@ -15,13 +15,10 @@ class mapMenuService {
 		setChartParameters,
 		panelInterfere
 	) {
-		console.log()
 		let p = panelOpenRef.current;
-		console.log({ panelData });
 		const defaultBehav = () => {
 			dispatch(setDisplayedPanelID(p));
 
-			console.log({ panel });
 			if (panel === panelData[p].content) {
 				if (id === -1) {
 				} else {

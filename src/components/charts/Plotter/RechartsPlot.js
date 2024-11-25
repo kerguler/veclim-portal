@@ -29,7 +29,6 @@ function RechartsPlot({ direction, plotMat }) {
 		years: { firstYear: null, lastYear: null },
 		date: null,
 	};
-	console.log("RechartsPlot ", direction);
 	const dateRef = useRef({
 		currentDate: null,
 		dStart: null,
