@@ -93,7 +93,7 @@ function UnifiedRechartPlotter({ dateArray, direction }) {
 			}
 		}
 		if (direction === "right") {
-			console.log({ direction,data, chartParameters });
+			console.log({ direction, data, chartParameters });
 			if (!data || !data[chartParameters.initialSetting]) {
 				return <div>Something happening there</div>;
 			}
@@ -102,7 +102,7 @@ function UnifiedRechartPlotter({ dateArray, direction }) {
 			}
 		}
 	}
-	console.log({plotReady})
+	console.log({ plotReady });
 	renderLineChart = plotReady ? (
 		<ErrorBoundary>
 			<RechartsPlot direction={direction} plotMat={r.dataToPlot}></RechartsPlot>
