@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import L from "leaflet";
 
 import { useDispatch, useSelector } from "react-redux";
-import MapAdjustmentsService from "../components/charts/services/MapAdjustmentsService";
+import PackageMapServices from "components/map/mapPackage/PackageMapServices";
 import useMapResize from "./useMapResize";
 import { setCurrentMapCenter, setCurrentMapBounds } from "store";
 import { current } from "@reduxjs/toolkit";
@@ -26,7 +26,7 @@ function useMap(mapParRef) {
 
 	useEffect(() => {
 		let p = mapParRef.current;
-		MapAdjustmentsService.mapBounds(
+		PackageMapServices.mapBounds(
 			mapParRef,
 			vectorName,
 			pageTransition,
@@ -40,7 +40,7 @@ function useMap(mapParRef) {
 			maxBounds: p.maxBounds,
 			zoomControl: false,
 		});
-		MapAdjustmentsService.baseLayer.addTo(p.map);
+		PackageMapServices.baseLayer.addTo(p.map);
 
 		p.map.setView({ lat: p.center[0], lng: p.center[1] }, p.zoom);
 
@@ -62,7 +62,6 @@ function useMap(mapParRef) {
 		switchMap,
 		directInit,
 		mapParRef,
-		
 	]);
 }
 

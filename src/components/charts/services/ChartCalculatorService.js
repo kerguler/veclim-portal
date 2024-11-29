@@ -6,15 +6,7 @@ class ChartCalculatorService {
 				...r.data[params.initialSetting][params.years],
 			};
 		} else {
-			// params.mixedKeys.forEach((item) => {
-			// 	const { key, level1, level2, level3 } = item;
-			// 	if (r.data[level1] && r.data[level1][level2]) {
-			// 		r.rawDataToPlot[key] = r.data[level1][level2][level3];
-			// 		if ("overlap" in r.data[level1][level2]) {
-			// 			r.rawDataToPlot.overlap = r.data[level1][level2].overlap;
-			// 		}
-			// 	}
-			// });
+	
 			params.mixedKeys.forEach((item) => {
 				const { key, levels } = item;
 				let val = r.data;
@@ -101,7 +93,6 @@ class ChartCalculatorService {
 			});
 
 			r.dataToPlot = r.dateArray.map((date, index) => {
-				const entry = tempStruct;
 
 				for (const key in tempStruct) {
 					tempStruct[key] = r.rawDataToPlot[key][index]; // Assuming values1 and values2 have corresponding values
@@ -172,7 +163,6 @@ class ChartCalculatorService {
 			});
 
 			r.dataToPlot = r.dateArray.map((date, index) => {
-				const entry = tempStruct;
 
 				for (const key in tempStruct) {
 					tempStruct[key] = r.rawDataToPlot[key][index]; // Assuming values1 and values2 have corresponding values
@@ -254,7 +244,6 @@ class ChartCalculatorService {
 		let currentDate = date0;
 		r.dateArray = [];
 		// WORKASROUND TILL KAMIL FIXES DATES IN ALBO
-		let counter = 0;
 		while (date0 <= date1) {
 			let formattedDate = this.formatDate(currentDate);
 			currentDate.setDate(currentDate.getDate() + 1);

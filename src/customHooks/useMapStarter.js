@@ -3,13 +3,20 @@ import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import useFetcherVariables from "./useFetcherVariables";
 import PackageMapServices from "components/map/mapPackage/PackageMapServices";
-import { setReadyToView } from "store";
-import { setCurrentMapCenter } from "store";
-import { setCurrentMapBounds, setCurrentMaxBounds } from "store";
-import { setCurrentMapZoom } from "store";
-import { setMapPagePosition } from "store";
-import { setTileArray } from "store";
-import { setVectorName, setMapVector } from "store";
+
+import {
+	setReadyToView,
+	setCurrentMapBounds,
+	setCurrentMaxBounds,
+	setCurrentMapCenter,
+	setCurrentMapZoom,
+	setMapPagePosition,
+	setTileArray,
+	setVectorName,
+	setMapVector,
+} from "store";
+
+import {} from "store";
 function useMapStarter(startConditions) {
 	const dispatch = useDispatch();
 	const { readyToView, vectorName, mapVector, switchMap, tileArray } =
@@ -41,7 +48,6 @@ function useMapStarter(startConditions) {
 		mapVector,
 		startConditions,
 		switchMap,
-		
 	]);
 
 	function mapStarter({ vectorName, mapVector, bounds }) {

@@ -28,7 +28,9 @@ function PanelProvider({ children }) {
 	const mapVector = useSelector(
 		(state) => state.fetcher.fetcherStates.mapVector
 	);
-
+	const mapPagePosition = useSelector(
+		(state) => state.fetcher.fetcherStates.map.mapPagePosition
+	);
 	const tileBase = process.env.REACT_APP_BASE_URL;
 	const tileIconRowHeadings = [
 		{ row: 1, label: "2010-2020" },
@@ -941,30 +943,7 @@ function PanelProvider({ children }) {
 			id: 1,
 			key: "seasonal_profile",
 			icon: seasonal,
-			// chartParameters: {
-			// 	chartType: "rechart",
-			// 	initialSetting: "test",
-			// 	years: "ecmwf",
-			// 	// xbrushStart: -6,
-			// 	// xbrushEnd: 3,
-			// 	mixedKeys: [
-			// 		{
-			// 			key: "g1",
-			// 			levels: ["test", "colleg"],
-			// 		},
-			// 		{
-			// 			key: "g2",
-			// 			levels: ["test",  "coln2"],
-			// 		},
-			// 	],
-			// 	plottedKeys: ["g1", "g2"],
-			// 	colors: ["#1B3958", "#1B3958"],
-			// 	horizontalAxis: "date",
-			// 	lineSlice: ["g1"],
-			// 	labels: ["Larva forecast", "Decadal average"],
-			// 	sliceLabels: ["This year", "Overlap", "Forecast"],
-			// 	sliceColors: ["#50C0AD", "orange", "#F15A48"],
-			// },
+
 			chartParameters: {
 				chartType: "rechart",
 				initialSetting: "test",
@@ -996,9 +975,25 @@ function PanelProvider({ children }) {
 
 			content: (
 				<div className="text-area">
-					<h1>Seasonal Profile</h1>
+					<h1>Simulation Data </h1>
 					<div>
 						<AlboParams />
+						{/* <CoordinatePicker /> */}
+						<div
+							style={{
+								display: "flex",
+								alignContent: "space-evenly",
+								width: "100%",
+								fontSize: "0.5rem",
+							}}
+						>
+							<p> lat:{mapPagePosition.lat}</p>
+							<p>
+								{" "}
+								lng:
+								{mapPagePosition.lng}
+							</p>
+						</div>
 					</div>
 				</div>
 			),

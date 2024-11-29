@@ -1,7 +1,7 @@
 import React from "react";
 import "./Skeleton.css";
 import classNames from "classnames";
-const Skeleton = ({ times, className, noBorder }) => {
+const Skeleton = ({ times, className, noBorder, children }) => {
 	const outerClassNames = classNames("loading-line", className);
 	const innerClassNames = classNames("gradient-loading-line");
 	const wrapperClassName = classNames(
@@ -17,7 +17,12 @@ const Skeleton = ({ times, className, noBorder }) => {
 		);
 	}
 
-	return <div className={wrapperClassName}>{renderedRectangles}</div>;
+	return (
+		<div className={wrapperClassName}>
+			{renderedRectangles}
+			<div className="skeleton-text">{children}</div>
+		</div>
+	);
 };
 
 export default Skeleton;

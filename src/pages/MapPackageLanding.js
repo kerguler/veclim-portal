@@ -13,20 +13,23 @@ function MapPackageLanding() {
 	const readyToView = useSelector(
 		(state) => state.fetcher.fetcherStates.readyToView
 	);
+	console.log("MapPackageLanding is rendered ");
 	return (
 		readyToView && (
-			<PanelProvider>
-				<div className="wrappers-wrapper">
-					<MapLogo />
-					<div className="map-wrapper">
+			<div className="wrappers-wrapper">
+				<MapLogo />
+				<div className="map-wrapper">
+					<PanelProvider>
 						<MapMenu direction="left"></MapMenu>
 						<MapMenu direction="right"></MapMenu>
-						<ErrorBoundary>
-							<MapPackageComponent />
-						</ErrorBoundary>
-					</div>
+
+					<ErrorBoundary>
+						<MapPackageComponent />
+					</ErrorBoundary>
+					</PanelProvider>
+
 				</div>
-			</PanelProvider>
+			</div>
 		)
 	);
 }

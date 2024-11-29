@@ -25,6 +25,9 @@ import ChartCalculatorService from "../services/ChartCalculatorService";
 import useDirectorFun from "customHooks/useDirectorFun";
 
 function RechartsPlot({ direction, plotMat }) {
+	if (direction==="right"){
+		console.log("rerendering right ")
+	}
 	const args = {
 		years: { firstYear: null, lastYear: null },
 		date: null,
@@ -49,6 +52,7 @@ function RechartsPlot({ direction, plotMat }) {
 		setBrushDataDir,
 		brushDatay,
 		xBrushRange,
+		plotReady,
 	} = useDirectorFun(direction);
 
 	useEffect(() => {
@@ -56,8 +60,11 @@ function RechartsPlot({ direction, plotMat }) {
 	}, [plotMat, dispatch, vectorName]);
 
 	useEffect(() => {
-		dispatch(setBrushRangeDir({ startIndex: 0, endIndex: plotMat.length - 1 }));
-	}, [vectorName, dispatch]);
+		plotMat &&
+			dispatch(
+				setBrushRangeDir({ startIndex: 0, endIndex: plotMat.length - 1 })
+			);
+	}, [vectorName, dispatch, plotMat]);
 	const [transform, setTransform] = useState([0, 0]);
 
 	useYsliderPositioning(setTransform);

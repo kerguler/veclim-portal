@@ -27,23 +27,23 @@ function useFetcherVariables() {
 	const mapPagePosition = useSelector(
 		(state) => state.fetcher.fetcherStates.map.mapPagePosition
 	);
-	const directMap = useSelector(
-		(state) => state.fetcher.fetcherStates.directMap
+	const directMapLeft = useSelector(
+		(state) => state.fetcher.fetcherStates.menu.left.directMap
 	);
 	const directMapRight = useSelector(
-		(state) => state.fetcher.fetcherStates.directMapRight
+		(state) => state.fetcher.fetcherStates.menu.right.directMap
 	);
 	const tileArray = useSelector(
 		(state) => state.fetcher.fetcherStates.tileArray
 	);
-	const directInit = useSelector(
-		(state) => state.fetcher.fetcherStates.directInit
+	const directInitLeft = useSelector(
+		(state) => state.fetcher.fetcherStates.menu.left.directInit
 	);
 
 	return {
-		directInit,
+		directInitLeft,
 		tileArray,
-		directMap,
+		directMapLeft,
 		mapPagePosition,
 		vectorName,
 		currentMapBounds,

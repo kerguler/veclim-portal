@@ -41,17 +41,17 @@ import imageSandFlySEM from "../assets/images/methods-sandfly-SEM2.webp";
 import imageSandFlyLeish from "../assets/images/methods-sandfly-leish.webp";
 import imageSandFlyPhoto from "../assets/images/methods-sandfly-photo2.webp";
 import imageSandFlyTime from "../assets/images/methods-sandfly-ts.webp";
-import MapAdjustmentsService from "components/charts/services/MapAdjustmentsService";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
-import { setDisplayedPanelID, setReadyToView } from "store";
+import { setDisplayedPanelIDLeft, setReadyToView } from "store";
 import { setMapVector } from "store";
 import { setTileArray } from "store";
 import { setVectorName } from "store";
 import { setCurrentMapBounds } from "store";
 
 import { setCurrentMapZoom } from "store";
+import PackageMapServices from "components/map/mapPackage/PackageMapServices";
 
 const TextContext = createContext();
 
@@ -102,13 +102,6 @@ function TextProvider({ children }) {
 			topperReference: null,
 		},
 		rows: [
-			/*
-      {
-        rowno: 0,
-        title: "",
-        content: ( <ChangesComponent/> )
-      },
-      */
 			{
 				rowno: 0,
 				title: "",
@@ -118,13 +111,13 @@ function TextProvider({ children }) {
 							<Link
 								onClick={() => {
 									dispatch(setMapVector("papatasi"));
-									MapAdjustmentsService.handleToMapPageTransition(
+									PackageMapServices.handleToMapPageTransition(
 										dispatch,
 										vectorName,
 										mapVector
 									);
 									dispatch(setReadyToView(false));
-									dispatch(setDisplayedPanelID(0));
+									dispatch(setDisplayedPanelIDLeft(0));
 								}}
 								to="/MapPage"
 							>
@@ -137,7 +130,7 @@ function TextProvider({ children }) {
 							</Link>
 							<Link
 								onClick={() => {
-									MapAdjustmentsService.handleToMapPageTransition(
+									PackageMapServices.handleToMapPageTransition(
 										dispatch,
 										vectorName,
 										mapVector
@@ -145,11 +138,9 @@ function TextProvider({ children }) {
 									dispatch(setTileArray(["colegg", "colegg_ssp585"]));
 									dispatch(setVectorName("albopictus"));
 									dispatch(setMapVector("albopictus"));
-									dispatch(
-										setCurrentMapBounds(MapAdjustmentsService.worldBounds)
-									);
+									dispatch(setCurrentMapBounds(PackageMapServices.worldBounds));
 									dispatch(setReadyToView(false));
-									// dispatch(setDisplayedPanelID(6));
+									// dispatch(setDisplayedPanelIDLeft(6));
 									//  dispatch(setMapPagePosition({ lat: 33.75, lng: 110.0 }));
 									// dispatch(setPanelOpen(true));
 									// dispatch(setMapMenuOpen(true));

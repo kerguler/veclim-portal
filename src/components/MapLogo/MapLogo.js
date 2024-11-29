@@ -1,18 +1,12 @@
 import { Link } from "react-router-dom";
 import veclimLogo from "assets/images/logos/VEClim-Icon.svg";
 import "./mapLogo.css";
-import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { setMapVector } from "store";
-import { useSelector } from "react-redux";
-import { setDisplayedPanelID } from "store";
+import { setDisplayedPanelIDLeft } from "store";
 function MapLogo() {
 	const dispatch = useDispatch();
-	const vectorName = useSelector(
-		(state) => state.fetcher.fetcherStates.vectorName
-	);
 	const handleMainPageTransition = () => {
-		 dispatch(setDisplayedPanelID(null));
+		dispatch(setDisplayedPanelIDLeft(null));
 		// dispatch(setMapVector(vectorName));
 	};
 

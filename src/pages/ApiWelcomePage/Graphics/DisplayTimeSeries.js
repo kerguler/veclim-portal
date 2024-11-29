@@ -1,21 +1,15 @@
 import UnifiedRechartPlotter from "components/charts/Plotter/UnifiedRechartPlotter";
-import { useFetchTSDateRangeQuery } from "store";
-import { getCurrentDate } from "store/apis/utils";
 import { useDispatch, useSelector } from "react-redux";
 import { setChartParameters } from "store";
 import { setVectorName } from "store";
 import { setMapPagePosition } from "store";
 import "./DisplayTimeSeries.css";
-import { changeDate } from "store";
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import { setTimeSeriesDates } from "store";
-import { setDisplayMap } from "store";
 import { setTileArray } from "store";
 import { setCurrentMapZoom } from "store";
-import { setCurrentMapCenter } from "store";
-import { useState } from "react";
 import { setCurrentMapBounds } from "store";
-import MapAdjustmentsService from "components/charts/services/MapAdjustmentsService";
+import PackageMapServices from "components/map/mapPackage/PackageMapServices";
 import { setBlinkers } from "store";
 function DisplayTimeSeries() {
 	const dispatch = useDispatch();
@@ -45,10 +39,8 @@ function DisplayTimeSeries() {
 	let chartParameters = chartRef.current;
 	dispatch(setChartParameters(chartParameters));
 
-
-		chartParameters.date0 = timeSeriesDates.date0;
-		chartParameters.date1 = timeSeriesDates.date1;
-
+	chartParameters.date0 = timeSeriesDates.date0;
+	chartParameters.date1 = timeSeriesDates.date1;
 
 	dispatch(setVectorName("albopictus"));
 	dispatch(setMapPagePosition(dateRange.position));
@@ -78,7 +70,7 @@ function DisplayTimeSeries() {
 		);
 		dispatch(setTileArray([]));
 		dispatch(setCurrentMapZoom(1));
-		dispatch(setCurrentMapBounds(MapAdjustmentsService.worldBounds));
+		dispatch(setCurrentMapBounds(PackageMapServices.worldBounds));
 	};
 	return (
 		<div className="dashboard ">
@@ -113,7 +105,7 @@ function DisplayTimeSeries() {
 					GO
 				</button> */}
 			</div>
-			<div className="chart-area" >
+			<div className="chart-area">
 				{" "}
 				<UnifiedRechartPlotter dateArray={dateRange} />{" "}
 			</div>

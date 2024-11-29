@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import MapAdjustmentsService from "../components/charts/services/MapAdjustmentsService";
+import PackageMapServices from "components/map/mapPackage/PackageMapServices";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import useFetcherVariables from "./useFetcherVariables";
@@ -12,7 +12,7 @@ function useMapCoordinateUpdate(mapParRef) {
 
 	useEffect(() => {
 		function handleCoordinateUpdate(e) {
-			MapAdjustmentsService.updateCoordinates({
+			PackageMapServices.updateCoordinates({
 				e,
 				mapParRef,
 				vectorName,

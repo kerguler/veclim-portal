@@ -1,6 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
 import PackageMapServices from "components/map/mapPackage/PackageMapServices";
-import { set } from "react-ga";
 
 const fetcherSlice = createSlice({
 	name: "fetcher",
@@ -17,71 +16,79 @@ const fetcherSlice = createSlice({
 				mapLoaded: false,
 				leftMapLoaded: false,
 				rightMapLoaded: false,
-				rightMenu: {
-					menuIconDisplay: true,
-					panelOpen: false,
-					mapMenuOpen: false,
-					displayedPanelID: 0,
-				},
-				leftMenu: {
-					panelOpen: false,
-					mapMenuOpen: false,
-					displayedPanelID: 0,
-				},
 
-				alboParams: { sliderValue: 50 },
 				switchMap: true,
 				currentMapBounds: PackageMapServices.worldBounds,
 				currentMaxBounds: PackageMapServices.worldBounds,
 				userPosition: { lat: null, lng: null },
 				globalPosition: { lat: null, lng: null },
 				mapPagePosition: { lat: 35.1966527, lng: 33.3217152 },
+				mapPagePositionRight: { lat: 35.1966527, lng: 33.3217152 },
 			},
-			chart: {
-				left: { dates: { first: null, last: null }, plotReady: false },
+			menu: {
 				right: {
-					dates: { first: null, last: null },
-					plotReady: false,
-					requestPlot: false,
-					sliders: { slider1: { enabled: true } },
+					directInit: false,
+					menuIconDisplay: true,
+					panelOpen: false,
+					mapMenuOpen: false,
+					displayedPanelID: 0,
+					directMap: { lon: null, lat: null, display: -2 },
+					directInitError: { isError: false, message: "", type: "" },
+					chart: {
+						dates: { first: null, last: null },
+						plotReady: false,
+						requestPlot: false,
+						sliders: { slider1: { enabled: true, value: 50 } },
+						brushRange: { startIndex: null, endIndex: null },
+					},
+				},
+				left: {
+					directInit: false,
+					panelOpen: false,
+					mapMenuOpen: false,
+					displayedPanelID: 0,
+					directMap: { lon: null, lat: null, display: -2 },
+					directInitError: { isError: false, message: "", type: "" },
+					chart: {
+						brushRange: { startIndex: null, endIndex: null },
+						dates: { first: null, last: null },
+						plotReady: false,
+					},
 				},
 			},
-
-			brushRange: { startIndex: null, endIndex: null },
-			brushRangeRight: { startIndex: null, endIndex: null },
-			directMap: { lon: null, lat: null, display: -2 },
-			directMapRight: { lon: null, lat: null, display: -2 },
-			directInit: false,
-			directInitRight: false,
-			directInitError: { isError: false, message: "", type: "" },
 		},
 		fetcherError: null,
 		fetcherLoading: false,
 	},
 	reducers: {
+		setMapPagePositionRight(state, action) {
+			state.fetcherStates.map.mapPagePositionRight = action.payload;
+		},
 		setSlider1EnabledRight(state, action) {
-			state.fetcherStates.chart.right.sliders.slider1.enabled = action.payload;
+			state.fetcherStates.menu.right.chart.sliders.slider1.enabled =
+				action.payload;
 		},
 		setChartDatesLeft(state, action) {
-			state.fetcherStates.chart.left.dates = action.payload;
+			state.fetcherStates.menu.left.chart.dates = action.payload;
 		},
 		setChartDatesRight(state, action) {
-			state.fetcherStates.chart.right.dates = action.payload;
+			state.fetcherStates.menu.right.chart.dates = action.payload;
 		},
 		setPlotReadyLeft(state, action) {
-			state.fetcherStates.chart.left.plotReady = action.payload;
+			state.fetcherStates.menu.left.chart.plotReady = action.payload;
 		},
 		setPlotReadyRight(state, action) {
-			state.fetcherStates.chart.right.plotReady = action.payload;
+			state.fetcherStates.menu.right.chart.plotReady = action.payload;
 		},
 		setAlboRequestPlot(state, action) {
-			state.fetcherStates.chart.right.requestPlot = action.payload;
+			state.fetcherStates.menu.right.chart.requestPlot = action.payload;
 		},
 		setAlboParamsSlider1Value(state, action) {
-			state.fetcherStates.map.alboParams.sliderValue = action.payload;
+			state.fetcherStates.menu.right.chart.sliders.slider1.value =
+				action.payload;
 		},
 		setRightMenuIconDisplay(state, action) {
-			state.fetcherStates.map.rightMenu.menuIconDisplay = action.payload;
+			state.fetcherStates.menu.right.menuIconDisplay = action.payload;
 		},
 
 		setReadyToView(state, action) {
@@ -135,87 +142,91 @@ const fetcherSlice = createSlice({
 		setMapPagePosition(state, action) {
 			state.fetcherStates.map.mapPagePosition = action.payload;
 		},
-		setBrushRange(state, action) {
-			state.fetcherStates.brushRange = action.payload;
+		setBrushRangeLeft(state, action) {
+			state.fetcherStates.menu.left.chart.brushRange = action.payload;
 		},
 		setBrushRangeRight(state, action) {
-			state.fetcherStates.brushRangeRight = action.payload;
+			state.fetcherStates.menu.right.chart.brushRange = action.payload;
 		},
 
-		setDirectMap(state, action) {
-			state.fetcherStates.directMap = action.payload;
+		setDirectMapLeft(state, action) {
+			state.fetcherStates.menu.left.directMap = action.payload;
 		},
 		setDirectMapRight(state, action) {
-			state.fetcherStates.directMapRight = action.payload;
+			state.fetcherStates.menu.right.directMap = action.payload;
 		},
-		setDirectInit(state, action) {
-			state.fetcherStates.directInit = action.payload;
+		setDirectInitLeft(state, action) {
+			state.fetcherStates.menu.left.directInit = action.payload;
 		},
 		setDirectInitRight(state, action) {
-			state.fetcherStates.directInitRight = action.payload;
+			state.fetcherStates.menu.right.directInit = action.payload;
 		},
-		setDirectInitError(state, action) {
-			state.fetcherStates.directInitError = action.payload;
+		setDirectInitErrorLeft(state, action) {
+			state.fetcherStates.menu.left.directInitError = action.payload;
 		},
-		setPanelOpen(state, action) {
-			state.fetcherStates.map.leftMenu.panelOpen = action.payload;
+		setDirectInitErrorRight(state, action) {
+			state.fetcherStates.menu.right.directInitError = action.payload;
 		},
-		setRightPanelOpen(state, action) {
-			state.fetcherStates.map.rightMenu.panelOpen = action.payload;
+		setPanelOpenLeft(state, action) {
+			state.fetcherStates.menu.left.panelOpen = action.payload;
 		},
-		setMapMenuOpen(state, action) {
-			state.fetcherStates.map.leftMenu.mapMenuOpen = action.payload;
+		setPanelOpenRight(state, action) {
+			state.fetcherStates.menu.right.panelOpen = action.payload;
 		},
-		setRightMapMenuOpen(state, action) {
-			state.fetcherStates.map.rightMenu.mapMenuOpen = action.payload;
+		setMapMenuOpenLeft(state, action) {
+			state.fetcherStates.menu.left.mapMenuOpen = action.payload;
 		},
-		setDisplayedPanelID(state, action) {
-			state.fetcherStates.map.leftMenu.displayedPanelID = action.payload;
+		setMapMenuOpenRight(state, action) {
+			state.fetcherStates.menu.right.mapMenuOpen = action.payload;
 		},
-		setRightDisplayedPanelID(state, action) {
-			state.fetcherStates.map.rightMenu.displayedPanelID = action.payload;
+		setDisplayedPanelIDLeft(state, action) {
+			state.fetcherStates.menu.left.displayedPanelID = action.payload;
+		},
+		setDisplayedPanelIDRight(state, action) {
+			state.fetcherStates.menu.right.displayedPanelID = action.payload;
 		},
 	},
 });
 
-export const {
-	setSlider1EnabledRight,
+export const {setMapPagePositionRight,
+	setAlboParamsSlider1Value,
+	setAlboRequestPlot,
+	setBrushRangeLeft,
+	setBrushRangeRight,
 	setChartDatesLeft,
 	setChartDatesRight,
-	setPlotReadyLeft,
-	setPlotReadyRight,
-	setAlboRequestPlot,
-	setAlboParamsSlider1Value,
-	setRightPanelOpen,
-	setRightDisplayedPanelID,
-	setRightMenuIconDisplay,
-	setRightMapMenuOpen,
-	setVectorName,
-	setFetcherStates,
-	setAvailableTiles,
-	setBrushRange,
 	setCurrentMapBounds,
+	setCurrentMapCenter,
+	setCurrentMapZoom,
 	setCurrentMaxBounds,
-	setDirectInit,
-	setDirectInitError,
-	setDirectMap,
-	setDisplayedPanelID,
+	setDirectInitErrorLeft,
+	setDirectInitErrorRight,
+	setDirectInitLeft,
+	setDirectInitRight,
+	setDirectMapLeft,
+	setDirectMapRight,
+	setDisplayedPanelIDLeft,
+	setDisplayedPanelIDRight,
+	setFetcherStates,
 	setGlobalPosition,
 	setLeftMapLoaded,
-	setCurrentMapCenter,
 	setMapLoaded,
-	setMapMenuOpen,
+	setMapMenuOpenLeft,
+	setMapMenuOpenRight,
 	setMapPagePosition,
-	setCurrentMapZoom,
 	setMapVector,
-	setPanelOpen,
-	setTileArray,
-	setRightMapLoaded,
-	setSwitchMap,
-	setUserPosition,
+	setPanelOpenLeft,
+	setPanelOpenRight,
 	setReadyToView,
-	setBrushRangeRight,
-	setDirectInitRight,
-	setDirectMapRight,
+	setRightMapLoaded,
+	setSlider1EnabledRight,
+	setSwitchMap,
+	setTileArray,
+	setUserPosition,
+	setVectorName,
+	setAvailableTiles,
+	setPlotReadyLeft,
+	setPlotReadyRight,
+	setRightMenuIconDisplay,
 } = fetcherSlice.actions;
 export const fetcherReducer = fetcherSlice.reducer;

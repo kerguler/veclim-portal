@@ -3,27 +3,18 @@ import "../MapComponent/mapComponent.css";
 import MapCircularProgressBar from "../MapCircularProgessBar/MapCircularProgressBar";
 import { useRef } from "react";
 import ColorBarComponent from "../ColorBar/ColorBarComponent";
-import { useContext } from "react";
-import PanelContext from "context/panelsIcons";
-import TileLoaderService from "customHooks/TileLoaderService";
 import PackageMapServices from "./PackageMapServices";
-import L from "leaflet";
 import useLMapCoordinateUpdate from "customHooks/MapPackage/useLMapCoordinateUpdate";
 import ErrorScreenMap from "../errorScreen/ErrorScreenMap";
-import { setCurrentMapZoom } from "store";
-import { setCurrentMapCenter } from "store";
 import TileNameDisplay from "../tileNameDisplay/TileNameDisplay";
 import useFetcherVariables from "customHooks/useFetcherVariables";
 import useLMap from "customHooks/MapPackage/useLMap";
-import { setDirectInitError } from "store";
-import { useDispatch, useSelector } from "react-redux";
-import { useCallback } from "react";
+import { useDispatch } from "react-redux";
 import useTileHandler from "customHooks/MapPackage/useTileHandler";
 import useSeparatorActions from "customHooks/MapPackage/useSeparatorActions";
 import useZoomActions from "customHooks/useZoomActions";
 import useMapBasicEvents from "customHooks/MapPackage/useMapBasicEvents";
 import useLMapResize from "customHooks/MapPackage/useLMapResize";
-import useDirectorFun from "customHooks/useDirectorFun";
 function MapPackageComponent({ fitworld }) {
 	console.log("MapPackageComponent");
 	const dispatch = useDispatch();
@@ -32,7 +23,7 @@ function MapPackageComponent({ fitworld }) {
 		currentMapBounds,
 		currentMaxBounds,
 		currentMapZoom,
-		directMap,
+		directMapLeft,
 		vectorName,
 		mapPagePosition,
 		currentMapCenter,
@@ -66,14 +57,14 @@ function MapPackageComponent({ fitworld }) {
 	useEffect(() => {
 		if (
 			(mapPagePosition &&
-				directMap.display !== -2 &&
-				directMap.display !== null) ||
+				directMapLeft.display !== -2 &&
+				directMapLeft.display !== null) ||
 			(directMapRight.display !== -2 && directMapRight.display !== null)
 		) {
 			let e = {
 				latlng: {
-					lat: directMap.lat,
-					lng: directMap.lon,
+					lat: directMapLeft.lat,
+					lng: directMapLeft.lon,
 				},
 			};
 			PackageMapServices.handleMapClick(
@@ -81,13 +72,13 @@ function MapPackageComponent({ fitworld }) {
 				mapParRef,
 				vectorName,
 				dispatch,
-				directMap,
+				directMapLeft,
 				directMapRight
 			);
 		}
 
 		return () => {};
-	}, [directMap, directMapRight, dispatch, vectorName]);
+	}, [directMapLeft, directMapRight, dispatch, vectorName]);
 
 	return (
 		<>

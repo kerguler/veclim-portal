@@ -4,10 +4,10 @@ import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import HoverMenuMethods from "components/HoverMenuMethods/HoverMenuMethods";
-import MapAdjustmentsService from "components/charts/services/MapAdjustmentsService";
 import { useEffect } from "react";
 import { setReadyToView } from "store";
-import { setPanelOpen } from "store";
+import { setPanelOpenLeft } from "store";
+import PackageMapServices from "components/map/mapPackage/PackageMapServices";
 function MyNavbar({ style }) {
 	const vectorName = useSelector(
 		(state) => state.fetcher.fetcherStates.vectorName
@@ -25,12 +25,12 @@ function MyNavbar({ style }) {
 	}
 
 	const handleMapBounds = () => {
-		MapAdjustmentsService.handleToMapPageTransition(
+		PackageMapServices.handleToMapPageTransition(
 			dispatch,
 			vectorName,
 			mapVector
 		);
-		dispatch(setPanelOpen(false));
+		dispatch(setPanelOpenLeft(false));
 		dispatch(setReadyToView(false));
 	};
 

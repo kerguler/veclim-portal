@@ -1,8 +1,8 @@
-import MapAdjustmentsService from "components/charts/services/MapAdjustmentsService";
+import PackageMapServices from "components/map/mapPackage/PackageMapServices";
 import { setTileArray } from "store";
-import { setPanelOpen } from "store";
-import { setMapMenuOpen } from "store";
-import { setDirectMap } from "store";
+import { setPanelOpenLeft } from "store";
+import { setMapMenuOpenLeft } from "store";
+import { setDirectMapLeft } from "store";
 
 class FetcherService {
 	static handleTiles(dispatch, tile, vectorDependentTiles, sessionState) {
@@ -97,36 +97,36 @@ class FetcherService {
 		let heading = "No panel found";
 		let longi, lati;
 		if (lon == null || lat === null || lon === "" || lat === "") {
-			longi = MapAdjustmentsService.defaultCypCenter[1];
-			lati = MapAdjustmentsService.defaultCypCenter[0];
+			longi = PackageMapServices.defaultCypCenter[1];
+			lati = PackageMapServices.defaultCypCenter[0];
 		} else if (-90 <= lat && lat <= 90 && -180 <= lon && lat <= lon) {
 			longi = lon;
 			lati = lat;
 		} else {
-			longi = MapAdjustmentsService.defaultCypCenter[1];
-			lati = MapAdjustmentsService.defaultCypCenter[0];
+			longi = PackageMapServices.defaultCypCenter[1];
+			lati = PackageMapServices.defaultCypCenter[0];
 		}
 		const error = new Error(heading);
 		error.type = "PanelError";
 
 		if (ts === null || ts === "") {
 			dispatch(
-				setDirectMap({
+				setDirectMapLeft({
 					lon: null,
 					lat: null,
 					display: -2,
 				})
 			);
 
-			dispatch(setPanelOpen(false));
-			dispatch(setMapMenuOpen(true));
+			dispatch(setPanelOpenLeft(false));
+			dispatch(setMapMenuOpenLeft(true));
 
 			// throw error;
 		} else {
 			const panelsFound = panels.filter((panel) => panel.key === ts);
 			if (panelsFound.length === 0) {
 				dispatch(
-					setDirectMap({
+					setDirectMapLeft({
 						lon: null,
 						lat: null,
 						display: -2,
@@ -138,7 +138,7 @@ class FetcherService {
 				);
 				if (panelWithDecade.length !== 0) {
 					dispatch(
-						setDirectMap({
+						setDirectMapLeft({
 							lon: parseFloat(longi),
 							lat: parseFloat(lati),
 							display: panelWithDecade[0].id,
@@ -147,7 +147,7 @@ class FetcherService {
 				} else {
 					if (decade === null || decade === "") {
 						dispatch(
-							setDirectMap({
+							setDirectMapLeft({
 								lon: parseFloat(longi),
 								lat: parseFloat(lati),
 								display: panelsFound[0].id,
@@ -160,7 +160,7 @@ class FetcherService {
 					error.heading = heading;
 					error.explanation = explanation;
 					dispatch(
-						setDirectMap({
+						setDirectMapLeft({
 							lon: null,
 							lat: null,
 							display: -2,

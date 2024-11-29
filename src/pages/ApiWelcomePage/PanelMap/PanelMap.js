@@ -1,4 +1,4 @@
-import MapComponent2 from "components/map/MapComponent/GenericMapComponent";
+import MapPackageComponent from "components/map/mapPackage/MapPackageComponent";
 import "./PanelMap.css";
 import { useDispatch, useSelector } from "react-redux";
 import { setBlinkers } from "store";
@@ -31,7 +31,7 @@ function PanelMap() {
 				<h3 className="meteo-text">Pick Coordinates</h3>
 			</div>
 			<div id="panel-map" className="panel-map">
-				<MapComponent2 />
+				<MapPackageComponent />
 			</div>
 		</div>
 	);

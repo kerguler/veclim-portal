@@ -8,10 +8,11 @@ import { setSlider1EnabledRight } from "store";
 function useAlboRequest(rawData, direction) {
 	const dispatch = useDispatch();
 	const alboSlider1Value = useSelector(
-		(state) => state.fetcher.fetcherStates.map.alboParams.sliderValue
+		(state) =>
+			state.fetcher.fetcherStates.menu.right.chart.sliders.slider1.value
 	);
 	const alboRequest = useSelector(
-		(state) => state.fetcher.fetcherStates.chart.right.requestPlot
+		(state) => state.fetcher.fetcherStates.menu.right.chart.requestPlot
 	);
 	const {
 		setPlotReadyDir,
@@ -20,14 +21,15 @@ function useAlboRequest(rawData, direction) {
 		appendToLabelsChartParametersDir,
 		appendToPlottedKeysChartParametersDir,
 		spliceChartParametersForSlicesDir,
+		mapPagePosition,
 	} = useDirectorFun("right");
 	const [submitAlboData, { isLoading, data, error }] =
 		useSubmitAlboDataMutation();
-	console.log({ alboRequest });
+	// console.log({ alboRequest });
 
 	useEffect(() => {
 		const handleConfirm = async () => {
-			console.log("Submitting Albo Data", alboSlider1Value / 100);
+			// console.log("Submitting Albo Data", alboSlider1Value / 100);
 			try {
 				const response = await submitAlboData(alboSlider1Value / 100).unwrap();
 				console.log("Success:", response);
@@ -40,10 +42,10 @@ function useAlboRequest(rawData, direction) {
 			handleConfirm();
 			// dispatch(setAlboRequestPlot(false));
 		}
-	}, [alboRequest]);
+	}, [alboSlider1Value, alboRequest]);
 
 	const alboDates = useSelector(
-		(state) => state.fetcher.fetcherStates.chart.right.dates
+		(state) => state.fetcher.fetcherStates.menu.right.chart.dates
 	);
 	useEffect(() => {
 		let r = rawData.current;
@@ -68,7 +70,7 @@ function useAlboRequest(rawData, direction) {
 	}, [data]);
 
 	useEffect(() => {
-		console.log({ AlboChartPars: chartParameters });
+		// console.log({ AlboChartPars: chartParameters });
 		if (
 			chartParameters.lineSlice &&
 			chartParameters.lineSlice.length > 0 &&

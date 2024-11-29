@@ -10,14 +10,13 @@ const timeSeriesApi = createApi({
 	endpoints(builder) {
 		return {
 			fetchTimeSeriesData: builder.query({
-				// providesTags: ["TimeSeries"],
 
 				query: (data) => {
 					let location;
 					location = JSON.parse(data.position);
 
 					// const dateRange = `${"2024-01-01:2025-12-31"}`;
-					const dateRange = getDateRange(":")
+					const dateRange = getDateRange(":");
 					const vectorName = data.vectorName;
 					let param;
 					if (vectorName === "albopictus") {
@@ -40,11 +39,10 @@ const timeSeriesApi = createApi({
 
 					return {
 						url: "",
-						params: param, 
+						params: param,
 						method: "GET",
 					};
 				},
-				
 			}),
 		};
 	},

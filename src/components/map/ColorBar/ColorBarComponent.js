@@ -1,7 +1,6 @@
 import "./ColorBarComponent.css";
 import {
 	setDisplayTileNames,
-	setPanelTop,
 	useFetchColorBarsDataQuery,
 } from "store";
 
@@ -10,8 +9,8 @@ import { useEffect } from "react";
 import { useState } from "react";
 import { useRef } from "react";
 function ColorBarComponent({ times }) {
-	const panelOpen = useSelector(
-		(state) => state.fetcher.fetcherStates.map.leftMenu.panelOpen
+	const panelOpenLeft = useSelector(
+		(state) => state.fetcher.fetcherStates.menu.left.panelOpen
 	);
 
 	const panelTop = useSelector((state) => state.panel.panelTop);
@@ -57,7 +56,7 @@ function ColorBarComponent({ times }) {
 			}
 
 			if (window.innerWidth <= 499) {
-				if (panelOpen) {
+				if (panelOpenLeft) {
 					setStyle([
 						{ top: `${panelTop - leftHeight - 20}px`, bottom: "unset" },
 						{ top: `${panelTop - rightHeight - 20}px`, bottom: "unset" },
@@ -81,7 +80,7 @@ function ColorBarComponent({ times }) {
 		return () => {
 			window.removeEventListener("resize", handleResize);
 		};
-	}, [panelOpen, panelTop, times]);
+	}, [panelOpenLeft, panelTop, times]);
 	useEffect(() => {
 		if (!data) {
 			return;
@@ -126,11 +125,7 @@ function ColorBarComponent({ times }) {
 								? "#FFFFFF"
 								: colors[colors.length - index - 1]
 						}`,
-						backgroundColor: `${
-							colors[colors.length - index - 1] === transColor
-								? "#FFFFFF"
-								: colors[colors.length - index - 1]
-						}`,
+				
 					}}
 				></div>
 			);

@@ -33,12 +33,12 @@ function ChartIndicators() {
 	}
 	var fdate = "";
 	if (data && "fcast-ts" in data) {
-		dispatch(
-			setChartDatesLeft({ first: data.date.date0, last: data.date.date1 })
-		);
-		dispatch(
-			setChartDatesRight({ first: data.date.date0, last: data.date.date1 })
-		);
+		// dispatch(
+		// 	setChartDatesLeft({ first: data.date.date0, last: data.date.date1 })
+		// );
+		// dispatch(
+		// 	setChartDatesRight({ first: data.date.date0, last: data.date.date1 })
+		// );
 		var todate = new Date(data.date.date0);
 		todate.setDate(todate.getDate() + data["fcast-ts"].ecmwf.colegg.length);
 		fdate = (

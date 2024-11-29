@@ -5,7 +5,7 @@ import "./MyMap.css";
 import { lazy } from "react";
 import { useSelector } from "react-redux";
 import { Suspense } from "react";
-import MapAdjustmentsService from "components/charts/services/MapAdjustmentsService";
+import PackageMapServices from "components/map/mapPackage/PackageMapServices";
 import { useRef } from "react";
 import SearchLocationIcon from "components/LeftPanel/MapWithDate/MyMap/SearchLocationIcon/SearchLocationIcon";
 
@@ -49,7 +49,7 @@ function MyMap({ maxZoom }) {
 		} else {
 			p.map.setView(position, maxZoom);
 
-			MapAdjustmentsService.highlightMarkerFunc(
+			PackageMapServices.highlightMarkerFunc(
 				position.lat,
 				position.lng,
 				mapParRef,

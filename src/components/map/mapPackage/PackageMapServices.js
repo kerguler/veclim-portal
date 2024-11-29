@@ -5,8 +5,7 @@ import "leaflet-side-by-side";
 import {
 	setMapPagePosition,
 	setPanelInterfere,
-	setPanelOpen,
-	setMapMenuOpen,
+	setPanelOpenLeft,
 	setSwitchMap,
 	setMapLoaded,
 	setLeftMapLoaded,
@@ -15,15 +14,12 @@ import {
 	setCurrentMapZoom,
 	setVectorName,
 	setTileArray,
-	setDisplayedPanelID,
+	setDisplayedPanelIDLeft,
 	setCurrentMapBounds,
-	setPageTransition,
 	setMapVector,
-	setDividerPosition,
 } from "store";
 import TileLoaderService from "../../../customHooks/TileLoaderService";
 import ErrorScreenMap from "components/map/errorScreen/ErrorScreenMap";
-import { setDirectMap } from "store";
 import { setCurrentMaxBounds } from "store";
 import { setDisplayReady } from "store";
 import { setPanelInterfereRight } from "store";
@@ -106,8 +102,8 @@ class PackageMapServices {
 			dispatch(setDisplayReady(false));
 		}
 
-		dispatch(setDisplayedPanelID(0));
-		dispatch(setPanelOpen(false));
+		dispatch(setDisplayedPanelIDLeft(0));
+		dispatch(setPanelOpenLeft(false));
 	}
 
 	static handleMapClick(
@@ -116,7 +112,8 @@ class PackageMapServices {
 		vectorName,
 		dispatch,
 		directMap,
-		directMapRight
+		directMapRight,
+		
 	) {
 		this.clickMap(e, mapParRef, vectorName, dispatch);
 		// TODO: MAY NEED TO REMOVE
@@ -132,7 +129,7 @@ class PackageMapServices {
 			dispatch(setPanelInterfereRight(null));
 		}
 	}
-	static clickMap = (e, mapParRef, vectorName, dispatch) => {
+	static clickMap = (e, mapParRef, vectorName, dispatch,) => {
 		let p = mapParRef.current;
 		const switchZoom = 4;
 		let newPosition = this.roundPosition(
@@ -142,9 +139,9 @@ class PackageMapServices {
 		);
 		newPosition = { ...newPosition, res: [0.125, 0.125] };
 		p.prevClickPointRef = newPosition;
-		dispatch(
-			setMapPagePosition({ lat: newPosition.lat, lng: newPosition.lng })
-		);
+			dispatch(
+				setMapPagePosition({ lat: newPosition.lat, lng: newPosition.lng })
+			);
 		p.highlightMarker && p.map.removeLayer(p.highlightMarker);
 		p.iconMarker && p.map.removeLayer(p.iconMarker);
 		p.rectMarker && p.map.removeLayer(p.rectMarker);
@@ -324,7 +321,6 @@ class PackageMapServices {
 		if (bounds) {
 			console.log("bounds", bounds);
 			let p = mapParRef.current;
-			var size = p.map.getSize();
 			var zoom = p.map.getZoom();
 			var nw = p.map.project(bounds.getNorthWest(), zoom);
 			var se = p.map.project(bounds.getSouthEast(), zoom);

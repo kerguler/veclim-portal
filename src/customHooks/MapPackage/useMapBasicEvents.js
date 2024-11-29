@@ -1,16 +1,18 @@
-import {useEffect} from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
-	setCurrentMapBounds,
+	
 	setCurrentMapCenter,
 	setCurrentMapZoom,
-	setDirectInitError,
+	setDirectInitErrorLeft,
 } from "store";
 
 import PackageMapServices from "components/map/mapPackage/PackageMapServices";
 function useMapBasicEvents(mapParRef, fitworld) {
 	const dispatch = useDispatch();
-
+	const directInitErrorLeft = useSelector(
+		(state) => state.fetcher.fetcherStates.menu.left.directInitError
+	);
 	const vectorName = useSelector(
 		(state) => state.fetcher.fetcherStates.vectorName
 	);
@@ -33,12 +35,14 @@ function useMapBasicEvents(mapParRef, fitworld) {
 			PackageMapServices.mouseOut(mapParRef);
 		};
 		const handleResize = () => {
-		
 			try {
 				PackageMapServices.resizeMap(mapParRef, vectorName, dispatch);
 			} catch (error) {
 				dispatch(
-					setDirectInitError({ ...setDirectInitError, message: error.message })
+					setDirectInitErrorLeft({
+						...directInitErrorLeft,
+						message: error.message,
+					})
 				);
 			}
 		};
@@ -54,7 +58,7 @@ function useMapBasicEvents(mapParRef, fitworld) {
 			p.map.off("move", handleMove);
 			p.map.off("mouseout", PackageMapServices.mouseOut, true);
 		};
-	}, [dispatch, mapParRef, p, vectorName,]);
+	}, [dispatch, mapParRef, p, vectorName]);
 
 	useEffect(() => {
 		if (fitworld) {
