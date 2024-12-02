@@ -5,6 +5,7 @@ import { setAlboRequestPlot } from "store";
 import ChartCalculatorService from "components/charts/services/ChartCalculatorService";
 import useDirectorFun from "customHooks/useDirectorFun";
 import { setSlider1EnabledRight } from "store";
+import { useState } from "react";
 function useAlboRequest(rawData, direction) {
 	const dispatch = useDispatch();
 	const alboSlider1Value = useSelector(
@@ -28,14 +29,14 @@ function useAlboRequest(rawData, direction) {
 	// console.log({ alboRequest });
 
 	const tsData = useSelector((state) => state.fetcher.fetcherStates.data);
+	const [customError, setCustomError] = useState(0);
 
+	const mapPagePositionLeft = useSelector(
+		(state) => state.fetcher.fetcherStates.map.mapPagePosition
+	);
 	useEffect(() => {
-		tsData && console.log({ tsData });
-		if (Object.keys(tsData).length > 0) {
-	
-		}
-	}, [tsData]);
-
+		setCustomError(1);
+	}, [mapPagePositionLeft]);
 
 	useEffect(() => {
 		const handleConfirm = async () => {
@@ -50,19 +51,20 @@ function useAlboRequest(rawData, direction) {
 		if (alboRequest && direction === "right") {
 			console.log("dealing with albo request");
 			handleConfirm();
-			// dispatch(setAlboRequestPlot(false));
+			setCustomError(false);
 		}
 	}, [alboSlider1Value, alboRequest]);
 
 	const alboDates = useSelector(
 		(state) => state.fetcher.fetcherStates.menu.right.chart.dates
 	);
+
 	useEffect(() => {
 		let r = rawData.current;
 		if (data) {
-			r.data = {...data, ...tsData};
-			
-			console.log("ALBO DATA IS HERE",{data:r.data});
+			r.data = { ...data, ...tsData };
+
+			console.log("ALBO DATA IS HERE", { data: r.data });
 			ChartCalculatorService.createDateArrayAlbo(
 				rawData,
 				chartParameters,
@@ -78,7 +80,7 @@ function useAlboRequest(rawData, direction) {
 		} else {
 			dispatch(setPlotReadyDir(false));
 		}
-	}, [data,tsData]);
+	}, [data, tsData]);
 
 	useEffect(() => {
 		// console.log({ AlboChartPars: chartParameters });
@@ -96,7 +98,11 @@ function useAlboRequest(rawData, direction) {
 		}
 	});
 
-	return { dataAlbo: data, errorAlbo: error, isFetchingAlbo: isLoading };
+	return {
+		dataAlbo: data,
+		errorAlbo: error || customError,
+		isFetchingAlbo: isLoading,
+	};
 }
 
 export default useAlboRequest;

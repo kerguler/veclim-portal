@@ -13,6 +13,7 @@ function MapPackageLanding() {
 	const readyToView = useSelector(
 		(state) => state.fetcher.fetcherStates.readyToView
 	);
+	const vectorName = useSelector((state) => state.fetcher.fetcherStates.vectorName);
 	console.log("MapPackageLanding is rendered ");
 	return (
 		readyToView && (
@@ -21,7 +22,7 @@ function MapPackageLanding() {
 				<div className="map-wrapper">
 					<PanelProvider>
 						<MapMenu direction="left"></MapMenu>
-						<MapMenu direction="right"></MapMenu>
+						{vectorName==="albopictus" &&<MapMenu direction="right"></MapMenu>}
 
 					<ErrorBoundary>
 						<MapPackageComponent />

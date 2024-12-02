@@ -9,11 +9,8 @@ import useDirectorFun from "customHooks/useDirectorFun";
 import useAlboRequest from "./useAlboRequest";
 import useTsRequest from "./useTsRequest";
 function UnifiedRechartPlotter({ dateArray, direction }) {
-	const {
-		chartParameters,
-		mapPagePosition,
-		plotReady,
-	} = useDirectorFun(direction);
+	const { chartParameters, mapPagePosition, plotReady } =
+		useDirectorFun(direction);
 
 	const rawData = useRef({
 		slice1: null,
@@ -29,11 +26,17 @@ function UnifiedRechartPlotter({ dateArray, direction }) {
 	const { dataTs, isFetchingTs, errorTs } = useTsRequest(rawData, direction);
 	const { dataAlbo, isFetchingAlbo, errorAlbo } = useAlboRequest(
 		rawData,
-		direction,dataTs
+		direction
 	);
 
-	
-
+	const isFetching = direction === "left" ? isFetchingTs : isFetchingAlbo;
+	const error = direction === "left" ? errorTs : errorAlbo;
+	const data = direction === "left" ? dataTs : dataAlbo;
+	const errorMessageAlbo = (
+		<div className="error-container">
+			<p>the Map position has changed since the last simulation</p>
+		</div>
+	);
 	const errorMessage = mapPagePosition.lat ? (
 		<div className="error-container">
 			<p>
@@ -48,14 +51,17 @@ function UnifiedRechartPlotter({ dateArray, direction }) {
 		</div>
 	);
 
-
-	if (isFetchingTs || isFetchingAlbo) {
+	if (isFetching) {
 		return (
 			<ChartLoadingSkeleton times={4}>
 				<p>Fetching Graphics Data</p>
 			</ChartLoadingSkeleton>
 		);
-	} else if (errorTs || errorAlbo) {
+	} else if (error) {
+		if (error === 1) {
+			return errorMessageAlbo;
+		}
+		console.log({ errorTs, errorAlbo });
 		return errorMessage;
 	} else if (Object.keys(chartParameters).length === 0) {
 		return <div></div>;
@@ -75,7 +81,7 @@ function UnifiedRechartPlotter({ dateArray, direction }) {
 			}
 		}
 	}
-	if (dataTs || dataAlbo) {
+	if (data) {
 		return (
 			plotReady && (
 				<ErrorBoundary>

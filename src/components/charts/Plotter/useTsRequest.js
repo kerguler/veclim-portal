@@ -25,11 +25,11 @@ function useTsRequest(rawData, direction) {
 		setMapPagePositionDir,
 	} = useDirectorFun("left");
 
-	const { data, error, isFetching } = useFetchTimeSeriesDataQuery({
-		position: JSON.stringify(mapPagePosition),
-		vectorName: vectorName,
-		dateArray: dateArray,
-	});
+	const { data, error, isFetching } = useFetchTimeSeriesDataQuery(
+		direction === "left"
+			? { position: JSON.stringify(mapPagePosition), vectorName, dateArray }
+			: skipToken
+	);
 
 	const [customError, setCustomError] = useState(null);
 
@@ -65,7 +65,7 @@ function useTsRequest(rawData, direction) {
 				console.log("NO DATA FOR ALBO");
 			} else {
 				let r = rawData.current;
-				
+
 				if (
 					data &&
 					data[chartParameters.initialSetting] &&
@@ -76,7 +76,7 @@ function useTsRequest(rawData, direction) {
 					ChartCalculatorService.createDateArray(rawData, chartParameters);
 					ChartCalculatorService.handleMixedKeys(rawData, chartParameters);
 					ChartCalculatorService.handleSlices(chartParameters, rawData);
-				
+
 					dispatch(setPlotReadyDir(true));
 					customError && setCustomError(false);
 				}
@@ -84,9 +84,11 @@ function useTsRequest(rawData, direction) {
 		}
 	}, [data, direction, vectorName]);
 
-if (data){
-	dispatch(setTsData(data));
-}
+	useEffect(() => {
+		if (data && vectorName === "albopictus") {
+			dispatch(setTsData(data));
+		}
+	}, [data, vectorName, dispatch]);
 
 	if (direction === "left") {
 		if (
