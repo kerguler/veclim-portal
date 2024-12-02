@@ -10,6 +10,7 @@ const fetcherSlice = createSlice({
 			vectorName: "albopictus",
 			tileArray: ["colegg"],
 			availableTiles: [],
+			data: {},
 			map: {
 				currentMapCenter: [35.1966527, 33.3217152],
 				currentMapZoom: 2,
@@ -60,7 +61,11 @@ const fetcherSlice = createSlice({
 		fetcherError: null,
 		fetcherLoading: false,
 	},
+
 	reducers: {
+		setTsData(state, action) {
+			state.fetcherStates.data = action.payload;
+		},
 		setMapPagePositionRight(state, action) {
 			state.fetcherStates.map.mapPagePositionRight = action.payload;
 		},
@@ -188,7 +193,9 @@ const fetcherSlice = createSlice({
 	},
 });
 
-export const {setMapPagePositionRight,
+export const {
+	setTsData,
+	setMapPagePositionRight,
 	setAlboParamsSlider1Value,
 	setAlboRequestPlot,
 	setBrushRangeLeft,

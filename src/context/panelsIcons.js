@@ -953,18 +953,14 @@ function PanelProvider({ children }) {
 				mixedKeys: [
 					{
 						key: "g1",
-						levels: ["test", "fcast-ts", "ecmwf", "coln4f"],
+						levels: ["test", "fcast-ts", "ecmwf", "iouts"],
 					},
 					{
 						key: "g2",
-						levels: ["test", "fcast-ts", "ecmwf", "colK"],
-					},
-					{
-						key: "g3",
-						levels: ["test", "fcast-ts", "ecmwf", "coln2"],
+						levels: ["fcast-ts", "ecmwf", "iouts"],
 					},
 				],
-				plottedKeys: ["g1", "g2", "g3"],
+				plottedKeys: ["g1", "g2"],
 				colors: ["#1B3958", "#1B3958", "#000000"],
 				horizontalAxis: "date",
 				lineSlice: ["g1"],

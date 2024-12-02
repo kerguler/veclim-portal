@@ -27,6 +27,16 @@ function useAlboRequest(rawData, direction) {
 		useSubmitAlboDataMutation();
 	// console.log({ alboRequest });
 
+	const tsData = useSelector((state) => state.fetcher.fetcherStates.data);
+
+	useEffect(() => {
+		tsData && console.log({ tsData });
+		if (Object.keys(tsData).length > 0) {
+	
+		}
+	}, [tsData]);
+
+
 	useEffect(() => {
 		const handleConfirm = async () => {
 			// console.log("Submitting Albo Data", alboSlider1Value / 100);
@@ -50,8 +60,9 @@ function useAlboRequest(rawData, direction) {
 	useEffect(() => {
 		let r = rawData.current;
 		if (data) {
-			r.data = data;
-			console.log("ALBO DATA IS HERE");
+			r.data = {...data, ...tsData};
+			
+			console.log("ALBO DATA IS HERE",{data:r.data});
 			ChartCalculatorService.createDateArrayAlbo(
 				rawData,
 				chartParameters,
@@ -67,7 +78,7 @@ function useAlboRequest(rawData, direction) {
 		} else {
 			dispatch(setPlotReadyDir(false));
 		}
-	}, [data]);
+	}, [data,tsData]);
 
 	useEffect(() => {
 		// console.log({ AlboChartPars: chartParameters });

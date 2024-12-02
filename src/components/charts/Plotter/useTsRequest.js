@@ -7,6 +7,7 @@ import { useDispatch } from "react-redux";
 import { useState } from "react";
 import CustomTooltip from "../chartComponents/CustomTooltip/CustomTooltip";
 import PackageMapServices from "components/map/mapPackage/PackageMapServices";
+import { setTsData } from "store";
 function useTsRequest(rawData, direction) {
 	const dispatch = useDispatch();
 
@@ -24,15 +25,11 @@ function useTsRequest(rawData, direction) {
 		setMapPagePositionDir,
 	} = useDirectorFun("left");
 
-	const { data, error, isFetching } = useFetchTimeSeriesDataQuery(
-		direction === "left"
-			? {
-					position: JSON.stringify(mapPagePosition),
-					vectorName: vectorName,
-					dateArray: dateArray,
-			  }
-			: skipToken
-	);
+	const { data, error, isFetching } = useFetchTimeSeriesDataQuery({
+		position: JSON.stringify(mapPagePosition),
+		vectorName: vectorName,
+		dateArray: dateArray,
+	});
 
 	const [customError, setCustomError] = useState(null);
 
@@ -68,7 +65,7 @@ function useTsRequest(rawData, direction) {
 				console.log("NO DATA FOR ALBO");
 			} else {
 				let r = rawData.current;
-
+				
 				if (
 					data &&
 					data[chartParameters.initialSetting] &&
@@ -79,12 +76,17 @@ function useTsRequest(rawData, direction) {
 					ChartCalculatorService.createDateArray(rawData, chartParameters);
 					ChartCalculatorService.handleMixedKeys(rawData, chartParameters);
 					ChartCalculatorService.handleSlices(chartParameters, rawData);
+				
 					dispatch(setPlotReadyDir(true));
 					customError && setCustomError(false);
 				}
 			}
 		}
 	}, [data, direction, vectorName]);
+
+if (data){
+	dispatch(setTsData(data));
+}
 
 	if (direction === "left") {
 		if (
@@ -104,7 +106,6 @@ function useTsRequest(rawData, direction) {
 			// dispatch(setPlotReadyDir(false));
 		}
 	}
-
 
 	return {
 		dataTs: customError ? null : data,

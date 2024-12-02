@@ -29,7 +29,7 @@ function UnifiedRechartPlotter({ dateArray, direction }) {
 	const { dataTs, isFetchingTs, errorTs } = useTsRequest(rawData, direction);
 	const { dataAlbo, isFetchingAlbo, errorAlbo } = useAlboRequest(
 		rawData,
-		direction
+		direction,dataTs
 	);
 
 	
