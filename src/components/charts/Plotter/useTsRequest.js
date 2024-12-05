@@ -8,6 +8,7 @@ import { useState } from "react";
 import CustomTooltip from "../chartComponents/CustomTooltip/CustomTooltip";
 import PackageMapServices from "components/map/mapPackage/PackageMapServices";
 import { setTsData } from "store";
+import { useSelector } from "react-redux";
 function useTsRequest(rawData, direction) {
 	const dispatch = useDispatch();
 
@@ -25,17 +26,15 @@ function useTsRequest(rawData, direction) {
 		setMapPagePositionDir,
 	} = useDirectorFun("left");
 
-	const { data, error, isFetching } = useFetchTimeSeriesDataQuery(
-		direction === "left"
-			? { position: JSON.stringify(mapPagePosition), vectorName, dateArray }
-			: skipToken
-	);
+	const { data, error, isFetching } = useFetchTimeSeriesDataQuery({
+		position: JSON.stringify(mapPagePosition),
+		vectorName,
+		dateArray,
+	});
 
 	const [customError, setCustomError] = useState(null);
 
 	useEffect(() => {
-		console.log("USE TS useEffect 1");
-
 		if (direction === "left") {
 			if (!mapPagePosition.lat) {
 				if (vectorName === "albopictus") {
@@ -49,11 +48,7 @@ function useTsRequest(rawData, direction) {
 		}
 	}, [vectorName, dispatch, mapPagePosition]);
 	useEffect(() => {
-		console.log("USE TS useEffect 2");
-
 		if (direction === "left") {
-			console.log({ data, chartParameters });
-
 			if (data && vectorName === "papatasi" && !data["sim-ts"]) {
 				customError || setCustomError(true);
 			} else if (
@@ -62,7 +57,6 @@ function useTsRequest(rawData, direction) {
 				!data[chartParameters.initialSetting]
 			) {
 				customError || setCustomError(true);
-				console.log("NO DATA FOR ALBO");
 			} else {
 				let r = rawData.current;
 
@@ -72,7 +66,6 @@ function useTsRequest(rawData, direction) {
 					Object.keys(data[chartParameters.initialSetting]).length > 0
 				) {
 					r.data = data;
-					console.log("TS DATA IS HERE", { chartParameters });
 					ChartCalculatorService.createDateArray(rawData, chartParameters);
 					ChartCalculatorService.handleMixedKeys(rawData, chartParameters);
 					ChartCalculatorService.handleSlices(chartParameters, rawData);
@@ -83,10 +76,12 @@ function useTsRequest(rawData, direction) {
 			}
 		}
 	}, [data, direction, vectorName]);
-
+	const tsData = useSelector((state) => state.fetcher.fetcherStates.data);
 	useEffect(() => {
 		if (data && vectorName === "albopictus") {
 			dispatch(setTsData(data));
+		} else {
+			dispatch(setTsData(null));
 		}
 	}, [data, vectorName, dispatch]);
 
@@ -96,8 +91,7 @@ function useTsRequest(rawData, direction) {
 			chartParameters.lineSlice.length > 0 &&
 			!chartParameters.plottedKeys.includes("slice1")
 		) {
-			console.log("USE TS unconditional dispatcher");
-
+			
 			dispatch(appendToPlottedKeysChartParametersDir("slice1"));
 			dispatch(appendToPlottedKeysChartParametersDir("slice2"));
 			dispatch(appendToPlottedKeysChartParametersDir("slice3"));
@@ -105,7 +99,6 @@ function useTsRequest(rawData, direction) {
 			dispatch(appendToColorsChartParametersDir(chartParameters.sliceColors));
 			dispatch(spliceChartParametersForSlicesDir(0));
 		} else if (direction === "left" && customError) {
-			// dispatch(setPlotReadyDir(false));
 		}
 	}
 

@@ -16,7 +16,6 @@ import useZoomActions from "customHooks/useZoomActions";
 import useMapBasicEvents from "customHooks/MapPackage/useMapBasicEvents";
 import useLMapResize from "customHooks/MapPackage/useLMapResize";
 function MapPackageComponent({ fitworld }) {
-	console.log("MapPackageComponent");
 	const dispatch = useDispatch();
 	const {
 		tileArray,

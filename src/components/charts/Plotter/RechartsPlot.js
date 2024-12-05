@@ -65,6 +65,7 @@ function RechartsPlot({ direction, plotMat }) {
 				setBrushRangeDir({ startIndex: 0, endIndex: plotMat.length - 1 })
 			);
 	}, [vectorName, dispatch, plotMat]);
+
 	const [transform, setTransform] = useState([0, 0]);
 
 	useYsliderPositioning(setTransform);
@@ -86,7 +87,7 @@ function RechartsPlot({ direction, plotMat }) {
 		}
 		return value; // If not a number, return it as is
 	};
-
+if (direction==="left"){
 	ChartCalculatorService.decideBrushRange(
 		chartParameters,
 		plotMat,
@@ -94,7 +95,15 @@ function RechartsPlot({ direction, plotMat }) {
 		d,
 		xBrushRange
 	);
-
+}else{
+	ChartCalculatorService.decideBrushRangeAlbo(
+		chartParameters,
+		plotMat,
+		dispatch,
+		d,
+		xBrushRange
+	);
+}
 	const handleBrushChange = (range) => {
 		ChartCalculatorService.handleBrushChange(
 			range,

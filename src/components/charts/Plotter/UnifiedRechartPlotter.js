@@ -61,11 +61,22 @@ function UnifiedRechartPlotter({ dateArray, direction }) {
 		if (error === 1) {
 			return errorMessageAlbo;
 		}
-		console.log({ errorTs, errorAlbo });
+		if (error === 2) {
+			return (
+				<div class name="error-container">
+					<p> Waiting for TS data to arrive</p>
+				</div>
+			);
+		}
 		return errorMessage;
 	} else if (Object.keys(chartParameters).length === 0) {
-		return <div></div>;
+		return (
+			<div className="error-container">
+				<p>the chart parameters are not set yet</p>{" "}
+			</div>
+		);
 	} else {
+
 		if (direction === "right") {
 			if (!dataAlbo || !dataAlbo[chartParameters.initialSetting]) {
 				return (
@@ -80,6 +91,7 @@ function UnifiedRechartPlotter({ dateArray, direction }) {
 				r.data = dataAlbo;
 			}
 		}
+	
 	}
 	if (data) {
 		return (

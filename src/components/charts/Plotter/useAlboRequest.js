@@ -24,9 +24,9 @@ function useAlboRequest(rawData, direction) {
 		spliceChartParametersForSlicesDir,
 		mapPagePosition,
 	} = useDirectorFun("right");
+
 	const [submitAlboData, { isLoading, data, error }] =
 		useSubmitAlboDataMutation();
-	// console.log({ alboRequest });
 
 	const tsData = useSelector((state) => state.fetcher.fetcherStates.data);
 	const [customError, setCustomError] = useState(0);
@@ -40,16 +40,11 @@ function useAlboRequest(rawData, direction) {
 
 	useEffect(() => {
 		const handleConfirm = async () => {
-			// console.log("Submitting Albo Data", alboSlider1Value / 100);
 			try {
 				const response = await submitAlboData(alboSlider1Value / 100).unwrap();
-				console.log("Success:", response);
-			} catch (err) {
-				console.error("Error:", err);
-			}
+			} catch (err) {}
 		};
 		if (alboRequest && direction === "right") {
-			console.log("dealing with albo request");
 			handleConfirm();
 			setCustomError(false);
 		}
@@ -58,45 +53,82 @@ function useAlboRequest(rawData, direction) {
 	const alboDates = useSelector(
 		(state) => state.fetcher.fetcherStates.menu.right.chart.dates
 	);
+	useEffect(() => {
+		let r = rawData.current;
+		if (tsData) {
+			if (data) {
+				r.data = { ...data, ...tsData };
+
+				ChartCalculatorService.createDateArrayAlbo(
+					rawData,
+					chartParameters,
+					alboDates
+				);
+				ChartCalculatorService.handleMixedKeysAlbo(rawData, chartParameters);
+				ChartCalculatorService.handleSlicesAlbo(chartParameters, rawData);
+				dispatch(setPlotReadyDir(true));
+				dispatch(setAlboRequestPlot(false));
+				dispatch(setSlider1EnabledRight(true));
+				setCustomError(null);
+			} else {
+				dispatch(setPlotReadyDir(false));
+			}
+		} else {
+			setCustomError(2);
+		}
+	}, [
+		alboDates,
+		chartParameters,
+		data,
+		dispatch,
+		rawData,
+		setPlotReadyDir,
+		tsData,
+	]);
 
 	useEffect(() => {
 		let r = rawData.current;
-		if (data) {
-			r.data = { ...data, ...tsData };
-
-			console.log("ALBO DATA IS HERE", { data: r.data });
-			ChartCalculatorService.createDateArrayAlbo(
-				rawData,
-				chartParameters,
-				alboDates
-			);
-			console.log({ alboR: r });
-			ChartCalculatorService.handleMixedKeysAlbo(rawData, chartParameters);
-			console.log({ alboParams: chartParameters });
-			ChartCalculatorService.handleSlicesAlbo(chartParameters, rawData);
-			dispatch(setPlotReadyDir(true));
-			dispatch(setAlboRequestPlot(false));
-			dispatch(setSlider1EnabledRight(true));
-		} else {
-			dispatch(setPlotReadyDir(false));
-		}
-	}, [data, tsData]);
-
-	useEffect(() => {
-		// console.log({ AlboChartPars: chartParameters });
 		if (
+			r.dataToPlot &&
 			chartParameters.lineSlice &&
 			chartParameters.lineSlice.length > 0 &&
 			!chartParameters.plottedKeys.includes("slice1")
 		) {
-			dispatch(appendToPlottedKeysChartParametersDir("slice1"));
-			dispatch(appendToPlottedKeysChartParametersDir("slice2"));
-			dispatch(appendToPlottedKeysChartParametersDir("slice3"));
-			dispatch(appendToLabelsChartParametersDir(chartParameters.sliceLabels));
+			console.log({ rINAPpend: r });
+			Object.keys(r.rawDataToPlot).forEach((element, index) => {
+				if (element !== "key") {
+					if (
+						r.rawDataToPlot[element] &&
+						r.rawDataToPlot[element].slices &&
+						Object.keys(r.rawDataToPlot[element].slices).length > 0
+					) {
+						Object.keys(r.rawDataToPlot[element].slices).forEach(
+							(slice, index) => {
+								dispatch(
+									appendToPlottedKeysChartParametersDir(
+										`${element}.slice${index}`
+									)
+								);
+							}
+						);
+					}
+				}
+			});
+
+			dispatch(
+				appendToLabelsChartParametersDir(chartParameters.sliceLabelsAlbo)
+			);
+			dispatch(
+				appendToColorsChartParametersDir(chartParameters.sliceColorsAlbo)
+			);
+			dispatch(
+				appendToLabelsChartParametersDir(chartParameters.sliceLabelsAlbo)
+			);
 			dispatch(appendToColorsChartParametersDir(chartParameters.sliceColors));
 			dispatch(spliceChartParametersForSlicesDir(0));
+			dispatch(spliceChartParametersForSlicesDir(1));
 		}
-	});
+	}, [rawData.current.dataToPlot]);
 
 	return {
 		dataAlbo: data,

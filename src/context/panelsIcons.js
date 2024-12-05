@@ -967,6 +967,8 @@ function PanelProvider({ children }) {
 				labels: ["Activity forecast", "Decadal activity"],
 				sliceLabels: ["This year", "Overlap", "Forecast"],
 				sliceColors: ["#50C0AD", "orange", "#F15A48"],
+				sliceLabelsAlbo: ["This year", "Overlap", "Forecast"],
+				sliceColorsAlbo: ["#50C0AD", "orange", "#F15A48"],
 			},
 
 			content: (
