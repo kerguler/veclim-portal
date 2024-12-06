@@ -24,10 +24,8 @@ import useYsliderPositioning from "customHooks/useYsliderPositioning";
 import ChartCalculatorService from "../services/ChartCalculatorService";
 import useDirectorFun from "customHooks/useDirectorFun";
 
-function RechartsPlot({ direction, plotMat }) {
-	if (direction === "right") {
-		console.log("rerendering right ");
-	}
+function RechartsUnified({ direction, plotMat }) {
+	const myPlotMat = plotMat;
 	const args = {
 		years: { firstYear: null, lastYear: null },
 		date: null,
@@ -56,15 +54,15 @@ function RechartsPlot({ direction, plotMat }) {
 	} = useDirectorFun(direction);
 
 	useEffect(() => {
-		dispatch(setBrushDataDir(plotMat));
-	}, [plotMat, dispatch, vectorName]);
+		dispatch(setBrushDataDir(myPlotMat));
+	}, [myPlotMat, dispatch, vectorName]);
 
 	useEffect(() => {
-		plotMat &&
+		myPlotMat &&
 			dispatch(
-				setBrushRangeDir({ startIndex: 0, endIndex: plotMat.length - 1 })
+				setBrushRangeDir({ startIndex: 0, endIndex: myPlotMat.length - 1 })
 			);
-	}, [vectorName, dispatch, plotMat]);
+	}, [vectorName, dispatch, myPlotMat]);
 
 	const [transform, setTransform] = useState([0, 0]);
 
@@ -90,7 +88,7 @@ function RechartsPlot({ direction, plotMat }) {
 	if (direction === "left") {
 		ChartCalculatorService.decideBrushRange(
 			chartParameters,
-			plotMat,
+			myPlotMat,
 			dispatch,
 			d,
 			xBrushRange
@@ -98,7 +96,7 @@ function RechartsPlot({ direction, plotMat }) {
 	} else {
 		ChartCalculatorService.decideBrushRangeAlbo(
 			chartParameters,
-			plotMat,
+			myPlotMat,
 			dispatch,
 			d,
 			xBrushRange
@@ -108,15 +106,15 @@ function RechartsPlot({ direction, plotMat }) {
 		ChartCalculatorService.handleBrushChange(
 			range,
 			dispatch,
-			plotMat,
+			myPlotMat,
 			setBrushRangeDir
 		);
 	};
 
 	useEffect(() => {
 		s.minmax = { min: 0, max: 0 };
-		plotMat &&
-			plotMat.forEach((d) => {
+		myPlotMat &&
+			myPlotMat.forEach((d) => {
 				chartParameters.plottedKeys.forEach((k) => {
 					if (d[k] < s.minmax.min) s.minmax.min = d[k];
 					if (d[k] > s.minmax.max) s.minmax.max = d[k];
@@ -125,7 +123,7 @@ function RechartsPlot({ direction, plotMat }) {
 		s.brushDataY = { min: s.minmax.min, max: s.minmax.max };
 		dispatch(setBrushDatayDir(s.brushDataY));
 	}, [
-		plotMat,
+		myPlotMat,
 		chartParameters.plottedKeys,
 		dispatch,
 		s,
@@ -173,7 +171,7 @@ function RechartsPlot({ direction, plotMat }) {
 		);
 	});
 
-	if (!plotMat || plotMat.length === 0) {
+	if (!myPlotMat || myPlotMat.length === 0) {
 		return <div>Loading data...</div>;
 	}
 
@@ -185,7 +183,7 @@ function RechartsPlot({ direction, plotMat }) {
 				className="chart"
 				width={500}
 				height={400}
-				data={plotMat}
+				data={myPlotMat}
 				margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
 			>
 				{renderedLines}
@@ -204,7 +202,7 @@ function RechartsPlot({ direction, plotMat }) {
 					className="myBrush"
 					dataKey="date"
 					height={15}
-					data={plotMat}
+					data={myPlotMat}
 					onChange={handleBrushChange}
 					startIndex={d.index[0]}
 					endIndex={d.index[1]}
@@ -246,7 +244,7 @@ function RechartsPlot({ direction, plotMat }) {
 						dataKey=""
 						height={150}
 						width={15}
-						data={plotMat}
+						data={myPlotMat}
 						onChange={handleBrushChangeY}
 					/>
 				</g>
@@ -255,4 +253,4 @@ function RechartsPlot({ direction, plotMat }) {
 	);
 }
 
-export default RechartsPlot;
+export default RechartsUnified;

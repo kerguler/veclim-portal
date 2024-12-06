@@ -8,6 +8,7 @@ import { useRef } from "react";
 import useDirectorFun from "customHooks/useDirectorFun";
 import useAlboRequest from "./useAlboRequest";
 import useTsRequest from "./useTsRequest";
+import RechartsUnified from "./RechartsUnified";
 function UnifiedRechartPlotter({ dateArray, direction }) {
 	const { chartParameters, mapPagePosition, plotReady } =
 		useDirectorFun(direction);

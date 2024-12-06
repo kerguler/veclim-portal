@@ -174,21 +174,28 @@ class ChartCalculatorService {
 					);
 
 					let result = [];
-					let totalLength = r.rawDataToPlot[key][key].length; // Length of the original array
 					let starter = 0;
+					let totalLength = r.rawDataToPlot[key][key].length; // Length of the original array
+					sortedIndices.forEach((index) => {
+						// Define a local start variable for each iteration
+						const currentStarter = starter;
 
-					for (let index of sortedIndices) {
 						// Create a slice for the current range
 						let slice = Array(totalLength).fill(null); // Initialize with nulls
+
+						// Copy values into their correct positions
 						r.rawDataToPlot[key][key]
-							.slice(starter, index)
+							.slice(currentStarter, index)
 							.forEach((value, idx) => {
-								slice[starter + idx] = value; // Copy values into their original positions
+								slice[currentStarter + idx] = value; // Insert value at the correct position
 							});
 
-						result.push(slice); // Add the slice to the result
-						starter = index; // Update start for the next range
-					}
+						// Add the slice to the result
+						result.push(slice);
+
+						// Update starter for the next range
+						starter = index;
+					});
 
 					// Handle the last range
 					let finalSlice = Array(totalLength).fill(null); // Initialize with nulls
@@ -235,6 +242,7 @@ class ChartCalculatorService {
 
 					// Log the resulting array
 					r.dataToPlot = resultArray;
+					r["done"] = true;
 
 					// r.dataToPlot.push({});
 				});

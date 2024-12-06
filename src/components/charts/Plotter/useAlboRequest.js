@@ -23,6 +23,7 @@ function useAlboRequest(rawData, direction) {
 		appendToPlottedKeysChartParametersDir,
 		spliceChartParametersForSlicesDir,
 		mapPagePosition,
+		plotReady,
 	} = useDirectorFun("right");
 
 	const [submitAlboData, { isLoading, data, error }] =
@@ -76,24 +77,18 @@ function useAlboRequest(rawData, direction) {
 		} else {
 			setCustomError(2);
 		}
-	}, [
-		alboDates,
-		chartParameters,
-		data,
-		dispatch,
-		rawData,
-		setPlotReadyDir,
-		tsData,
-	]);
+	}, [alboDates, chartParameters, data, dispatch, tsData]);
 
 	useEffect(() => {
 		let r = rawData.current;
 		if (
+			direction === "right" &&
 			r.dataToPlot &&
 			chartParameters.lineSlice &&
 			chartParameters.lineSlice.length > 0 &&
 			!chartParameters.plottedKeys.includes("slice1")
 		) {
+			console.log("eneterd the loop");
 			console.log({ rINAPpend: r });
 			Object.keys(r.rawDataToPlot).forEach((element, index) => {
 				if (element !== "key") {
@@ -121,14 +116,13 @@ function useAlboRequest(rawData, direction) {
 			dispatch(
 				appendToColorsChartParametersDir(chartParameters.sliceColorsAlbo)
 			);
-			dispatch(
-				appendToLabelsChartParametersDir(chartParameters.sliceLabelsAlbo)
-			);
+			dispatch(appendToLabelsChartParametersDir(chartParameters.sliceLabels));
 			dispatch(appendToColorsChartParametersDir(chartParameters.sliceColors));
 			dispatch(spliceChartParametersForSlicesDir(0));
 			dispatch(spliceChartParametersForSlicesDir(1));
 		}
-	}, [rawData.current.dataToPlot]);
+		console.log({ chartParametersINAPpend: chartParameters });
+	}, [plotReady]);
 
 	return {
 		dataAlbo: data,
