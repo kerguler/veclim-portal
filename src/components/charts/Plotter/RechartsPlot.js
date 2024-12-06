@@ -146,8 +146,7 @@ function RechartsPlot({ direction, plotMat }) {
 		let uniqueKey = `${key}-${index}`;
 		keyRef.current.push(uniqueKey);
 		console.log({ key, chartParameters });
-		return direction === "left" ? (
-			<Line
+		return 			<Line
 				id={uniqueKey}
 				key={uniqueKey}
 				type="monotone"
@@ -158,19 +157,8 @@ function RechartsPlot({ direction, plotMat }) {
 			>
 				{" "}
 			</Line>
-		) : (
-			<Line
-				id={uniqueKey}
-				key={uniqueKey}
-				type="monotone"
-				dataKey={key}
-				stroke={chartParameters.colorsAlbo[index]}
-				strokeWidth="1.5"
-				dot={false}
-			>
-				{" "}
-			</Line>
-		);
+		
+		
 	});
 
 	if (!plotMat || plotMat.length === 0) {

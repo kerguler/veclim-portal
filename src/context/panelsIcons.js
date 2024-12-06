@@ -962,7 +962,7 @@ function PanelProvider({ children }) {
 				],
 				plottedKeys: ["g1", "g2"],
 				colors: ["#1B3958", "#1B3958", "#000000"],
-				colorsAlbo: ["#1B3958", "#1B3958", "#000000"],
+				colorsAlbo: ["1B3958", "#1B3958", "#000000","#1B3958", "#1B3958", "#000000"],
 				horizontalAxis: "date",
 				lineSlice: ["g1", "g2"],
 				labels: ["Activity forecast", "Decadal activity"],

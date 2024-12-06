@@ -9,20 +9,38 @@ function CustomTooltip({ active, payload, label, parameters }) {
 		//hard coded test based on variable names slice1 slice 2 and slice 3
 
 		const RenderedTooltipElement = ({ entry, index }) => {
-			if (entry.name === "slice1") {
+			if (entry.name === "g1.slice0") {
 				return (
 					<span key={`${entry.value.toFixed(2)} - ${index}`}>
 						{" "}
-						{`${parameters.sliceLabels[0]}: ${entry.value.toFixed(2)}`}
+						{`${parameters.sliceLabelsAlbo[0]}: ${entry.value.toFixed(2)}`}
 					</span>
 				);
-			} else if (entry.name === "slice2") {
+			} else if (entry.name === "g1.slice1") {
+				return (
+					<span key={`${entry.value.toFixed(2)} - ${index}`}>{`${
+						parameters.sliceLabelsAlbo[1]
+					}: ${entry.value.toFixed(2)}`}</span>
+				);
+			} else if (entry.name === "g1.slice2") {
+				return (
+					<span key={`${entry.value.toFixed(2)} - ${index}`}>{`${
+						parameters.sliceLabelsAlbo[2]
+					}: ${entry.value.toFixed(2)}`}</span>
+				);
+			} else if (entry.name === "g2.slice0") {
+				return (
+					<span key={`${entry.value.toFixed(2)} - ${index}`}>{`${
+						parameters.sliceLabels[0]
+					}: ${entry.value.toFixed(2)}`}</span>
+				);
+			} else if (entry.name === "g2.slice1") {
 				return (
 					<span key={`${entry.value.toFixed(2)} - ${index}`}>{`${
 						parameters.sliceLabels[1]
 					}: ${entry.value.toFixed(2)}`}</span>
 				);
-			} else if (entry.name === "slice3") {
+			} else if (entry.name === "g2.slice2") {
 				return (
 					<span key={`${entry.value.toFixed(2)} - ${index}`}>{`${
 						parameters.sliceLabels[2]
