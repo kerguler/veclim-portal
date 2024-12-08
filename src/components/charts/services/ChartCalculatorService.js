@@ -26,8 +26,7 @@ class ChartCalculatorService {
 	}
 	static handleMixedKeysAlbo(rawData, params) {
 		let r = rawData.current;
-		console.log({ r });
-
+r.rawDataToPlot = {};
 		if (!params.mixedKeys) {
 			r.rawDataToPlot = {
 				...r.data[params.initialSetting],
@@ -112,142 +111,122 @@ class ChartCalculatorService {
 				return { date, ...entry };
 			});
 		}
-		console.log({ rTs: r });
 	}
+
+	static slicer(r, key, result) {
+		let resultArray = [];
+		// Iterate through each date in the total date array
+		r.dateInfo.dateArray.total.forEach((date, index) => {
+			// Initialize an object for this date
+			let entry = { date };
+			
+			Object.keys(r.rawDataToPlot).forEach((key) => {
+				const keyData = r.rawDataToPlot[key];
+				if (key !== "key") {
+					// If there are no slices, use the main key data directly
+					if (!keyData.slices || Object.keys(keyData.slices).length === 0) {
+						entry[key] = keyData[index] || null; // Add value or null if out of range
+					} else {
+						// If there are slices, add each slice as key.slice1, key.slice2, etc.
+						Object.keys(keyData.slices).forEach((sliceKey) => {
+							entry[`${key}.${sliceKey}`] =
+								keyData.slices[sliceKey][index] || null;
+						});
+					}
+				}
+			});
+
+			// Add the entry for this date to the result array
+			resultArray.push(entry);
+		});
+
+		// Log the resulting array
+		r.dataToPlot = resultArray;
+		r["done"] = true;
+	}
+
 	static handleSlicesAlbo(params, rawData) {
 		let tempStruct = {};
 		let r = rawData.current;
-		console.log({ r: r });
 
 		params.plottedKeys.forEach((item) => {
 			tempStruct[item] = null;
 		});
 		r.dateInfo.dates.sliceIndices = {};
-		if (params.lineSlice.length > 0) {
-			let date1Index, date2Index;
-			if (params.sliceDate1) {
-				date1Index = r.dateInfo.dateArray.indexOf(params.sliceDate1);
-				date2Index = r.dateInfo.dateArray.indexOf(params.sliceDate2);
+
+		params.mixedKeys.forEach((item) => {
+			const { key } = item;
+			r.dateInfo.dates.sliceIndices[key] = [];
+			let mat1 = [...r.rawDataToPlot[key]];
+			let alignedMat1 = Array(r.dateInfo.dateArray.total.length).fill(null);
+
+			let startDate = r.dateInfo.dateArray[key][0];
+			let endDate = r.dateInfo.dateArray[key][r.dateInfo.dates[key].length - 1];
+			// we have to only copy the values for where the domains match.
+			r.dateInfo.dateArray.total.forEach((date, index) => {
+				if (date < startDate) {
+					alignedMat1[index] = null;
+				} else if (date > endDate) {
+					alignedMat1[index] = null;
+				} else {
+					alignedMat1[index] = mat1[r.dateInfo.dateArray[key].indexOf(date)];
+				}
+			});
+			r.rawDataToPlot[key] = {};
+			r.rawDataToPlot[key][key] = alignedMat1;
+			r.rawDataToPlot[key].slices = {};
+			let result = [];
+			// we have to deteremine where to cut the data so lets find and index for each overlap date.
+			if (params.lineSlice.length === 0 || !r.dateInfo.dates.overlaps[key]) {
+				r.rawDataToPlot[key].slices["slice0"] = r.rawDataToPlot[key][key];
 			} else {
-				console.log("we shold be here");
-				r.dataToPlot = {};
-				params.mixedKeys.forEach((item) => {
-					const { key } = item;
-					r.dateInfo.dates.sliceIndices[key] = [];
-					let mat1 = [...r.rawDataToPlot[key]];
-					let alignedMat1 = Array(r.dateInfo.dateArray.total.length).fill(null);
-
-					let startDate = r.dateInfo.dateArray[key][0];
-					let endDate =
-						r.dateInfo.dateArray[key][r.dateInfo.dates[key].length - 1];
-					// we have to only copy the values for where the domains match.
-					r.dateInfo.dateArray.total.forEach((date, index) => {
-						if (date < startDate) {
-							alignedMat1[index] = null;
-						} else if (date > endDate) {
-							alignedMat1[index] = null;
-						} else {
-							alignedMat1[index] =
-								mat1[r.dateInfo.dateArray[key].indexOf(date)];
-						}
-					});
-					r.rawDataToPlot[key] = {};
-					r.rawDataToPlot[key][key] = alignedMat1;
-					r.rawDataToPlot[key].slices = {};
-					// we have to deteremine where to cut the data so lets find and index for each overlap date.
-					r.dateInfo.dates.overlaps[key].forEach((date) => {
-						r.dateInfo.dates.sliceIndices[key].push(
-							r.dateInfo.dateArray.total.indexOf(date)
-						);
-					});
-
-					// according to the length of your slice indices,
-					// you have to produce length+1  properties under dataToPlot[key]
-					// These keys need to have values as arrays with
-					// the same length as the total date array
-					// matrices filled with nulls
-
-					let slicesToAppend = r.dateInfo.dates.sliceIndices[key].length + 1;
-
-					let sortedIndices = r.dateInfo.dates.sliceIndices[key].sort(
-						(a, b) => a - b
+				r.dateInfo.dates.overlaps[key].forEach((date) => {
+					r.dateInfo.dates.sliceIndices[key].push(
+						r.dateInfo.dateArray.total.indexOf(date)
 					);
+				});
 
-					let result = [];
-					let starter = 0;
-					let totalLength = r.rawDataToPlot[key][key].length; // Length of the original array
-					sortedIndices.forEach((index) => {
-						// Define a local start variable for each iteration
-						const currentStarter = starter;
+				let sortedIndices = r.dateInfo.dates.sliceIndices[key].sort(
+					(a, b) => a - b
+				);
 
-						// Create a slice for the current range
-						let slice = Array(totalLength).fill(null); // Initialize with nulls
+				let starter = 0;
+				let totalLength = r.rawDataToPlot[key][key].length; // Length of the original array
+				sortedIndices.forEach((index) => {
+					// Define a local start variable for each iteration
+					const currentStarter = starter;
 
-						// Copy values into their correct positions
-						r.rawDataToPlot[key][key]
-							.slice(currentStarter, index)
-							.forEach((value, idx) => {
-								slice[currentStarter + idx] = value; // Insert value at the correct position
-							});
+					// Create a slice for the current range
+					let slice = []; // Initialize with nulls
 
-						// Add the slice to the result
-						result.push(slice);
-
-						// Update starter for the next range
-						starter = index;
-					});
-
-					// Handle the last range
-					let finalSlice = Array(totalLength).fill(null); // Initialize with nulls
-					r.rawDataToPlot[key][key].slice(starter).forEach((value, idx) => {
-						finalSlice[starter + idx] = value; // Copy values into their original positions
-					});
-					result.push(finalSlice);
-
-					// Store slices back into r.rawDataToPlot
-					result.forEach((slice, index) => {
-						r.rawDataToPlot[key].slices[`slice${index}`] = slice;
-					});
-
-					let resultArray = [];
-
-					// Iterate through each date in the total date array
-					r.dateInfo.dateArray.total.forEach((date, index) => {
-						// Initialize an object for this date
-						let entry = { date };
-
-						// Iterate through each key in r.rawDataToPlot
-						Object.keys(r.rawDataToPlot).forEach((key) => {
-							const keyData = r.rawDataToPlot[key];
-							if (key !== "key") {
-								// If there are no slices, use the main key data directly
-								if (
-									!keyData.slices ||
-									Object.keys(keyData.slices).length === 0
-								) {
-									entry[key] = keyData[index] || null; // Add value or null if out of range
-								} else {
-									// If there are slices, add each slice as key.slice1, key.slice2, etc.
-									Object.keys(keyData.slices).forEach((sliceKey) => {
-										entry[`${key}.${sliceKey}`] =
-											keyData.slices[sliceKey][index] || null;
-									});
-								}
-							}
+					// Copy values into their correct positions
+					r.rawDataToPlot[key][key]
+						.slice(currentStarter, index)
+						.forEach((value, idx) => {
+							slice[currentStarter + idx] = value; // Insert value at the correct position
 						});
 
-						// Add the entry for this date to the result array
-						resultArray.push(entry);
-					});
+					// Add the slice to the result
+					result.push(slice);
 
-					// Log the resulting array
-					r.dataToPlot = resultArray;
-					r["done"] = true;
+					// Update starter for the next range
+					starter = index;
+				});
 
-					// r.dataToPlot.push({});
+				// Handle the last range
+				let finalSlice = Array(totalLength).fill(null); // Initialize with nulls
+				r.rawDataToPlot[key][key].slice(starter).forEach((value, idx) => {
+					finalSlice[starter + idx] = value; // Copy values into their original positions
+				});
+				result.push(finalSlice);
+
+				// Store slices back into r.rawDataToPlot
+				result.forEach((slice, index) => {
+					r.rawDataToPlot[key].slices[`slice${index}`] = slice;
 				});
 			}
-		}
+			this.slicer(r, key, result);
+		});
 	}
 
 	static decideBrushRange(parameters, plotMat, dispatch, d, xBrushRange) {
@@ -339,50 +318,43 @@ class ChartCalculatorService {
 
 	static createDateArrayAlbo(rawData, params, dates) {
 		let r = rawData.current;
-		let date0Albo, date1Albo, date0Ts, date1Ts;
 		r.dateInfo = {};
 		r.dateInfo.dates = {};
 		r.dateInfo.dateArray = {};
-		if (params.date0) {
-			date0Albo = new Date(params.date0);
-			date1Albo = new Date(params.date1);
-		} else {
-			params.mixedKeys.forEach((item) => {
-				const { key, levels } = item;
-				let val = r.data;
-				if (val != null) {
-					levels.forEach((v) => {
-						if ("date" in val) {
-							r.dateInfo.dates[key] = val["date"];
-							r.dateInfo.dateArray[key] = [];
-							let date0 = new Date(r.dateInfo.dates[key].date0);
-							let date1 = new Date(r.dateInfo.dates[key].date1);
-							let currentDate = new Date(date0);
-							while (currentDate <= new Date(date1)) {
-								let formattedDate = this.formatDate(currentDate);
-								r.dateInfo.dateArray[key].push(formattedDate);
-								currentDate.setDate(currentDate.getDate() + 1);
-							}
+		params.mixedKeys.forEach((item) => {
+			const { key, levels } = item;
+			let val = r.data;
+			if (val != null) {
+				levels.forEach((v) => {
+					if ("date" in val) {
+						r.dateInfo.dates[key] = val["date"];
+						r.dateInfo.dateArray[key] = [];
+						let date0 = new Date(r.dateInfo.dates[key].date0);
+						let date1 = new Date(r.dateInfo.dates[key].date1);
+						let currentDate = new Date(date0);
+						while (currentDate <= new Date(date1)) {
+							let formattedDate = this.formatDate(currentDate);
+							r.dateInfo.dateArray[key].push(formattedDate);
+							currentDate.setDate(currentDate.getDate() + 1);
 						}
-						if (v in val) {
-							val = val[v];
-						}
-					});
-				}
-			});
-			console.log({ dates: r.dateInfo.dates, DATA: r });
-		}
-		date0Albo = new Date(r.data.test.date.date0);
-		date1Albo = new Date(r.data.test.date.date1);
-		date0Ts = new Date(r.data.date.date0);
-		date1Ts = new Date(r.data.date.date1);
+					}
+					if (v in val) {
+						val = val[v];
+					}
+				});
+			}
+		});
+
+		let tempDatesArray = [];
+		Object.keys(r.dateInfo.dates).forEach((key) => {
+			tempDatesArray.push(new Date(r.dateInfo.dates[key].date0).getTime());
+			tempDatesArray.push(new Date(r.dateInfo.dates[key].date1).getTime());
+		});
+		let dateMin = new Date(Math.min(...tempDatesArray));
+		let dateMax = new Date(Math.max(...tempDatesArray));
 		r.dateInfo.dateArray["total"] = [];
-
-		let date0 = new Date(Math.min(date0Albo.getTime(), date0Ts.getTime()));
-		let date1 = new Date(Math.max(date1Albo.getTime(), date1Ts.getTime()));
-		let currentDate = new Date(date0);
-
-		while (currentDate <= new Date(date1)) {
+		let currentDate = new Date(dateMin);
+		while (currentDate <= new Date(dateMax)) {
 			let formattedDate = this.formatDate(currentDate);
 			r.dateInfo.dateArray["total"].push(formattedDate);
 			currentDate.setDate(currentDate.getDate() + 1);

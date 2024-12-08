@@ -6,7 +6,8 @@ import ChartCalculatorService from "components/charts/services/ChartCalculatorSe
 import useDirectorFun from "customHooks/useDirectorFun";
 import { setSlider1EnabledRight } from "store";
 import { useState } from "react";
-function useAlboRequest(rawData, direction) {
+import { setIsTsDataSet } from "store";
+function useAlboRequest(rawData, direction, plotReady) {
 	const dispatch = useDispatch();
 	const alboSlider1Value = useSelector(
 		(state) =>
@@ -18,53 +19,52 @@ function useAlboRequest(rawData, direction) {
 	const {
 		setPlotReadyDir,
 		chartParameters,
-		appendToColorsChartParametersDir,
-		appendToLabelsChartParametersDir,
 		appendToPlottedKeysChartParametersDir,
-		spliceChartParametersForSlicesDir,
-		mapPagePosition,
-		plotReady,
 	} = useDirectorFun("right");
 
 	const [submitAlboData, { isLoading, data, error }] =
 		useSubmitAlboDataMutation();
-
+	const isTsDataSet = useSelector(
+		(state) => state.fetcher.fetcherStates.isTsDataSet
+	);
 	const tsData = useSelector((state) => state.fetcher.fetcherStates.data);
 	const [customError, setCustomError] = useState(0);
 
 	const mapPagePositionLeft = useSelector(
 		(state) => state.fetcher.fetcherStates.map.mapPagePosition
 	);
+
 	useEffect(() => {
-		setCustomError(1);
-	}, [mapPagePositionLeft]);
+		let r = rawData.current;
+		if (isTsDataSet) setCustomError(3);
+		// setCustomError(1);
+	}, [mapPagePositionLeft, isTsDataSet, tsData]);
 
 	useEffect(() => {
 		const handleConfirm = async () => {
 			try {
 				const response = await submitAlboData(alboSlider1Value / 100).unwrap();
-			} catch (err) {}
+			} catch (err) {
+				console.log(err);
+			}
 		};
 		if (alboRequest && direction === "right") {
 			handleConfirm();
 			setCustomError(false);
 		}
 	}, [alboSlider1Value, alboRequest]);
-
 	const alboDates = useSelector(
 		(state) => state.fetcher.fetcherStates.menu.right.chart.dates
 	);
 	useEffect(() => {
 		let r = rawData.current;
-		if (tsData) {
+		data && dispatch(setIsTsDataSet(false));
+		if (tsData && !isTsDataSet && Object.keys(chartParameters).length > 0) {
 			if (data) {
-				r.data = { ...data, ...tsData };
-
-				ChartCalculatorService.createDateArrayAlbo(
-					rawData,
-					chartParameters,
-					alboDates
-				);
+				r.data = { ...data };
+				r.data["ts"] = tsData;
+				console.log({ rinAlbo: r });
+				ChartCalculatorService.createDateArrayAlbo(rawData, chartParameters);
 				ChartCalculatorService.handleMixedKeysAlbo(rawData, chartParameters);
 				ChartCalculatorService.handleSlicesAlbo(chartParameters, rawData);
 				dispatch(setPlotReadyDir(true));
@@ -75,9 +75,9 @@ function useAlboRequest(rawData, direction) {
 				dispatch(setPlotReadyDir(false));
 			}
 		} else {
-			setCustomError(2);
+			isTsDataSet ? setCustomError(3) : setCustomError(2);
 		}
-	}, [alboDates, chartParameters, data, dispatch, tsData]);
+	}, [chartParameters, data, dispatch, tsData, isTsDataSet, plotReady]);
 
 	useEffect(() => {
 		let r = rawData.current;
@@ -88,8 +88,6 @@ function useAlboRequest(rawData, direction) {
 			chartParameters.lineSlice.length > 0 &&
 			!chartParameters.plottedKeys.includes("slice1")
 		) {
-			console.log("eneterd the loop");
-			console.log({ rINAPpend: r });
 			Object.keys(r.rawDataToPlot).forEach((element, index) => {
 				if (element !== "key") {
 					if (
@@ -109,19 +107,7 @@ function useAlboRequest(rawData, direction) {
 					}
 				}
 			});
-
-			dispatch(
-				appendToLabelsChartParametersDir(chartParameters.sliceLabelsAlbo)
-			);
-			dispatch(
-				appendToColorsChartParametersDir(chartParameters.sliceColorsAlbo)
-			);
-			dispatch(appendToLabelsChartParametersDir(chartParameters.sliceLabels));
-			dispatch(appendToColorsChartParametersDir(chartParameters.sliceColors));
-			dispatch(spliceChartParametersForSlicesDir(0));
-			dispatch(spliceChartParametersForSlicesDir(1));
 		}
-		console.log({ chartParametersINAPpend: chartParameters });
 	}, [plotReady]);
 
 	return {

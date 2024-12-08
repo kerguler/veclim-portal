@@ -9,22 +9,29 @@ import CustomTooltip from "../chartComponents/CustomTooltip/CustomTooltip";
 import PackageMapServices from "components/map/mapPackage/PackageMapServices";
 import { setTsData } from "store";
 import { useSelector } from "react-redux";
-function useTsRequest(rawData, direction) {
+import { setIsTsDataSet } from "store";
+import useSetDefaultCoordinates from "./useSetDefaultCoordinates";
+
+function useTsRequest(rawData, direction, plotReady) {
 	const dispatch = useDispatch();
 
 	const {
-		appendToColorsChartParametersDir,
-		appendToLabelsChartParametersDir,
-		appendToPlottedKeysChartParametersDir,
-		spliceChartParametersForSlicesDir,
 		mapPagePosition,
 		vectorName,
 		dateArray,
 		setPlotReadyDir,
 		chartParameters,
-		plotReady,
 		setMapPagePositionDir,
+		displayedPanelID,
 	} = useDirectorFun("left");
+
+	// I decided to take the chartParameters from the rawData object
+	// as there are timing issues in syncronization when we receive plotmat, and when we receive chartParameters
+
+	// everytime UnifiedRechartsPlotter rerenders, we want to make sue we get TS data.
+	// redux RTK is smart enough to not re fetch for the same parameters.
+	// In order to make sure this data is avilable always and everywhere,
+	//we are storing the received data in redux so we can use it in albo request
 
 	const { data, error, isFetching } = useFetchTimeSeriesDataQuery({
 		position: JSON.stringify(mapPagePosition),
@@ -32,75 +39,44 @@ function useTsRequest(rawData, direction) {
 		dateArray,
 	});
 
-	const [customError, setCustomError] = useState(null);
-
-	useEffect(() => {
-		if (direction === "left") {
-			if (!mapPagePosition.lat) {
-				if (vectorName === "albopictus") {
-					dispatch(
-						setMapPagePositionDir(PackageMapServices.defaultWorldCenter)
-					);
-				} else {
-					dispatch(setMapPagePositionDir(PackageMapServices.defaultCypCenter));
-				}
-			}
-		}
-	}, [vectorName, dispatch, mapPagePosition]);
-	useEffect(() => {
-		if (direction === "left") {
-			if (data && vectorName === "papatasi" && !data["sim-ts"]) {
-				customError || setCustomError(true);
-			} else if (
-				data &&
-				vectorName === "albopictus" &&
-				!data[chartParameters.initialSetting]
-			) {
-				customError || setCustomError(true);
-			} else {
-				let r = rawData.current;
-
-				if (
-					data &&
-					data[chartParameters.initialSetting] &&
-					Object.keys(data[chartParameters.initialSetting]).length > 0
-				) {
-					r.data = data;
-					ChartCalculatorService.createDateArray(rawData, chartParameters);
-					ChartCalculatorService.handleMixedKeys(rawData, chartParameters);
-					ChartCalculatorService.handleSlices(chartParameters, rawData);
-
-					dispatch(setPlotReadyDir(true));
-					customError && setCustomError(false);
-				}
-			}
-		}
-	}, [data, direction, vectorName]);
 	const tsData = useSelector((state) => state.fetcher.fetcherStates.data);
+
+	const [customError, setCustomError] = useState(null);
+	// This side effect arrangtes the map centers to default values
+	// in case the vectorName changes
+
+	useSetDefaultCoordinates();
 	useEffect(() => {
+		let r = rawData.current;
+		if (data && Object.keys(chartParameters).length > 0) {
+			r.data = data;
+			r.dataToPlot = {};
+
+			ChartCalculatorService.createDateArrayAlbo(rawData, chartParameters);
+			ChartCalculatorService.handleMixedKeysAlbo(rawData, chartParameters);
+			ChartCalculatorService.handleSlicesAlbo(chartParameters, rawData);
+			dispatch(setPlotReadyDir(true));
+			setCustomError(null);
+		} else {
+			dispatch(setPlotReadyDir(false));
+		}
+	}, [
+		chartParameters,
+		data,
+		dispatch,
+		rawData,
+		setPlotReadyDir,
+		displayedPanelID,
+	]);
+
+	useEffect(() => {
+		dispatch(setIsTsDataSet(true));
 		if (data && vectorName === "albopictus") {
 			dispatch(setTsData(data));
 		} else {
 			dispatch(setTsData(null));
 		}
 	}, [data, vectorName, dispatch]);
-
-	if (direction === "left") {
-		if (
-			chartParameters.lineSlice &&
-			chartParameters.lineSlice.length > 0 &&
-			!chartParameters.plottedKeys.includes("slice1")
-		) {
-			
-			dispatch(appendToPlottedKeysChartParametersDir("slice1"));
-			dispatch(appendToPlottedKeysChartParametersDir("slice2"));
-			dispatch(appendToPlottedKeysChartParametersDir("slice3"));
-			dispatch(appendToLabelsChartParametersDir(chartParameters.sliceLabels));
-			dispatch(appendToColorsChartParametersDir(chartParameters.sliceColors));
-			dispatch(spliceChartParametersForSlicesDir(0));
-		} else if (direction === "left" && customError) {
-		}
-	}
 
 	return {
 		dataTs: customError ? null : data,

@@ -536,6 +536,39 @@ function PanelProvider({ children }) {
 				horizontalAxis: "date",
 				labels: ["Temperature (°C)", "Rel. humidity (%)", "Precipitation (mm)"],
 				lineSlice: [],
+				mixedKeys: [
+					{
+						key: "g1",
+						levels: ["meteo-ts", "2010-2019", "atemp"],
+					},
+					{
+						key: "g2",
+						levels: ["meteo-ts", "2010-2019", "rehum"],
+					},
+					{
+						key: "g3",
+						levels: ["meteo-ts", "2010-2019", "precp"],
+					},
+				],
+
+				sliceInfo: {
+					g1: {
+						sliceLabels: {
+							slice0: "Temperature (°C)",
+						},
+						sliceColors: {
+							slice0: "#F15A48",
+						},
+					},
+					g2: {
+						sliceLabels: { slice0: "Rel. humidity (%)" },
+						sliceColors: { slice0: "#50C0AD" },
+					},
+					g3: {
+						sliceLabels: { slice0: "Precipitation (mm)" },
+						sliceColors: { slice0: "#1B3958" },
+					},
+				},
 			},
 
 			content: (
@@ -581,9 +614,25 @@ function PanelProvider({ children }) {
 				colors: ["#1B3958", "#1B3958"],
 				horizontalAxis: "date",
 				lineSlice: ["g1"],
+				sliceInfo: {
+					g1: {
+						sliceLabels: {
+							slice0: "This year",
+							slice1: "Overlap",
+							slice2: "Forecast",
+						},
+						sliceColors: {
+							slice0: "#50C0AD",
+							slice1: "orange",
+							slice2: "#F15A48",
+						},
+					},
+					g2: {
+						sliceLabels: { slice0: "Decadal average" },
+						sliceColors: { slice0: "#1B3958" },
+					},
+				},
 				labels: ["Larva forecast", "Decadal average"],
-				sliceLabels: ["This year", "Overlap", "Forecast"],
-				sliceColors: ["#50C0AD", "orange", "#F15A48"],
 			},
 			icon: larva,
 			content: (
@@ -604,12 +653,9 @@ function PanelProvider({ children }) {
 
 			chartParameters: {
 				twins: [{ id: 4, display: false }],
-
 				chartType: "rechart",
 				initialSetting: "fcast-ts",
 				years: "ecmwf",
-				// xbrushStart: -6,
-				// xbrushEnd: 3,
 				mixedKeys: [
 					{
 						key: "g1",
@@ -627,7 +673,26 @@ function PanelProvider({ children }) {
 				labels: ["Activity forecast", "Decadal activity"],
 				sliceLabels: ["This year", "Overlap", "Forecast"],
 				sliceColors: ["#50C0AD", "orange", "#F15A48"],
+				sliceInfo: {
+					g1: {
+						sliceLabels: {
+							slice0: "This year",
+							slice1: "Overlap",
+							slice2: "Forecast",
+						},
+						sliceColors: {
+							slice0: "#50C0AD",
+							slice1: "orange",
+							slice2: "#F15A48",
+						},
+					},
+					g2: {
+						sliceLabels: { slice0: "Decadal activity" },
+						sliceColors: { slice0: "#1B3958" },
+					},
+				},
 			},
+
 			icon: adult,
 			content: (
 				<div className="text-area">
@@ -669,6 +734,24 @@ function PanelProvider({ children }) {
 						levels: ["sim-ts", "1980-1989", "colegg"],
 					},
 				],
+				sliceInfo: {
+					g1: {
+						sliceColors: { slice0: "orange" },
+						sliceLabels: { slice0: "SSP2-4.5" },
+					},
+					g2: {
+						sliceColors: { slice0: "#F15A48" },
+						sliceLabels: { slice0: "SSP5-8.5" },
+					},
+					g3: {
+						sliceColors: { slice0: "#1B3958" },
+						sliceLabels: { slice0: "2010-2020" },
+					},
+					g4: {
+						sliceColors: { slice0: "#50C0AD" },
+						sliceLabels: { slice0: "1980-1990" },
+					},
+				},
 				plottedKeys: ["g1", "g2", "g3", "g4"],
 				colors: ["orange", "#F15A48", "#1B3958", "#50C0AD"],
 				sliceColors: ["#50C0AD", "orange", "#F15A48"],
@@ -695,7 +778,7 @@ function PanelProvider({ children }) {
 			id: 5,
 			key: "outbreak_forecast",
 			chartParameters: {
-				twins: [{ id: 5.5, display: false }],
+				twins: [{ id: 6, display: false }],
 
 				chartType: "rechart",
 				initialSetting: "fcast-ts",
@@ -704,6 +787,7 @@ function PanelProvider({ children }) {
 				//initial range of the brush [months from the current date]
 				// xbrushStart: -6,
 				// xbrushEnd: 3,
+
 				mixedKeys: [
 					{
 						key: "g1",
@@ -714,6 +798,24 @@ function PanelProvider({ children }) {
 						levels: ["sim-ts", "2010-2019", "pouts"],
 					},
 				],
+				sliceInfo: {
+					g1: {
+						sliceLabels: {
+							slice0: "This year",
+							slice1: "Overlap",
+							slice2: "Forecast",
+						},
+						sliceColors: {
+							slice0: "#50C0AD",
+							slice1: "orange",
+							slice2: "#F15A48",
+						},
+					},
+					g2: {
+						sliceLabels: { slice0: "Decadal average" },
+						sliceColors: { slice0: "#1B3958" },
+					},
+				},
 				plottedKeys: ["g1", "g2"],
 				colors: ["#1B3958", "#1B3958"],
 				horizontalAxis: "date",
@@ -749,7 +851,7 @@ function PanelProvider({ children }) {
 			),
 		},
 		{
-			id: 5.5,
+			id: 6,
 			decade: "2090-2100",
 			key: "outbreak_forecast",
 			chartParameters: {
@@ -776,6 +878,24 @@ function PanelProvider({ children }) {
 						levels: ["sim-ts", "1980-1989", "pouts"],
 					},
 				],
+				sliceInfo: {
+					g1: {
+						sliceLabels: { slice0: "SSP2-4.5" },
+						sliceColors: { slice0: "orange" },
+					},
+					g2: {
+						sliceLabels: { slice0: "SSP5-8.5" },
+						sliceColors: { slice0: "#F15A48" },
+					},
+					g3: {
+						sliceLabels: { slice0: "2010-2020" },
+						sliceColors: { slice0: "#1B3958" },
+					},
+					g4: {
+						sliceLabels: { slice0: "1980-1990" },
+						sliceColors: { slice0: "#50C0AD" },
+					},
+				},
 				plottedKeys: ["g1", "g2", "g3", "g4"],
 				colors: ["orange", "#F15A48", "#1B3958", "#50C0AD"],
 				sliceColors: ["#50C0AD", "orange", "#F15A48"],
@@ -799,11 +919,11 @@ function PanelProvider({ children }) {
 			),
 		},
 		{
-			id: 6,
+			id: 7,
 			key: "impact_forecast",
 
 			chartParameters: {
-				twins: [{ id: 6.5, display: false }],
+				twins: [{ id: 8, display: false }],
 
 				chartType: "rechart",
 				initialSetting: "fcast-ts",
@@ -828,6 +948,24 @@ function PanelProvider({ children }) {
 				labels: ["Impact forecast", "Decadal average"],
 				sliceLabels: ["This year", "Overlap", "Forecast"],
 				sliceColors: ["#50C0AD", "orange", "#F15A48"],
+				sliceInfo: {
+					g1: {
+						sliceLabels: {
+							slice0: "This year",
+							slice1: "Overlap",
+							slice2: "Forecast",
+						},
+						sliceColors: {
+							slice0: "#50C0AD",
+							slice1: "orange",
+							slice2: "#F15A48",
+						},
+					},
+					g2: {
+						sliceLabels: { slice0: "Decadal average" },
+						sliceColors: { slice0: "#1B3958" },
+					},
+				},
 			},
 			icon: impact,
 			content: (
@@ -856,7 +994,7 @@ function PanelProvider({ children }) {
 			),
 		},
 		{
-			id: 6.5,
+			id: 8,
 			decade: "2090-2100",
 			key: "impact_forecast",
 			chartParameters: {
@@ -883,6 +1021,24 @@ function PanelProvider({ children }) {
 						levels: ["sim-ts", "1980-1989", "iouts"],
 					},
 				],
+				sliceInfo: {
+					g1: {
+						sliceLabels: { slice0: "SSP2-4.5" },
+						sliceColors: { slice0: "orange" },
+					},
+					g2: {
+						sliceLabels: { slice0: "SSP5-8.5" },
+						sliceColors: { slice0: "#F15A48" },
+					},
+					g3: {
+						sliceLabels: { slice0: "2010-2020" },
+						sliceColors: { slice0: "#1B3958" },
+					},
+					g4: {
+						sliceLabels: { slice0: "1980-1990" },
+						sliceColors: { slice0: "#50C0AD" },
+					},
+				},
 				plottedKeys: ["g1", "g2", "g3", "g4"],
 				colors: ["orange", "#F15A48", "#1B3958", "#50C0AD"],
 				sliceColors: ["#50C0AD", "orange", "#F15A48"],
@@ -906,7 +1062,7 @@ function PanelProvider({ children }) {
 			),
 		},
 		{
-			id: 7,
+			id: 9,
 			key: "tile_selector",
 			chartParameters: {},
 
@@ -914,7 +1070,7 @@ function PanelProvider({ children }) {
 			content: <TileSelector tileIcons={tileIcons}></TileSelector>,
 		},
 		{
-			id: 8,
+			id: 10,
 			key: "vector_selector",
 			chartParameters: {},
 
@@ -957,17 +1113,50 @@ function PanelProvider({ children }) {
 					},
 					{
 						key: "g2",
-						levels: ["fcast-ts", "ecmwf", "iouts"],
+						levels: ["ts", "fcast-ts", "ecmwf", "iouts"],
 					},
 				],
 				plottedKeys: ["g1", "g2"],
 				colors: ["#1B3958", "#1B3958", "#000000"],
-				colorsAlbo: ["1B3958", "#1B3958", "#000000","#1B3958", "#1B3958", "#000000"],
+				colorsAlbo: [
+					"1B3958",
+					"#1B3958",
+					"#000000",
+					"#1B3958",
+					"#1B3958",
+					"#000000",
+				],
 				horizontalAxis: "date",
 				lineSlice: ["g1", "g2"],
-				labels: ["Activity forecast", "Decadal activity"],
+				labels: ["This year", "Overlap", "Forecast"],
 				sliceLabels: ["This year", "Overlap", "Forecast"],
 				sliceColors: ["#50C0AD", "orange", "#F15A48"],
+				sliceInfo: {
+					g1: {
+						sliceLabels: {
+							slice0: "This year (sim)",
+							slice1: "Overlap (sim) ",
+							slice2: "Forecast (sim)",
+						},
+						sliceColors: {
+							slice0: "#1c2833",
+							slice1: "#af7ac5",
+							slice2: "#d98880",
+						},
+					},
+					g2: {
+						sliceLabels: {
+							slice0: "This year",
+							slice1: "Overlap",
+							slice2: "Forecast",
+						},
+						sliceColors: {
+							slice0: "#50C0AD",
+							slice1: "orange",
+							slice2: "#F15A48",
+						},
+					},
+				},
 				sliceLabelsAlbo: ["This year Albo", "OverlapAlbo ", "ForecastAlbo"],
 				sliceColorsAlbo: ["#50C0AD", "orange", "#F15A48"],
 			},

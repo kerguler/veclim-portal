@@ -8,26 +8,31 @@ import { useRef } from "react";
 import useDirectorFun from "customHooks/useDirectorFun";
 import useAlboRequest from "./useAlboRequest";
 import useTsRequest from "./useTsRequest";
+import { useState } from "react";
 import RechartsUnified from "./RechartsUnified";
 function UnifiedRechartPlotter({ dateArray, direction }) {
 	const { chartParameters, mapPagePosition, plotReady } =
 		useDirectorFun(direction);
 
 	const rawData = useRef({
-		slice1: null,
-		slice2: null,
-		slice3: null,
-		rawDataToPlot: { key: null },
-		dateArray: [],
+		chartParameters: chartParameters,
+		rawDataToPlot: {},
 		data: null,
 		dataToPlot: null,
 	});
 	let r = rawData.current;
 
-	const { dataTs, isFetchingTs, errorTs } = useTsRequest(rawData, direction);
+	const { dataTs, isFetchingTs, errorTs } = useTsRequest(
+		rawData,
+		direction,
+
+		plotReady
+	);
 	const { dataAlbo, isFetchingAlbo, errorAlbo } = useAlboRequest(
 		rawData,
-		direction
+		direction,
+
+		plotReady
 	);
 
 	const isFetching = direction === "left" ? isFetchingTs : isFetchingAlbo;
@@ -69,6 +74,17 @@ function UnifiedRechartPlotter({ dateArray, direction }) {
 				</div>
 			);
 		}
+		if (error === 3) {
+			return (
+				<div className="error-container">
+					{" "}
+					<p>
+						Ts data has changed, click submit to receive results for the new
+						coordinates
+					</p>
+				</div>
+			);
+		}
 		return errorMessage;
 	} else if (Object.keys(chartParameters).length === 0) {
 		return (
@@ -77,7 +93,6 @@ function UnifiedRechartPlotter({ dateArray, direction }) {
 			</div>
 		);
 	} else {
-
 		if (direction === "right") {
 			if (!dataAlbo || !dataAlbo[chartParameters.initialSetting]) {
 				return (
@@ -92,13 +107,13 @@ function UnifiedRechartPlotter({ dateArray, direction }) {
 				r.data = dataAlbo;
 			}
 		}
-	
 	}
 	if (data) {
 		return (
 			plotReady && (
 				<ErrorBoundary>
 					<RechartsPlot
+						chartParameters={chartParameters}
 						direction={direction}
 						plotMat={r.dataToPlot}
 					></RechartsPlot>

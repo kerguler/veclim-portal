@@ -60,7 +60,7 @@ const RenderedPanel = ({ panel, panelChart, panelClassName, direction }) => {
 
 export default RenderedPanel;
 const RenderedPanelChart = ({ direction }) => {
-	const { switcher, twinIndex, setTwinIndexDir, twinArray } =
+	const { switcher, twinIndex, setTwinIndexDir, twinArray, setPlotReadyDir } =
 		useDirectorFun(direction);
 	const dispatch = useDispatch();
 	const [showSwitcherArrows, setShowSwitcherArrows] = useState({
@@ -88,12 +88,14 @@ const RenderedPanelChart = ({ direction }) => {
 			return;
 		}
 		dispatch(setTwinIndexDir(twinIndex - 1));
+		dispatch(setPlotReadyDir(false));
 	};
 
 	const handleNext = (params) => {
 		if (twinIndex === twinArray - 1) {
 			return;
 		}
+		dispatch(setPlotReadyDir(false));
 
 		dispatch(setTwinIndexDir(twinIndex + 1));
 	};

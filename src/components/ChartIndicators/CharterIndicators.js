@@ -6,6 +6,8 @@ import { dateToString } from "store/apis/utils";
 import { setChartDatesLeft } from "store";
 import DisplayTimeSeries from "pages/ApiWelcomePage/Graphics/DisplayTimeSeries";
 import { setChartDatesRight } from "store";
+import { setTsData } from "store";
+import { setIsTsDataSet } from "store";
 function ChartIndicators() {
 	const position = useSelector((state) => {
 		return state.fetcher.fetcherStates.map.mapPagePosition;
@@ -18,6 +20,7 @@ function ChartIndicators() {
 		vectorName: vectorName,
 	});
 	const dispatch = useDispatch();
+
 	if (isFetching) {
 		return (
 			<>
@@ -32,6 +35,12 @@ function ChartIndicators() {
 		return null;
 	}
 	var fdate = "";
+
+	if (data) {
+		dispatch(setTsData(data));
+		dispatch(setIsTsDataSet(true));
+	}
+
 	if (data && "fcast-ts" in data) {
 		// dispatch(
 		// 	setChartDatesLeft({ first: data.date.date0, last: data.date.date1 })

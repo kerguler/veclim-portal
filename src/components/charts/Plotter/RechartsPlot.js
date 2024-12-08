@@ -23,14 +23,13 @@ import CustomTooltip from "../chartComponents/CustomTooltip/CustomTooltip";
 import useYsliderPositioning from "customHooks/useYsliderPositioning";
 import ChartCalculatorService from "../services/ChartCalculatorService";
 import useDirectorFun from "customHooks/useDirectorFun";
+import { keys } from "@material-ui/core/styles/createBreakpoints";
 
 function RechartsPlot({ direction, plotMat }) {
-	if (direction === "right") {
-		console.log("rerendering right ");
-	}
 	const args = {
 		years: { firstYear: null, lastYear: null },
 		date: null,
+		keys: null,
 	};
 	const dateRef = useRef({
 		currentDate: null,
@@ -44,7 +43,6 @@ function RechartsPlot({ direction, plotMat }) {
 	const dispatch = useDispatch();
 
 	const {
-		chartParameters,
 		brushData,
 		vectorName,
 		setBrushRangeDir,
@@ -53,18 +51,26 @@ function RechartsPlot({ direction, plotMat }) {
 		brushDatay,
 		xBrushRange,
 		plotReady,
+		chartParameters,
 	} = useDirectorFun(direction);
 
 	useEffect(() => {
+		if (plotReady && plotMat) {
+			const { date, ...restObj } = plotMat[0];
+
+			argRef.current.keys = plotReady && Object.keys(restObj);
+		}
+	}, [plotMat, plotReady]);
+	useEffect(() => {
 		dispatch(setBrushDataDir(plotMat));
-	}, [plotMat, dispatch, vectorName]);
+	}, [plotMat, dispatch, vectorName, plotReady]);
 
 	useEffect(() => {
 		plotMat &&
 			dispatch(
 				setBrushRangeDir({ startIndex: 0, endIndex: plotMat.length - 1 })
 			);
-	}, [vectorName, dispatch, plotMat]);
+	}, [vectorName, dispatch, plotMat, plotReady]);
 
 	const [transform, setTransform] = useState([0, 0]);
 
@@ -87,23 +93,16 @@ function RechartsPlot({ direction, plotMat }) {
 		}
 		return value; // If not a number, return it as is
 	};
-	if (direction === "left") {
-		ChartCalculatorService.decideBrushRange(
-			chartParameters,
-			plotMat,
-			dispatch,
-			d,
-			xBrushRange
-		);
-	} else {
-		ChartCalculatorService.decideBrushRangeAlbo(
-			chartParameters,
-			plotMat,
-			dispatch,
-			d,
-			xBrushRange
-		);
-	}
+	useEffect(() => {
+		plotMat &&
+			ChartCalculatorService.decideBrushRangeAlbo(
+				chartParameters,
+				plotMat,
+				dispatch,
+				d,
+				xBrushRange
+			);
+	}, [plotMat]);
 	const handleBrushChange = (range) => {
 		ChartCalculatorService.handleBrushChange(
 			range,
@@ -117,21 +116,14 @@ function RechartsPlot({ direction, plotMat }) {
 		s.minmax = { min: 0, max: 0 };
 		plotMat &&
 			plotMat.forEach((d) => {
-				chartParameters.plottedKeys.forEach((k) => {
+				argRef.current.keys.forEach((k) => {
 					if (d[k] < s.minmax.min) s.minmax.min = d[k];
 					if (d[k] > s.minmax.max) s.minmax.max = d[k];
 				});
 			});
 		s.brushDataY = { min: s.minmax.min, max: s.minmax.max };
 		dispatch(setBrushDatayDir(s.brushDataY));
-	}, [
-		plotMat,
-		chartParameters.plottedKeys,
-		dispatch,
-		s,
-		s.minmax.min,
-		s.minmax.max,
-	]);
+	}, [plotMat, dispatch, s, s.minmax.min, s.minmax.max]);
 
 	const handleBrushChangeY = (range) => {
 		ChartCalculatorService.handleBrushChangeY(
@@ -142,24 +134,58 @@ function RechartsPlot({ direction, plotMat }) {
 		);
 	};
 
-	let renderedLines = chartParameters.plottedKeys.map((key, index) => {
-		let uniqueKey = `${key}-${index}`;
-		keyRef.current.push(uniqueKey);
-		console.log({ key, chartParameters });
-		return 			<Line
-				id={uniqueKey}
-				key={uniqueKey}
-				type="monotone"
-				dataKey={key}
-				stroke={chartParameters.colors[index]}
-				strokeWidth="1.5"
-				dot={false}
-			>
-				{" "}
-			</Line>
-		
-		
-	});
+	useEffect(() => {
+		setChartParametersChanged(true);
+		console.log("chartParameters changed", { chartParameters });
+	}, [chartParameters]);
+	const [chartParametersChanged, setChartParametersChanged] = useState(false);
+
+	const renderedLines =
+		plotMat &&
+		Object.keys(chartParameters).length > 0 &&
+		plotMat[0] &&
+		Object.keys(plotMat[0]).length > 1 &&
+		Object.keys(plotMat[0]).map((key, index) => {
+			if (key === "date") return null;
+			let uniqueKey = `${key}-${index}`;
+			keyRef.current.push(uniqueKey);
+			// deterimine color of the line
+			let primaryKey = null;
+			let secondaryKey = null;
+			let color;
+			if (key.split(".").length > 1) {
+				primaryKey = key.split(".")[0];
+				secondaryKey = key.split(".")[1];
+
+				if (primaryKey in chartParameters.sliceInfo) {
+					if (
+						secondaryKey in chartParameters.sliceInfo[primaryKey].sliceColors
+					) {
+						color =
+							chartParameters.sliceInfo[primaryKey].sliceColors[secondaryKey] ||
+							"black";
+					}
+				}
+			} else {
+				console.log("Shouldnt enter here");
+				primaryKey = key;
+				color = chartParameters.sliceInfo[primaryKey].sliceColors["slice0"];
+			}
+
+			return (
+				<Line
+					id={uniqueKey}
+					key={uniqueKey}
+					type="monotone"
+					dataKey={key}
+					stroke={color}
+					strokeWidth="1.5"
+					dot={false}
+				>
+					{" "}
+				</Line>
+			);
+		});
 
 	if (!plotMat || plotMat.length === 0) {
 		return <div>Loading data...</div>;
@@ -199,10 +225,14 @@ function RechartsPlot({ direction, plotMat }) {
 					//  startIndex={brushRange.startIndex}
 					//  endIndex={brushRange.endIndex}
 				/>
-
 				<Tooltip
 					contentStyle={{ margin: "20px" }}
-					content={<CustomTooltip parameters={chartParameters} />}
+					content={
+						<CustomTooltip
+							keys={argRef.current.keys}
+							parameters={chartParameters}
+						/>
+					}
 				/>
 				<Legend
 					key={"legend"}
@@ -219,7 +249,11 @@ function RechartsPlot({ direction, plotMat }) {
 					align="top"
 					margin={10}
 					content={
-						<CustomLegend key={"customLegend"} parameters={chartParameters} />
+						<CustomLegend
+							keys={argRef.current.keys}
+							key={"customLegend"}
+							direction={direction}
+						/>
 					}
 				/>
 				<g

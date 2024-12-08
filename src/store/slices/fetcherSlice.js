@@ -11,6 +11,7 @@ const fetcherSlice = createSlice({
 			tileArray: ["colegg"],
 			availableTiles: [],
 			data: {},
+			isTsDataSet: false,
 			map: {
 				currentMapCenter: [35.1966527, 33.3217152],
 				currentMapZoom: 2,
@@ -63,6 +64,9 @@ const fetcherSlice = createSlice({
 	},
 
 	reducers: {
+		setIsTsDataSet(state, action) {
+			state.fetcherStates.isTsDataSet = action.payload;
+		},
 		setTsData(state, action) {
 			state.fetcherStates.data = action.payload;
 		},
@@ -194,6 +198,7 @@ const fetcherSlice = createSlice({
 });
 
 export const {
+	setIsTsDataSet,
 	setTsData,
 	setMapPagePositionRight,
 	setAlboParamsSlider1Value,
