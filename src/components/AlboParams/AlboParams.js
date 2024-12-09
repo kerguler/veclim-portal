@@ -3,6 +3,7 @@ import "./alboParams.css";
 import { setAlboParamsSlider1Value } from "store";
 import { setAlboRequestPlot } from "store";
 import { setSlider1EnabledRight } from "store";
+import { useEffect, useRef } from "react";
 function AlboParams() {
 	const dispatch = useDispatch();
 	const alboSlider1Value = useSelector(
@@ -39,7 +40,6 @@ function AlboParams() {
 				{" "}
 				Confirm
 			</div>
-			
 		</div>
 	);
 }

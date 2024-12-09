@@ -1,39 +1,13 @@
 class ChartCalculatorService {
 	static handleMixedKeys(rawData, params) {
 		let r = rawData.current;
-		if (!params.mixedKeys) {
-			r.rawDataToPlot = {
-				...r.data[params.initialSetting][params.years],
-			};
-		} else {
-			params.mixedKeys.forEach((item) => {
-				const { key, levels } = item;
-				let val = r.data;
-				if (val != null) {
-					levels.forEach((v) => {
-						if (v in val) {
-							val = val[v];
-						}
-					});
-
-					r.rawDataToPlot[key] = val;
-					if ("overlap" in r.data[levels[0]][levels[1]]) {
-						r.rawDataToPlot.overlap = r.data[levels[0]][levels[1]].overlap;
-					}
-				}
-			});
-		}
-	}
-	static handleMixedKeysAlbo(rawData, params) {
-		let r = rawData.current;
-r.rawDataToPlot = {};
+		r.rawDataToPlot = {};
 		if (!params.mixedKeys) {
 			r.rawDataToPlot = {
 				...r.data[params.initialSetting],
 			};
 		} else {
 			r.dateInfo.dates["overlaps"] = {};
-
 			params.mixedKeys.forEach((item) => {
 				const { key, levels } = item;
 				let val = r.data;
@@ -54,72 +28,13 @@ r.rawDataToPlot = {};
 		}
 	}
 
-	static handleSlices(params, rawData) {
-		let tempStruct = {};
-		let r = rawData.current;
-
-		params.plottedKeys.forEach((item) => {
-			tempStruct[item] = null;
-		});
-		if (params.lineSlice.length > 0) {
-			let date1Index, date2Index;
-			if (params.sliceDate1) {
-				date1Index = r.dateArray.indexOf(params.sliceDate1);
-				date2Index = r.dateArray.indexOf(params.sliceDate2);
-			} else {
-				date1Index = r.dateArray.indexOf(r.rawDataToPlot.overlap[1]);
-				date2Index = r.dateArray.indexOf(r.rawDataToPlot.overlap[0]);
-			}
-			let unslicedLine = r.rawDataToPlot[params.lineSlice[0]];
-			r.rawDataToPlot.slice1 = unslicedLine.map((element, index) => {
-				if (index <= date1Index) {
-					return element;
-				} else {
-					return null;
-				}
-			});
-			r.rawDataToPlot.slice2 = unslicedLine.map((element, index) => {
-				if (index >= date1Index && index <= date2Index) {
-					return element;
-				} else {
-					return null;
-				}
-			});
-			r.rawDataToPlot.slice3 = unslicedLine.map((element, index) => {
-				if (index >= date2Index) {
-					return element;
-				} else {
-					return null;
-				}
-			});
-
-			r.dataToPlot = r.dateArray.map((date, index) => {
-				for (const key in tempStruct) {
-					tempStruct[key] = r.rawDataToPlot[key][index]; // Assuming values1 and values2 have corresponding values
-				}
-
-				return { date, ...tempStruct };
-			});
-		} else {
-			r.dataToPlot = r.dateArray.map((date, index) => {
-				const entry = tempStruct;
-
-				for (const key in tempStruct) {
-					entry[key] = r.rawDataToPlot[key][index]; // Assuming values1 and values2 have corresponding values
-				}
-
-				return { date, ...entry };
-			});
-		}
-	}
-
 	static slicer(r, key, result) {
 		let resultArray = [];
 		// Iterate through each date in the total date array
 		r.dateInfo.dateArray.total.forEach((date, index) => {
 			// Initialize an object for this date
 			let entry = { date };
-			
+
 			Object.keys(r.rawDataToPlot).forEach((key) => {
 				const keyData = r.rawDataToPlot[key];
 				if (key !== "key") {
@@ -145,7 +60,7 @@ r.rawDataToPlot = {};
 		r["done"] = true;
 	}
 
-	static handleSlicesAlbo(params, rawData) {
+	static handleSlices( rawData,params) {
 		let tempStruct = {};
 		let r = rawData.current;
 
@@ -316,7 +231,7 @@ r.rawDataToPlot = {};
 		);
 	};
 
-	static createDateArrayAlbo(rawData, params, dates) {
+	static createDateArray(rawData, params, dates) {
 		let r = rawData.current;
 		r.dateInfo = {};
 		r.dateInfo.dates = {};
@@ -361,24 +276,6 @@ r.rawDataToPlot = {};
 		}
 	}
 
-	static createDateArray(rawData, params) {
-		let r = rawData.current;
-		let date0, date1;
-		if (params.date0) {
-			date0 = new Date(params.date0);
-			date1 = new Date(params.date1);
-		} else {
-			date0 = new Date(r.data.date.date0);
-			date1 = new Date(r.data.date.date1);
-		}
-		let currentDate = date0;
-		r.dateArray = [];
-		while (currentDate <= date1) {
-			let formattedDate = this.formatDate(currentDate);
-			currentDate.setDate(currentDate.getDate() + 1);
-			r.dateArray.push(formattedDate);
-		}
-	}
 	static formatDate = (date) => {
 		const d = new Date(date);
 		const year = d.getFullYear();
@@ -447,3 +344,106 @@ r.rawDataToPlot = {};
 	}
 }
 export default ChartCalculatorService;
+// static handleMixedKeys(rawData, params) {
+// 	let r = rawData.current;
+// 	if (!params.mixedKeys) {
+// 		r.rawDataToPlot = {
+// 			...r.data[params.initialSetting][params.years],
+// 		};
+// 	} else {
+// 		params.mixedKeys.forEach((item) => {
+// 			const { key, levels } = item;
+// 			let val = r.data;
+// 			if (val != null) {
+// 				levels.forEach((v) => {
+// 					if (v in val) {
+// 						val = val[v];
+// 					}
+// 				});
+
+// 				r.rawDataToPlot[key] = val;
+// 				if ("overlap" in r.data[levels[0]][levels[1]]) {
+// 					r.rawDataToPlot.overlap = r.data[levels[0]][levels[1]].overlap;
+// 				}
+// 			}
+// 		});
+// 	}
+// }
+
+// static createDateArray(rawData, params) {
+// 	let r = rawData.current;
+// 	let date0, date1;
+// 	if (params.date0) {
+// 		date0 = new Date(params.date0);
+// 		date1 = new Date(params.date1);
+// 	} else {
+// 		date0 = new Date(r.data.date.date0);
+// 		date1 = new Date(r.data.date.date1);
+// 	}
+// 	let currentDate = date0;
+// 	r.dateArray = [];
+// 	while (currentDate <= date1) {
+// 		let formattedDate = this.formatDate(currentDate);
+// 		currentDate.setDate(currentDate.getDate() + 1);
+// 		r.dateArray.push(formattedDate);
+// 	}
+// }
+
+// static handleSlices(params, rawData) {
+// 	let tempStruct = {};
+// 	let r = rawData.current;
+
+// 	params.plottedKeys.forEach((item) => {
+// 		tempStruct[item] = null;
+// 	});
+// 	if (params.lineSlice.length > 0) {
+// 		let date1Index, date2Index;
+// 		if (params.sliceDate1) {
+// 			date1Index = r.dateArray.indexOf(params.sliceDate1);
+// 			date2Index = r.dateArray.indexOf(params.sliceDate2);
+// 		} else {
+// 			date1Index = r.dateArray.indexOf(r.rawDataToPlot.overlap[1]);
+// 			date2Index = r.dateArray.indexOf(r.rawDataToPlot.overlap[0]);
+// 		}
+// 		let unslicedLine = r.rawDataToPlot[params.lineSlice[0]];
+// 		r.rawDataToPlot.slice1 = unslicedLine.map((element, index) => {
+// 			if (index <= date1Index) {
+// 				return element;
+// 			} else {
+// 				return null;
+// 			}
+// 		});
+// 		r.rawDataToPlot.slice2 = unslicedLine.map((element, index) => {
+// 			if (index >= date1Index && index <= date2Index) {
+// 				return element;
+// 			} else {
+// 				return null;
+// 			}
+// 		});
+// 		r.rawDataToPlot.slice3 = unslicedLine.map((element, index) => {
+// 			if (index >= date2Index) {
+// 				return element;
+// 			} else {
+// 				return null;
+// 			}
+// 		});
+
+// 		r.dataToPlot = r.dateArray.map((date, index) => {
+// 			for (const key in tempStruct) {
+// 				tempStruct[key] = r.rawDataToPlot[key][index]; // Assuming values1 and values2 have corresponding values
+// 			}
+
+// 			return { date, ...tempStruct };
+// 		});
+// 	} else {
+// 		r.dataToPlot = r.dateArray.map((date, index) => {
+// 			const entry = tempStruct;
+
+// 			for (const key in tempStruct) {
+// 				entry[key] = r.rawDataToPlot[key][index]; // Assuming values1 and values2 have corresponding values
+// 			}
+
+// 			return { date, ...entry };
+// 		});
+// 	}
+// }

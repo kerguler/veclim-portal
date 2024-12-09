@@ -1210,7 +1210,27 @@ function PanelProvider({ children }) {
 				chartType: "rechart",
 				initialSetting: "sim-ts",
 				years: "2015",
-				plottedKeys: ["simL", "simH"],
+				plottedKeys: ["g1", "g2"],
+				mixedKeys: [
+					{
+						key: "g1",
+						levels: ["sim-ts","2015","simL"],
+					},
+					{
+						key: "g2",
+						levels: ["sim-ts","2015","simH"],
+					},
+				],
+				sliceInfo: {
+					g1: {
+						sliceLabels: { slice0: "Secondary land type" },
+						sliceColors: { slice0: "#F15A48" },
+					},
+					g2: {
+						sliceLabels: { slice0: "Primary land type" },
+						sliceColors: { slice0: "#1B3958" },
+					},
+				},
 				colors: ["#F15A48", "#1B3958"],
 				horizontalAxis: "date",
 				labels: ["Secondary land type", "Primary land type"],

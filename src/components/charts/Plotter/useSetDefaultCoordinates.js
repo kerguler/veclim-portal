@@ -18,7 +18,7 @@ function useSetDefaultCoordinates(direction) {
 				}
 			}
 		}
-	}, [vectorName, dispatch, mapPagePosition]);
+	}, [vectorName, dispatch, mapPagePosition, direction, setMapPagePositionDir]);
 }
 
 export default useSetDefaultCoordinates;

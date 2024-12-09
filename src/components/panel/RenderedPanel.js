@@ -8,6 +8,7 @@ import { useState } from "react";
 import rightArrow from "assets/icons/arrow-teal-16px.png";
 import "./Switcher/Switcher.css";
 import useDirectorFun from "customHooks/useDirectorFun";
+import ErrorBoundary from "components/errorBoundary/ErrorBoundary";
 
 const RenderedPanel = ({ panel, panelChart, panelClassName, direction }) => {
 	const dispatch = useDispatch();
@@ -132,7 +133,9 @@ const RenderedPanelChart = ({ direction }) => {
 					/>
 				)}
 			</div>
-			<UnifiedRechartPlotter direction={direction} />
+			<ErrorBoundary>
+				<UnifiedRechartPlotter direction={direction} />
+			</ErrorBoundary>
 		</div>
 	);
 };

@@ -17,7 +17,8 @@ import {
 } from "store";
 
 import {} from "store";
-function useMapStarter(startConditions) {
+function 
+useMapStarter(startConditions) {
 	const dispatch = useDispatch();
 	const { readyToView, vectorName, mapVector, switchMap, tileArray } =
 		useFetcherVariables();

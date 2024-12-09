@@ -1,17 +1,18 @@
 import "./mapMenu.css";
 import menuIcon from "assets/icons/map-page-right-menu/png/menu-32px.png";
 import { useCallback, useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useRef } from "react";
 import classNames from "classnames";
 import mapMenuService from "services/MapMenuService";
 import Switcher from "components/panel/Switcher/Switcher";
 import useArrangePanels from "customHooks/useArrangePanels";
+import PackageMapServices from "components/map/mapPackage/PackageMapServices";
 import useDirectorFun from "customHooks/useDirectorFun";
 function MapMenu({ direction }) {
 	const {
 		setMapMenuOpenDir,
-		mapMenuOpen,
+		mapMenuOpen, 
 		displayedPanelID,
 		directInit,
 		mapVector,

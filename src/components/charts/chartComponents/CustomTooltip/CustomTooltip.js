@@ -19,7 +19,6 @@ function CustomTooltip({ active, payload, label, parameters, keys }) {
 				}
 				let label = null;
 				if (primaryKey in parameters.sliceInfo) {
-					console.log({ primaryKey, secondaryKey });
 					if (secondaryKey in parameters.sliceInfo[primaryKey].sliceLabels) {
 						label = parameters.sliceInfo[primaryKey].sliceLabels[secondaryKey];
 					}
