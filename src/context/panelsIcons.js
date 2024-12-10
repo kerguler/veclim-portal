@@ -531,7 +531,6 @@ function PanelProvider({ children }) {
 				chartType: "rechart",
 				years: "2010-2019",
 				horizontalAxis: "date",
-				lineSlice: [],
 				mixedKeys: [
 					{
 						key: "g1",
@@ -606,7 +605,6 @@ function PanelProvider({ children }) {
 					},
 				],
 				horizontalAxis: "date",
-				lineSlice: ["g1"],
 				sliceInfo: {
 					g1: {
 						sliceLabels: {
@@ -658,7 +656,6 @@ function PanelProvider({ children }) {
 					},
 				],
 				horizontalAxis: "date",
-				lineSlice: ["g1"],
 				sliceInfo: {
 					g1: {
 						sliceLabels: {
@@ -698,7 +695,6 @@ function PanelProvider({ children }) {
 			key: "activity_forecast",
 			chartParameters: {
 				chartType: "rechart",
-				initialSetting: "fcast-ts",
 				years: "2090-2100",
 				// xbrushStart: -6,
 				// xbrushEnd: 3,
@@ -739,7 +735,6 @@ function PanelProvider({ children }) {
 					},
 				},
 				horizontalAxis: "date",
-				lineSlice: [],
 			},
 			icon: adult,
 			content: (
@@ -797,9 +792,7 @@ function PanelProvider({ children }) {
 						sliceColors: { slice0: "#1B3958" },
 					},
 				},
-				plottedKeys: ["g1", "g2"],
 				horizontalAxis: "date",
-				lineSlice: ["g1"],
 			},
 			icon: virus,
 			content: (
@@ -873,7 +866,6 @@ function PanelProvider({ children }) {
 					},
 				},
 				horizontalAxis: "date",
-				lineSlice: [],
 			},
 			icon: virus,
 			content: (
@@ -913,7 +905,6 @@ function PanelProvider({ children }) {
 					},
 				],
 				horizontalAxis: "date",
-				lineSlice: ["g1"],
 				sliceInfo: {
 					g1: {
 						sliceLabels: {
@@ -1005,7 +996,6 @@ function PanelProvider({ children }) {
 					},
 				},
 				horizontalAxis: "date",
-				lineSlice: [],
 			},
 			icon: impact,
 			content: (
@@ -1078,7 +1068,6 @@ function PanelProvider({ children }) {
 				],
 		
 				horizontalAxis: "date",
-				lineSlice: ["g1", "g2"],
 				sliceInfo: {
 					g1: {
 						sliceLabels: {

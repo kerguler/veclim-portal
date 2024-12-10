@@ -62,19 +62,16 @@ function RechartsPlot({ direction, plotMat }) {
 		}
 	}, [plotMat, plotReady, vectorName]);
 
-
-
 	useEffect(() => {
-
 		if (plotMat) {
 			plotMat && dispatch(setBrushDataDir(plotMat));
 			dispatch(
 				setBrushRangeDir({ startIndex: 0, endIndex: plotMat.length - 1 })
 			);
-		}else{
-			dispatch(setBrushDataDir({startIndex:0,endIndex:0}));
+		} else {
+			dispatch(setBrushDataDir({ startIndex: 0, endIndex: 0 }));
 		}
-	}, [dispatch, plotMat, brushData,setBrushRangeDir, setBrushDataDir]);
+	}, [dispatch, plotMat, brushData, setBrushRangeDir, setBrushDataDir]);
 
 	const [transform, setTransform] = useState([0, 0]);
 
@@ -99,7 +96,6 @@ function RechartsPlot({ direction, plotMat }) {
 	};
 	useEffect(() => {
 		if (direction === "left") {
-			console.log({plotMat,xBrushRange})
 			plotMat &&
 				ChartCalculatorService.decideBrushRangeAlbo(
 					chartParameters,
@@ -118,7 +114,7 @@ function RechartsPlot({ direction, plotMat }) {
 					xBrushRange
 				);
 		}
-	}, [plotMat,vectorName]);
+	}, [plotMat, vectorName]);
 	const handleBrushChange = (range) => {
 		ChartCalculatorService.handleBrushChange(
 			range,
@@ -139,7 +135,15 @@ function RechartsPlot({ direction, plotMat }) {
 			});
 		s.brushDataY = { min: s.minmax.min, max: s.minmax.max };
 		plotMat && dispatch(setBrushDatayDir(s.brushDataY));
-	}, [plotMat, dispatch, s, s.minmax.min, s.minmax.max, vectorName,setBrushDatayDir]);
+	}, [
+		plotMat,
+		dispatch,
+		s,
+		s.minmax.min,
+		s.minmax.max,
+		vectorName,
+		setBrushDatayDir,
+	]);
 
 	const handleBrushChangeY = (range) => {
 		ChartCalculatorService.handleBrushChangeY(
@@ -177,7 +181,6 @@ function RechartsPlot({ direction, plotMat }) {
 					}
 				}
 			} else {
-				console.log("Shouldnt enter here");
 				primaryKey = key;
 				color = chartParameters.sliceInfo[primaryKey].sliceColors["slice0"];
 			}

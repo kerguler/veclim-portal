@@ -41,8 +41,6 @@ function AlboRequest() {
 		vectorName,
 		dateArray,
 	});
-	console.log({ errorTs, isFetching, dataTs });
-	console.log({ errorAlbo, isLoading, dataAlbo });
 
 	const [customError, setCustomError] = useState(0);
 
@@ -94,12 +92,10 @@ function AlboRequest() {
 	useEffect(() => {
 		const handleConfirm = async () => {
 			try {
-				console.log("submnittint sim ");
 				const response = await submitAlboData(alboSlider1Value / 100).unwrap();
 				response && setAlboDataArrived(true);
 				dispatch(setAlboRequestPlot(false));
 			} catch (err) {
-				console.log(err);
 				setAlboDataArrived(false);
 				setCustomError({
 					id: 4,
@@ -115,13 +111,12 @@ function AlboRequest() {
 			setAlboDataArrived(false);
 		}
 	}, [alboSlider1Value, alboRequest, submitAlboData, dispatch]);
-	console.log({ alboRequest });
 
 	useEffect(() => {
 		let r = rawData.current;
 		try {
 			if (vectorName === "albopictus") {
-				if (
+				if (dataTs && chartParameters &&
 					Object.keys(dataTs).length > 0 &&
 					Object.keys(chartParameters).length > 0
 				) {
@@ -138,7 +133,6 @@ function AlboRequest() {
 						setAlboDataArrived(false);
 					}
 				} else {
-					console.log({ dataTs, chartParameters });
 					dispatch(setPlotReadyDir(false));
 					setCustomError({
 						id: 2,
@@ -152,7 +146,6 @@ function AlboRequest() {
 				});
 			}
 		} catch (err) {
-			console.log(err);
 			setCustomError({
 				id: 5,
 				message: "something went wrong when dealing with data in simulation",

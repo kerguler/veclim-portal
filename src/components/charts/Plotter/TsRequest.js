@@ -47,7 +47,6 @@ function TsRequest() {
 		let r = rawData.current;
 		try {
 			if (data && Object.keys(chartParameters).length > 0) {
-				console.log("did we gt here");
 				r.data = data;
 				r.dataToPlot = {};
 				r.rawDataToPlot = {};
@@ -68,7 +67,6 @@ function TsRequest() {
 					});
 			}
 		} catch (err) {
-			console.log(err);
 			setCustomError({
 				message: "something went wrong when dealing with data in simulation",
 			});
@@ -103,7 +101,6 @@ function TsRequest() {
 	}
 
 	if (r.dataToPlot) {
-		console.log({ dataToPlot: r.dataToPlot, plotReady });
 		return (
 			plotReady && (
 				<ErrorBoundary>
