@@ -529,12 +529,8 @@ function PanelProvider({ children }) {
 			icon: seasonal,
 			chartParameters: {
 				chartType: "rechart",
-				initialSetting: "meteo-ts",
 				years: "2010-2019",
-				plottedKeys: ["atemp", "rehum", "precp"],
-				colors: ["#F15A48", "#50C0AD", "#1B3958"],
 				horizontalAxis: "date",
-				labels: ["Temperature (°C)", "Rel. humidity (%)", "Precipitation (mm)"],
 				lineSlice: [],
 				mixedKeys: [
 					{
@@ -596,7 +592,6 @@ function PanelProvider({ children }) {
 			key: "larva_forecast",
 			chartParameters: {
 				chartType: "rechart",
-				initialSetting: "fcast-ts",
 				years: "ecmwf",
 				// xbrushStart: -6,
 				// xbrushEnd: 3,
@@ -610,8 +605,6 @@ function PanelProvider({ children }) {
 						levels: ["sim-ts", "2010-2019", "coln2"],
 					},
 				],
-				plottedKeys: ["g1", "g2"],
-				colors: ["#1B3958", "#1B3958"],
 				horizontalAxis: "date",
 				lineSlice: ["g1"],
 				sliceInfo: {
@@ -632,7 +625,6 @@ function PanelProvider({ children }) {
 						sliceColors: { slice0: "#1B3958" },
 					},
 				},
-				labels: ["Larva forecast", "Decadal average"],
 			},
 			icon: larva,
 			content: (
@@ -655,7 +647,6 @@ function PanelProvider({ children }) {
 				twins: [{ id: 4, display: false }],
 				chartType: "rechart",
 				initialSetting: "fcast-ts",
-				years: "ecmwf",
 				mixedKeys: [
 					{
 						key: "g1",
@@ -666,13 +657,8 @@ function PanelProvider({ children }) {
 						levels: ["sim-ts", "2010-2019", "colegg"],
 					},
 				],
-				plottedKeys: ["g1", "g2"],
-				colors: ["#1B3958", "#1B3958"],
 				horizontalAxis: "date",
 				lineSlice: ["g1"],
-				labels: ["Activity forecast", "Decadal activity"],
-				sliceLabels: ["This year", "Overlap", "Forecast"],
-				sliceColors: ["#50C0AD", "orange", "#F15A48"],
 				sliceInfo: {
 					g1: {
 						sliceLabels: {
@@ -752,12 +738,8 @@ function PanelProvider({ children }) {
 						sliceLabels: { slice0: "1980-1990" },
 					},
 				},
-				plottedKeys: ["g1", "g2", "g3", "g4"],
-				colors: ["orange", "#F15A48", "#1B3958", "#50C0AD"],
-				sliceColors: ["#50C0AD", "orange", "#F15A48"],
 				horizontalAxis: "date",
 				lineSlice: [],
-				labels: ["SSP2-4.5", "SSP5-8.5", "2010-2020", "1980-1990"],
 			},
 			icon: adult,
 			content: (
@@ -781,7 +763,6 @@ function PanelProvider({ children }) {
 				twins: [{ id: 6, display: false }],
 
 				chartType: "rechart",
-				initialSetting: "fcast-ts",
 				years: "ecmwf",
 				//xBrushStart and xBrushEnd are used to set the
 				//initial range of the brush [months from the current date]
@@ -817,12 +798,8 @@ function PanelProvider({ children }) {
 					},
 				},
 				plottedKeys: ["g1", "g2"],
-				colors: ["#1B3958", "#1B3958"],
 				horizontalAxis: "date",
 				lineSlice: ["g1"],
-				labels: ["Risk forecast", "Decadal average"],
-				sliceLabels: ["This year", "Overlap", "Forecast"],
-				sliceColors: ["#50C0AD", "orange", "#F15A48"],
 			},
 			icon: virus,
 			content: (
@@ -856,7 +833,6 @@ function PanelProvider({ children }) {
 			key: "outbreak_forecast",
 			chartParameters: {
 				chartType: "rechart",
-				initialSetting: "fcast-ts",
 				years: "2090-2100",
 				// xbrushStart: -6,
 				// xbrushEnd: 3,
@@ -896,12 +872,8 @@ function PanelProvider({ children }) {
 						sliceColors: { slice0: "#50C0AD" },
 					},
 				},
-				plottedKeys: ["g1", "g2", "g3", "g4"],
-				colors: ["orange", "#F15A48", "#1B3958", "#50C0AD"],
-				sliceColors: ["#50C0AD", "orange", "#F15A48"],
 				horizontalAxis: "date",
 				lineSlice: [],
-				labels: ["SSP2-4.5", "SSP5-8.5", "2010-2020", "1980-1990"],
 			},
 			icon: virus,
 			content: (
@@ -926,7 +898,6 @@ function PanelProvider({ children }) {
 				twins: [{ id: 8, display: false }],
 
 				chartType: "rechart",
-				initialSetting: "fcast-ts",
 				years: "ecmwf",
 				// xbrushStart: -6,
 				// xbrushEnd: 3,
@@ -941,13 +912,8 @@ function PanelProvider({ children }) {
 						levels: ["sim-ts", "2010-2019", "iouts"],
 					},
 				],
-				plottedKeys: ["g1", "g2"],
-				colors: ["#1B3958", "#1B3958"],
 				horizontalAxis: "date",
 				lineSlice: ["g1"],
-				labels: ["Impact forecast", "Decadal average"],
-				sliceLabels: ["This year", "Overlap", "Forecast"],
-				sliceColors: ["#50C0AD", "orange", "#F15A48"],
 				sliceInfo: {
 					g1: {
 						sliceLabels: {
@@ -999,7 +965,6 @@ function PanelProvider({ children }) {
 			key: "impact_forecast",
 			chartParameters: {
 				chartType: "rechart",
-				initialSetting: "fcast-ts",
 				years: "2090-2100",
 				// xbrushStart: -6,
 				// xbrushEnd: 3,
@@ -1039,12 +1004,8 @@ function PanelProvider({ children }) {
 						sliceColors: { slice0: "#50C0AD" },
 					},
 				},
-				plottedKeys: ["g1", "g2", "g3", "g4"],
-				colors: ["orange", "#F15A48", "#1B3958", "#50C0AD"],
-				sliceColors: ["#50C0AD", "orange", "#F15A48"],
 				horizontalAxis: "date",
 				lineSlice: [],
-				labels: ["SSP2-4.5", "SSP5-8.5", "2010-2020", "1980-1990"],
 			},
 			icon: impact,
 			content: (
@@ -1102,7 +1063,6 @@ function PanelProvider({ children }) {
 
 			chartParameters: {
 				chartType: "rechart",
-				initialSetting: "test",
 				years: "ecmwf",
 				// xbrushStart: -6,
 				// xbrushEnd: 3,
@@ -1116,21 +1076,9 @@ function PanelProvider({ children }) {
 						levels: ["ts", "fcast-ts", "ecmwf", "iouts"],
 					},
 				],
-				plottedKeys: ["g1", "g2"],
-				colors: ["#1B3958", "#1B3958", "#000000"],
-				colorsAlbo: [
-					"1B3958",
-					"#1B3958",
-					"#000000",
-					"#1B3958",
-					"#1B3958",
-					"#000000",
-				],
+		
 				horizontalAxis: "date",
 				lineSlice: ["g1", "g2"],
-				labels: ["This year", "Overlap", "Forecast"],
-				sliceLabels: ["This year", "Overlap", "Forecast"],
-				sliceColors: ["#50C0AD", "orange", "#F15A48"],
 				sliceInfo: {
 					g1: {
 						sliceLabels: {
@@ -1157,8 +1105,6 @@ function PanelProvider({ children }) {
 						},
 					},
 				},
-				sliceLabelsAlbo: ["This year Albo", "OverlapAlbo ", "ForecastAlbo"],
-				sliceColorsAlbo: ["#50C0AD", "orange", "#F15A48"],
 			},
 
 			content: (
@@ -1208,9 +1154,7 @@ function PanelProvider({ children }) {
 			icon: adultsandfly,
 			chartParameters: {
 				chartType: "rechart",
-				initialSetting: "sim-ts",
 				years: "2015",
-				plottedKeys: ["g1", "g2"],
 				mixedKeys: [
 					{
 						key: "g1",
@@ -1231,9 +1175,7 @@ function PanelProvider({ children }) {
 						sliceColors: { slice0: "#1B3958" },
 					},
 				},
-				colors: ["#F15A48", "#1B3958"],
 				horizontalAxis: "date",
-				labels: ["Secondary land type", "Primary land type"],
 				lineSlice: [],
 			},
 

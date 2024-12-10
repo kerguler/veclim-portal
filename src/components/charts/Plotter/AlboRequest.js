@@ -130,7 +130,7 @@ function AlboRequest() {
 						r.data["ts"] = dataTs;
 						ChartCalculatorService.createDateArray(rawData, chartParameters);
 						ChartCalculatorService.handleMixedKeys(rawData, chartParameters);
-						ChartCalculatorService.handleSlices( rawData,chartParameters);
+						ChartCalculatorService.handleSlices(rawData, chartParameters);
 						dispatch(setPlotReadyDir(true));
 						dispatch(setAlboRequestPlot(false));
 						dispatch(setSlider1EnabledRight(true));
@@ -222,36 +222,3 @@ function AlboRequest() {
 }
 
 export default AlboRequest;
-// useEffect(() => {
-// 	let r = rawData.current;
-// 	if (
-// 		direction === "right" &&
-// 		alboDataArrived &&
-// 		r.dataToPlot &&
-// 		chartParameters.lineSlice &&
-// 		chartParameters.lineSlice.length > 0 &&
-// 		!chartParameters.plottedKeys.includes("slice1") &&
-// 		vectorName === "albopictus"
-// 	) {
-// 		Object.keys(r.rawDataToPlot).forEach((element, index) => {
-// 			if (element !== "key") {
-// 				if (
-// 					r.rawDataToPlot[element] &&
-// 					r.rawDataToPlot[element].slices &&
-// 					Object.keys(r.rawDataToPlot[element].slices).length > 0
-// 				) {
-// 					Object.keys(r.rawDataToPlot[element].slices).forEach(
-// 						(slice, index) => {
-// 							dispatch(
-// 								appendToPlottedKeysChartParametersDir(
-// 									`${element}.slice${index}`
-// 								)
-// 							);
-// 						}
-// 					);
-// 				}
-// 			}
-// 		});
-// 		setAlboDataArrived(false);
-// 	}
-// }, [plotReady, alboDataArrived]);

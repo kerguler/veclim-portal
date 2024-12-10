@@ -33,9 +33,20 @@ function CustomTooltip({ active, payload, label, parameters, keys }) {
 				}
 			});
 		};
+		
+		let labels=[]
+		Object.keys(parameters.sliceInfo).forEach((key)=>{
+			if(parameters.sliceInfo[key].sliceLabels){
+				Object.keys(parameters.sliceInfo[key].sliceLabels).forEach((label)=>{
+					labels.push(parameters.sliceInfo[key].sliceLabels[label])
+				})
+			}
+			
+		
+		})
 
 		let renderedTooltipvalues = payload1.map((entry, index) => {
-			if (parameters.labels) {
+			if (labels) {
 				return (
 					<p key={`${entry.dataKey}-${index}`} style={{ color: entry.color }}>
 						<RenderedTooltipElement keys={keys} index={index} entry={entry} />

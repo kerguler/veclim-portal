@@ -4,7 +4,7 @@ class ChartCalculatorService {
 		r.rawDataToPlot = {};
 		if (!params.mixedKeys) {
 			r.rawDataToPlot = {
-				...r.data[params.initialSetting],
+				...r.data[params.mixedKeys[0].key],
 			};
 		} else {
 			r.dateInfo.dates["overlaps"] = {};
@@ -60,13 +60,13 @@ class ChartCalculatorService {
 		r["done"] = true;
 	}
 
-	static handleSlices( rawData,params) {
-		let tempStruct = {};
+	static handleSlices(rawData, params) {
+		// let tempStruct = {};
 		let r = rawData.current;
 
-		params.plottedKeys.forEach((item) => {
-			tempStruct[item] = null;
-		});
+		// params.plottedKeys.forEach((item) => {
+		// 	tempStruct[item] = null;
+		// });
 		r.dateInfo.dates.sliceIndices = {};
 
 		params.mixedKeys.forEach((item) => {
