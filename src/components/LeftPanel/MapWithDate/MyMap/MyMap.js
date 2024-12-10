@@ -11,8 +11,9 @@ import SearchLocationIcon from "components/LeftPanel/MapWithDate/MyMap/SearchLoc
 
 function MyMap({ maxZoom }) {
 	const position = useSelector((state) => {
-		return state.location.globalPosition;
+		return state.fetcher.fetcherStates.map.globalPosition;
 	});
+	console.log("MY MAP");
 	const params = {
 		map: null,
 		center: null,
@@ -70,7 +71,6 @@ function MyMap({ maxZoom }) {
 
 	return (
 		<div className="map-container-wrapper">
-			
 			<div id="map"></div>
 			<SearchLocationIcon />
 		</div>

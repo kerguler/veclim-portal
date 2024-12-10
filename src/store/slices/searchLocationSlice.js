@@ -5,7 +5,6 @@ const searchLocationSlice = createSlice({
 	name: "form",
 	initialState: {
 		locationName: "",
-		globalPosition: { lat: null, lng: null },
 		showInstructions: false,
 		locationRequested: true,
 		date: getCurrentDate("-"),
@@ -54,13 +53,7 @@ const searchLocationSlice = createSlice({
 		setLocationRequested(state, action) {
 			state.locationRequested = action.payload;
 		},
-		setGlobalPosition(state, action) {
-			if (action && action.payload) {
-				state.globalPosition = action.payload;
-			} else {
-				state.globalPosition = state.userPosition;
-			}
-		},
+
 		setUserPosition(state, action) {
 			state.userPosition = action.payload;
 		},
@@ -73,7 +66,6 @@ export const {
 	changeDate,
 	changeSearchTermLocation,
 	populateArray,
-	setGlobalPosition,
 	setUserPosition,
 	setSuperUser,
 	setPageTransition,

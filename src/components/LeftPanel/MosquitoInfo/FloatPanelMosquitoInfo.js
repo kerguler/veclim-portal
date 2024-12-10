@@ -21,12 +21,12 @@ function FloatPanelMosquitoInfo() {
 	var content = "";
 	var explain = "";
 	const position = useSelector((state) => {
-		return state.location.globalPosition;
+		return state.fetcher.fetcherStates.map.globalPosition;
 	});
 	const { data, error, isFetching } = useFetchCoordinateDataQuery(
 		JSON.stringify(position)
 	);
-
+console.log({data,error,isFetching})
 	const [isFlipped, setFlip] = useState(false);
 
 	const handleClickMailTo = () => {

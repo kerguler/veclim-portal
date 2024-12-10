@@ -5,7 +5,7 @@ import TextContext from "context/appText";
 import "./DateDisplay.css";
 const DateDisplay = () => {
 	const position = useSelector((state) => {
-		return state.location.globalPosition;
+		return state.fetcher.fetcherStates.map.globalPosition;
 	});
 	const { data } = useFetchCoordinateDataQuery(JSON.stringify(position));
 	const { months } = useContext(TextContext);

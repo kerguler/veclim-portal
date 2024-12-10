@@ -16,8 +16,11 @@ import Skeleton from "components/skeleton/Skeleton";
 function LeftPanel({ page, displayNews, displayContent }) {
 	const { webApp } = useWindowSize();
 	const location = useLocation();
-	const position = useSelector((state) => state.location.globalPosition);
-
+	const position = useSelector(
+		(state) => state.fetcher.fetcherStates.map.globalPosition
+	);
+	console.log("LEFT PANEL");
+	console.log({ position });
 	const home = (
 		<>
 			{webApp && <div className="spacer"></div>}

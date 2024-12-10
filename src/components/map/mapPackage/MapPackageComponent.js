@@ -15,6 +15,7 @@ import useSeparatorActions from "customHooks/MapPackage/useSeparatorActions";
 import useZoomActions from "customHooks/useZoomActions";
 import useMapBasicEvents from "customHooks/MapPackage/useMapBasicEvents";
 import useLMapResize from "customHooks/MapPackage/useLMapResize";
+import { setSwitchMap } from "store";
 function MapPackageComponent({ fitworld }) {
 	const dispatch = useDispatch();
 	const {
@@ -27,6 +28,7 @@ function MapPackageComponent({ fitworld }) {
 		mapPagePosition,
 		currentMapCenter,
 		directMapRight,
+		switchMap,
 	} = useFetcherVariables();
 	const mapParameters = {
 		map: null,
@@ -77,7 +79,7 @@ function MapPackageComponent({ fitworld }) {
 		}
 
 		return () => {};
-	}, [directMapLeft, directMapRight, dispatch, vectorName]);
+	}, [directMapLeft, directMapRight, dispatch, vectorName, mapPagePosition]);
 
 	return (
 		<>

@@ -82,8 +82,8 @@ class PackageMapServices {
 			console.log("we have the same vector");
 			return;
 		}
-
-		dispatch(setSwitchMap(true));
+console.log("setting switch map to false");
+		dispatch(setSwitchMap(false));
 		if (desiredVector === "papatasi") {
 			console.log("setting things up for papatasi");
 			dispatch(setVectorName("papatasi"));
@@ -438,6 +438,7 @@ class PackageMapServices {
 
 	static markerHandler = (mapParRef, switchZoom, vectorName, dispatch) => {
 		let p = mapParRef.current;
+		console.log("markerHandler");
 		if (p) {
 			p.zoom = p.map.getZoom();
 			p.center = [p.map.getCenter().lat, p.map.getCenter().lng];

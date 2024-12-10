@@ -146,7 +146,11 @@ const fetcherSlice = createSlice({
 			state.fetcherStates.map.userPosition = action.payload;
 		},
 		setGlobalPosition(state, action) {
-			state.fetcherStates.map.globalPosition = action.payload;
+			if (action && action.payload) {
+				state.fetcherStates.map.globalPosition = action.payload;
+			} else {
+				state.fetcherStates.map.globalPosition = state.userPosition;
+			}
 		},
 		setMapPagePosition(state, action) {
 			state.fetcherStates.map.mapPagePosition = action.payload;

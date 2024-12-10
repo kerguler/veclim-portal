@@ -33,7 +33,6 @@ function ChangeMapPanel() {
 		),
 	};
 	const handleChangeTile = (desiredVector) => {
-		console.log("desiredVector", desiredVector);
 
 		PackageMapServices.handleMapSwitch(dispatch, vectorName, desiredVector);
 		

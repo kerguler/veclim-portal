@@ -49,6 +49,8 @@ export function useUserLocation() {
 		(position) => {
 			const { latitude, longitude } = position.coords;
 			const updatedPosition = { lat: latitude, lng: longitude };
+			console.log({updatedPosition})
+
 			// dispatch(setUserPosition(updatedPosition));
 			dispatch(setGlobalPosition(updatedPosition));
 		},

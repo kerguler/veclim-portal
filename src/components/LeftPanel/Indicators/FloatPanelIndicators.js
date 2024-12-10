@@ -15,7 +15,7 @@ import { useSelector } from "react-redux";
 import { useFetchCoordinateDataQuery } from "store";
 export function FloatPanelIndicators() {
 	const position = useSelector((state) => {
-		return state.location.globalPosition;
+		return state.fetcher.fetcherStates.map.globalPosition;
 	});
 	const { data, error, isFetching } = useFetchCoordinateDataQuery(
 		JSON.stringify(position)

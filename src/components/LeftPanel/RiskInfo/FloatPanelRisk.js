@@ -15,7 +15,7 @@ import { RiskIndicator, AccuracyIndicator } from "./FloatPanelRiskIndicator";
 
 function RiskPanel() {
 	const position = useSelector((state) => {
-		return state.location.globalPosition;
+		return state.fetcher.fetcherStates.map.globalPosition;
 	});
 	const { data, error, isFetching } = useFetchCoordinateDataQuery(
 		JSON.stringify(position)
