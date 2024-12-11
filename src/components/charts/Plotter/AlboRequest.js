@@ -23,12 +23,15 @@ function AlboRequest() {
 	);
 	const {
 		dateArray,
-		mapPagePosition,
+
 		setPlotReadyDir,
 		chartParameters,
 		vectorName,
 		plotReady,
 	} = useDirectorFun("right");
+	const mapPagePositionLeft = useSelector(
+		(state) => state.fetcher.fetcherStates.map.mapPagePosition
+	);
 
 	const [submitAlboData, { isLoading, data: dataAlbo, error: errorAlbo }] =
 		useSubmitAlboDataMutation();
@@ -37,16 +40,13 @@ function AlboRequest() {
 		error: errorTs,
 		isFetching,
 	} = useFetchTimeSeriesDataQuery({
-		position: JSON.stringify(mapPagePosition),
+		position: JSON.stringify(mapPagePositionLeft),
 		vectorName,
 		dateArray,
 	});
 
 	const [customError, setCustomError] = useState(0);
-
-	const mapPagePositionLeft = useSelector(
-		(state) => state.fetcher.fetcherStates.map.mapPagePosition
-	);
+	console.log({ isFetching, dataTs, errorTs });
 
 	const rawData = useRef({
 		rawDataToPlot: {},
@@ -55,6 +55,9 @@ function AlboRequest() {
 	});
 
 	useEffect(() => {
+		if (isFetching) {
+			setCustomError({ id: 9, message: "Fetching Ts Data" });
+		}
 		if (dataTs) {
 			if (!dataAlbo) {
 				setCustomError({
@@ -72,13 +75,10 @@ function AlboRequest() {
 				message: `Ts Data is not set`,
 			});
 		}
-
-		if (isFetching) {
-			setCustomError({ id: 9, message: "Fetching Ts Data" });
-		}
 	}, [dataTs, isFetching, mapPagePositionLeft]);
+
 	useEffect(() => {
-		if (mapPagePositionLeft) {
+		if (mapPagePositionLeft.lat && dataTs) {
 			setCustomError({
 				id: 3,
 				message: `Map Page Position Left has changed to lat:${mapPagePositionLeft.lat.toFixed(
@@ -86,7 +86,7 @@ function AlboRequest() {
 				)} lng:${mapPagePositionLeft.lng.toFixed(2)} Please press submit`,
 			});
 		}
-	}, [mapPagePositionLeft]);
+	}, [mapPagePositionLeft, dataTs]);
 
 	const [alboDataArrived, setAlboDataArrived] = useState(false);
 	useEffect(() => {
@@ -116,13 +116,31 @@ function AlboRequest() {
 		let r = rawData.current;
 		try {
 			if (vectorName === "albopictus") {
-				if (dataTs && chartParameters &&
-					Object.keys(dataTs).length > 0 &&
+				if (
+					dataTs &&
+					chartParameters &&
+					dataTs.presence.albopictus.length > 0 &&
 					Object.keys(chartParameters).length > 0
 				) {
 					if (dataAlbo) {
+						
 						r.data = { ...dataAlbo };
 						r.data["ts"] = dataTs;
+
+						const { errorMessage, isError } =
+							ChartCalculatorService.checkDataForMixedKeys(
+								chartParameters,
+								r.data,
+								dispatch,
+								setPlotReadyDir,
+								mapPagePositionLeft
+							);
+							
+						console.log({ errorMessage, isError });
+						if (isError) {
+							console.log("error", errorMessage);
+							throw new Error(errorMessage);
+						}
 						ChartCalculatorService.createDateArray(rawData, chartParameters);
 						ChartCalculatorService.handleMixedKeys(rawData, chartParameters);
 						ChartCalculatorService.handleSlices(rawData, chartParameters);
@@ -148,7 +166,8 @@ function AlboRequest() {
 		} catch (err) {
 			setCustomError({
 				id: 5,
-				message: "something went wrong when dealing with data in simulation",
+				message: err.message,
+				message1: "something went wrong when dealing with data in simulation",
 			});
 		}
 	}, [

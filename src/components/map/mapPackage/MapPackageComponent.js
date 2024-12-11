@@ -15,7 +15,8 @@ import useSeparatorActions from "customHooks/MapPackage/useSeparatorActions";
 import useZoomActions from "customHooks/useZoomActions";
 import useMapBasicEvents from "customHooks/MapPackage/useMapBasicEvents";
 import useLMapResize from "customHooks/MapPackage/useLMapResize";
-import { setSwitchMap } from "store";
+
+
 function MapPackageComponent({ fitworld }) {
 	const dispatch = useDispatch();
 	const {
@@ -30,6 +31,7 @@ function MapPackageComponent({ fitworld }) {
 		directMapRight,
 		switchMap,
 	} = useFetcherVariables();
+
 	const mapParameters = {
 		map: null,
 		center: currentMapCenter,
@@ -55,6 +57,7 @@ function MapPackageComponent({ fitworld }) {
 	useZoomActions(mapParRef);
 	useMapBasicEvents(mapParRef, fitworld);
 	useLMapResize(mapParRef);
+
 	useEffect(() => {
 		if (
 			(mapPagePosition &&
@@ -79,7 +82,7 @@ function MapPackageComponent({ fitworld }) {
 		}
 
 		return () => {};
-	}, [directMapLeft, directMapRight, dispatch, vectorName, mapPagePosition]);
+	}, [directMapLeft, directMapRight, dispatch, vectorName, mapPagePosition,switchMap]);
 
 	return (
 		<>
@@ -92,38 +95,7 @@ function MapPackageComponent({ fitworld }) {
 			</div>
 		</>
 	);
+	
 }
 
 export default MapPackageComponent;
-// mapParRef.current.maxBounds = currentMaxBounds
-// 	? L.latLngBounds(currentMaxBounds[0], currentMaxBounds[1])
-// 	: null;
-// useEffect(() => {
-// 	if (vectorName === "papatasi") {
-// 		p.center = PackageMapServices.defaultCypCenter;
-// 	}
-// });
-
-// useEffect(() => {
-// 	if (
-// 		mapPagePosition &&
-// 		directMap.display !== -2 &&
-// 		directMap.display !== null
-// 	) {
-// 		let e = {
-// 			latlng: {
-// 				lat: directMap.lat,
-// 				lng: directMap.lon,
-// 			},
-// 		};
-// 		PackageMapServices.handleMapClick(
-// 			e,
-// 			mapParRef,
-// 			vectorName,
-// 			dispatch,
-// 			directMap
-// 		);
-// 	}
-
-// 	return () => {};
-// }, [directMap, dispatch, mapPagePosition, vectorName]);

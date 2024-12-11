@@ -28,6 +28,51 @@ class ChartCalculatorService {
 		}
 	}
 
+	static checkDataForMixedKeys(
+		chartParameters,
+		data,
+		dispatch,
+		setPlotReadyDir,
+		mapPagePosition
+	) {
+		if (!chartParameters || !chartParameters.mixedKeys) {
+			return {
+				errorMessage: "chart parameters are not available",
+				isError: true,
+			};
+		}
+		if (!data) {
+			return {
+				errorMessage: "data is not available yet. Please click on the Map",
+				isError: true,
+			};
+		}
+		let error = { errorMessage: null, isError: false };
+
+		// Use a for loop to enable breaking
+		for (const element of chartParameters.mixedKeys) {
+			const { levels } = element;
+			let val = data;
+
+			for (const v of levels) {
+				if (v in val) {
+					val = val[v];
+				} else {
+					// Update error state and exit
+					dispatch(setPlotReadyDir(false));
+					error.errorMessage = `There is no data available for the position chosen lat:${mapPagePosition.lat.toFixed(
+						2
+					)} lng: ${mapPagePosition.lng.toFixed(2)}`;
+					error.isError = true;
+					return error; // Exit immediately when an error is found
+				}
+			}
+		}
+
+		// Return error object (default to no error)
+		return error;
+	}
+
 	static slicer(r, key, result) {
 		let resultArray = [];
 		// Iterate through each date in the total date array
@@ -92,7 +137,7 @@ class ChartCalculatorService {
 			r.rawDataToPlot[key].slices = {};
 			let result = [];
 			// we have to deteremine where to cut the data so lets find and index for each overlap date.
-			if ( !r.dateInfo.dates.overlaps[key]) {
+			if (!r.dateInfo.dates.overlaps[key]) {
 				r.rawDataToPlot[key].slices["slice0"] = r.rawDataToPlot[key][key];
 			} else {
 				r.dateInfo.dates.overlaps[key].forEach((date) => {

@@ -10,6 +10,7 @@ import useSetDefaultCoordinates from "./useSetDefaultCoordinates";
 import ErrorComponent from "./errorComponent/ErrorComponent";
 import ErrorBoundary from "components/errorBoundary/ErrorBoundary";
 import ChartLoadingSkeleton from "components/skeleton/Skeleton";
+import { exception } from "react-ga";
 function TsRequest() {
 	const dispatch = useDispatch();
 
@@ -47,6 +48,19 @@ function TsRequest() {
 		let r = rawData.current;
 		try {
 			if (data && Object.keys(chartParameters).length > 0) {
+				const { errorMessage, isError } =
+					ChartCalculatorService.checkDataForMixedKeys(
+						chartParameters,
+						data,
+						dispatch,
+						setPlotReadyDir,mapPagePosition
+					);
+					console.log({errorMessage, isError});
+				if (isError) {
+					console.log("error", errorMessage);
+					throw new Error(errorMessage);
+				}
+				console.log("data", data);
 				r.data = data;
 				r.dataToPlot = {};
 				r.rawDataToPlot = {};
@@ -56,19 +70,31 @@ function TsRequest() {
 				dispatch(setPlotReadyDir(true));
 				setCustomError(null);
 				dispatch(
-					setBrushRangeDir({ startIndex: 0, endIndex: r.dataToPlot.length - 1 })
+					setBrushRangeDir({
+						startIndex: 0,
+						endIndex: r.dataToPlot.length - 1,
+					})
 				);
+
+				// 	else {
+				// 	dispatch(setPlotReadyDir(false));
+				// 	mapPagePosition.lat &&
+				// 		setCustomError({
+				// 			message: `There is no data available for the position chosen lat:
+				// 	${mapPagePosition.lat.toFixed(2)} lng: ${mapPagePosition.lng.toFixed(2)}`,
+				// 		});
+				// }
 			} else {
 				dispatch(setPlotReadyDir(false));
-				mapPagePosition &&
+				mapPagePosition.lat &&
 					setCustomError({
-						message: `There is no data available for the position chosen lat:
-				${mapPagePosition.lat.toFixed(2)} lng: ${mapPagePosition.lng.toFixed(2)}`,
+						message: "Data is not available yet. Please click on the Map",
 					});
 			}
 		} catch (err) {
 			setCustomError({
-				message: "something went wrong when dealing with data in simulation",
+				message: err.message,
+				message1: "something went wrong when dealing with data in simulation",
 			});
 		}
 	}, [

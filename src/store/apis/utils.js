@@ -27,15 +27,15 @@ export function dateToString(today, sep = "") {
 
 export function getCurrentDate(sep = "") {
 	let today = new Date();
-	return dateToString(today, sep=sep)
+	return dateToString(today, (sep = sep));
 }
 
 export function getDateRange(sep = ":") {
 	let today = new Date();
 	let tomorrow = new Date();
-	today.setDate(today.getDate() - 7*30);
-	tomorrow.setDate(tomorrow.getDate() + 7*30);
-	return dateToString(today,"-")+sep+dateToString(tomorrow,"-");
+	today.setDate(today.getDate() - 7 * 30);
+	tomorrow.setDate(tomorrow.getDate() + 7 * 30);
+	return dateToString(today, "-") + sep + dateToString(tomorrow, "-");
 }
 
 export function useUserLocation() {
@@ -49,7 +49,6 @@ export function useUserLocation() {
 		(position) => {
 			const { latitude, longitude } = position.coords;
 			const updatedPosition = { lat: latitude, lng: longitude };
-			console.log({updatedPosition})
 
 			// dispatch(setUserPosition(updatedPosition));
 			dispatch(setGlobalPosition(updatedPosition));

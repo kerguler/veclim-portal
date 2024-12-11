@@ -13,7 +13,9 @@ function useZoomActions(mapParRef) {
 	const currentMapBounds = useSelector(
 		(state) => state.fetcher.fetcherStates.map.currentMapBounds
 	);
-
+	const switchMap = useSelector(
+		(state) => state.fetcher.fetcherStates.map.switchMap
+	);
 	let p = mapParRef.current;
 	const dispatch = useDispatch();
 	useEffect(() => {
@@ -21,12 +23,13 @@ function useZoomActions(mapParRef) {
 			PackageMapServices.markerHandler(mapParRef, 4, vectorName, dispatch);
 		};
 		p.map.on("zoomend", handleMarkers);
+		if (switchMap) {
+			handleMarkers();
+		}
 		return () => {
 			p.map.off("zoomend", handleMarkers);
 		};
-		},
-		[vectorName, p.map, mapParRef, dispatch]
-	);
+	}, [vectorName, p.map, mapParRef, dispatch, switchMap]);
 }
 
 export default useZoomActions;
