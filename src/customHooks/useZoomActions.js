@@ -2,17 +2,12 @@ import { useEffect } from "react";
 import PackageMapServices from "components/map/mapPackage/PackageMapServices";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-import L from "leaflet";
+
 function useZoomActions(mapParRef) {
 	const vectorName = useSelector(
 		(state) => state.fetcher.fetcherStates.vectorName
 	);
-	const currentMaxBounds = useSelector(
-		(state) => state.fetcher.fetcherStates.map.currentMaxBounds
-	);
-	const currentMapBounds = useSelector(
-		(state) => state.fetcher.fetcherStates.map.currentMapBounds
-	);
+
 	const switchMap = useSelector(
 		(state) => state.fetcher.fetcherStates.map.switchMap
 	);

@@ -23,6 +23,8 @@ import ErrorScreenMap from "components/map/errorScreen/ErrorScreenMap";
 import { setCurrentMaxBounds } from "store";
 import { setDisplayReady } from "store";
 import { setPanelInterfereRight } from "store";
+import { setIsTsDataSet } from "store";
+import { setInvalidateSimData } from "store";
 
 class PackageMapServices {
 	static baseLayer = L.tileLayer(
@@ -82,7 +84,7 @@ class PackageMapServices {
 			console.log("we have the same vector");
 			return;
 		}
-console.log("setting switch map to false");
+		console.log("setting switch map to false");
 		dispatch(setSwitchMap(false));
 		if (desiredVector === "papatasi") {
 			console.log("setting things up for papatasi");
@@ -112,9 +114,9 @@ console.log("setting switch map to false");
 		vectorName,
 		dispatch,
 		directMap,
-		directMapRight,
-		
+		directMapRight
 	) {
+		dispatch(setInvalidateSimData(true));
 		this.clickMap(e, mapParRef, vectorName, dispatch);
 		// TODO: MAY NEED TO REMOVE
 
@@ -129,7 +131,7 @@ console.log("setting switch map to false");
 			dispatch(setPanelInterfereRight(null));
 		}
 	}
-	static clickMap = (e, mapParRef, vectorName, dispatch,) => {
+	static clickMap = (e, mapParRef, vectorName, dispatch) => {
 		let p = mapParRef.current;
 		const switchZoom = 4;
 		let newPosition = this.roundPosition(
@@ -139,9 +141,9 @@ console.log("setting switch map to false");
 		);
 		newPosition = { ...newPosition, res: [0.125, 0.125] };
 		p.prevClickPointRef = newPosition;
-			dispatch(
-				setMapPagePosition({ lat: newPosition.lat, lng: newPosition.lng })
-			);
+		dispatch(
+			setMapPagePosition({ lat: newPosition.lat, lng: newPosition.lng })
+		);
 		p.highlightMarker && p.map.removeLayer(p.highlightMarker);
 		p.iconMarker && p.map.removeLayer(p.iconMarker);
 		p.rectMarker && p.map.removeLayer(p.rectMarker);

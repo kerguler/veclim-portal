@@ -12,6 +12,11 @@ import { useRef } from "react";
 import ErrorBoundary from "components/errorBoundary/ErrorBoundary";
 import { useFetchTimeSeriesDataQuery } from "store";
 import RechartsPlot from "./RechartsPlot";
+import { store } from "store";
+import { alboApi } from "store/apis/alboApi";
+import { setIsTsDataSet } from "store";
+import { setInvalidateSimData } from "store";
+
 function AlboRequest() {
 	const dispatch = useDispatch();
 	const alboSlider1Value = useSelector(
@@ -32,9 +37,13 @@ function AlboRequest() {
 	const mapPagePositionLeft = useSelector(
 		(state) => state.fetcher.fetcherStates.map.mapPagePosition
 	);
+	const isTsDataSet = useSelector(
+		(state) => state.fetcher.fetcherStates.isTsDataSet
+	);
 
 	const [submitAlboData, { isLoading, data: dataAlbo, error: errorAlbo }] =
 		useSubmitAlboDataMutation();
+
 	const {
 		data: dataTs,
 		error: errorTs,
@@ -44,57 +53,46 @@ function AlboRequest() {
 		vectorName,
 		dateArray,
 	});
-
+	const [alboDataArrived, setAlboDataArrived] = useState(false);
 	const [customError, setCustomError] = useState(0);
-	console.log({ isFetching, dataTs, errorTs });
+	const invalidateSimData = useSelector(
+		(state) => state.fetcher.fetcherStates.invalidateSimData
+	);
 
 	const rawData = useRef({
 		rawDataToPlot: {},
 		data: null,
 		dataToPlot: null,
 	});
-
+	console.log({ invalidateSimData });
 	useEffect(() => {
-		if (isFetching) {
-			setCustomError({ id: 9, message: "Fetching Ts Data" });
-		}
-		if (dataTs) {
-			if (!dataAlbo) {
-				setCustomError({
-					id: 3,
-					message: `Ts data has arrived for lat:${mapPagePositionLeft.lat.toFixed(
-						2
-					)} lng:${mapPagePositionLeft.lng.toFixed(
-						2
-					)}, click submit to receive results for the new coordinates`,
-				});
-			}
-		} else {
+		invalidateSimData &&
+			setCustomError({ id: 10, message: "new ts data is being fetched" });
+		dataTs &&
+			invalidateSimData &&
 			setCustomError({
-				id: 3,
-				message: `Ts Data is not set`,
-			});
-		}
-	}, [dataTs, isFetching, mapPagePositionLeft]);
-
-	useEffect(() => {
-		if (mapPagePositionLeft.lat && dataTs) {
-			setCustomError({
-				id: 3,
-				message: `Map Page Position Left has changed to lat:${mapPagePositionLeft.lat.toFixed(
+				id: 11,
+				message: `Ts data has arrived for lat:${mapPagePositionLeft.lat.toFixed(
 					2
-				)} lng:${mapPagePositionLeft.lng.toFixed(2)} Please press submit`,
+				)} lng:${mapPagePositionLeft.lng.toFixed(
+					2
+				)}, click submit to receive results for the new coordinates`,
 			});
-		}
-	}, [mapPagePositionLeft, dataTs]);
+	}, [
+		invalidateSimData,
+		isFetching,
+		dataTs,
+		mapPagePositionLeft.lat,
+		mapPagePositionLeft.lng,
+	]);
 
-	const [alboDataArrived, setAlboDataArrived] = useState(false);
 	useEffect(() => {
 		const handleConfirm = async () => {
 			try {
 				const response = await submitAlboData(alboSlider1Value / 100).unwrap();
 				response && setAlboDataArrived(true);
 				dispatch(setAlboRequestPlot(false));
+				dispatch(setInvalidateSimData(false));
 			} catch (err) {
 				setAlboDataArrived(false);
 				setCustomError({
@@ -115,15 +113,16 @@ function AlboRequest() {
 	useEffect(() => {
 		let r = rawData.current;
 		try {
+			console.log({ dataTs, chartParameters });
 			if (vectorName === "albopictus") {
 				if (
+					!invalidateSimData &&
 					dataTs &&
 					chartParameters &&
-					dataTs.presence.albopictus.length > 0 &&
+					// dataTs.presence.albopictus.length > 0 &&
 					Object.keys(chartParameters).length > 0
 				) {
 					if (dataAlbo) {
-						
 						r.data = { ...dataAlbo };
 						r.data["ts"] = dataTs;
 
@@ -135,8 +134,7 @@ function AlboRequest() {
 								setPlotReadyDir,
 								mapPagePositionLeft
 							);
-							
-						console.log({ errorMessage, isError });
+
 						if (isError) {
 							console.log("error", errorMessage);
 							throw new Error(errorMessage);
@@ -152,10 +150,19 @@ function AlboRequest() {
 					}
 				} else {
 					dispatch(setPlotReadyDir(false));
-					setCustomError({
-						id: 2,
-						message: "Either Ts data is empty, or it is not set",
-					});
+					if (invalidateSimData) {
+						setCustomError({
+							id: 10,
+							message: `the coordinates have changed to lat:${mapPagePositionLeft.lat.toFixed(
+								2
+							)} lng:${mapPagePositionLeft.lng.toFixed(2)}`,
+						});
+					} else {
+						setCustomError({
+							id: 2,
+							message: "Either Ts data is empty, or it is not set",
+						});
+					}
 				}
 			} else {
 				setCustomError({
@@ -171,6 +178,7 @@ function AlboRequest() {
 			});
 		}
 	}, [
+		invalidateSimData,
 		chartParameters,
 		dataAlbo,
 		dispatch,
@@ -178,9 +186,9 @@ function AlboRequest() {
 		rawData,
 		vectorName,
 		dataTs,
-
 		setPlotReadyDir,
 	]);
+
 	useEffect(() => {
 		!chartParameters &&
 			!Object.keys(chartParameters).length > 0 &&

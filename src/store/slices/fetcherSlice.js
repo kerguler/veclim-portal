@@ -12,6 +12,7 @@ const fetcherSlice = createSlice({
 			availableTiles: [],
 			data: {},
 			isTsDataSet: false,
+			invalidateSimData: false,
 			map: {
 				currentMapCenter: [35.1966527, 33.3217152],
 				currentMapZoom: 2,
@@ -64,6 +65,9 @@ const fetcherSlice = createSlice({
 	},
 
 	reducers: {
+		setInvalidateSimData(state, action) {
+			state.fetcherStates.invalidateSimData = action.payload;
+		},
 		setIsTsDataSet(state, action) {
 			state.fetcherStates.isTsDataSet = action.payload;
 		},
@@ -202,6 +206,7 @@ const fetcherSlice = createSlice({
 });
 
 export const {
+	setInvalidateSimData,
 	setIsTsDataSet,
 	setTsData,
 	setMapPagePositionRight,

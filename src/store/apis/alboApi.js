@@ -11,7 +11,7 @@ const alboApi = createApi({
 			return headers;
 		},
 	}),
-	tagTypes: ["albo"],
+	tagTypes: ["AlboData"],
 	endpoints(builder) {
 		return {
 			submitAlboData: builder.mutation({
@@ -27,7 +27,7 @@ const alboApi = createApi({
 						body: simulationData,
 						method: "POST",
 					};
-				},
+				},providesTags: ["AlboData"],
 			}),
 		};
 	},

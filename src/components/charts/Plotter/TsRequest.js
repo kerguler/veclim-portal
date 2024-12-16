@@ -11,6 +11,8 @@ import ErrorComponent from "./errorComponent/ErrorComponent";
 import ErrorBoundary from "components/errorBoundary/ErrorBoundary";
 import ChartLoadingSkeleton from "components/skeleton/Skeleton";
 import { exception } from "react-ga";
+import { setIsTsDataSet } from "store";
+import { setInvalidateSimData } from "store";
 function TsRequest() {
 	const dispatch = useDispatch();
 
@@ -20,6 +22,12 @@ function TsRequest() {
 		dataToPlot: null,
 	});
 	let r = rawData.current;
+
+	const [customError, setCustomError] = useState(null);
+	// This side effect arrangtes the map centers to default values
+	// in case the vectorName changes
+	useSetDefaultCoordinates();
+
 	const {
 		mapPagePosition,
 		vectorName,
@@ -38,11 +46,7 @@ function TsRequest() {
 
 	useEffect(() => {
 		dispatch(setPlotReadyDir(false));
-	}, [vectorName]);
-	const [customError, setCustomError] = useState(null);
-	// This side effect arrangtes the map centers to default values
-	// in case the vectorName changes
-	useSetDefaultCoordinates();
+	}, [vectorName, dispatch, setPlotReadyDir]);
 
 	useEffect(() => {
 		let r = rawData.current;
@@ -53,14 +57,14 @@ function TsRequest() {
 						chartParameters,
 						data,
 						dispatch,
-						setPlotReadyDir,mapPagePosition
+						setPlotReadyDir,
+						mapPagePosition
 					);
-					console.log({errorMessage, isError});
 				if (isError) {
 					console.log("error", errorMessage);
 					throw new Error(errorMessage);
 				}
-				console.log("data", data);
+
 				r.data = data;
 				r.dataToPlot = {};
 				r.rawDataToPlot = {};
@@ -75,15 +79,6 @@ function TsRequest() {
 						endIndex: r.dataToPlot.length - 1,
 					})
 				);
-
-				// 	else {
-				// 	dispatch(setPlotReadyDir(false));
-				// 	mapPagePosition.lat &&
-				// 		setCustomError({
-				// 			message: `There is no data available for the position chosen lat:
-				// 	${mapPagePosition.lat.toFixed(2)} lng: ${mapPagePosition.lng.toFixed(2)}`,
-				// 		});
-				// }
 			} else {
 				dispatch(setPlotReadyDir(false));
 				mapPagePosition.lat &&
@@ -107,15 +102,23 @@ function TsRequest() {
 		mapPagePosition.lat,
 		mapPagePosition.lng,
 		mapPagePosition,
+		setBrushRangeDir,
 	]);
+	useEffect(() => {
+		dispatch(setIsTsDataSet(true));
+		console.log("invalidating simulation Data", true);
+		dispatch(setInvalidateSimData(true));
+	}, [data, dispatch]);
 
 	!chartParameters &&
 		Object.keys(chartParameters).length === 0 &&
 		setCustomError({ message: "chart parameters are not available" });
 
 	error && setCustomError({ id: 0, message: "server responded with an error" });
+	data && dispatch(setIsTsDataSet(true));
 
 	if (isFetching) {
+		dispatch(setIsTsDataSet(false));
 		return (
 			<ChartLoadingSkeleton times={4}>
 				<p>Fetching Time Series Data</p>

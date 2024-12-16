@@ -10,7 +10,6 @@ const timeSeriesApi = createApi({
 	endpoints(builder) {
 		return {
 			fetchTimeSeriesData: builder.query({
-
 				query: (data) => {
 					let location;
 					location = JSON.parse(data.position);
@@ -43,6 +42,7 @@ const timeSeriesApi = createApi({
 						method: "GET",
 					};
 				},
+				// invalidatesTags: ["AlboData"],
 			}),
 		};
 	},

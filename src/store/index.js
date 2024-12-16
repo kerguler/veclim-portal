@@ -21,7 +21,9 @@ import {
 	clearTimer,
 } from "./slices/newsSlice";
 import {
-	setTsData,setIsTsDataSet,
+	setInvalidateSimData,
+	setTsData,
+	setIsTsDataSet,
 	setMapPagePositionRight,
 	setAlboParamsSlider1Value,
 	setAlboRequestPlot,
@@ -208,7 +210,9 @@ export {
 
 export { useFetchNewsDataQuery } from "./apis/newsApi";
 export {
-	setTsData,setIsTsDataSet,
+	setInvalidateSimData,
+	setTsData,
+	setIsTsDataSet,
 	setMapPagePositionRight,
 	setSlider1EnabledRight,
 	setChartDatesLeft,
