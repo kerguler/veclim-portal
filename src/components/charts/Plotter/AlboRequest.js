@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { set, useSubmitAlboDataMutation } from "store";
+import { useSubmitAlboDataMutation } from "store";
 import { setAlboRequestPlot } from "store";
 import ChartCalculatorService from "components/charts/services/ChartCalculatorService";
 import useDirectorFun from "customHooks/useDirectorFun";
@@ -33,6 +33,8 @@ function AlboRequest() {
 		chartParameters,
 		vectorName,
 		plotReady,
+		messenger,
+		setMessengerDir,
 	} = useDirectorFun("right");
 	const mapPagePositionLeft = useSelector(
 		(state) => state.fetcher.fetcherStates.map.mapPagePosition
@@ -54,7 +56,6 @@ function AlboRequest() {
 		dateArray,
 	});
 	const [alboDataArrived, setAlboDataArrived] = useState(false);
-	const [customError, setCustomError] = useState(0);
 	const invalidateSimData = useSelector(
 		(state) => state.fetcher.fetcherStates.invalidateSimData
 	);
@@ -64,20 +65,31 @@ function AlboRequest() {
 		data: null,
 		dataToPlot: null,
 	});
-	console.log({ invalidateSimData });
+	// console.log({ invalidateSimData });
+
+	console.log({ messenger });
 	useEffect(() => {
 		invalidateSimData &&
-			setCustomError({ id: 10, message: "new ts data is being fetched" });
+			dispatch(
+				setMessengerDir({
+					...messenger,
+					id: 10,
+					message: "new ts data is being fetched",
+				})
+			);
+
 		dataTs &&
 			invalidateSimData &&
-			setCustomError({
-				id: 11,
-				message: `Ts data has arrived for lat:${mapPagePositionLeft.lat.toFixed(
-					2
-				)} lng:${mapPagePositionLeft.lng.toFixed(
-					2
-				)}, click submit to receive results for the new coordinates`,
-			});
+			dispatch(
+				setMessengerDir({
+					id: 11,
+					message: `Ts data has arrived for lat:${mapPagePositionLeft.lat.toFixed(
+						2
+					)} lng:${mapPagePositionLeft.lng.toFixed(
+						2
+					)}, click submit to receive results for the new coordinates`,
+				})
+			);
 	}, [
 		invalidateSimData,
 		isFetching,
@@ -95,20 +107,59 @@ function AlboRequest() {
 				dispatch(setInvalidateSimData(false));
 			} catch (err) {
 				setAlboDataArrived(false);
-				setCustomError({
-					id: 4,
-					message: "the response from the server had an error",
-				});
+				dispatch(
+					setMessengerDir({
+						...messenger,
+						id: 4,
+						message: "the response from the server had an error",
+					})
+				);
 			}
 		};
 
 		if (alboRequest) {
 			handleConfirm();
-			setCustomError(false);
+			dispatch(
+				setMessengerDir({ ...messenger, message: null, isError: false })
+			);
 		} else {
 			setAlboDataArrived(false);
 		}
 	}, [alboSlider1Value, alboRequest, submitAlboData, dispatch]);
+	console.log({ isFetching, dataTs, errorTs });
+	useEffect(() => {
+		if (errorTs) {
+			dispatch(
+				setMessengerDir({
+					...messenger,
+					id: 0,
+					message: "server responded with an error",
+				})
+			);
+		}
+	}, [errorTs]);
+	const invalidateTsData = useSelector(
+		(state) => state.fetcher.fetcherStates.invalidateTsData
+	);
+	useEffect(() => {
+		dataTs &&
+			invalidateTsData &&
+			invalidateSimData &&
+			dispatch(
+				setMessengerDir({
+					id: 12,
+					message: `There is no data available for the position chosen lat:${mapPagePositionLeft.lat.toFixed(
+						2
+					)} lng: ${mapPagePositionLeft.lng.toFixed(2)}`,
+					isError: true,
+				})
+			);
+	}, [
+		invalidateTsData,
+		dataTs,
+		mapPagePositionLeft.lat,
+		mapPagePositionLeft.lng,
+	]);
 
 	useEffect(() => {
 		let r = rawData.current;
@@ -145,37 +196,50 @@ function AlboRequest() {
 						dispatch(setPlotReadyDir(true));
 						dispatch(setAlboRequestPlot(false));
 						dispatch(setSlider1EnabledRight(true));
-						setCustomError(null);
+						dispatch(
+							setMessengerDir({ ...messenger, message: null, isError: false })
+						);
 						setAlboDataArrived(false);
 					}
 				} else {
 					dispatch(setPlotReadyDir(false));
 					if (invalidateSimData) {
-						setCustomError({
-							id: 10,
-							message: `the coordinates have changed to lat:${mapPagePositionLeft.lat.toFixed(
-								2
-							)} lng:${mapPagePositionLeft.lng.toFixed(2)}`,
-						});
+						dispatch(
+							setMessengerDir({
+								id: 10,
+								message: `the coordinates have changed to lat:${mapPagePositionLeft.lat.toFixed(
+									2
+								)} lng:${mapPagePositionLeft.lng.toFixed(2)}`,
+								isError: false,
+							})
+						);
 					} else {
-						setCustomError({
-							id: 2,
-							message: "Either Ts data is empty, or it is not set",
-						});
+						dispatch(
+							setMessengerDir({
+								id: 2,
+								message: "Either Ts data is empty, or it is not set",
+								isError: true,
+							})
+						);
 					}
 				}
 			} else {
-				setCustomError({
-					id: 3,
-					message: "The panel doesnt work for this vector",
-				});
+				dispatch(
+					setMessengerDir({
+						id: 3,
+						isError: true,
+						message: "The panel doesnt work for this vector",
+					})
+				);
 			}
 		} catch (err) {
-			setCustomError({
-				id: 5,
-				message: err.message,
-				message1: "something went wrong when dealing with data in simulation",
-			});
+			dispatch(
+				setMessengerDir({
+					id: 5,
+
+					message: "something went wrong when dealing with data in simulation",
+				})
+			);
 		}
 	}, [
 		invalidateSimData,
@@ -192,15 +256,49 @@ function AlboRequest() {
 	useEffect(() => {
 		!chartParameters &&
 			!Object.keys(chartParameters).length > 0 &&
-			setCustomError({ message: "chart parameters are not available" });
+			dispatch(
+				setMessengerDir({
+					...messenger,
+					isError: true,
+					message: "chart parameters are not available",
+				})
+			);
 	}, [chartParameters]);
 
 	useEffect(() => {
 		if (errorAlbo) {
-			setCustomError({ id: 0, message: "server responded with an error" });
+			dispatch(
+				setMessengerDir({
+					isError: true,
+					id: 0,
+					message: "server responded with an error",
+				})
+			);
 		}
 	}, [errorAlbo]);
-
+	useEffect(() => {
+		console.log({ dataTsHasChanged: dataTs });
+		dispatch(
+			setMessengerDir({
+				id: 0,
+				message: `New time-series data has arrived for lat:${mapPagePositionLeft.lat.toFixed(
+					2
+				)} lng:${mapPagePositionLeft.lng.toFixed(
+					2
+				)}  click confirm to receive results for the new coordinates`,
+				isError: false,
+			})
+		);
+		if (dataTs?.presence?.albopictus && dataTs.presence.albopictus.length > 0) {
+			dispatch(
+				setMessengerDir({
+					isError: false,
+					id: 1,
+					message: "no time series data are available for these coordintes",
+				})
+			);
+		}
+	}, [dataTs]);
 	let r = rawData.current;
 	if (isLoading) {
 		return (
@@ -208,8 +306,8 @@ function AlboRequest() {
 				<p>Fetching Sumlation Data</p>
 			</ChartLoadingSkeleton>
 		);
-	} else if (customError) {
-		return <ErrorComponent text={customError.message}></ErrorComponent>;
+	} else if (messenger.message) {
+		return <ErrorComponent text={messenger.message}></ErrorComponent>;
 	} else if (Object.keys(chartParameters).length === 0) {
 	} else {
 		if (!dataAlbo) {

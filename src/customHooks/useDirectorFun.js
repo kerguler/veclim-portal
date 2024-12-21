@@ -36,7 +36,16 @@ import { setBrushData, setBrushDataRight } from "store";
 import { setPanelInterfere, setPanelInterfereRight } from "store";
 import { setPlotReadyLeft, setPlotReadyRight } from "store";
 import { setMapPagePositionRight } from "store";
+import { setMessengerLeft } from "store";
+import { setMessengerRight } from "store";
 function useDirectorFun(direction) {
+	const messengerLeft = useSelector(
+		(state) => state.fetcher.fetcherStates.menu.left.chart.messenger
+	);
+	const messengerRight = useSelector(
+		(state) => state.fetcher.fetcherStates.menu.right.chart.messenger
+	);
+	const messenger = directorFun(direction, messengerLeft, messengerRight);
 	// PLOT READY
 	const plotReadyLeft = useSelector(
 		(state) => state.fetcher.fetcherStates.menu.left.chart.plotReady
@@ -290,7 +299,14 @@ function useDirectorFun(direction) {
 		setPlotReadyLeft,
 		setPlotReadyRight
 	);
-	return {
+
+	const setMessengerDir = directorFun(
+		direction,
+		setMessengerLeft,
+		setMessengerRight
+	);
+	return {setMessengerDir,
+		messenger,
 		plotReady,
 		setPlotReadyDir,
 		setPanelInterfereDir,

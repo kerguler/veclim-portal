@@ -13,6 +13,7 @@ const fetcherSlice = createSlice({
 			data: {},
 			isTsDataSet: false,
 			invalidateSimData: false,
+			invalidateTsData: false,
 			map: {
 				currentMapCenter: [35.1966527, 33.3217152],
 				currentMapZoom: 2,
@@ -43,6 +44,7 @@ const fetcherSlice = createSlice({
 						requestPlot: false,
 						sliders: { slider1: { enabled: true, value: 50 } },
 						brushRange: { startIndex: null, endIndex: null },
+						messenger: { message: null, id: null, isError: false },
 					},
 				},
 				left: {
@@ -56,6 +58,7 @@ const fetcherSlice = createSlice({
 						brushRange: { startIndex: null, endIndex: null },
 						dates: { first: null, last: null },
 						plotReady: false,
+						messenger: { message: null, id: null, isError: false },
 					},
 				},
 			},
@@ -65,6 +68,15 @@ const fetcherSlice = createSlice({
 	},
 
 	reducers: {
+		setMessengerLeft(state, action) {
+			state.fetcherStates.menu.left.chart.messenger = action.payload;
+		},
+		setMessengerRight(state, action) {
+			state.fetcherStates.menu.right.chart.messenger = action.payload;
+		},
+		setInvalidateTsData(state, action) {
+			state.fetcherStates.invalidateTsData = action.payload;
+		},
 		setInvalidateSimData(state, action) {
 			state.fetcherStates.invalidateSimData = action.payload;
 		},
@@ -206,6 +218,9 @@ const fetcherSlice = createSlice({
 });
 
 export const {
+	setMessengerLeft,
+	setMessengerRight,
+	setInvalidateTsData,
 	setInvalidateSimData,
 	setIsTsDataSet,
 	setTsData,

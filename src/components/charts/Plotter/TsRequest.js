@@ -13,17 +13,23 @@ import ChartLoadingSkeleton from "components/skeleton/Skeleton";
 import { exception } from "react-ga";
 import { setIsTsDataSet } from "store";
 import { setInvalidateSimData } from "store";
+import { setInvalidateTsData } from "store";
+import { useSelector } from "react-redux";
+import { setMessengerRight } from "store";
 function TsRequest() {
 	const dispatch = useDispatch();
-
+	const invalidateTsData = useSelector(
+		(state) => state.fetcher.fetcherStates.invalidateTsData
+	);
 	const rawData = useRef({
 		rawDataToPlot: {},
 		data: null,
 		dataToPlot: null,
 	});
 	let r = rawData.current;
-
-	const [customError, setCustomError] = useState(null);
+	const messengerRight = useSelector(
+		(state) => state.fetcher.fetcherStates.menu.right.chart.messenger
+	);
 	// This side effect arrangtes the map centers to default values
 	// in case the vectorName changes
 	useSetDefaultCoordinates();
@@ -36,6 +42,8 @@ function TsRequest() {
 		chartParameters,
 		plotReady,
 		setBrushRangeDir,
+		messenger,
+		setMessengerDir,
 	} = useDirectorFun("left");
 
 	const { data, error, isFetching } = useFetchTimeSeriesDataQuery({
@@ -45,7 +53,7 @@ function TsRequest() {
 	});
 
 	useEffect(() => {
-		dispatch(setPlotReadyDir(false));
+		plotReady && dispatch(setPlotReadyDir(false));
 	}, [vectorName, dispatch, setPlotReadyDir]);
 
 	useEffect(() => {
@@ -61,10 +69,12 @@ function TsRequest() {
 						mapPagePosition
 					);
 				if (isError) {
+					invalidateTsData || dispatch(setInvalidateTsData(true));
 					console.log("error", errorMessage);
 					throw new Error(errorMessage);
+				} else {
+					invalidateTsData && dispatch(setInvalidateTsData(false));
 				}
-
 				r.data = data;
 				r.dataToPlot = {};
 				r.rawDataToPlot = {};
@@ -72,7 +82,7 @@ function TsRequest() {
 				ChartCalculatorService.handleMixedKeys(rawData, chartParameters);
 				ChartCalculatorService.handleSlices(rawData, chartParameters);
 				dispatch(setPlotReadyDir(true));
-				setCustomError(null);
+				dispatch(setMessengerDir({ id: null, message: null, isError: false }));
 				dispatch(
 					setBrushRangeDir({
 						startIndex: 0,
@@ -82,15 +92,22 @@ function TsRequest() {
 			} else {
 				dispatch(setPlotReadyDir(false));
 				mapPagePosition.lat &&
-					setCustomError({
-						message: "Data is not available yet. Please click on the Map",
-					});
+					dispatch(
+						setMessengerDir({
+							...messenger,
+							message: "Data is not available yet. Please click on the Map",
+						})
+					);
 			}
 		} catch (err) {
-			setCustomError({
-				message: err.message,
-				message1: "something went wrong when dealing with data in simulation",
-			});
+			console.log("error", err);
+
+			dispatch(
+				setMessengerDir({
+					...messenger,
+					message: "something went wrong when dealing with data in simulation",
+				})
+			);
 		}
 	}, [
 		chartParameters,
@@ -107,15 +124,38 @@ function TsRequest() {
 	useEffect(() => {
 		dispatch(setIsTsDataSet(true));
 		console.log("invalidating simulation Data", true);
-		dispatch(setInvalidateSimData(true));
+		invalidateTsData || dispatch(setInvalidateSimData(true));
 	}, [data, dispatch]);
 
 	!chartParameters &&
 		Object.keys(chartParameters).length === 0 &&
-		setCustomError({ message: "chart parameters are not available" });
-
-	error && setCustomError({ id: 0, message: "server responded with an error" });
-	data && dispatch(setIsTsDataSet(true));
+		dispatch(
+			setMessengerDir({
+				...messenger,
+				message: "chart parameters are not available",
+			})
+		);
+	console.log({ isFetching, error, data });
+	useEffect(() => {
+		if (error) {
+			dispatch(
+				setMessengerDir({
+					...messenger,
+					id: 0,
+					message: "server responded with an error",
+				})
+			);
+			dispatch(
+				setMessengerRight({
+					id: 0,
+					message: "server responded with an error",
+					isError: true,
+				})
+			);
+			invalidateTsData || setInvalidateTsData(true);
+		}
+	}, [error, invalidateTsData]);
+	// data && dispatch(setIsTsDataSet(true));
 
 	if (isFetching) {
 		dispatch(setIsTsDataSet(false));
@@ -125,8 +165,9 @@ function TsRequest() {
 			</ChartLoadingSkeleton>
 		);
 	}
-	if (customError) {
-		return <ErrorComponent text={customError.message}></ErrorComponent>;
+	if (messenger.message) {
+		console.log(`rendering error`, { messenger });
+		return <ErrorComponent text={messenger.message}></ErrorComponent>;
 	}
 
 	if (r.dataToPlot) {
