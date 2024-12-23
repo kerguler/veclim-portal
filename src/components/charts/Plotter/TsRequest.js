@@ -3,14 +3,11 @@ import { useFetchTimeSeriesDataQuery } from "store";
 import { useEffect, useRef } from "react";
 import ChartCalculatorService from "../services/ChartCalculatorService";
 import { useDispatch } from "react-redux";
-import { useState } from "react";
 import RechartsPlot from "./RechartsPlot";
-
 import useSetDefaultCoordinates from "./useSetDefaultCoordinates";
 import ErrorComponent from "./errorComponent/ErrorComponent";
 import ErrorBoundary from "components/errorBoundary/ErrorBoundary";
 import ChartLoadingSkeleton from "components/skeleton/Skeleton";
-import { exception } from "react-ga";
 import { setIsTsDataSet } from "store";
 import { setInvalidateSimData } from "store";
 import { setInvalidateTsData } from "store";
@@ -27,9 +24,6 @@ function TsRequest() {
 		dataToPlot: null,
 	});
 	let r = rawData.current;
-	const messengerRight = useSelector(
-		(state) => state.fetcher.fetcherStates.menu.right.chart.messenger
-	);
 	// This side effect arrangtes the map centers to default values
 	// in case the vectorName changes
 	useSetDefaultCoordinates();
@@ -71,6 +65,7 @@ function TsRequest() {
 				if (isError) {
 					invalidateTsData || dispatch(setInvalidateTsData(true));
 					console.log("error", errorMessage);
+					dispatch(setMessengerDir({ id: 0, message: errorMessage }));
 					throw new Error(errorMessage);
 				} else {
 					invalidateTsData && dispatch(setInvalidateTsData(false));
@@ -105,7 +100,7 @@ function TsRequest() {
 			dispatch(
 				setMessengerDir({
 					...messenger,
-					message: "something went wrong when dealing with data in simulation",
+					message: err.message,
 				})
 			);
 		}
@@ -136,26 +131,25 @@ function TsRequest() {
 			})
 		);
 	console.log({ isFetching, error, data });
-	useEffect(() => {
-		if (error) {
-			dispatch(
-				setMessengerDir({
-					...messenger,
-					id: 0,
-					message: "server responded with an error",
-				})
-			);
-			dispatch(
-				setMessengerRight({
-					id: 0,
-					message: "server responded with an error",
-					isError: true,
-				})
-			);
-			invalidateTsData || setInvalidateTsData(true);
-		}
-	}, [error, invalidateTsData]);
-	// data && dispatch(setIsTsDataSet(true));
+	// useEffect(() => {
+	// 	if (error) {
+	// 		dispatch(
+	// 			setMessengerDir({
+	// 				...messenger,
+	// 				id: 0,
+	// 				message: "server responded with an error",
+	// 			})
+	// 		);
+	// 		dispatch(
+	// 			setMessengerRight({
+	// 				id: 0,
+	// 				message: "server responded with an error",
+	// 				isError: true,
+	// 			})
+	// 		);
+	// 		invalidateTsData || setInvalidateTsData(true);
+	// 	}
+	// }, [error, invalidateTsData]);
 
 	if (isFetching) {
 		dispatch(setIsTsDataSet(false));

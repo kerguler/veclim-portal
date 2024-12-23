@@ -1,11 +1,43 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { getDateRange } from "./utils";
 import { useSelector } from "react-redux";
+
 const timeSeriesApi = createApi({
 	reducerPath: "timeSeriesInfo",
 	baseQuery: fetchBaseQuery({
 		baseUrl: process.env.REACT_APP_BASE_URL,
+		fetchFn: async (input, init) => {
+			const response = await fetch(input, init);
+			const rawText = await response.text(); // Read raw text response
+
+			// console.log("Raw Response Text:", rawText);
+
+			// Replace all instances of NaN with null in the raw text
+			const sanitizedText = rawText.replace(/NaN/g, "null");
+
+			//  console.log("Sanitized Response Text:", sanitizedText);
+
+			try {
+				// Parse sanitized text into JSON
+
+				return new Response(sanitizedText, {
+					status: response.status,
+					statusText: response.statusText,
+					headers: response.headers,
+				});
+			} catch (error) {
+				console.error("Error parsing sanitized JSON:", error);
+				return {
+					error: {
+						status: response.status,
+						statusText: response.statusText,
+						message: "Failed to parse sanitized response JSON.",
+					},
+				};
+			}
+		},
 	}),
+
 	tagTypes: ["TimeSeries"],
 	endpoints(builder) {
 		return {
@@ -42,6 +74,7 @@ const timeSeriesApi = createApi({
 						method: "GET",
 					};
 				},
+
 				// invalidatesTags: ["AlboData"],
 			}),
 		};
