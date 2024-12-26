@@ -1044,21 +1044,7 @@ function PanelProvider({ children }) {
 					<div>
 						<AlboParams />
 						{/* <CoordinatePicker /> */}
-						<div
-							style={{
-								display: "flex",
-								alignContent: "space-evenly",
-								width: "100%",
-								fontSize: "0.5rem",
-							}}
-						>
-							<p> lat:{mapPagePosition.lat}</p>
-							<p>
-								{" "}
-								lng:
-								{mapPagePosition.lng}
-							</p>
-						</div>
+						
 					</div>
 				</div>
 			),

@@ -1,5 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import "./alboParams.css";
+import { useState } from "react";
 import {
 	setAlboParamsSlider1Value,
 	setSlider1EnabledRight,
@@ -11,10 +12,11 @@ import {
 import { useSubmitAlboDataMutation } from "store"; // Adjust the import path if needed
 import { useEffect } from "react";
 import { useAlboData } from "context/AlboDataContext"; // Ensure this path is correct
+import useDirectorFun from "customHooks/useDirectorFun";
 
 function AlboParams() {
 	const dispatch = useDispatch();
-
+	const { mapPagePosition } = useDirectorFun("left");
 	// Selectors for Redux state
 	const alboSlider1Value = useSelector(
 		(state) =>
@@ -24,9 +26,6 @@ function AlboParams() {
 		(state) =>
 			state.fetcher.fetcherStates.menu.right.chart.sliders.slider1.enabled
 	);
-	const messenger = useSelector(
-		(state) => state.fetcher.fetcherStates.menu.right.chart.messenger
-	);
 
 	// Context integration
 	const {
@@ -34,6 +33,7 @@ function AlboParams() {
 		isLoadingSim: contextLoading,
 		setIsLoadingSim,
 		setErrorSim,
+		dataSim,
 	} = useAlboData();
 
 	// RTK Query Mutation
@@ -50,6 +50,7 @@ function AlboParams() {
 		dispatch(setSlider1EnabledRight(false));
 		dispatch(setAlboRequestPlot(true));
 		setIsLoadingSim(true); // Update context state
+		setMessage("Submitting..."); // Update local state
 		try {
 			console.log({ alboSlider1Value });
 			const result = await submitAlboData(alboSlider1Value / 100).unwrap();
@@ -65,18 +66,24 @@ function AlboParams() {
 			setIsLoadingSim(false); // Reset loading state
 		}
 	};
-
+	const [message, setMessage] = useState(null);
 	// Sync API state with context
 	useEffect(() => {
+		if (apiLoading) {
+			setMessage(apiLoading ? "Fetching Simulation Data..." : null);
+		}
+
 		if (apiLoading !== contextLoading) {
 			setIsLoadingSim(apiLoading);
 		}
 		if (dataAlbo) {
 			console.log({ ALBO: dataAlbo });
 			setDataSim(dataAlbo);
+			setMessage("Data arrived. Check the flashing icon");
 		}
 		if (error) {
 			setErrorSim(error);
+			setMessage("Error submitting data");
 		}
 	}, [
 		apiLoading,
@@ -89,22 +96,41 @@ function AlboParams() {
 	]);
 
 	return (
-		// <div className="albo-params-container">
-		<div className="slider-row">
-			<div className="albo-params">
-				<input
-					type="range"
-					min="0"
-					max="100"
-					onChange={handleSliderChange}
-					value={alboSlider1Value}
-					disabled={!slider1Enabled}
-				></input>
+		<div className="albo-params-container">
+			<div className="slider-row">
+				<div className="albo-params">
+					<input
+						type="range"
+						min="0"
+						max="100"
+						onChange={handleSliderChange}
+						value={alboSlider1Value}
+						disabled={!slider1Enabled}
+					></input>
+				</div>
+				<div>{alboSlider1Value}</div> {/* Display the value */}
+				<div onClick={handleConfirm} className="confirm-button ">
+					{" "}
+					Confirm
+				</div>
 			</div>
-			<div>{alboSlider1Value}</div> {/* Display the value */}
-			<div onClick={handleConfirm} className="confirm-button ">
-				{" "}
-				Confirm
+			<div
+				style={{
+					display: "flex",
+					alignContent: "space-evenly",
+					width: "100%",
+					fontSize: "0.5rem",
+				}}
+			>
+				<p> lat:{mapPagePosition.lat.toFixed(2)}</p>
+				<p>
+					{" "}
+					lng:
+					{mapPagePosition.lng.toFixed(2)}
+				</p>
+			</div>
+			<div className="messenger">
+				<p>{message}</p>{" "}
 			</div>
 		</div>
 	);
