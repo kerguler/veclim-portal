@@ -14,6 +14,7 @@ const fetcherSlice = createSlice({
 			isTsDataSet: false,
 			invalidateSimData: false,
 			invalidateTsData: false,
+			graphType: null,
 			map: {
 				currentMapCenter: [35.1966527, 33.3217152],
 				currentMapZoom: 2,
@@ -39,6 +40,8 @@ const fetcherSlice = createSlice({
 					directMap: { lon: null, lat: null, display: -2 },
 					directInitError: { isError: false, message: "", type: "" },
 					chart: {
+						shimmer: null,
+						dataArrived: false,
 						dates: { first: null, last: null },
 						plotReady: false,
 						requestPlot: false,
@@ -55,6 +58,8 @@ const fetcherSlice = createSlice({
 					directMap: { lon: null, lat: null, display: -2 },
 					directInitError: { isError: false, message: "", type: "" },
 					chart: {
+						shimmer: null,
+						dataArrived: false,
 						brushRange: { startIndex: null, endIndex: null },
 						dates: { first: null, last: null },
 						plotReady: false,
@@ -68,6 +73,22 @@ const fetcherSlice = createSlice({
 	},
 
 	reducers: {
+		setGraphType(state, action) {
+			state.fetcherStates.graphType = action.payload;
+		},
+		setShimmerLeft(state, action) {
+			state.fetcherStates.menu.left.chart.shimmer = action.payload;
+		},
+		setShimmerRight(state, action) {
+			state.fetcherStates.menu.right.chart.shimmer = action.payload;
+		},
+
+		setDataArrivedLeft(state, action) {
+			state.fetcherStates.menu.left.chart.dataArrived = action.payload;
+		},
+		setDataArrivedRight(state, action) {
+			state.fetcherStates.menu.right.chart.dataArrived = action.payload;
+		},
 		setMessengerLeft(state, action) {
 			state.fetcherStates.menu.left.chart.messenger = action.payload;
 		},
@@ -218,6 +239,11 @@ const fetcherSlice = createSlice({
 });
 
 export const {
+	setGraphType,
+	setShimmerLeft,
+	setShimmerRight,
+	setDataArrivedLeft,
+	setDataArrivedRight,
 	setMessengerLeft,
 	setMessengerRight,
 	setInvalidateTsData,

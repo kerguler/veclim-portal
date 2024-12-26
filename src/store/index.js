@@ -21,6 +21,11 @@ import {
 	clearTimer,
 } from "./slices/newsSlice";
 import {
+	setGraphType,
+	setShimmerLeft,
+	setShimmerRight,
+	setDataArrivedLeft,
+	setDataArrivedRight,
 	setMessengerLeft,
 	setMessengerRight,
 	setInvalidateTsData,
@@ -213,6 +218,11 @@ export {
 
 export { useFetchNewsDataQuery } from "./apis/newsApi";
 export {
+	setGraphType,
+	setShimmerLeft,
+	setShimmerRight,
+	setDataArrivedLeft,
+	setDataArrivedRight,
 	setMessengerLeft,
 	setMessengerRight,
 	setInvalidateTsData,

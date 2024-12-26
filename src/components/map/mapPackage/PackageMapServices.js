@@ -25,6 +25,7 @@ import { setDisplayReady } from "store";
 import { setPanelInterfereRight } from "store";
 import { setIsTsDataSet } from "store";
 import { setInvalidateSimData } from "store";
+import { setDataArrivedRight } from "store";
 
 class PackageMapServices {
 	static baseLayer = L.tileLayer(
@@ -116,7 +117,10 @@ class PackageMapServices {
 		directMap,
 		directMapRight
 	) {
+		console.log("click on map")
+		
 		dispatch(setInvalidateSimData(true));
+		dispatch(setDataArrivedRight(false));
 		this.clickMap(e, mapParRef, vectorName, dispatch);
 		// TODO: MAY NEED TO REMOVE
 

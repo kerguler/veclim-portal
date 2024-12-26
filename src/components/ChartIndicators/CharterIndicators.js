@@ -1,6 +1,6 @@
 import "./ChartIndicators.css";
 import { useDispatch, useSelector } from "react-redux";
-import { useFetchTimeSeriesDataQuery } from "store";
+import { set, useFetchTimeSeriesDataQuery } from "store";
 import ChartLoadingSkeleton from "../skeleton/Skeleton";
 import { dateToString } from "store/apis/utils";
 import { setChartDatesLeft } from "store";
@@ -19,6 +19,7 @@ function ChartIndicators() {
 		position: JSON.stringify(position),
 		vectorName: vectorName,
 	});
+
 	const dispatch = useDispatch();
 
 	if (isFetching) {
@@ -36,10 +37,9 @@ function ChartIndicators() {
 	}
 	var fdate = "";
 
-	if (data) {
-		dispatch(setTsData(data));
-		dispatch(setIsTsDataSet(true));
-	}
+	// if (data) {
+	// 	dispatch(setIsTsDataSet(true));
+	// }
 
 	if (data && "fcast-ts" in data) {
 		// dispatch(

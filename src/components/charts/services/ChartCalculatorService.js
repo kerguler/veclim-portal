@@ -50,6 +50,7 @@ class ChartCalculatorService {
 		let error = { errorMessage: null, isError: false };
 
 		// Use a for loop to enable breaking
+		console.log({CHECKING:chartParameters})
 		for (const element of chartParameters.mixedKeys) {
 			const { levels } = element;
 			let val = data;
@@ -59,7 +60,9 @@ class ChartCalculatorService {
 					val = val[v];
 				} else {
 					// Update error state and exit
-					dispatch(setPlotReadyDir(false));
+
+					//watchout for this one.... 
+					// dispatch(setPlotReadyDir(false));
 					error.errorMessage = `There is no data available for the position chosen lat:${mapPagePosition.lat.toFixed(
 						2
 					)} lng: ${mapPagePosition.lng.toFixed(2)}`;

@@ -38,7 +38,24 @@ import { setPlotReadyLeft, setPlotReadyRight } from "store";
 import { setMapPagePositionRight } from "store";
 import { setMessengerLeft } from "store";
 import { setMessengerRight } from "store";
+import { useDispatch } from "react-redux";
 function useDirectorFun(direction) {
+	const dispatch = useDispatch();
+
+	const dataArrivedLeft = useSelector(
+		(state) => state.fetcher.fetcherStates.menu.left.chart.dataArrived
+	);
+	const dataArrivedRight = useSelector(
+		(state) => state.fetcher.fetcherStates.menu.right.chart.dataArrived
+	);
+	const dataArrived = directorFun(direction, dataArrivedLeft, dataArrivedRight);
+
+	const invalidateSimData = useSelector(
+		(state) => state.fetcher.fetcherStates.invalidateSimData
+	);
+	const invalidateTsData = useSelector(
+		(state) => state.fetcher.fetcherStates.invalidateTsData
+	);
 	const messengerLeft = useSelector(
 		(state) => state.fetcher.fetcherStates.menu.left.chart.messenger
 	);
@@ -305,8 +322,15 @@ function useDirectorFun(direction) {
 		setMessengerLeft,
 		setMessengerRight
 	);
-	return {setMessengerDir,
+	return {
+		setMessengerDir,
+		mapPagePositionLeft,
+		invalidateSimData,
+		invalidateTsData,
 		messenger,
+		dataArrived,
+		dataArrivedLeft,
+		dataArrivedRight,
 		plotReady,
 		setPlotReadyDir,
 		setPanelInterfereDir,
@@ -347,6 +371,7 @@ function useDirectorFun(direction) {
 		setChartParametersDir,
 		setTwinArrayDir,
 		setDisplayedIconsDir,
+		dispatch,
 	};
 }
 function directorFun(direction, dataleft, dataright) {

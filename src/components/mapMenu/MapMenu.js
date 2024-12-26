@@ -9,10 +9,11 @@ import Switcher from "components/panel/Switcher/Switcher";
 import useArrangePanels from "customHooks/useArrangePanels";
 import PackageMapServices from "components/map/mapPackage/PackageMapServices";
 import useDirectorFun from "customHooks/useDirectorFun";
+import { AlboDataProvider } from "context/AlboDataContext";
 function MapMenu({ direction }) {
 	const {
 		setMapMenuOpenDir,
-		mapMenuOpen, 
+		mapMenuOpen,
 		displayedPanelID,
 		directInit,
 		mapVector,
@@ -37,7 +38,6 @@ function MapMenu({ direction }) {
 	const [panelClassName, setPanelClassName] = useState("");
 	const [shimmerOn, setShimmerOn] = useState(false);
 	let className = classNames();
-
 	if (shimmerOn) {
 		className = classNames("icon", "shimmer-on");
 	} else {
@@ -51,6 +51,7 @@ function MapMenu({ direction }) {
 			setShimmerOn(true);
 		}
 	}, [mapMenuOpen]);
+
 	useEffect(() => {
 		if (displayedPanelID === panelOpenRef.current && panelOpenRef.current) {
 			setPanelClassName("no-anim");
@@ -148,13 +149,14 @@ function MapMenu({ direction }) {
 				</div>
 				{mapMenuOpen && <div className="vertical-menu">{icons}</div>}
 			</div>
-
+			
 			<Switcher
-				direction={direction}
-				panelClassName={panelClassName}
-				panel={panel}
-				panelChart={panelChart}
-			/>
+					direction={direction}
+					panelClassName={panelClassName}
+					panel={panel}
+					panelChart={panelChart}
+				/>
+		
 		</div>
 	);
 }

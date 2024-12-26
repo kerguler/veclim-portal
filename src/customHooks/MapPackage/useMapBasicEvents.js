@@ -1,13 +1,13 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
-	
 	setCurrentMapCenter,
 	setCurrentMapZoom,
 	setDirectInitErrorLeft,
 } from "store";
 
 import PackageMapServices from "components/map/mapPackage/PackageMapServices";
+import { useAlboData } from "context/AlboDataContext";
 function useMapBasicEvents(mapParRef, fitworld) {
 	const dispatch = useDispatch();
 	const directInitErrorLeft = useSelector(
@@ -16,10 +16,12 @@ function useMapBasicEvents(mapParRef, fitworld) {
 	const vectorName = useSelector(
 		(state) => state.fetcher.fetcherStates.vectorName
 	);
-
+	const { setDataSim } = useAlboData();
 	let p = mapParRef.current;
 	useEffect(() => {
 		const handleMapClick = (e) => {
+			setDataSim(null);
+			console.log("nullified Sim data")
 			PackageMapServices.handleMapClick(e, mapParRef, vectorName, dispatch);
 		};
 

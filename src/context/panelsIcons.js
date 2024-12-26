@@ -22,6 +22,7 @@ import ChangeMapPanel from "../components/vectorSelection/ChangeMapPanel/ChangeM
 import { useEffect } from "react";
 import { useState } from "react";
 import AlboParams from "components/AlboParams/AlboParams";
+import AlboRequest from "components/charts/Plotter/AlboRequest";
 const PanelContext = createContext();
 
 function PanelProvider({ children }) {
@@ -642,7 +643,11 @@ function PanelProvider({ children }) {
 			key: "activity_forecast",
 
 			chartParameters: {
-				twins: [{ id: 4, display: false }],
+				twins: [
+					{ id: 12, display: false, simulation: true },
+					{ id: 4, display: false },
+				],
+
 				chartType: "rechart",
 				initialSetting: "fcast-ts",
 				mixedKeys: [
@@ -1028,6 +1033,92 @@ function PanelProvider({ children }) {
 			icon: model,
 			content: <ChangeMapPanel></ChangeMapPanel>,
 		},
+		{
+			id: 11,
+			key: "simulation_panel",
+			icon: seasonal,
+			chartParameters: {},
+			content: (
+				<div className="text-area">
+					<h1>Simulation Data </h1>
+					<div>
+						<AlboParams />
+						{/* <CoordinatePicker /> */}
+						<div
+							style={{
+								display: "flex",
+								alignContent: "space-evenly",
+								width: "100%",
+								fontSize: "0.5rem",
+							}}
+						>
+							<p> lat:{mapPagePosition.lat}</p>
+							<p>
+								{" "}
+								lng:
+								{mapPagePosition.lng}
+							</p>
+						</div>
+					</div>
+				</div>
+			),
+		},
+		{
+			id: 12,
+			key: "simulation_graph",
+			icon: seasonal,
+			chartParameters: {
+				chartType: "rechart",
+				years: "ecmwf",
+				// xbrushStart: -6,
+				// xbrushEnd: 3,
+				mixedKeys: [
+					{
+						key: "g1",
+						levels: ["test", "fcast-ts", "ecmwf", "iouts"],
+					},
+					{
+						key: "g2",
+						levels: ["ts", "fcast-ts", "ecmwf", "iouts"],
+					},
+				],
+
+				horizontalAxis: "date",
+				sliceInfo: {
+					g1: {
+						sliceLabels: {
+							slice0: "This year (sim)",
+							slice1: "Overlap (sim) ",
+							slice2: "Forecast (sim)",
+						},
+						sliceColors: {
+							slice0: "#1c2833",
+							slice1: "#af7ac5",
+							slice2: "#d98880",
+						},
+					},
+					g2: {
+						sliceLabels: {
+							slice0: "This year",
+							slice1: "Overlap",
+							slice2: "Forecast",
+						},
+						sliceColors: {
+							slice0: "#50C0AD",
+							slice1: "orange",
+							slice2: "#F15A48",
+						},
+					},
+				},
+			},
+			content: (
+				<div className="text-area">
+					<h1>Simulation Data </h1>
+					<div>
+						<p>Here we will display simulation graphics</p> </div>						
+				</div>
+			),
+		},
 	];
 	const parPickerPanelData = [
 		{
@@ -1066,7 +1157,7 @@ function PanelProvider({ children }) {
 						levels: ["ts", "fcast-ts", "ecmwf", "iouts"],
 					},
 				],
-		
+
 				horizontalAxis: "date",
 				sliceInfo: {
 					g1: {
@@ -1147,11 +1238,11 @@ function PanelProvider({ children }) {
 				mixedKeys: [
 					{
 						key: "g1",
-						levels: ["sim-ts","2015","simL"],
+						levels: ["sim-ts", "2015", "simL"],
 					},
 					{
 						key: "g2",
-						levels: ["sim-ts","2015","simH"],
+						levels: ["sim-ts", "2015", "simH"],
 					},
 				],
 				sliceInfo: {

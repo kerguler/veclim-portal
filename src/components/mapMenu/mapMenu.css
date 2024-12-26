@@ -83,7 +83,22 @@
 		left: 150%;
 	}
 }
+@keyframes shimmer {
+	0% {
+		left: -250%;
+		opacity: 0;
+	}
 
+	50% {
+		left: 100%;
+		opacity: 1;
+	}
+
+	100% {
+		left: 350%;
+		opacity: 0;
+	}
+}
 .icon.active {
 	display: flex;
 	width: 3.2rem;
@@ -192,7 +207,7 @@
 		top: 0;
 	}
 	.icon-column.right {
-		left:unset;
+		left: unset;
 		right: 0;
 		top: 150px;
 	}

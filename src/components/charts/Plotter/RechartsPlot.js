@@ -126,7 +126,8 @@ function RechartsPlot({ direction, plotMat }) {
 
 	useEffect(() => {
 		s.minmax = { min: 0, max: 0 };
-		plotMat && plotMat.length>0 && 
+		plotMat &&
+			plotMat.length > 0 &&
 			plotMat.forEach((d) => {
 				argRef.current.keys.forEach((k) => {
 					if (d[k] < s.minmax.min) s.minmax.min = d[k];

@@ -8,6 +8,7 @@ import { useSelector } from "react-redux";
 import ErrorBoundary from "components/errorBoundary/ErrorBoundary";
 import useMapStarter from "customHooks/useMapStarter";
 import MapPackageComponent from "components/map/mapPackage/MapPackageComponent";
+import { AlboDataProvider } from "context/AlboDataContext";
 function MapPackageLanding() {
 	useMapStarter();
 	const readyToView = useSelector(
@@ -21,16 +22,18 @@ function MapPackageLanding() {
 			<div className="wrappers-wrapper">
 				<MapLogo />
 				<div className="map-wrapper">
-					<PanelProvider>
-						<MapMenu direction="left"></MapMenu>
-						{vectorName === "albopictus" && (
-							<MapMenu direction="right"></MapMenu>
-						)}
+					<AlboDataProvider>
+						<PanelProvider>
+							<MapMenu direction="left"></MapMenu>
+							{/* {vectorName === "albopictus" && (
+								<MapMenu direction="right"></MapMenu>
+							)} */}
 
-						<ErrorBoundary>
-							<MapPackageComponent />
-						</ErrorBoundary>
-					</PanelProvider>
+							<ErrorBoundary>
+								<MapPackageComponent />
+							</ErrorBoundary>
+						</PanelProvider>
+					</ AlboDataProvider>
 				</div>
 			</div>
 		)

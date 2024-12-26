@@ -4,9 +4,11 @@ import "./Switcher.css";
 import RenderedPanel from "../RenderedPanel";
 
 import useDirectorFun from "customHooks/useDirectorFun";
-
+import { useSelector } from "react-redux";
+import { setGraphType } from "store";
 function Swithcer({ direction, panelClassName }) {
 	const {
+		dataArrivedRight,
 		twinIndex,
 		displayedPanelID,
 		displayedIcons,
@@ -19,15 +21,27 @@ function Swithcer({ direction, panelClassName }) {
 		setSwitcherDir,
 		setDisplayedPanelIDDir,
 		setChartParametersDir,
+		invalidateSimData,
 	} = useDirectorFun(direction);
-
+	const graphType = useSelector(
+		(state) => state.fetcher.fetcherStates.graphType
+	);
 	const dispatch = useDispatch();
-
 	const [panelChart, setPanelChart] = useState(null);
 	const [panel, setPanel] = useState(null);
 
 	useEffect(() => {
 		let desiredPanel;
+		const findDesiredPanel = (p) => {
+			let desiredPanel = panelDataDir.filter((item) => {
+				if (item.id === p) {
+					return item;
+				} else {
+					return null;
+				}
+			});
+			return desiredPanel;
+		};
 
 		if (directInit) {
 			displayedIcons.forEach((p) => {
@@ -41,26 +55,13 @@ function Swithcer({ direction, panelClassName }) {
 						}
 						dispatch(setTwinIndexDir(0));
 						setPanelChart(true);
-						desiredPanel = panelDataDir.filter((item) => {
-							if (item.id === p.panelArray[twinIndex]) {
-								return item;
-							} else {
-								return null;
-							}
-						});
+						desiredPanel = findDesiredPanel(p.panelArray[twinIndex]);
 						dispatch(setDisplayedPanelIDDir(p.id));
 						setPanel(desiredPanel[0].content);
 						dispatch(setChartParametersDir(desiredPanel[0].chartParameters));
 					} else {
 						setPanelChart(false);
-						desiredPanel = panelDataDir.filter((item) => {
-							if (item.id === displayedPanelID) {
-								return item;
-							} else {
-								return null;
-							}
-						});
-
+						desiredPanel = findDesiredPanel(displayedPanelID);
 						setPanel(desiredPanel[0].content);
 						dispatch(setDisplayedPanelIDDir(p.id));
 					}
@@ -75,13 +76,8 @@ function Swithcer({ direction, panelClassName }) {
 					}
 
 					setPanelChart(true);
-					desiredPanel = panelDataDir.filter((item) => {
-						if (item.id === directMap.display) {
-							return item;
-						} else {
-							return null;
-						}
-					});
+					desiredPanel = findDesiredPanel(directMap.display);
+
 					dispatch(setDisplayedPanelIDDir(p.id));
 					setPanel(desiredPanel[0].content);
 					dispatch(setChartParametersDir(desiredPanel[0].chartParameters));
@@ -98,15 +94,10 @@ function Swithcer({ direction, panelClassName }) {
 							dispatch(setSwitcherDir(false));
 						}
 						setPanelChart(true);
-						desiredPanel = panelDataDir.filter((item) => {
-							if (item.id === p.panelArray[twinIndex]) {
-								return item;
-							} else {
-								return null;
-							}
-						});
+						desiredPanel = findDesiredPanel(p.panelArray[twinIndex]);
 						setPanel(desiredPanel[0].content);
 						dispatch(setChartParametersDir(desiredPanel[0].chartParameters));
+						console.log("desiredPanel", desiredPanel);
 					} else {
 						setPanelChart(false);
 						desiredPanel = panelDataDir.filter((item) => {
@@ -121,19 +112,14 @@ function Swithcer({ direction, panelClassName }) {
 				} else if (p.panelArray.includes(displayedPanelID)) {
 					dispatch(setDisplayedPanelIDDir(p.id));
 					let currentPanel = p.panelArray[twinIndex];
-					desiredPanel = panelDataDir.filter((item) => {
-						if (item.id === currentPanel) {
-							return item;
-						} else {
-							return null;
-						}
-					});
+					desiredPanel = findDesiredPanel(currentPanel);
 					setPanel(desiredPanel[0].content);
 					dispatch(setChartParametersDir(desiredPanel[0].chartParameters));
 				}
 			});
 		}
 	}, [
+		invalidateSimData,
 		dispatch,
 		displayedIcons,
 		displayedPanelID,
@@ -142,8 +128,51 @@ function Swithcer({ direction, panelClassName }) {
 		directInit,
 		directMap.display,
 		mapVector,
-		
+		setTwinIndexDir,
+		setDisplayedPanelIDDir,
+		setChartParametersDir,
+		setTwinArrayDir,
+		setSwitcherDir,
 	]);
+
+	useEffect(() => {
+		console.log("unified useeffect");
+		let result = [];
+
+		panelDataDir.forEach((item) => {
+			if (item.chartParameters?.twins) {
+				item.chartParameters.twins.forEach((twin) => {
+					if (twin.simulation === true) {
+						result.push(twin.id);
+					}
+				});
+			}
+		});
+		console.log({ result });
+		displayedIcons.forEach((icon) => {
+			if (icon.id === displayedPanelID) {
+				if (icon.panelArray.length > 0) {
+					console.log({ icon });
+					if (result.includes(icon.panelArray[twinIndex])) {
+						console.log({ twin: icon.panelArray[twinIndex] });
+						console.log("set sim graph");
+						graphType === "ts" && dispatch(setGraphType("sim"));
+					} else {
+						console.log("set ts graph");
+						dispatch(setGraphType("ts"));
+					}
+				}
+			}
+		});
+	}, [
+		displayedIcons,
+		displayedPanelID,
+		twinIndex,
+		dataArrivedRight,
+		panelDataDir,
+		dispatch,
+	]);
+
 	return (
 		<RenderedPanel
 			direction={direction}

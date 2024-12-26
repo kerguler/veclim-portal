@@ -16,8 +16,10 @@ import { store } from "store";
 import { alboApi } from "store/apis/alboApi";
 import { setIsTsDataSet } from "store";
 import { setInvalidateSimData } from "store";
+import { useAlboData } from "context/AlboDataContext";
 
 function AlboRequest() {
+	console.log("AlboRequest");
 	const dispatch = useDispatch();
 	const alboSlider1Value = useSelector(
 		(state) =>
@@ -35,13 +37,8 @@ function AlboRequest() {
 		plotReady,
 		messenger,
 		setMessengerDir,
+		mapPagePositionLeft,
 	} = useDirectorFun("right");
-	const mapPagePositionLeft = useSelector(
-		(state) => state.fetcher.fetcherStates.map.mapPagePosition
-	);
-	const isTsDataSet = useSelector(
-		(state) => state.fetcher.fetcherStates.isTsDataSet
-	);
 
 	const [submitAlboData, { isLoading, data: dataAlbo, error: errorAlbo }] =
 		useSubmitAlboDataMutation();
@@ -65,9 +62,7 @@ function AlboRequest() {
 		data: null,
 		dataToPlot: null,
 	});
-	// console.log({ invalidateSimData });
 
-	console.log({ messenger });
 	useEffect(() => {
 		invalidateSimData &&
 			dispatch(
@@ -126,7 +121,6 @@ function AlboRequest() {
 			setAlboDataArrived(false);
 		}
 	}, [alboSlider1Value, alboRequest, submitAlboData, dispatch]);
-	console.log({ isFetching, dataTs, errorTs });
 	// useEffect(() => {
 	// 	if (errorTs) {
 	// 		dispatch(
@@ -164,7 +158,6 @@ function AlboRequest() {
 	useEffect(() => {
 		let r = rawData.current;
 		try {
-			console.log({ dataTs, chartParameters });
 			if (vectorName === "albopictus") {
 				if (
 					!invalidateSimData &&
@@ -187,7 +180,6 @@ function AlboRequest() {
 							);
 
 						if (isError) {
-							console.log("error", errorMessage);
 							throw new Error(errorMessage);
 						}
 						ChartCalculatorService.createDateArray(rawData, chartParameters);
@@ -277,7 +269,6 @@ function AlboRequest() {
 		}
 	}, [errorAlbo]);
 	useEffect(() => {
-		console.log({ dataTsHasChanged: dataTs });
 		dispatch(
 			setMessengerDir({
 				id: 0,
