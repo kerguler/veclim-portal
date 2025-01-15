@@ -51,14 +51,16 @@ const fetcherSlice = createSlice({
 					},
 				},
 				left: {
+					panelLevel: { path: [1, 1], level: 0, key: "menu_icon" },
 					directInit: false,
 					panelOpen: false,
 					mapMenuOpen: false,
 					displayedPanelID: 0,
 					directMap: { lon: null, lat: null, display: -2 },
 					directInitError: { isError: false, message: "", type: "" },
+					openItems: {},
 					chart: {
-						shimmer: null,
+						shimmer: {},
 						dataArrived: false,
 						brushRange: { startIndex: null, endIndex: null },
 						dates: { first: null, last: null },
@@ -66,6 +68,10 @@ const fetcherSlice = createSlice({
 						messenger: { message: null, id: null, isError: false },
 					},
 				},
+		
+
+
+				
 			},
 		},
 		fetcherError: null,
@@ -73,6 +79,13 @@ const fetcherSlice = createSlice({
 	},
 
 	reducers: {
+		setOpenItems(state, action) {
+			state.fetcherStates.menu.left.openItems = action.payload;
+		},
+		setPanelLevel(state, action) {
+			state.fetcherStates.menu.left.panelLevel = action.payload;
+		},
+
 		setGraphType(state, action) {
 			state.fetcherStates.graphType = action.payload;
 		},
@@ -238,7 +251,8 @@ const fetcherSlice = createSlice({
 	},
 });
 
-export const {
+export const {setOpenItems,
+	setPanelLevel,
 	setGraphType,
 	setShimmerLeft,
 	setShimmerRight,

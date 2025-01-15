@@ -1,15 +1,15 @@
 import useDirectorFun from "customHooks/useDirectorFun";
 import { useFetchTimeSeriesDataQuery } from "store";
 import { useEffect, useRef } from "react";
-import ChartCalculatorService from "../services/ChartCalculatorService";
+import ChartCalculatorService from "components/charts/services/ChartCalculatorService";
 import { useDispatch } from "react-redux";
-import RechartsPlot from "./RechartsPlot";
-import useSetDefaultCoordinates from "./customPlotterHooks/useSetDefaultCoordinates";
-import ErrorComponent from "./errorComponent/ErrorComponent";
+import RechartsPlot from "../RechartsPlot";
+import useSetDefaultCoordinates from "../customPlotterHooks/useSetDefaultCoordinates";
+import ErrorComponent from "../errorComponent/ErrorComponent";
 import ErrorBoundary from "components/errorBoundary/ErrorBoundary";
 import ChartLoadingSkeleton from "components/skeleton/Skeleton";
 import { useSelector } from "react-redux";
-function TsRequest() {
+function TsRequestV2() {
 	const dispatch = useDispatch();
 
 	const rawData = useRef({
@@ -20,7 +20,7 @@ function TsRequest() {
 	let r = rawData.current;
 	// This side effect arrangtes the map centers to default values
 	// in case the vectorName changes
-	useSetDefaultCoordinates();
+	useSetDefaultCoordinates("left");
 
 	const {
 		mapPagePosition,
@@ -107,7 +107,6 @@ function TsRequest() {
 		error,
 		isFetching,
 		mapPagePosition.lat,
-
 		setMessengerDir,
 		setPlotReadyDir,
 	]);
@@ -134,7 +133,6 @@ function TsRequest() {
 	}
 
 	if (r.dataToPlot) {
-		console.log("we calculated dataToPlot");
 		return (
 			plotReady && (
 				<ErrorBoundary>
@@ -151,4 +149,4 @@ function TsRequest() {
 	}
 }
 
-export default TsRequest;
+export default TsRequestV2;

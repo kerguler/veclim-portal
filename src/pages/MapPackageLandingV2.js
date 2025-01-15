@@ -9,6 +9,9 @@ import ErrorBoundary from "components/errorBoundary/ErrorBoundary";
 import useMapStarter from "customHooks/useMapStarter";
 import MapPackageComponent from "components/map/mapPackage/MapPackageComponent";
 import { AlboDataProvider } from "context/AlboDataContext";
+import MapMenuV2 from "components/mapMenu/mapMenuV2/MapMenuV2";
+import { PanelProviderV2 } from "context/panelsIconsV2";
+import MapMenuPicker from "components/mapMenu/mapMenuV2/MapMenuPicker";
 function MapPackageLanding() {
 	useMapStarter();
 	const readyToView = useSelector(
@@ -17,19 +20,20 @@ function MapPackageLanding() {
 	const vectorName = useSelector(
 		(state) => state.fetcher.fetcherStates.vectorName
 	);
+
 	return (
 		readyToView && (
 			<div className="wrappers-wrapper">
 				<MapLogo />
 				<div className="map-wrapper">
 					<AlboDataProvider>
-						<PanelProvider>
-							<MapMenu direction="left"> </MapMenu>
+						<PanelProviderV2>
+							<MapMenuPicker />
 
 							<ErrorBoundary>
 								<MapPackageComponent />
 							</ErrorBoundary>
-						</PanelProvider>
+						</PanelProviderV2>
 					</AlboDataProvider>
 				</div>
 			</div>

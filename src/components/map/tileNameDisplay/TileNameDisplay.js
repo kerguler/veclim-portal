@@ -7,11 +7,13 @@ import { useRef } from "react";
 import { setDisplayTileNames } from "../../../store";
 import { useState } from "react";
 import { setDividerPosition } from "../../../store";
+import PanelContextV2 from "context/panelsIconsV2";
+import useDirectorFun from "customHooks/useDirectorFun";
 function TileNameDisplay() {
 	const tileArray = useSelector(
 		(state) => state.fetcher.fetcherStates.tileArray
 	);
-	const { tileIcons } = useContext(PanelContext);
+	const { tileIconsDir:tileIcons } = useDirectorFun("left");
 	const displayTileNames = useSelector((state) => state.panel.displayTileNames);
 	const dividerPos = useSelector((state) => state.location.dividerPosition);
 	const [positions, setPositions] = useState({ left: 0, right: 0 });

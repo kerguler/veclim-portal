@@ -12,7 +12,7 @@ import {
 import { setShowSearchBar } from "store";
 import { useUserLocation } from "store/apis/utils";
 
-function LiveSearchCaps({ showInstructions }) {
+function LiveSearchCaps({ showInstructions, border }) {
 	const dispatch = useDispatch();
 	useUserLocation();
 	const [showList, setShowList] = useState(false);
@@ -84,10 +84,10 @@ function LiveSearchCaps({ showInstructions }) {
 	const handleShowList = (value) => {
 		setShowList(value);
 	};
-	// TODO: ON MOUSE LEAVE BURADA OLMALI BIR TANESI
+	let capBorder = border ? "border" : "";
 	return (
-		<div className="search-bar-master-container">
-			<div className="search-bar-container">
+		<div className={`search-bar-master-container `}>
+			<div className={`search-bar-container ${capBorder} `}>
 				<SearchBar
 					selectedTerm={selectedTerm}
 					onSubmit={handleSearchTermSubmit}

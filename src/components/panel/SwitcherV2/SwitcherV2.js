@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
-import "./Switcher.css";
-import RenderedPanel from "../RenderedPanel";
+import "../Switcher/Switcher.css";
 
 import useDirectorFun from "customHooks/useDirectorFun";
 import { useSelector } from "react-redux";
 import { setGraphType } from "store";
-function Swithcer({ direction, panelClassName }) {
+import RenderedPanelV2 from "./RenderedPanelV2";
+function SwithcerV2({ direction, panelClassName }) {
 	const {
 		dataArrivedRight,
 		twinIndex,
@@ -151,7 +151,7 @@ function Swithcer({ direction, panelClassName }) {
 				if (icon.panelArray.length > 0) {
 					if (result.includes(icon.panelArray[twinIndex])) {
 						// graphType === "ts" &&
-						 dispatch(setGraphType("sim"));
+						dispatch(setGraphType("sim"));
 					} else {
 						dispatch(setGraphType("ts"));
 					}
@@ -168,7 +168,7 @@ function Swithcer({ direction, panelClassName }) {
 	]);
 
 	return (
-		<RenderedPanel
+		<RenderedPanelV2
 			direction={direction}
 			panelClassName={panelClassName}
 			panel={panel}
@@ -177,4 +177,4 @@ function Swithcer({ direction, panelClassName }) {
 	);
 }
 
-export default Swithcer;
+export default SwithcerV2;

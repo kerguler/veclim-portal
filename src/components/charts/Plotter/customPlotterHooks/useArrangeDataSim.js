@@ -26,14 +26,11 @@ function useArrangeDataSim({
 		let r = rawData.current;
 		try {
 			if (vectorName === "albopictus") {
-				
-
 				if (
 				
 					dataSim &&
 					dataTs &&
 					chartParameters &&
-					// dataTs.presence.albopictus.length > 0 &&
 					Object.keys(chartParameters).length > 0
 				) {
 					if (dataSim) {
@@ -58,34 +55,12 @@ function useArrangeDataSim({
 						dispatch(setPlotReadyDir(true));
 						dispatch(setAlboRequestPlot(false));
 						dispatch(setSlider1EnabledRight(true));
-						// dispatch(
-						// 	setMessengerDir({ ...messenger, message: null, isError: false })
-						// );
 						setPlotReadyDir(true);
-						// setAlboDataArrived(false);
 					}
 				} else {
 					console.log("shouldnt have come here");
 					dispatch(setPlotReadyDir(false));
-					// if (invalidateSimData) {
-					// 	// dispatch(
-					// 	// 	setMessengerDir({
-					// 	// 		id: 10,
-					// 	// 		message: `the coordinates have changed to lat:${mapPagePositionLeft.lat.toFixed(
-					// 	// 			2
-					// 	// 		)} lng:${mapPagePositionLeft.lng.toFixed(2)}`,
-					// 	// 		isError: false,
-					// 	// 	})
-					// 	// );
-					// } else {
-					// 	dispatch(
-					// 		setMessengerDir({
-					// 			id: 2,
-					// 			message: "Either Ts data is empty, or it is not set",
-					// 			isError: true,
-					// 		})
-					// 	);
-					// }
+
 				}
 			} else {
 				dispatch(

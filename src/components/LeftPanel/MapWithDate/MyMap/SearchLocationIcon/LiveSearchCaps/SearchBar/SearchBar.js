@@ -2,7 +2,7 @@ import { useEffect } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 import { changeSearchTermLocation } from "store";
-function SearchBar({ showTheList, selectedTerm, onSubmit }) {
+function SearchBar({ showTheList, selectedTerm, onSubmit ,border}) {
 	const dispatch = useDispatch();
 	const locationName = useSelector((state) => state.location.locationName);
 	useEffect(() => {
@@ -29,8 +29,8 @@ function SearchBar({ showTheList, selectedTerm, onSubmit }) {
 	};
 
 	return (
-		<div className="form-container">
-			<form onSubmit={handleSubmit}>
+		<div className={`form-container `}>
+			<form onSubmit={handleSubmit} >
 				<input
 					placeholder="Search"
 					type="text"

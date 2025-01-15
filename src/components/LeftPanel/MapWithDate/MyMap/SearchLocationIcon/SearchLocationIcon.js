@@ -12,8 +12,7 @@ import ToolTip from "components/Tooltip/ToolTip";
 import "./SearchLocationIcon.css";
 import "components/Tooltip/ToolTip.css";
 import { useEffect, useRef } from "react";
-function SearchLocationIcon() {
-	//TODO: handle the closing of the settings menu
+function SearchLocationIcon({ border }) {
 	const dispatch = useDispatch();
 
 	const searchBarState = useSelector((state) => {
@@ -41,12 +40,12 @@ function SearchLocationIcon() {
 				}
 			}
 		};
-
 		window.addEventListener("mousemove", handleMouseMove);
 		return () => {
 			window.removeEventListener("mousemove", handleMouseMove);
 		};
 	}, [dispatch]);
+
 	return (
 		<div className="" ref={searchContainerRef1}>
 			<div className="tooltip-element search-icon">
@@ -57,7 +56,7 @@ function SearchLocationIcon() {
 					src={searchIcon}
 				/>
 				<ToolTip>Search among some capitals</ToolTip>
-				{searchBarState && <LiveSearchCaps />}
+				{searchBarState && <LiveSearchCaps border={true} />}
 			</div>
 		</div>
 	);

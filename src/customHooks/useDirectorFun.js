@@ -39,9 +39,13 @@ import { setMapPagePositionRight } from "store";
 import { setMessengerLeft } from "store";
 import { setMessengerRight } from "store";
 import { useDispatch } from "react-redux";
+import PanelContextV2 from "context/panelsIconsV2";
+import { setOpenItems } from "store";
 function useDirectorFun(direction) {
 	const dispatch = useDispatch();
-
+	const openItems = useSelector(
+		(state) => state.fetcher.fetcherStates.menu.left.openItems
+	);
 	const dataArrivedLeft = useSelector(
 		(state) => state.fetcher.fetcherStates.menu.left.chart.dataArrived
 	);
@@ -128,8 +132,12 @@ function useDirectorFun(direction) {
 	);
 
 	// PANEL DATA
-	const { panelData, parPickerPanelData } = useContext(PanelContext);
+	const { panelData, parPickerPanelData, menuStructure, simulationPanels } =
+		useContext(PanelContextV2);
 	const panelDataDir = directorFun(direction, panelData, parPickerPanelData);
+
+	const { tileIcons, parPickerTileIcons } = useContext(PanelContextV2);
+	const tileIconsDir = directorFun(direction, tileIcons, parPickerTileIcons);
 	// MAP MENU OPEN
 	const mapMenuOpenLeft = useSelector(
 		(state) => state.fetcher.fetcherStates.menu.left.mapMenuOpen
@@ -322,7 +330,16 @@ function useDirectorFun(direction) {
 		setMessengerLeft,
 		setMessengerRight
 	);
+	const panelLevelLeft = useSelector(
+		(state) => state.fetcher.fetcherStates.menu.left.panelLevel
+	);
+
 	return {
+		simulationPanels,
+		setOpenItems,
+		menuStructure,
+		panelLevelLeft,
+		tileIconsDir,
 		setMessengerDir,
 		mapPagePositionLeft,
 		invalidateSimData,
@@ -372,6 +389,7 @@ function useDirectorFun(direction) {
 		setTwinArrayDir,
 		setDisplayedIconsDir,
 		dispatch,
+		openItems,
 	};
 }
 function directorFun(direction, dataleft, dataright) {

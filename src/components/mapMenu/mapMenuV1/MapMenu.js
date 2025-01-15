@@ -149,14 +149,13 @@ function MapMenu({ direction }) {
 				</div>
 				{mapMenuOpen && <div className="vertical-menu">{icons}</div>}
 			</div>
-			
+
 			<Switcher
-					direction={direction}
-					panelClassName={panelClassName}
-					panel={panel}
-					panelChart={panelChart}
-				/>
-		
+				direction={direction}
+				panelClassName={panelClassName}
+				panel={panel}
+				panelChart={panelChart}
+			/>
 		</div>
 	);
 }

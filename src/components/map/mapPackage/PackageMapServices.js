@@ -26,6 +26,7 @@ import { setPanelInterfereRight } from "store";
 import { setIsTsDataSet } from "store";
 import { setInvalidateSimData } from "store";
 import { setDataArrivedRight } from "store";
+import { setOpenItems } from "store";
 
 class PackageMapServices {
 	static baseLayer = L.tileLayer(
@@ -82,13 +83,10 @@ class PackageMapServices {
 	}
 	static handleMapSwitch(dispatch, vectorName, desiredVector) {
 		if (desiredVector === vectorName) {
-			console.log("we have the same vector");
 			return;
 		}
-		console.log("setting switch map to false");
 		dispatch(setSwitchMap(false));
 		if (desiredVector === "papatasi") {
-			console.log("setting things up for papatasi");
 			dispatch(setVectorName("papatasi"));
 			dispatch(setMapVector("papatasi"));
 			dispatch(setTileArray(["papatasi_aprdec"]));
@@ -105,7 +103,7 @@ class PackageMapServices {
 			dispatch(setDisplayReady(false));
 		}
 
-		dispatch(setDisplayedPanelIDLeft(0));
+		dispatch(setOpenItems({}));
 		dispatch(setPanelOpenLeft(false));
 	}
 
@@ -117,12 +115,10 @@ class PackageMapServices {
 		directMap,
 		directMapRight
 	) {
-		console.log("click on map")
 		
 		dispatch(setInvalidateSimData(true));
 		dispatch(setDataArrivedRight(false));
 		this.clickMap(e, mapParRef, vectorName, dispatch);
-		// TODO: MAY NEED TO REMOVE
 
 		if (directMap) {
 			if (directMap.display === -2) dispatch(setPanelInterfere(-1));
@@ -325,7 +321,6 @@ class PackageMapServices {
 		// Get the size of the map container
 
 		if (bounds) {
-			console.log("bounds", bounds);
 			let p = mapParRef.current;
 			var zoom = p.map.getZoom();
 			var nw = p.map.project(bounds.getNorthWest(), zoom);
@@ -444,7 +439,6 @@ class PackageMapServices {
 
 	static markerHandler = (mapParRef, switchZoom, vectorName, dispatch) => {
 		let p = mapParRef.current;
-		console.log("markerHandler");
 		if (p) {
 			p.zoom = p.map.getZoom();
 			p.center = [p.map.getCenter().lat, p.map.getCenter().lng];

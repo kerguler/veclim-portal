@@ -6,8 +6,7 @@ function CustomTooltip({ active, payload, label, parameters, keys }) {
 	);
 
 	if (active && payload1 && payload1.length) {
-		//TODO:: fix the dodgy code coming up
-		//hard coded test based on variable names slice1 slice 2 and slice 3
+	
 
 		const RenderedTooltipElement = ({ entry, index, keys }) => {
 			return payload1.map((parts) => {

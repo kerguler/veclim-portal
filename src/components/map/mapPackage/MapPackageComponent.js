@@ -16,7 +16,6 @@ import useZoomActions from "customHooks/useZoomActions";
 import useMapBasicEvents from "customHooks/MapPackage/useMapBasicEvents";
 import useLMapResize from "customHooks/MapPackage/useLMapResize";
 
-
 function MapPackageComponent({ fitworld }) {
 	const dispatch = useDispatch();
 	const {
@@ -82,7 +81,14 @@ function MapPackageComponent({ fitworld }) {
 		}
 
 		return () => {};
-	}, [directMapLeft, directMapRight, dispatch, vectorName, mapPagePosition,switchMap]);
+	}, [
+		directMapLeft,
+		directMapRight,
+		dispatch,
+		vectorName,
+		mapPagePosition,
+		switchMap,
+	]);
 
 	return (
 		<>
@@ -95,7 +101,6 @@ function MapPackageComponent({ fitworld }) {
 			</div>
 		</>
 	);
-	
 }
 
 export default MapPackageComponent;

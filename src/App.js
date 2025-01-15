@@ -9,7 +9,7 @@ import { useUserLocation } from "./store/apis/utils";
 
 const GenericPage = lazy(() => import("pages/GenericPage/GenericPage"));
 const NoPage = lazy(() => import("pages/NoPage"));
-const MapPackageLanding = lazy(() => import("pages/MapPackageLanding"));
+const MapPackageLandingV2 = lazy(() => import("pages/MapPackageLandingV2"));
 function App() {
 	useUserLocation();
 	return (
@@ -24,7 +24,7 @@ function App() {
 						<Route path="/Methods/TigerMosquito" element={<GenericPage />} />
 						<Route path="/Methods/SandFly" element={<GenericPage />} />
 						<Route path="/404" element={<NoPage />} />
-						<Route path="/MapPage" element={<MapPackageLanding />} />
+						<Route path="/MapPage" element={<MapPackageLandingV2 />} />
 					</Routes>
 				</Suspense>
 			</div>

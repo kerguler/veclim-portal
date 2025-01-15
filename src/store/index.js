@@ -20,7 +20,8 @@ import {
 	setTimer,
 	clearTimer,
 } from "./slices/newsSlice";
-import {
+import {setOpenItems,
+	setPanelLevel,
 	setGraphType,
 	setShimmerLeft,
 	setShimmerRight,
@@ -217,7 +218,8 @@ export {
 } from "./apis/simulationApi";
 
 export { useFetchNewsDataQuery } from "./apis/newsApi";
-export {
+export {setOpenItems,
+	setPanelLevel,
 	setGraphType,
 	setShimmerLeft,
 	setShimmerRight,

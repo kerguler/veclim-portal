@@ -69,7 +69,9 @@
 .form-container {
 	width: 100%;
 }
-
+.search-bar-container.border input {
+	border: 1px solid var(--www-color-float-bg2);
+}
 @media (min-width: 500px) {
 	.search-bar-container input {
 		border: none;

@@ -8,21 +8,13 @@ import { useRef } from "react";
 import { useEffect } from "react";
 import { lazy, Suspense } from "react";
 import { setGraphType } from "store";
+import UnifiedRechartPlotterV2 from "components/charts/Plotter/plotterV2/UnifiedRechartPlotterV2";
 const UnifiedRechartPlotter = lazy(() =>
 	import("components/charts/Plotter/UnifiedRechartPlotter")
 );
-const RenderedPanelChart = ({ direction }) => {
-	const {
-		switcher,
-		twinIndex,
-		setTwinIndexDir,
-		twinArray,
-		setPlotReadyDir,
-		panelDataDir,
-		displayedIcons,
-		dataArrivedRight,
-		displayedPanelID,
-	} = useDirectorFun(direction);
+const RenderedPanelChartV2 = ({ direction, siblingCount }) => {
+	const { twinIndex, setTwinIndexDir, setPlotReadyDir } =
+		useDirectorFun(direction);
 	const dispatch = useDispatch();
 	const [showSwitcherArrows, setShowSwitcherArrows] = useState({
 		left: false,
@@ -33,20 +25,21 @@ const RenderedPanelChart = ({ direction }) => {
 	);
 	const switcherRefLeft = useRef(null);
 	const switcherRefRight = useRef(null);
+
 	useEffect(() => {
-		if (switcher) {
+		if (siblingCount > 1) {
 			if (twinIndex === 0) {
 				setShowSwitcherArrows({ left: false, right: true });
-			} else if (twinIndex < twinArray - 1) {
+			} else if (twinIndex < siblingCount - 1) {
 				setShowSwitcherArrows({ left: true, right: true });
-			} else if (twinIndex === twinArray - 1) {
+			} else if (twinIndex === siblingCount - 1) {
 				setShowSwitcherArrows({ left: true, right: false });
 			}
 		} else {
+			console.log("siblingCount", siblingCount);
 			setShowSwitcherArrows({ left: false, right: false });
 		}
-	}, [switcher, twinIndex]);
-	console.log({ twinIndex, dataArrivedRight });
+	}, [siblingCount, twinIndex]);
 
 	const handlePrev = (params) => {
 		if (twinIndex === 0) {
@@ -57,7 +50,7 @@ const RenderedPanelChart = ({ direction }) => {
 	};
 
 	const handleNext = (params) => {
-		if (twinIndex === twinArray - 1) {
+		if (twinIndex === siblingCount - 1) {
 			return;
 		}
 		dispatch(setPlotReadyDir(false));
@@ -99,10 +92,10 @@ const RenderedPanelChart = ({ direction }) => {
 			</div>
 			<ErrorBoundary>
 				<Suspense fallback={<div>Loading...</div>}>
-					<UnifiedRechartPlotter direction={direction} />
+					<UnifiedRechartPlotterV2 direction={direction} />
 				</Suspense>
 			</ErrorBoundary>
 		</div>
 	);
 };
-export default RenderedPanelChart;
+export default RenderedPanelChartV2;

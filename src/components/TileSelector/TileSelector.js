@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useFetchColorBarsDataQuery } from "store";
 import { iconClasses } from "@mui/material";
 import Panel from "components/panel/Panel";
-import PanelContext from "context/panelsIcons";
+import PanelContext from "context/panelsIconsV2";
 function TileSelector({ tileIcons }) {
 	const selectedTiles = useSelector(
 		(state) => state.fetcher.fetcherStates.tileArray

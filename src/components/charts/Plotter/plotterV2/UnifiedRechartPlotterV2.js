@@ -1,23 +1,21 @@
-import TsRequest from "./TsRequest";
-import AlboRequest from "./AlboRequest";
+import TsRequest from "../TsRequest";
+import AlboRequest from "../AlboRequest";
 import { useSelector } from "react-redux";
 import useDirectorFun from "customHooks/useDirectorFun";
 import { useState } from "react";
 import { useEffect } from "react";
-import CustomSimulationChart from "./CustomSimulationChart";
+import CustomSimulationChart from "../CustomSimulationChart";
 import { useFetchTimeSeriesDataQuery } from "store";
 import ChartLoadingSkeleton from "components/skeleton/Skeleton";
 import { useAlboData } from "context/AlboDataContext";
+import TsRequestV2 from "./TsRequestV2";
+import CustomSimulationChartV2 from "./CustomSimulationChartV2";
 
-function UnifiedRechartPlotter({ direction }) {
+function UnifiedRechartPlotterV2({ direction }) {
 	const {
-		displayedPanelID,
-		panelDataDir,
-		dataArrivedRight,
-		displayedIcons,
+		panelDataDir: panelData,
 		mapPagePosition,
 		vectorName,
-		twinIndex,
 		dateArray,
 	} = useDirectorFun(direction);
 
@@ -30,7 +28,14 @@ function UnifiedRechartPlotter({ direction }) {
 	const graphType = useSelector(
 		(state) => state.fetcher.fetcherStates.graphType
 	);
-
+	const [displayedPanel, setDisplayedPanel] = useState(null);
+	useEffect(() => {
+		if (graphType === "sim") {
+			setDisplayedPanel("sim");
+		} else {
+			setDisplayedPanel("ts");
+		}
+	}, [graphType]);
 
 	if (dataSim && graphType === null) {
 		return (
@@ -52,16 +57,17 @@ function UnifiedRechartPlotter({ direction }) {
 			</ChartLoadingSkeleton>
 		);
 	} else if (data) {
-		if (graphType === "sim") {
-			console.log("albo");
-			return <CustomSimulationChart />;
-		} else {
-			console.log("ts");
-			return <TsRequest />;
+		if (graphType === "sim" && displayedPanel === "sim") {
+			console.log("calling CustomSimulationChartV2");
+			return <CustomSimulationChartV2 />;
+		} else if (graphType === "ts" && displayedPanel === "ts") {
+			console.log("calling TsRequestV2");
+
+			return <TsRequestV2 />;
 		}
 	} else {
 		return <div>error</div>;
 	}
 }
 
-export default UnifiedRechartPlotter;
+export default UnifiedRechartPlotterV2;
