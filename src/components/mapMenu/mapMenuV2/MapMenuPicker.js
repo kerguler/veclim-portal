@@ -8,31 +8,17 @@ import { useDispatch } from "react-redux";
 import { setPanelLevel } from "store";
 import { setTwinIndex } from "store";
 
-function buildNestedMenu(data, parentKey = null) {
-	return data
-		.filter((item) => item.parent === parentKey)
-		.map((item) => ({
-			...item,
-			children: buildNestedMenu(data, item.key),
-		}));
-}
-
 export default function MapMenuPicker() {
-	const [tree, setTree] = useState([]);
-
 	const {
 		menuStructure,
 		openItems,
 		setOpenItems,
 		panelLevelLeft: levelData,
 		dataArrivedRight,
+		tree,
 	} = useDirectorFun("left");
 	// Build the nested menu once
 	const dispatch = useDispatch();
-	useEffect(() => {
-		const nested = buildNestedMenu(menuStructure);
-		setTree(nested);
-	}, [menuStructure]);
 
 	const [panelClassName, setPanelClassName] = useState("");
 	const [shimmerOn, setShimmerOn] = useState(false);
@@ -93,15 +79,15 @@ export default function MapMenuPicker() {
 	if (!tree || !tree.length) return null;
 
 	console.log({ tree });
+	const itemKey = tree[0].key;
+	const menuDirection = "";
 	return (
-		<MapMenuV2 level={0}>
-			
+		<MapMenuV2 menuDirection={menuDirection} level={0}>
 			<MenuList
 				items={tree}
 				iconClassName={className}
 				onToggle={handleToggle}
 			/>
-
 		</MapMenuV2>
 	);
 }

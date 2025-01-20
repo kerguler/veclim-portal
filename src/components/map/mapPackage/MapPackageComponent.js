@@ -15,7 +15,7 @@ import useSeparatorActions from "customHooks/MapPackage/useSeparatorActions";
 import useZoomActions from "customHooks/useZoomActions";
 import useMapBasicEvents from "customHooks/MapPackage/useMapBasicEvents";
 import useLMapResize from "customHooks/MapPackage/useLMapResize";
-
+import { useSelector } from "react-redux";
 function MapPackageComponent({ fitworld }) {
 	const dispatch = useDispatch();
 	const {
@@ -30,6 +30,9 @@ function MapPackageComponent({ fitworld }) {
 		directMapRight,
 		switchMap,
 	} = useFetcherVariables();
+	const userPosition = useSelector(
+		(state) => state.fetcher.fetcherStates.map.userPosition
+	);
 
 	const mapParameters = {
 		map: null,
@@ -89,6 +92,24 @@ function MapPackageComponent({ fitworld }) {
 		mapPagePosition,
 		switchMap,
 	]);
+	useEffect(() => {
+		let e = {
+			latlng: {
+				lat: userPosition.lat,
+				lng: userPosition.lng,
+			},
+		};
+		userPosition.lat &&
+			userPosition.lng &&
+			PackageMapServices.handleMapClick(
+				e,
+				mapParRef,
+				vectorName,
+				dispatch,
+				directMapLeft,
+				directMapRight
+			);
+	}, [userPosition]);
 
 	return (
 		<>

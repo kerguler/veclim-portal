@@ -11,6 +11,7 @@ import {
 } from "store";
 import { setShowSearchBar } from "store";
 import { useUserLocation } from "store/apis/utils";
+import PackageMapServices from "components/map/mapPackage/PackageMapServices";
 
 function LiveSearchCaps({ showInstructions, border }) {
 	const dispatch = useDispatch();
@@ -60,6 +61,7 @@ function LiveSearchCaps({ showInstructions, border }) {
 				};
 				dispatch(setGlobalPosition(pos));
 				dispatch(setUserPosition(pos));
+				
 			}
 		}
 	};

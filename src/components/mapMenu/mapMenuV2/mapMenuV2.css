@@ -18,30 +18,39 @@
 	top: unset;
 	z-index: 5001;
 	animation: scroll-from-left 0.3s ease-in-out;
-	transition: all 0.3s ease-in-out;
+	/* transition: all 0.3s ease-in-out; */
 	user-select: none;
 }
-.icon-column.level1.direction-down {
+.direction-down {
 	left: 32px;
 	bottom: 0px;
 }
-.icon-column.level0 {
+.direction-right {
+	left: 0;
+	bottom: 32px;
+}
+/* .icon-column.level0 {
 	left: 0px;
 	bottom: 0px;
 }
 .icon-column.level1 {
 	left: 0px;
 	bottom: 32px;
+} */
+.rotate90 {
+	transform: rotate(90deg);
+	transition: transform 3s ease-out;
 }
-.icon-column.level2 {
+
+/* .icon-column.level2 {
 	left: 0px;
 	bottom: 32px;
 	z-index: 4000;
-}
-.icon-column.level2 {
+} */
+/* .icon-column.level2 {
 	left: 0px;
 	bottom: 32px;
-}
+} */
 
 .panel-restrictive-wrapper {
 	position: absolute;
@@ -213,10 +222,10 @@
 		height: 100%;
 		animation: scroll-from-top 0.2s ease-in;
 	}
-	.icon-column.level0 {
+	.level0 {
 		position: absolute;
 		left: 0px;
-		top: 0;
+		top: 0px;
 		display: flex;
 		flex-direction: column;
 		background-color: var(--primary-color1);
@@ -225,7 +234,7 @@
 		z-index: 5001;
 	}
 
-	.icon-column.level1 {
+	.level1 {
 		position: absolute;
 		left: 50px;
 		top: 0;
@@ -235,14 +244,11 @@
 		height: fit-content;
 		width: fit-content;
 		z-index: 5001;
-		box-shadow: 5px 0px 10px 0px rgba(0, 0, 0, 0.75);
+		/* box-shadow: 5px 0px 10px 0px rgba(0, 0, 0, 0.75); */
 	}
 
-	.icon-column.level1.direction-down {
-		left: 0px;
-		top: 50px;
-	}
-	.icon-column.level2 {
+
+.level2 {
 		position: absolute;
 		left: 50px;
 		top: 0;
@@ -255,7 +261,7 @@
 		z-index: 1000;
 		filter: drop-shadow(5px 0px 5px rgba(0, 0, 0, 0.5));
 	}
-	.icon-column.level3 {
+.level3 {
 		position: absolute;
 		left: 100px;
 		top: 0;
@@ -266,7 +272,7 @@
 		width: fit-content;
 		z-index: 5001;
 	}
-	.icon-column.level4 {
+level4 {
 		position: absolute;
 		left: 150px;
 		top: 0;
@@ -277,7 +283,14 @@
 		width: fit-content;
 		z-index: 5001;
 	}
-
+	.direction-down {
+		left: 0px;
+		top: 50px;
+	}
+	.direction-right {
+		left: 50px;
+		top: 0px;
+	}
 	.icon-column.left {
 		left: 0;
 		top: 0;
@@ -341,11 +354,11 @@
 @keyframes scroll-from-left {
 	0% {
 		opacity: 1;
-		transform: translateX(-100%);
+		transform: translateX(-50px);
 	}
 
 	100% {
 		opacity: 1;
-		transform: translateX(0%);
+		transform: translateX(0);
 	}
 }

@@ -530,8 +530,12 @@ function PanelProviderV2({ children }) {
 			key: "graphics_menu_icon",
 			parent: "menu_icon",
 		},
+		{
+			key: "secondary_menu_icon",
+			parent: "graphics_menu_icon",
+		},
 
-		{ key: "larva_forecast", parent: "graphics_menu_icon" },
+		{ key: "larva_forecast", parent: "secondary_menu_icon" },
 		{
 			key: "larva_forecast_panel",
 			parent: "larva_forecast",
@@ -539,7 +543,7 @@ function PanelProviderV2({ children }) {
 
 		{
 			key: "activity_forecast",
-			parent: "graphics_menu_icon",
+			parent: "secondary_menu_icon",
 		},
 
 		{ key: "simulation_graph_panel", parent: "activity_forecast" },
@@ -548,7 +552,7 @@ function PanelProviderV2({ children }) {
 
 		{
 			key: "outbreak_forecast",
-			parent: "graphics_menu_icon",
+			parent: "secondary_menu_icon",
 		},
 
 		{ key: "outbreak_forecast_panel", parent: "outbreak_forecast" },
@@ -556,7 +560,7 @@ function PanelProviderV2({ children }) {
 
 		{
 			key: "impact_forecast",
-			parent: "graphics_menu_icon",
+			parent: "secondary_menu_icon",
 		},
 
 		{ key: "impact_forecast_panel", parent: "impact_forecast" },
@@ -603,9 +607,24 @@ function PanelProviderV2({ children }) {
 			parent: "sandfly_vector_selector",
 		},
 	];
+
+	const [tree, setTree] = useState([]);
+
+	useEffect(() => {
+		function buildNestedMenu(data, parentKey = null) {
+			return data
+				.filter((item) => item.parent === parentKey)
+				.map((item) => ({
+					...item,
+					children: buildNestedMenu(data, item.key),
+				}));
+		}
+
+		const nested = buildNestedMenu(menuStructure);
+		setTree(nested);
+	}, []);
 	const panelData = [
 		{
-			id: [1, 1],
 			key: "menu_icon",
 			parent: [],
 			icon: menuIcon,
@@ -614,6 +633,14 @@ function PanelProviderV2({ children }) {
 			hasSubMenus: true,
 			subMenuOpenDirection: "down",
 			subMenuIndex: 0,
+		},
+		{
+			key: "secondary_menu_icon",
+			icon: menuIcon,
+			rotate: 90,
+			hasSubMenus: true,
+			subMenuOpenDirection: "down",
+			initialOpen:true
 		},
 		{
 			id: [2, 1],
@@ -2224,6 +2251,7 @@ function PanelProviderV2({ children }) {
 		menuStructure:
 			mapVector === "albopictus" ? menuStructure : menuStructureSand,
 		simulationPanels: simulationPanels,
+		tree: tree,
 	};
 
 	return (

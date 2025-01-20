@@ -132,7 +132,7 @@ function useDirectorFun(direction) {
 	);
 
 	// PANEL DATA
-	const { panelData, parPickerPanelData, menuStructure, simulationPanels } =
+	const { panelData, parPickerPanelData, menuStructure, simulationPanels,tree } =
 		useContext(PanelContextV2);
 	const panelDataDir = directorFun(direction, panelData, parPickerPanelData);
 
@@ -334,7 +334,7 @@ function useDirectorFun(direction) {
 		(state) => state.fetcher.fetcherStates.menu.left.panelLevel
 	);
 
-	return {
+	return {tree,
 		simulationPanels,
 		setOpenItems,
 		menuStructure,

@@ -27,7 +27,7 @@ const fetcherSlice = createSlice({
 				currentMaxBounds: PackageMapServices.worldBounds,
 				userPosition: { lat: null, lng: null },
 				globalPosition: { lat: null, lng: null },
-				mapPagePosition: { lat: 35.1966527, lng: 33.3217152 },
+				mapPagePosition: { lat: null, lng: null },
 				mapPagePositionRight: { lat: 35.1966527, lng: 33.3217152 },
 			},
 			menu: {
@@ -51,7 +51,7 @@ const fetcherSlice = createSlice({
 					},
 				},
 				left: {
-					panelLevel: { path: [1, 1], level: 0, key: "menu_icon" },
+					panelLevel: { path: [0, 0], level: 0, key: "menu_icon" },
 					directInit: false,
 					panelOpen: false,
 					mapMenuOpen: false,

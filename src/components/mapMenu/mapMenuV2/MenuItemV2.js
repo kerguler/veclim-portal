@@ -10,6 +10,7 @@ import { useEffect } from "react";
 import { useState } from "react";
 import PanelChildren from "./PanelChildren";
 import { setTwinIndex } from "store";
+import { setOpenItems } from "store";
 function MenuItemV2({ item, onToggle, iconClassName }) {
 	const {
 		dataArrivedRight,
@@ -21,7 +22,10 @@ function MenuItemV2({ item, onToggle, iconClassName }) {
 	} = useDirectorFun("left");
 	const isOpen = openItems[item.key];
 	const displayedItem = panelData.filter((panel) => panel.key === item.key)[0];
-
+	let imgClassName = "rotate0";
+	if (displayedItem.rotate === 90) {
+		imgClassName = "rotate90";
+	}
 	const panelChildren = item.children.filter((child) =>
 		child.key.endsWith("_panel")
 	);
@@ -33,11 +37,23 @@ function MenuItemV2({ item, onToggle, iconClassName }) {
 
 	useEffect(() => {
 		isOpen && setLevel(levelData.level);
-	}, [isOpen]);
+	}, [isOpen, levelData.level]);
+
+	let menuDirection = displayedItem.subMenuOpenDirection;
+
 	const dispatch = useDispatch();
-
-
-	
+	// useEffect(() => {
+	// 	if (displayedItem.initialOpen === true) {
+	// 		if (isOpen === true) {
+	// 			let tempOpenItems = { ...openItems };
+	// 			delete tempOpenItems[displayedItem.key];
+	// 			dispatch(setOpenItems(tempOpenItems));
+	// 		} else {
+	// 			dispatch(setOpenItems({ ...openItems, [displayedItem.key]: true }));
+	// 		}
+	// 	} else {
+	// 	}
+	// }, [dispatch, displayedItem.initialOpen, displayedItem.key, isOpen]);
 
 	return (
 		<>
@@ -47,7 +63,11 @@ function MenuItemV2({ item, onToggle, iconClassName }) {
 				className={iconClassName}
 				onClick={() => onToggle(displayedItem.key)}
 			>
-				<img alt="item icon" src={displayedItem.icon}></img>
+				<img
+					className={imgClassName}
+					alt="item icon"
+					src={displayedItem.icon}
+				></img>
 			</div>
 			{isOpen && (
 				<>
@@ -56,7 +76,7 @@ function MenuItemV2({ item, onToggle, iconClassName }) {
 					)}
 
 					{menuChildren.length > 0 && (
-						<MapMenuV2 level={level}>
+						<MapMenuV2 menuDirection={menuDirection} level={level}>
 							<MenuList
 								iconClassName={iconClassName}
 								items={menuChildren}
