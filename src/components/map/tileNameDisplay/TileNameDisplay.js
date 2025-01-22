@@ -15,7 +15,8 @@ function TileNameDisplay() {
 	);
 	const { tileIconsDir:tileIcons } = useDirectorFun("left");
 	const displayTileNames = useSelector((state) => state.panel.displayTileNames);
-	const dividerPos = useSelector((state) => state.location.dividerPosition);
+	const dividerPos1 = useSelector((state) => state.location.dividerPosition);
+	let dividerPos=dividerPos1*window.innerWidth
 	const [positions, setPositions] = useState({ left: 0, right: 0 });
 	const dividerRef = useRef({
 		left: (dividerPos / 2 / window.innerWidth) * 100,
@@ -45,7 +46,7 @@ function TileNameDisplay() {
 	useEffect(() => {
 		setPositions(divider);
 	}, [dividerPos, divider]);
-
+console.log(positions)
 	const display = useRef({ left: null, right: null, single: null });
 	const dispatch = useDispatch();
 

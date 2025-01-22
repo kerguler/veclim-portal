@@ -11,7 +11,7 @@ const searchLocationSlice = createSlice({
 		capitalArray: [],
 		superUser: false,
 		pageTransition: null,
-		dividerPosition: null,
+		dividerPosition: 0.50,
 	},
 	reducers: {
 		setDividerPosition(state, action) {
