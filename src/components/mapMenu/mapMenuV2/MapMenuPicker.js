@@ -14,6 +14,7 @@ export default function MapMenuPicker() {
 		openItems,
 		setOpenItems,
 		panelLevelLeft: levelData,
+		panelDataDir:panelData,
 		dataArrivedRight,
 		tree,
 	} = useDirectorFun("left");
@@ -66,12 +67,19 @@ export default function MapMenuPicker() {
 		}
 		if (!openItems[clickedKey]) {
 			openItemsTemp[clickedKey] = true;
+		
 		} else {
 			delete openItemsTemp[clickedKey];
+			let currentPanel=panelData.filter((panel)=>panel.key===clickedKey)[0]
+			if(currentPanel.selfClose){
+				delete openItemsTemp[findParents(clickedKey)];
+			}
 		}
 		dispatch(
 			setPanelLevel({ ...levelData, level: Object.keys(openItemsTemp).length })
 		);
+
+		
 		dispatch(setOpenItems(openItemsTemp));
 		dispatch(setTwinIndex(0));
 	}

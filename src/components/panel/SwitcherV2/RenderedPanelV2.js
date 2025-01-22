@@ -6,12 +6,14 @@ import "components/panel/Switcher/Switcher.css";
 import useDirectorFun from "customHooks/useDirectorFun";
 import usePanelResize from "../usePanelResize";
 import RenderedPanelChartV2 from "./RenderedPanelChartV2";
+import { useEffect } from "react";
+import { useState } from "react";
 const RenderedPanelV2 = ({
 	panel,
 	panelChart,
 	panelClassName,
 	direction,
-	siblingCount,
+	siblingCount,level
 }) => {
 	const dispatch = useDispatch();
 	const { panelOpen, setPanelOpenDir } = useDirectorFun(direction);
@@ -22,11 +24,12 @@ const RenderedPanelV2 = ({
 	const handlePanelClosed = (value) => {
 		dispatch(setPanelOpenDir(false));
 	};
+	
 
 	return (
-		<span className={`panel-restrictive-wrapper ${direction}`}>
-			(
-			<div ref={panelRef}>
+		<span  className={`panel-restrictive-wrapper ${direction}`} >
+			
+			<div ref={panelRef} >
 				<Panel
 					direction={direction}
 					className={panelClassName}

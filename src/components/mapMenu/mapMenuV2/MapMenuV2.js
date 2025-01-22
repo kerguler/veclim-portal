@@ -9,7 +9,6 @@ function MapMenuV2({ menuDirection, direction, children, level }) {
 	const [style, setStyle] = useState({});
 	useEffect(() => {
 		let m = menuRef.current;
-		console.log(m.getBoundingClientRect().top);
 		if (menuDirection === "right") {
 			setStyle({
 				top: `${(m.getBoundingClientRect().top - level * 50) / level}px`,

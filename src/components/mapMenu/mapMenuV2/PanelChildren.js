@@ -1,12 +1,12 @@
 import RenderedPanelV2 from "components/panel/SwitcherV2/RenderedPanelV2";
 import useDirectorFun from "customHooks/useDirectorFun";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { useDispatch } from "react-redux";
 import { setPlotReadyLeft } from "store";
 import { setTwinArray } from "store";
 import { setGraphType } from "store";
-function PanelChildren({ displayedItem }) {
+function PanelChildren({ displayedItem,level }) {
 	const dispatch = useDispatch();
 	const {
 		openItems,
@@ -32,6 +32,8 @@ function PanelChildren({ displayedItem }) {
 			}
 		}
 	});
+
+
 
 	useEffect(() => {
 		if (panelChildren && panelChildren[twinIndex]) {
@@ -61,11 +63,14 @@ function PanelChildren({ displayedItem }) {
 	}, [displayedPanelDetails]);
 
 	return (
-		<RenderedPanelV2
+		<RenderedPanelV2 
+			
 			siblingCount={siblingCount}
 			direction="left"
 			panelClassName={null}
 			panel={content}
+			level={level}
+			
 			panelChart={
 				chartParameters && Object.keys(chartParameters).length > 0
 					? true

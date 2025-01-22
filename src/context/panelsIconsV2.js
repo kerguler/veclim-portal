@@ -26,6 +26,7 @@ import AlboParams from "components/AlboParams/AlboParams";
 import AlboRequest from "components/charts/Plotter/AlboRequest";
 import SettingsPanel from "components/panel/SettingsPanel";
 import { icon } from "leaflet";
+import useDirectorFun from "customHooks/useDirectorFun";
 const PanelContextV2 = createContext();
 
 function PanelProviderV2({ children }) {
@@ -609,7 +610,6 @@ function PanelProviderV2({ children }) {
 	];
 
 	const [tree, setTree] = useState([]);
-
 	useEffect(() => {
 		function buildNestedMenu(data, parentKey = null) {
 			return data
@@ -620,9 +620,9 @@ function PanelProviderV2({ children }) {
 				}));
 		}
 
-		const nested = buildNestedMenu(menuStructure);
+		let  nested = mapVector==="albopictus" ?buildNestedMenu(menuStructure) : buildNestedMenu(menuStructureSand);
 		setTree(nested);
-	}, []);
+	}, [mapVector]);
 	const panelData = [
 		{
 			key: "menu_icon",
@@ -640,7 +640,8 @@ function PanelProviderV2({ children }) {
 			rotate: 90,
 			hasSubMenus: true,
 			subMenuOpenDirection: "down",
-			initialOpen:true
+			initialOpen:true,
+			selfClose:true
 		},
 		{
 			id: [2, 1],

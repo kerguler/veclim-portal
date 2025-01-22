@@ -195,12 +195,12 @@
 	.panel-restrictive-wrapper {
 		position: absolute;
 		display: inline;
-
+		top:0rem;
 		z-index: 5000;
 		height: fit-content;
 	}
 	.panel-restrictive-wrapper.left {
-		top: 0;
+		top: -50px;
 		left: 5rem;
 		right: unset;
 	}
@@ -272,7 +272,7 @@
 		width: fit-content;
 		z-index: 5001;
 	}
-level4 {
+.level4 {
 		position: absolute;
 		left: 150px;
 		top: 0;

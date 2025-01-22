@@ -1,29 +1,28 @@
 import useDirectorFun from "customHooks/useDirectorFun";
 import RenderedPanelV2 from "components/panel/SwitcherV2/RenderedPanelV2";
-import MapMenuV2 from "./MapMenuV2";
 import MenuList from "./MenuList";
 import { setGraphType } from "store";
 import { setShimmerLeft } from "store";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
+import { lazy,Suspense } from "react";
 import { useState } from "react";
-import PanelChildren from "./PanelChildren";
 import { setTwinIndex } from "store";
 import { setOpenItems } from "store";
+const PanelChildren=lazy(()=>import("./PanelChildren"))
+const MenuChildren = lazy(() => import("./MenuChildren"));
 function MenuItemV2({ item, onToggle, iconClassName }) {
 	const {
-		dataArrivedRight,
 		panelDataDir: panelData,
 		openItems,
-		panelLevelLeft: levelData,
-		simulationPanels,
-		menuStructure,
+		panelLevelLeft: levelData,vectorName,mapVector
 	} = useDirectorFun("left");
-	const isOpen = openItems[item.key];
+	
+	const isOpen=openItems[item.key]
 	const displayedItem = panelData.filter((panel) => panel.key === item.key)[0];
 	let imgClassName = "rotate0";
-	if (displayedItem.rotate === 90) {
+	if (displayedItem && displayedItem?.rotate === 90) {
 		imgClassName = "rotate90";
 	}
 	const panelChildren = item.children.filter((child) =>
@@ -39,21 +38,13 @@ function MenuItemV2({ item, onToggle, iconClassName }) {
 		isOpen && setLevel(levelData.level);
 	}, [isOpen, levelData.level]);
 
-	let menuDirection = displayedItem.subMenuOpenDirection;
+	let menuDirection = displayedItem?.subMenuOpenDirection;
 
-	const dispatch = useDispatch();
-	// useEffect(() => {
-	// 	if (displayedItem.initialOpen === true) {
-	// 		if (isOpen === true) {
-	// 			let tempOpenItems = { ...openItems };
-	// 			delete tempOpenItems[displayedItem.key];
-	// 			dispatch(setOpenItems(tempOpenItems));
-	// 		} else {
-	// 			dispatch(setOpenItems({ ...openItems, [displayedItem.key]: true }));
-	// 		}
-	// 	} else {
-	// 	}
-	// }, [dispatch, displayedItem.initialOpen, displayedItem.key, isOpen]);
+	useEffect(()=>{if (displayedItem.initialOpen){
+		onToggle(displayedItem.key)
+		
+	}},[])
+
 
 	return (
 		<>
@@ -71,19 +62,29 @@ function MenuItemV2({ item, onToggle, iconClassName }) {
 			</div>
 			{isOpen && (
 				<>
-					{panelChildren.length > 0 && (
-						<PanelChildren displayedItem={displayedItem} />
+					{panelChildren.length > 0 && (<Suspense>
+
+
+						<PanelChildren level={level} displayedItem={displayedItem} />
+
+					</Suspense>
 					)}
 
-					{menuChildren.length > 0 && (
-						<MapMenuV2 menuDirection={menuDirection} level={level}>
-							<MenuList
-								iconClassName={iconClassName}
-								items={menuChildren}
-								openItems={openItems}
-								onToggle={onToggle}
-							/>
-						</MapMenuV2>
+					{menuChildren.length > 0 && (<Suspense>
+						<MenuChildren menuChildren={menuChildren} 
+						openItems={openItems}
+						 menuDirection={menuDirection}
+						  level={level}
+						   iconClassName={iconClassName}
+						    onToggle={onToggle}/></Suspense>
+						// <MapMenuV2 menuDirection={menuDirection} level={level}>
+						// 	<MenuList
+						// 		iconClassName={iconClassName}
+						// 		items={menuChildren}
+						// 		openItems={openItems}
+						// 		onToggle={onToggle}
+						// 	/>
+						// </MapMenuV2>
 					)}
 				</>
 			)}
