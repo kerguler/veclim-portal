@@ -8,21 +8,29 @@ import usePanelResize from "../usePanelResize";
 import RenderedPanelChartV2 from "./RenderedPanelChartV2";
 import { useEffect } from "react";
 import { useState } from "react";
+import { setOpenItems } from "store";
+import { setPanelLevel } from "store";
 const RenderedPanelV2 = ({
 	panel,
 	panelChart,
 	panelClassName,
 	direction,
-	siblingCount,level
+	siblingCount,level,passedKey
 }) => {
 	const dispatch = useDispatch();
-	const { panelOpen, setPanelOpenDir } = useDirectorFun(direction);
+	const { panelOpen, setPanelOpenDir,openItems,panelLevelLeft:levelData } = useDirectorFun(direction);
 	const panelRef = useRef(null);
-
 	usePanelResize({ panelRef, direction, setPanelTop });
 
 	const handlePanelClosed = (value) => {
-		dispatch(setPanelOpenDir(false));
+		let openItemsTemp={...openItems}
+
+		
+		delete openItemsTemp[passedKey.parent]
+		console.log({passedKey,openItemsTemp})
+		dispatch(setOpenItems(openItemsTemp));
+		dispatch(setPanelLevel({...levelData, level: Object.keys(openItemsTemp).length}));
+
 	};
 	
 
@@ -33,7 +41,7 @@ const RenderedPanelV2 = ({
 				<Panel
 					direction={direction}
 					className={panelClassName}
-					onClosed={() => handlePanelClosed(true)}
+					onClosed={(key) => handlePanelClosed(key)}
 				>
 					<div className="panel-content" style={{ userSelect: "none" }}>
 						{panel}

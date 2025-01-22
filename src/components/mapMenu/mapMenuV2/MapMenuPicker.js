@@ -38,17 +38,13 @@ export default function MapMenuPicker() {
 		};
 		const findDestroyChildren = (key) => {
 			let dataInStructure = menuStructure.filter((item) => item.key === key)[0];
-			console.log({ dataInStructure });
 			let children = menuStructure.filter((item) => item.parent === key);
 			children = menuStructure.filter((item) => item.parent === key);
-			console.log("children found", children);
 
 			children.forEach((child) => {
 				if (openItemsTemp[child.key]) {
-					console.log("deleting child", child.key);
 					delete openItemsTemp[child.key];
 				}
-				console.log("child", child);
 				findDestroyChildren(child.key);
 			});
 
@@ -86,7 +82,6 @@ export default function MapMenuPicker() {
 
 	if (!tree || !tree.length) return null;
 
-	console.log({ tree });
 	const itemKey = tree[0].key;
 	const menuDirection = "";
 	return (

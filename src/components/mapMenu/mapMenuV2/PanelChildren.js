@@ -53,7 +53,6 @@ function PanelChildren({ displayedItem,level }) {
 	const siblingCount = panelChildren.length;
 
 	const displayedPanel = panelChildren && panelChildren[twinIndex];
-	console.log({ displayedPanel });
 	const displayedPanelDetails = panelData.filter(
 		(panel) => panel.key === displayedPanel.key
 	)[0];
@@ -70,7 +69,7 @@ function PanelChildren({ displayedItem,level }) {
 			panelClassName={null}
 			panel={content}
 			level={level}
-			
+			passedKey={panelChildren[twinIndex]}
 			panelChart={
 				chartParameters && Object.keys(chartParameters).length > 0
 					? true

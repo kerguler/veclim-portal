@@ -9,6 +9,7 @@ function Panel({ onClosed, children, className,direction }) {
 	const handleClick = () => {
 		onClosed();
 		dispatch(setPanelOpenDir(!panelOpen));
+		
 	};
 
 	const outerClassNames = classNames("panel-container", className);

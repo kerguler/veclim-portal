@@ -46,7 +46,6 @@ function TileNameDisplay() {
 	useEffect(() => {
 		setPositions(divider);
 	}, [dividerPos, divider]);
-console.log(positions)
 	const display = useRef({ left: null, right: null, single: null });
 	const dispatch = useDispatch();
 
