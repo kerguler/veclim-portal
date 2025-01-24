@@ -21,6 +21,9 @@ import { useAlboData } from "context/AlboDataContext";
 function AlboRequest() {
 	console.log("AlboRequest");
 	const dispatch = useDispatch();
+	const position = useSelector((state) => {
+		return state.fetcher.fetcherStates.map.mapPagePosition;
+	});
 	const alboSlider1Value = useSelector(
 		(state) =>
 			state.fetcher.fetcherStates.menu.right.chart.sliders.slider1.value
@@ -96,7 +99,11 @@ function AlboRequest() {
 	useEffect(() => {
 		const handleConfirm = async () => {
 			try {
-				const response = await submitAlboData(alboSlider1Value / 100).unwrap();
+				const response = await submitAlboData({
+					lon: position.lng,
+					lat: position.lat,
+					pr: alboSlider1Value / 100
+				}).unwrap();
 				response && setAlboDataArrived(true);
 				dispatch(setAlboRequestPlot(false));
 				dispatch(setInvalidateSimData(false));

@@ -23,6 +23,9 @@ function AlboParams() {
 		panelDataDir: panelData,
 	} = useDirectorFun("left");
 	// Selectors for Redux state
+	const position = useSelector((state) => {
+		return state.fetcher.fetcherStates.map.mapPagePosition;
+	});
 	const alboSlider1Value = useSelector(
 		(state) =>
 			state.fetcher.fetcherStates.menu.right.chart.sliders.slider1.value
@@ -57,8 +60,11 @@ function AlboParams() {
 		setIsLoadingSim(true); // Update context state
 		setMessage("Submitting..."); // Update local state
 		try {
-			const result = await submitAlboData(alboSlider1Value / 100).unwrap();
-
+			const result = await submitAlboData({
+				lon: position.lng,
+				lat: position.lat,
+				pr: alboSlider1Value / 100
+			}).unwrap();
 			setDataSim(result); // Store data in context
 			dispatch(setDataArrivedRight(true)); // Notify Redux of data arrival
 		} catch (err) {
