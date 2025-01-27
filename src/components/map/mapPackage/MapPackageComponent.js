@@ -52,12 +52,12 @@ function MapPackageComponent({ fitworld }) {
 	};
 
 	const mapParRef = useRef(mapParameters);
-	let p=mapParRef.current;
+	let p = mapParRef.current;
 
-// 	if (p && !p.rectMarker && !p.iconMarker){
-// 	dispatch(setMapPagePosition({lat:null, lng:null}))
+	// 	if (p && !p.rectMarker && !p.iconMarker){
+	// 	dispatch(setMapPagePosition({lat:null, lng:null}))
 
-// }
+	// }
 
 	useLMap(mapParRef);
 	useLMapCoordinateUpdate(mapParRef);
@@ -86,7 +86,8 @@ function MapPackageComponent({ fitworld }) {
 				vectorName,
 				dispatch,
 				directMapLeft,
-				directMapRight,mapPagePosition
+				directMapRight,
+				mapPagePosition
 			);
 		}
 
@@ -99,26 +100,24 @@ function MapPackageComponent({ fitworld }) {
 		mapPagePosition,
 		switchMap,
 	]);
-	useEffect(() => {
-		let e = {
-			latlng: {
-				lat: userPosition.lat,
-				lng: userPosition.lng,
-			},
-		};
-		if (mapPagePosition.lat===null){userPosition.lat &&
-			userPosition.lng &&
-			PackageMapServices.handleMapClick(
-				e,
-				mapParRef,
-				vectorName,
-				dispatch,
-				directMapLeft,
-				directMapRight
-			);}
-	}, [userPosition]);
-
-
+	// useEffect(() => {
+	// 	let e = {
+	// 		latlng: {
+	// 			lat: userPosition.lat,
+	// 			lng: userPosition.lng,
+	// 		},
+	// 	};
+	// 	if (mapPagePosition.lat===null){userPosition.lat &&
+	// 		userPosition.lng &&
+	// 		PackageMapServices.handleMapClick(
+	// 			e,
+	// 			mapParRef,
+	// 			vectorName,
+	// 			dispatch,
+	// 			directMapLeft,
+	// 			directMapRight
+	// 		);}
+	// }, [userPosition]);
 
 	return (
 		<>

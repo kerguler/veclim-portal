@@ -32,7 +32,6 @@ function MenuItemV2({ item, onToggle, iconClassName }) {
 		child.key.endsWith("_panel")
 	);
 
-
 	const menuChildren = item.children.filter(
 		(child) => !child.key.endsWith("_panel")
 	);
@@ -52,6 +51,7 @@ function MenuItemV2({ item, onToggle, iconClassName }) {
 	}, []);
 
 	const [style, setStyle] = useState({});
+	const [imgStyle, setImgStyle] = useState({});
 
 	useEffect(() => {
 		panelChildren.forEach((panel) => {
@@ -64,15 +64,34 @@ function MenuItemV2({ item, onToggle, iconClassName }) {
 					fifi.chartParameters &&
 					Object.keys(fifi.chartParameters).length > 0
 				) {
-					setStyle({ backgroundColor: "grey", pointerEvents: "none" });
+					setStyle({
+						backgroundColor: "var(--neutral-color1)",
+						pointerEvents: "none",
+						cursor: "not-allowed",
+					});
+					setImgStyle({
+						color: "grey",
+						width: "20px",
+						height: "20px",
+					});
 				} else {
 					setStyle({ color: "white", pointerEvents: "all" });
+					setImgStyle({
+						color: "grey",
+						width: "32px",
+						height: "32px",
+					});
 				}
 			} else {
 				setStyle({ color: "white", pointerEvents: "all" });
+				setImgStyle({
+					color: "grey",
+					width: "32px",
+					height: "32px",
+				});
 			}
 		});
-	}, [mapPagePosition.lat,openItems]);
+	}, [mapPagePosition.lat, openItems]);
 
 	return (
 		<>
@@ -84,6 +103,7 @@ function MenuItemV2({ item, onToggle, iconClassName }) {
 				onClick={() => onToggle(displayedItem.key)}
 			>
 				<img
+					style={imgStyle}
 					className={imgClassName}
 					alt="item icon"
 					src={displayedItem.icon}
