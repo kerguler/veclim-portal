@@ -6,7 +6,7 @@ import { useDispatch } from "react-redux";
 import { setPlotReadyLeft } from "store";
 import { setTwinArray } from "store";
 import { setGraphType } from "store";
-function PanelChildren({ displayedItem,level }) {
+function PanelChildren({ displayedItem, level }) {
 	const dispatch = useDispatch();
 	const {
 		openItems,
@@ -16,7 +16,9 @@ function PanelChildren({ displayedItem,level }) {
 		menuStructure,
 		twinIndex,
 		setTwinIndexDir: setTwinIndex,
+		setOpenItems,
 		setChartParametersDir: setChartParameters,
+		mapPagePosition,
 	} = useDirectorFun("left");
 
 	const panelChildren = menuStructure.filter((child) => {
@@ -33,22 +35,43 @@ function PanelChildren({ displayedItem,level }) {
 		}
 	});
 
-
-
 	useEffect(() => {
 		if (panelChildren && panelChildren[twinIndex]) {
+			let panel = panelData.filter(
+				(panel) => panel.key === panelChildren[twinIndex].key
+			)[0];
+
+			if (
+				panel.chartParameters &&
+				Object.keys(panel.chartParameters).length > 0
+			) {
+				if (mapPagePosition.lat === null) {
+					const tempOpenItems = { ...openItems };
+					delete tempOpenItems[displayedItem.key];
+					dispatch(setOpenItems(tempOpenItems));
+				}
+			}
+
 			if (
 				panelData.filter(
 					(panel) => panel.key === panelChildren[twinIndex].key
 				)[0].simulation
 			) {
 				dispatch(setGraphType("sim"));
-				
 			} else {
 				dispatch(setGraphType("ts"));
 			}
 		}
-	}, [dispatch, panelChildren, panelData, twinIndex]);
+	}, [
+		dispatch,
+		displayedItem.key,
+		mapPagePosition.lat,
+		openItems,
+		panelChildren,
+		panelData,
+		setOpenItems,
+		twinIndex,
+	]);
 
 	const siblingCount = panelChildren.length;
 
@@ -62,8 +85,7 @@ function PanelChildren({ displayedItem,level }) {
 	}, [displayedPanelDetails]);
 
 	return (
-		<RenderedPanelV2 
-			
+		<RenderedPanelV2
 			siblingCount={siblingCount}
 			direction="left"
 			panelClassName={null}

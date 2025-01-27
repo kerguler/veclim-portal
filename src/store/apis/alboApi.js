@@ -1,8 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { getDateRange } from "./utils";
 
-
-
 const alboApi = createApi({
 	reducerPath: "alboInfo",
 	baseQuery: fetchBaseQuery({
@@ -32,7 +30,6 @@ const alboApi = createApi({
 					};
 				},
 				providesTags: ["AlboData"],
-			
 			}),
 		};
 	},

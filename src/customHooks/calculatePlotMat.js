@@ -39,7 +39,7 @@ function calculatePlotMat(data, chartType) {
 	// 			}),
 	// 		});
 	// 	});
-	// } else 
+	// } else
 	if (chartType === "rechart") {
 		dataB = data["meteo-ts"]["2010-2019"];
 

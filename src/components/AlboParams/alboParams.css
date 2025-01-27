@@ -12,6 +12,19 @@
 	color: white;
 	box-shadow: 0 5px 5px 0 rgba(0, 0, 0, 0.2);
 }
+button.confirm-button:disabled {
+	background-color: var(--neutral-color1);
+	box-shadow:none;
+	color: white;
+	/* box-shadow: 0 5px 5px 0 rgba(0, 0, 0, 0.2); */
+	border:none
+}
+
+.confirm-button:disabled:hover {
+	background-color: var(--neutral-color1);
+	color: white;
+	/* box-shadow: 0 5px 5px 0 rgba(0, 0, 0, 0.2); */
+}
 .confirm-button:hover {
 	background-color: var(--primary-color2);
 	box-shadow: 0 5px 5px 0 rgba(0, 0, 0, 0.4);

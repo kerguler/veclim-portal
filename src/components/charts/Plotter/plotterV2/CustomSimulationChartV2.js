@@ -52,7 +52,14 @@ function CustomSimulationChartV2() {
 	});
 
 	useCheckChartParameters();
-
+	console.log({
+		dataSim,
+		isLoadingSim,
+		errorSim,
+		dataTs,
+		errorTs,
+		isLoadingTs,
+	});
 	useEffect(() => {
 		if (errorSim) {
 			dispatch(

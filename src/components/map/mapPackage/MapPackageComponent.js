@@ -16,6 +16,7 @@ import useZoomActions from "customHooks/useZoomActions";
 import useMapBasicEvents from "customHooks/MapPackage/useMapBasicEvents";
 import useLMapResize from "customHooks/MapPackage/useLMapResize";
 import { useSelector } from "react-redux";
+import { setMapPagePosition } from "store";
 function MapPackageComponent({ fitworld }) {
 	const dispatch = useDispatch();
 	const {
@@ -51,6 +52,12 @@ function MapPackageComponent({ fitworld }) {
 	};
 
 	const mapParRef = useRef(mapParameters);
+	let p=mapParRef.current;
+
+// 	if (p && !p.rectMarker && !p.iconMarker){
+// 	dispatch(setMapPagePosition({lat:null, lng:null}))
+
+// }
 
 	useLMap(mapParRef);
 	useLMapCoordinateUpdate(mapParRef);
@@ -79,7 +86,7 @@ function MapPackageComponent({ fitworld }) {
 				vectorName,
 				dispatch,
 				directMapLeft,
-				directMapRight
+				directMapRight,mapPagePosition
 			);
 		}
 
@@ -99,7 +106,7 @@ function MapPackageComponent({ fitworld }) {
 				lng: userPosition.lng,
 			},
 		};
-		userPosition.lat &&
+		if (mapPagePosition.lat===null){userPosition.lat &&
 			userPosition.lng &&
 			PackageMapServices.handleMapClick(
 				e,
@@ -108,8 +115,10 @@ function MapPackageComponent({ fitworld }) {
 				dispatch,
 				directMapLeft,
 				directMapRight
-			);
+			);}
 	}, [userPosition]);
+
+
 
 	return (
 		<>

@@ -15,29 +15,56 @@ const RenderedPanelV2 = ({
 	panelChart,
 	panelClassName,
 	direction,
-	siblingCount,level,passedKey
+	siblingCount,
+	level,
+	passedKey,
 }) => {
 	const dispatch = useDispatch();
-	const { panelOpen, setPanelOpenDir,openItems,panelLevelLeft:levelData } = useDirectorFun(direction);
+	const {
+		panelOpen,
+		setPanelOpenDir,
+		openItems,
+		panelLevelLeft: levelData,
+		mapPagePosition,
+	} = useDirectorFun(direction);
 	const panelRef = useRef(null);
 	usePanelResize({ panelRef, direction, setPanelTop });
 
 	const handlePanelClosed = (value) => {
-		let openItemsTemp={...openItems}
-
-		
-		delete openItemsTemp[passedKey.parent]
-		console.log({passedKey,openItemsTemp})
+		let openItemsTemp = { ...openItems };
+		delete openItemsTemp[passedKey.parent];
 		dispatch(setOpenItems(openItemsTemp));
-		dispatch(setPanelLevel({...levelData, level: Object.keys(openItemsTemp).length}));
-
+		dispatch(
+			setPanelLevel({ ...levelData, level: Object.keys(openItemsTemp).length })
+		);
 	};
-	
+
+	const [showCoordinateWarning, setShowCoordinateWarning] = useState(false);
+	useEffect(() => {
+		if (mapPagePosition.lat === null) {
+			setShowCoordinateWarning(true);
+		} else {
+			setShowCoordinateWarning(false);
+		}
+	}, [mapPagePosition.lat]);
+
+	let displayedPanel;
+	if (panelChart) {
+		if (showCoordinateWarning) {
+			<div>You need to pick a coordinate for the graphics to work</div>;
+		} else {
+			displayedPanel = (
+				<RenderedPanelChartV2
+					siblingCount={siblingCount}
+					direction={direction}
+				/>
+			);
+		}
+	}
 
 	return (
-		<span  className={`panel-restrictive-wrapper ${direction}`} >
-			
-			<div ref={panelRef} >
+		<span className={`panel-restrictive-wrapper ${direction}`}>
+			<div ref={panelRef}>
 				<Panel
 					direction={direction}
 					className={panelClassName}
@@ -45,12 +72,7 @@ const RenderedPanelV2 = ({
 				>
 					<div className="panel-content" style={{ userSelect: "none" }}>
 						{panel}
-						{panelChart && (
-							<RenderedPanelChartV2
-								siblingCount={siblingCount}
-								direction={direction}
-							/>
-						)}
+						{displayedPanel}
 					</div>{" "}
 				</Panel>
 			</div>

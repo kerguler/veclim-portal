@@ -8,6 +8,7 @@ import {
 
 import PackageMapServices from "components/map/mapPackage/PackageMapServices";
 import { useAlboData } from "context/AlboDataContext";
+import useDirectorFun from "customHooks/useDirectorFun";
 function useMapBasicEvents(mapParRef, fitworld) {
 	const dispatch = useDispatch();
 	const directInitErrorLeft = useSelector(
@@ -16,13 +17,14 @@ function useMapBasicEvents(mapParRef, fitworld) {
 	const vectorName = useSelector(
 		(state) => state.fetcher.fetcherStates.vectorName
 	);
+
+	const {mapPagePositionLeft:mapPagePosition} = useDirectorFun("left");
 	const { setDataSim } = useAlboData();
 	let p = mapParRef.current;
 	useEffect(() => {
 		const handleMapClick = (e) => {
 			setDataSim(null);
-			console.log("nullified Sim data")
-			PackageMapServices.handleMapClick(e, mapParRef, vectorName, dispatch);
+			PackageMapServices.handleMapClick(e, mapParRef, vectorName, dispatch,null,null,mapPagePosition);
 		};
 
 		const handleMove = () => {
@@ -60,7 +62,7 @@ function useMapBasicEvents(mapParRef, fitworld) {
 			p.map.off("move", handleMove);
 			p.map.off("mouseout", PackageMapServices.mouseOut, true);
 		};
-	}, [dispatch, mapParRef, p, vectorName]);
+	}, [dispatch, mapParRef, p, vectorName,mapPagePosition]);
 
 	useEffect(() => {
 		if (fitworld) {

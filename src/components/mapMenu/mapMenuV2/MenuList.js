@@ -1,6 +1,7 @@
 import MenuItemV2 from "./MenuItemV2";
 import useDirectorFun from "customHooks/useDirectorFun";
 import classNames from "classnames";
+import { useAlboData } from "context/AlboDataContext";
 function MenuList({ items, onToggle, iconClassName }) {
 	const {
 		openItems,
@@ -8,7 +9,9 @@ function MenuList({ items, onToggle, iconClassName }) {
 		dataArrivedRight,
 		menuStructure,
 		simulationPanels,
+		invalidateSimData,
 	} = useDirectorFun("left");
+	const { dataSim } = useAlboData();
 
 	if (!items || items.length === 0) return null;
 
@@ -18,10 +21,9 @@ function MenuList({ items, onToggle, iconClassName }) {
 	} else {
 		className = classNames("icon", "shimmer-off");
 	}
-
 	return items.map((item) => {
 		let siblingKeys = items.filter((i) => i.key !== item.key).map((i) => i.key);
-		if (dataArrivedRight) {
+		if (dataArrivedRight && !invalidateSimData && dataSim) {
 			let parents = [];
 			const findParents = (key) => {
 				let parent = menuStructure.filter((item) => item.key === key)[0].parent;
@@ -42,6 +44,7 @@ function MenuList({ items, onToggle, iconClassName }) {
 				className = classNames("icon", "shimmer-off");
 			}
 		}
+
 		return (
 			<MenuItemV2
 				iconClassName={className}

@@ -7,7 +7,9 @@ function useZoomActions(mapParRef) {
 	const vectorName = useSelector(
 		(state) => state.fetcher.fetcherStates.vectorName
 	);
-
+	const mapPagePosition = useSelector(
+		(state) => state.fetcher.fetcherStates.map.mapPagePosition
+	);
 	const switchMap = useSelector(
 		(state) => state.fetcher.fetcherStates.map.switchMap
 	);
@@ -15,7 +17,7 @@ function useZoomActions(mapParRef) {
 	const dispatch = useDispatch();
 	useEffect(() => {
 		const handleMarkers = () => {
-			PackageMapServices.markerHandler(mapParRef, 4, vectorName, dispatch);
+			PackageMapServices.markerHandler(mapParRef, 4, vectorName, dispatch,mapPagePosition);
 		};
 		p.map.on("zoomend", handleMarkers);
 		if (switchMap) {

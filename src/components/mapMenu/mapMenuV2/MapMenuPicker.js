@@ -7,6 +7,8 @@ import MenuList from "./MenuList";
 import { useDispatch } from "react-redux";
 import { setPanelLevel } from "store";
 import { setTwinIndex } from "store";
+import { useAlboData } from "context/AlboDataContext";
+import { setDataArrivedRight } from "store";
 
 export default function MapMenuPicker() {
 	const {
@@ -14,9 +16,10 @@ export default function MapMenuPicker() {
 		openItems,
 		setOpenItems,
 		panelLevelLeft: levelData,
-		panelDataDir:panelData,
+		panelDataDir: panelData,
 		dataArrivedRight,
 		tree,
+		invalidateSimData,
 	} = useDirectorFun("left");
 	// Build the nested menu once
 	const dispatch = useDispatch();
@@ -29,7 +32,15 @@ export default function MapMenuPicker() {
 	} else {
 		className = classNames("icon", "shimmer-off");
 	}
+	const { setDataSim } = useAlboData();
+	useEffect(() => {
+		if (invalidateSimData) {
+			console.log("should have set dataArrived False datasim null ");
+			dispatch(setDataArrivedRight(false));
 
+			setDataSim(null);
+		}
+	}, [invalidateSimData]);
 	// Here is the "close siblings" logic
 	function handleToggle(clickedKey) {
 		const findParents = (key) => {
@@ -63,11 +74,12 @@ export default function MapMenuPicker() {
 		}
 		if (!openItems[clickedKey]) {
 			openItemsTemp[clickedKey] = true;
-		
 		} else {
 			delete openItemsTemp[clickedKey];
-			let currentPanel=panelData.filter((panel)=>panel.key===clickedKey)[0]
-			if(currentPanel.selfClose){
+			let currentPanel = panelData.filter(
+				(panel) => panel.key === clickedKey
+			)[0];
+			if (currentPanel.selfClose) {
 				delete openItemsTemp[findParents(clickedKey)];
 			}
 		}
@@ -75,7 +87,6 @@ export default function MapMenuPicker() {
 			setPanelLevel({ ...levelData, level: Object.keys(openItemsTemp).length })
 		);
 
-		
 		dispatch(setOpenItems(openItemsTemp));
 		dispatch(setTwinIndex(0));
 	}

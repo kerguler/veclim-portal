@@ -52,7 +52,12 @@ function TsRequestV2() {
 		// 	error,
 		// });
 		try {
-			if (!isFetching && data && Object.keys(chartParameters).length > 0) {
+			if (
+				!isFetching &&
+				data &&
+				Object.keys(chartParameters).length > 0 &&
+				mapPagePosition.lat
+			) {
 				const { errorMessage, isError } =
 					ChartCalculatorService.checkDataForMixedKeys(
 						chartParameters,

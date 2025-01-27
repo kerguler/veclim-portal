@@ -27,6 +27,7 @@ import { setIsTsDataSet } from "store";
 import { setInvalidateSimData } from "store";
 import { setDataArrivedRight } from "store";
 import { setOpenItems } from "store";
+import { zIndex } from "material-ui/styles";
 
 class PackageMapServices {
 	static baseLayer = L.tileLayer(
@@ -113,12 +114,13 @@ class PackageMapServices {
 		vectorName,
 		dispatch,
 		directMap,
-		directMapRight
+		directMapRight,
+		mapPagePosition
 	) {
-		
 		dispatch(setInvalidateSimData(true));
 		dispatch(setDataArrivedRight(false));
-		this.clickMap(e, mapParRef, vectorName, dispatch);
+
+		this.clickMap(e, mapParRef, vectorName, dispatch, mapPagePosition);
 
 		if (directMap) {
 			if (directMap.display === -2) dispatch(setPanelInterfere(-1));
@@ -131,7 +133,7 @@ class PackageMapServices {
 			dispatch(setPanelInterfereRight(null));
 		}
 	}
-	static clickMap = (e, mapParRef, vectorName, dispatch) => {
+	static clickMap = (e, mapParRef, vectorName, dispatch, mapPagePosition) => {
 		let p = mapParRef.current;
 		const switchZoom = 4;
 		let newPosition = this.roundPosition(
@@ -139,6 +141,7 @@ class PackageMapServices {
 			e.latlng.lat,
 			e.latlng.lng
 		);
+
 		newPosition = { ...newPosition, res: [0.125, 0.125] };
 		p.prevClickPointRef = newPosition;
 		dispatch(
@@ -147,17 +150,52 @@ class PackageMapServices {
 		p.highlightMarker && p.map.removeLayer(p.highlightMarker);
 		p.iconMarker && p.map.removeLayer(p.iconMarker);
 		p.rectMarker && p.map.removeLayer(p.rectMarker);
-		p.rectMarker = this.highlightMarkerFunc(
-			newPosition.lat,
-			newPosition.lng,
-			mapParRef,
-			"",
-			"green",
-			vectorName
-		);
+
+		if (
+			mapPagePosition &&
+			newPosition.lat === mapPagePosition.lat &&
+			newPosition.lng === mapPagePosition.lng
+		) {
+			p.rectMarker && p.map.removeLayer(p.rectMarker);
+			p.iconMarker && p.map.removeLayer(p.iconMarker);
+			p.iconMarker = null;
+			p.rectMarker = null;
+			dispatch(setMapPagePosition({ lat: null, lng: null }));
+			dispatch(setInvalidateSimData(true));
+			dispatch(setDataArrivedRight(false));
+		} else {
+			p.rectMarker = this.highlightMarkerFunc(
+				newPosition.lat,
+				newPosition.lng,
+				mapParRef,
+				"",
+				"green",
+				vectorName,
+				dispatch
+			).addTo(p.map);
+		}
+
 
 		const { res, ...newPosition1 } = newPosition;
+
 		p.iconMarker = L.marker(newPosition1, { icon: this.icon1 }).addTo(p.map);
+		p.iconMarker.on("click", (markerEvent) => {
+			if (markerEvent.originalEvent) {
+				markerEvent.originalEvent.preventDefault();
+				markerEvent.originalEvent.stopPropagation();
+			}
+			markerEvent.originalEvent.stopPropagation();
+			console.log("marker clicked");
+			p.prevClickPointRef = null;
+			// Remove this marker from the map
+			p.iconMarker.remove();
+			p.map.removeLayer(p.iconMarker);
+			dispatch(setMapPagePosition({ lat: null, lng: null }));
+			dispatch(setInvalidateSimData(true));
+			dispatch(setDataArrivedRight(false));
+			
+			p.iconMarker = null;
+		});
 
 		if (p.map.getZoom() > switchZoom) {
 			p.iconMarker && p.map.removeLayer(p.iconMarker);
@@ -172,12 +210,14 @@ class PackageMapServices {
 		mapParRef,
 		className,
 		color,
-		vectorName
+		vectorName,
+		dispatch
 	) => {
 		let p = mapParRef && mapParRef.current;
 		let newMarker;
 		if (p.map) {
 			const newPosition = this.roundPosition(vectorName, lat, lng);
+
 			newMarker = L.rectangle(
 				[
 					[
@@ -189,9 +229,16 @@ class PackageMapServices {
 						newPosition.lng + newPosition.res[0],
 					],
 				],
-				{ className: className, color: color }
-			).addTo(p.map);
-			// p.highlightMarker = newMarker;
+				{
+					className: className,
+					color: color,
+					interactive: true,
+					fill: true,
+					fillOpacity: 0.3,
+					pane: "markerPane",
+				}
+			);
+			newMarker.addTo(p.map);
 		}
 		return newMarker;
 	};
@@ -437,11 +484,18 @@ class PackageMapServices {
 	}
 	// marker1 = null;
 
-	static markerHandler = (mapParRef, switchZoom, vectorName, dispatch) => {
+	static markerHandler = (
+		mapParRef,
+		switchZoom,
+		vectorName,
+		dispatch,
+		mapPagePosition
+	) => {
 		let p = mapParRef.current;
 		if (p) {
 			p.zoom = p.map.getZoom();
 			p.center = [p.map.getCenter().lat, p.map.getCenter().lng];
+
 			if (p.prevClickPointRef) {
 				p.iconMarker && p.map.removeLayer(p.iconMarker);
 				p.rectMarker && p.map.removeLayer(p.rectMarker);
@@ -449,26 +503,30 @@ class PackageMapServices {
 				let newPosition = p.prevClickPointRef;
 				if (p.map.getZoom() > switchZoom) {
 					p.iconMarker && p.map.removeLayer(p.iconMarker);
-					p.rectMarker = this.highlightMarkerFunc(
-						newPosition.lat,
-						newPosition.lng,
-						mapParRef,
-						"",
-						"green",
-						vectorName
-					);
+					p.rectMarker =
+						p.rectMarker &&
+						this.highlightMarkerFunc(
+							newPosition.lat,
+							newPosition.lng,
+							mapParRef,
+							"",
+							"green",
+							vectorName
+						);
 				} else {
 					p.rectMarker && p.map.removeLayer(p.rectMarker);
-					p.iconMarker = L.marker(newPosition, { icon: this.icon1 }).addTo(
-						p.map
-					);
+					p.iconMarker =
+						p.rectMarker &&
+						L.marker(newPosition, { icon: this.icon1 }).addTo(p.map);
 				}
 			} else {
+			
+				p.prevClickPointRef = null;
 				return;
 			}
-			dispatch(setCurrentMapCenter(p.center));
-			dispatch(setCurrentMapZoom(p.zoom));
 		}
+		dispatch(setCurrentMapCenter(p.center));
+		dispatch(setCurrentMapZoom(p.zoom));
 	};
 }
 export default PackageMapServices;

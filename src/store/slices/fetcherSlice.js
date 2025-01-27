@@ -28,7 +28,7 @@ const fetcherSlice = createSlice({
 				userPosition: { lat: null, lng: null },
 				globalPosition: { lat: null, lng: null },
 				mapPagePosition: { lat: null, lng: null },
-				mapPagePositionRight: { lat: 35.1966527, lng: 33.3217152 },
+				mapPagePositionRight: { lat: null, lng: null },
 			},
 			menu: {
 				right: {
@@ -52,6 +52,7 @@ const fetcherSlice = createSlice({
 				},
 				left: {
 					panelLevel: { path: [0, 0], level: 0, key: "menu_icon" },
+					
 					directInit: false,
 					panelOpen: false,
 					mapMenuOpen: false,

@@ -6,13 +6,16 @@ function useSeparatorActions(mapParRef) {
 	const vectorName = useSelector(
 		(state) => state.fetcher.fetcherStates.vectorName
 	);
+	const mapPagePosition = useSelector(
+		(state) => state.fetcher.fetcherStates.map.mapPagePosition
+	);
 	const tileArray = useSelector(
 		(state) => state.fetcher.fetcherStates.tileArray
 	);
 	const dispatch = useDispatch();
 	useEffect(() => {
 		const handleMarkers = () => {
-			PackageMapServices.markerHandler(mapParRef, 4, vectorName, dispatch);
+			PackageMapServices.markerHandler(mapParRef, 4, vectorName, dispatch,mapPagePosition);
 		};
 		const handleSepClick = (e) => {
 			console.log("clicked on separator");
