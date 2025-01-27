@@ -20,7 +20,7 @@ const alboApi = createApi({
 
 				query: (param) => {
 					const simulationData = {
-						param: param,
+						param: param
 					};
 
 					return {
