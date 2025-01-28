@@ -150,6 +150,26 @@ class PackageMapServices {
 		p.highlightMarker && p.map.removeLayer(p.highlightMarker);
 		p.iconMarker && p.map.removeLayer(p.iconMarker);
 		p.rectMarker && p.map.removeLayer(p.rectMarker);
+		const { res, ...newPosition1 } = newPosition;
+
+		p.iconMarker = L.marker(newPosition1, { icon: this.icon1 }).addTo(p.map);
+		p.iconMarker.on("click", (markerEvent) => {
+			if (markerEvent.originalEvent) {
+				markerEvent.originalEvent.preventDefault();
+				markerEvent.originalEvent.stopPropagation();
+			}
+			markerEvent.originalEvent.stopPropagation();
+			console.log("marker clicked");
+			p.prevClickPointRef = null;
+			// Remove this marker from the map
+			p.iconMarker.remove();
+			p.map.removeLayer(p.iconMarker);
+			dispatch(setMapPagePosition({ lat: null, lng: null }));
+			dispatch(setInvalidateSimData(true));
+			dispatch(setDataArrivedRight(false));
+
+			p.iconMarker = null;
+		});
 
 		if (
 			mapPagePosition &&
@@ -175,27 +195,6 @@ class PackageMapServices {
 			).addTo(p.map);
 		}
 
-
-		const { res, ...newPosition1 } = newPosition;
-
-		p.iconMarker = L.marker(newPosition1, { icon: this.icon1 }).addTo(p.map);
-		p.iconMarker.on("click", (markerEvent) => {
-			if (markerEvent.originalEvent) {
-				markerEvent.originalEvent.preventDefault();
-				markerEvent.originalEvent.stopPropagation();
-			}
-			markerEvent.originalEvent.stopPropagation();
-			console.log("marker clicked");
-			p.prevClickPointRef = null;
-			// Remove this marker from the map
-			p.iconMarker.remove();
-			p.map.removeLayer(p.iconMarker);
-			dispatch(setMapPagePosition({ lat: null, lng: null }));
-			dispatch(setInvalidateSimData(true));
-			dispatch(setDataArrivedRight(false));
-			
-			p.iconMarker = null;
-		});
 
 		if (p.map.getZoom() > switchZoom) {
 			p.iconMarker && p.map.removeLayer(p.iconMarker);
@@ -520,7 +519,6 @@ class PackageMapServices {
 						L.marker(newPosition, { icon: this.icon1 }).addTo(p.map);
 				}
 			} else {
-			
 				p.prevClickPointRef = null;
 				return;
 			}

@@ -60,9 +60,10 @@ function MenuItemV2({ item, onToggle, iconClassName }) {
 			)[0];
 			if (mapPagePosition.lat === null) {
 				if (
-					fifi &&
-					fifi.chartParameters &&
-					Object.keys(fifi.chartParameters).length > 0
+					(fifi &&
+						fifi.chartParameters &&
+						Object.keys(fifi.chartParameters).length > 0) ||
+					fifi.positionDependent
 				) {
 					setStyle({
 						backgroundColor: "var(--neutral-color1)",

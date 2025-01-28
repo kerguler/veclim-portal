@@ -620,7 +620,10 @@ function PanelProviderV2({ children }) {
 				}));
 		}
 
-		let  nested = mapVector==="albopictus" ?buildNestedMenu(menuStructure) : buildNestedMenu(menuStructureSand);
+		let nested =
+			mapVector === "albopictus"
+				? buildNestedMenu(menuStructure)
+				: buildNestedMenu(menuStructureSand);
 		setTree(nested);
 	}, [mapVector]);
 	const panelData = [
@@ -640,8 +643,8 @@ function PanelProviderV2({ children }) {
 			rotate: 90,
 			hasSubMenus: true,
 			subMenuOpenDirection: "down",
-			initialOpen:true,
-			selfClose:true
+			initialOpen: true,
+			selfClose: true,
 		},
 		{
 			id: [2, 1],
@@ -688,6 +691,7 @@ function PanelProviderV2({ children }) {
 			parent: [2, 1],
 			decade: "",
 			chartParameters: {},
+			positionDependent: true,
 
 			content: (
 				<div className="text-area">
