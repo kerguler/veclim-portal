@@ -48,7 +48,7 @@
 	align-items: center;
 	justify-content: space-between;
 	box-shadow: 0px 0px 6px 0px black;
-	padding: 6px 10px 4px 6px;
+	padding: 8px 10px 8px 8px;
 	align-content: center;
 	flex-wrap: wrap;
 	z-index: 3003;
@@ -63,9 +63,10 @@
 .navbar-links {
 	display: flex;
 	align-items: flex-end;
+	padding: 2px;
 }
 .navbar-links a {
-	padding: 0.5rem 1.5rem;
+	padding: 0.5rem 1.5rem 0.4rem 1.5rem;
 	background: white;
 	font-family: Inter-Bold, sens-serif;
 	font-weight: 700;
