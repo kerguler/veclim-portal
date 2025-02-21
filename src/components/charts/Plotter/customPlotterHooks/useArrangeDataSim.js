@@ -3,14 +3,17 @@ import { useEffect } from "react";
 import ChartCalculatorService from "components/charts/services/ChartCalculatorService";
 import { setAlboRequestPlot } from "store";
 import { setSlider1EnabledRight } from "store";
+import { useAlboData } from "context/AlboDataContext";
 
 function useArrangeDataSim({
 	rawData,
 	dataTs,
-	dataSim,
+
 	setAlboDataArrived,
 	alboDataArrived,
 }) {
+	const { simResult: dataSim } = useAlboData();
+
 	const {
 		vectorName,
 		chartParameters,
@@ -27,7 +30,6 @@ function useArrangeDataSim({
 		try {
 			if (vectorName === "albopictus") {
 				if (
-				
 					dataSim &&
 					dataTs &&
 					chartParameters &&
@@ -58,9 +60,9 @@ function useArrangeDataSim({
 						setPlotReadyDir(true);
 					}
 				} else {
+					console.log({ dataTs, dataSim });
 					console.log("shouldnt have come here");
 					dispatch(setPlotReadyDir(false));
-
 				}
 			} else {
 				dispatch(

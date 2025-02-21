@@ -26,6 +26,7 @@ const RenderedPanelV2 = ({
 		openItems,
 		panelLevelLeft: levelData,
 		mapPagePosition,
+		interferePanelStyleRight: interferePanelStyle,
 	} = useDirectorFun(direction);
 	const panelRef = useRef(null);
 	usePanelResize({ panelRef, direction, setPanelTop });
@@ -63,8 +64,12 @@ const RenderedPanelV2 = ({
 	}
 
 	return (
-		<span className={`panel-restrictive-wrapper ${direction}`}>
-			<div ref={panelRef}>
+		<span
+			className={`panel-restrictive-wrapper ${direction}`}
+			style={interferePanelStyle}
+		>
+			<div ref={panelRef}
+			style={interferePanelStyle}>
 				<Panel
 					direction={direction}
 					className={panelClassName}

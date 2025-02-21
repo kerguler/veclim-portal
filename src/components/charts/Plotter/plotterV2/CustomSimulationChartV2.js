@@ -24,7 +24,7 @@ function CustomSimulationChartV2() {
 		dateArray,
 	} = useDirectorFun("left");
 
-	const { dataSim, isLoadingSim, errorSim } = useAlboData();
+	const { dataSim, isLoadingSim, errorSim, simResult } = useAlboData();
 	const {
 		data: dataTs,
 		error: errorTs,
@@ -46,14 +46,13 @@ function CustomSimulationChartV2() {
 	useArrangeDataSim({
 		rawData,
 		dataTs,
-		dataSim,
 		setAlboDataArrived,
 		alboDataArrived,
 	});
 
 	useCheckChartParameters();
 	console.log({
-		dataSim,
+		simResult,
 		isLoadingSim,
 		errorSim,
 		dataTs,
@@ -83,7 +82,7 @@ function CustomSimulationChartV2() {
 		return <ErrorComponent text={messenger.message}></ErrorComponent>;
 	} else if (Object.keys(chartParameters).length === 0) {
 	} else {
-		if (dataSim) {
+		if (simResult) {
 			return (
 				plotReady && (
 					<ErrorBoundary>

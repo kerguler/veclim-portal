@@ -37,6 +37,7 @@ const fetcherSlice = createSlice({
 					panelOpen: false,
 					mapMenuOpen: false,
 					displayedPanelID: 0,
+					interferePanelStyle: {},
 					directMap: { lon: null, lat: null, display: -2 },
 					directInitError: { isError: false, message: "", type: "" },
 					chart: {
@@ -52,7 +53,7 @@ const fetcherSlice = createSlice({
 				},
 				left: {
 					panelLevel: { path: [0, 0], level: 0, key: "menu_icon" },
-					
+
 					directInit: false,
 					panelOpen: false,
 					mapMenuOpen: false,
@@ -69,10 +70,6 @@ const fetcherSlice = createSlice({
 						messenger: { message: null, id: null, isError: false },
 					},
 				},
-		
-
-
-				
 			},
 		},
 		fetcherError: null,
@@ -80,6 +77,9 @@ const fetcherSlice = createSlice({
 	},
 
 	reducers: {
+		setInterferePanelStyle(state, action) {
+			state.fetcherStates.menu.right.interferePanelStyle = action.payload;
+		},
 		setOpenItems(state, action) {
 			state.fetcherStates.menu.left.openItems = action.payload;
 		},
@@ -252,7 +252,9 @@ const fetcherSlice = createSlice({
 	},
 });
 
-export const {setOpenItems,
+export const {
+	setOpenItems,
+	setInterferePanelStyle,
 	setPanelLevel,
 	setGraphType,
 	setShimmerLeft,

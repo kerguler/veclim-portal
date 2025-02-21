@@ -41,7 +41,11 @@ import { setMessengerRight } from "store";
 import { useDispatch } from "react-redux";
 import PanelContextV2 from "context/panelsIconsV2";
 import { setOpenItems } from "store";
+import { setInterferePanelStyle } from "store";
 function useDirectorFun(direction) {
+	const interferePanelStyleRight = useSelector(
+		(state) => state.fetcher.fetcherStates.menu.right.interferePanelStyle
+	);
 	const dispatch = useDispatch();
 	const openItems = useSelector(
 		(state) => state.fetcher.fetcherStates.menu.left.openItems
@@ -132,8 +136,13 @@ function useDirectorFun(direction) {
 	);
 
 	// PANEL DATA
-	const { panelData, parPickerPanelData, menuStructure, simulationPanels,tree } =
-		useContext(PanelContextV2);
+	const {
+		panelData,
+		parPickerPanelData,
+		menuStructure,
+		simulationPanels,
+		tree,
+	} = useContext(PanelContextV2);
 	const panelDataDir = directorFun(direction, panelData, parPickerPanelData);
 
 	const { tileIcons, parPickerTileIcons } = useContext(PanelContextV2);
@@ -334,7 +343,10 @@ function useDirectorFun(direction) {
 		(state) => state.fetcher.fetcherStates.menu.left.panelLevel
 	);
 
-	return {tree,
+	return {
+		tree,
+		setInterferePanelStyle,
+		interferePanelStyleRight,
 		simulationPanels,
 		setOpenItems,
 		menuStructure,

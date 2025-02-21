@@ -24,7 +24,7 @@ function UnifiedRechartPlotterV2({ direction }) {
 		vectorName,
 		dateArray,
 	});
-	const { dataSim, isLoadingSim, errorSim } = useAlboData();
+	const { dataSim, isLoadingSim, errorSim, simResult } = useAlboData();
 	const graphType = useSelector(
 		(state) => state.fetcher.fetcherStates.graphType
 	);
@@ -37,7 +37,7 @@ function UnifiedRechartPlotterV2({ direction }) {
 		}
 	}, [graphType]);
 
-	if (dataSim && graphType === null) {
+	if (simResult && graphType === null) {
 		return (
 			<ChartLoadingSkeleton times={4}>
 				<p>Making Calculations </p>
@@ -58,11 +58,8 @@ function UnifiedRechartPlotterV2({ direction }) {
 		);
 	} else if (data) {
 		if (graphType === "sim" && displayedPanel === "sim") {
-			console.log("calling CustomSimulationChartV2");
 			return <CustomSimulationChartV2 />;
 		} else if (graphType === "ts" && displayedPanel === "ts") {
-			console.log("calling TsRequestV2");
-
 			return <TsRequestV2 />;
 		}
 	} else {

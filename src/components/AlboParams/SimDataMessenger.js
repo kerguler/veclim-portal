@@ -8,20 +8,24 @@ import { useDispatch, useSelector } from "react-redux";
 import { setDataArrivedRight } from "store";
 import { setInvalidateSimData } from "store";
 import { setDataArrivedLeft } from "store";
+import { useFetchSimStatusQuery } from "store";
 function SimDataMessenger() {
 	const {
 		setDataSim,
 		isLoadingSim: contextLoading,
 		dataSim,
 		setIsLoadingSim,
-
+		setSimResult,
 		errorSim,
 	} = useAlboData();
 	const dispatch = useDispatch();
 	const { mapPagePosition, invalidateSimData } = useDirectorFun("left");
 
-	
-
+	const {
+		isLoading: isLoadingStatus,
+		data: simStatus,
+		error: errorStatus,
+	} = useFetchSimStatusQuery(dataSim?.task_id, { pollingInterval: 3000 });
 	const [message, setMessage] = useState(null);
 	// Sync API state with context
 
@@ -58,6 +62,7 @@ function SimDataMessenger() {
 				}
 			}
 			if (dataSim) {
+				console.log({ state: simStatus.state });
 				if (invalidateSimData) {
 					setMessage(
 						"you have picked new coordinates, you need to resubmit your coordinates to run a new simulation"
@@ -66,11 +71,18 @@ function SimDataMessenger() {
 					dispatch(setInvalidateSimData(false));
 					setDataSim(null);
 				} else {
-					setMessage(
-						`We have received your simulation data for lat:${mapPagePosition.lat.toFixed(
-							2
-						)} lng:${mapPagePosition.lng.toFixed(2)}.`
-					);
+					if (isLoadingStatus) {
+						setMessage("We are checking the status of your simulation");
+					} else if (simStatus.state === "SUCCESS") {
+						setMessage(
+							`We have received your simulation data for lat:${mapPagePosition.lat.toFixed(
+								2
+							)} lng:${mapPagePosition.lng.toFixed(2)}.`
+						);
+						setSimResult(simStatus.result);
+					} else {
+						setMessage(`your status is ${simStatus.state}`);
+					}
 				}
 			}
 			if (errorSim) {
@@ -85,7 +97,14 @@ function SimDataMessenger() {
 			dispatch(setInvalidateSimData(false));
 			setMessage("you need to pick a coordinate from the map to simulate");
 		}
-	}, [mapPagePosition.lat, contextLoading, dataSim]);
+	}, [
+		mapPagePosition.lat,
+		contextLoading,
+		dataSim,
+		isLoadingStatus,
+		simStatus,
+		errorSim,
+	]);
 	return (
 		<div>
 			<DisplayedContent mapPagePosition={mapPagePosition} />

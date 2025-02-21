@@ -14,7 +14,6 @@ import useDirectorFun from "customHooks/useDirectorFun";
 import { setInvalidateSimData } from "store";
 const SliderRow = () => {
 	const [warnNoCoordinates, setWarnNoCoordinates] = useState(true);
-
 	const [submitAlboData, { isLoading: apiLoading, data: dataAlbo, error }] =
 		useSubmitAlboDataMutation();
 	const { mapPagePosition, invalidateSimData } = useDirectorFun("left");
@@ -24,6 +23,7 @@ const SliderRow = () => {
 		setIsLoadingSim,
 		setErrorSim,
 		dataSim,
+		simResult,
 	} = useAlboData();
 	const dispatch = useDispatch();
 	const handleSliderChange = (e) => {
@@ -61,7 +61,7 @@ const SliderRow = () => {
 			}
 			if (!invalidateSimData) {
 				setDataSim(result);
-				dispatch(setDataArrivedRight(true)); // Notify Redux of data arrival}
+				simResult && dispatch(setDataArrivedRight(true)); // Notify Redux of data arrival}
 			} else {
 				setDataSim(null);
 				dispatch(setDataArrivedRight(false));
@@ -95,7 +95,7 @@ const SliderRow = () => {
 		!invalidateSimData
 	) {
 		setDataSim(dataAlbo);
-		dispatch(setDataArrivedRight(true));
+		simResult && dispatch(setDataArrivedRight(true));
 	}
 
 	if (error) {

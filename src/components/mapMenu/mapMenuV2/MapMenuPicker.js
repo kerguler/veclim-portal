@@ -1,14 +1,15 @@
 import useDirectorFun from "customHooks/useDirectorFun";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import MapMenuV2 from "./MapMenuV2";
 import classNames from "classnames";
 import RenderedPanelV2 from "components/panel/SwitcherV2/RenderedPanelV2";
 import MenuList from "./MenuList";
 import { useDispatch } from "react-redux";
-import { setPanelLevel } from "store";
+import { set, setPanelLevel } from "store";
 import { setTwinIndex } from "store";
 import { useAlboData } from "context/AlboDataContext";
 import { setDataArrivedRight } from "store";
+import { setInterferePanelStyle } from "store";
 
 export default function MapMenuPicker() {
 	const {
@@ -33,6 +34,7 @@ export default function MapMenuPicker() {
 		className = classNames("icon", "shimmer-off");
 	}
 	const { setDataSim } = useAlboData();
+	const [parent, setParent] = useState(null);
 	useEffect(() => {
 		if (invalidateSimData) {
 			console.log("should have set dataArrived False datasim null ");
@@ -42,11 +44,35 @@ export default function MapMenuPicker() {
 		}
 	}, [invalidateSimData]);
 	// Here is the "close siblings" logic
+	const currentParent = useRef(null);
+
 	function handleToggle(clickedKey) {
+		let tempOpenItems = { ...openItems };
+
+		let desiredParent = menuStructure.filter(
+			(item) => item.key === clickedKey
+		)[0].parent;
+		console.log({ desiredParent, parent });
+		if (desiredParent === parent) {
+			console.log("same parent");
+			dispatch(setInterferePanelStyle({ animation: "none" }));
+		} else {
+			setParent(desiredParent);
+		}
+		// let panelChildrenToDisplay=menuStructure.filter((item) => {
+		// 	if (item.parent === clickedKey ){
+		// 		if (item.key.endsWith("_panel")){
+		// 			return item
+		// 		}
+		// 	}
+
+		// 	});
+
 		const findParents = (key) => {
 			let dataInStructure = menuStructure.filter((item) => item.key === key);
 			return dataInStructure[0].parent;
 		};
+
 		const findDestroyChildren = (key) => {
 			let dataInStructure = menuStructure.filter((item) => item.key === key)[0];
 			let children = menuStructure.filter((item) => item.parent === key);

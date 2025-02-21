@@ -5,8 +5,10 @@ const alboApi = createApi({
 	reducerPath: "alboInfo",
 	baseQuery: fetchBaseQuery({
 		// baseUrl: "http://localhost:8000/devapi/sim-runner/run-albochik",
-		// baseUrl: "http://localhost:9000/run-albochik",
-		baseUrl: "https://veclim.com/devapi/sim-runner/run-albochik",
+		// baseUrl: "http://localhost:9000/",
+
+		// baseUrl: `${process.env.REACT_APP_DEV_URL}/sim-runner/run-albochik`,
+		baseUrl: "https://veclim.com/devapi/sim-runner/",
 		prepareHeaders: (headers) => {
 			headers.set("Content-Type", "application/json");
 			return headers;
@@ -15,16 +17,24 @@ const alboApi = createApi({
 	tagTypes: ["AlboData"],
 	endpoints(builder) {
 		return {
+			fetchSimStatus: builder.query({
+				query: (param) => {
+					return {
+						url: `sim_status/${param}`,
+						Method: "GET",
+					};
+				},
+			}),
 			submitAlboData: builder.mutation({
 				// providesTags: ["TimeSeries"],
 
 				query: (param) => {
 					const simulationData = {
-						param: param
+						param: param,
 					};
 
 					return {
-						url: "",
+						url: "start_sim",
 						body: simulationData,
 						method: "POST",
 					};
@@ -35,5 +45,5 @@ const alboApi = createApi({
 	},
 });
 
-export const { useSubmitAlboDataMutation } = alboApi;
+export const { useSubmitAlboDataMutation, useFetchSimStatusQuery } = alboApi;
 export { alboApi };

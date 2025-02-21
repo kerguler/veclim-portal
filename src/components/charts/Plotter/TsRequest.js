@@ -134,7 +134,6 @@ function TsRequest() {
 	}
 
 	if (r.dataToPlot) {
-		console.log("we calculated dataToPlot");
 		return (
 			plotReady && (
 				<ErrorBoundary>

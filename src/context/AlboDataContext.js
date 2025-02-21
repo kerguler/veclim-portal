@@ -6,7 +6,7 @@ export const AlboDataProvider = ({ children }) => {
 	const [dataSim, setDataSim] = useState(null);
 	const [isLoadingSim, setIsLoadingSim] = useState(false);
 	const [errorSim, setErrorSim] = useState(null);
-
+	const [simResult, setSimResult] = useState(null);
 	return (
 		<AlboDataContext.Provider
 			value={{
@@ -16,6 +16,8 @@ export const AlboDataProvider = ({ children }) => {
 				setIsLoadingSim,
 				errorSim,
 				setErrorSim,
+				simResult,
+				setSimResult,
 			}}
 		>
 			{children}

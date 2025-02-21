@@ -1,3 +1,4 @@
+import { current } from "@reduxjs/toolkit";
 import RenderedPanelV2 from "components/panel/SwitcherV2/RenderedPanelV2";
 import useDirectorFun from "customHooks/useDirectorFun";
 import { useEffect, useRef, useState } from "react";
@@ -18,9 +19,24 @@ function PanelChildren({ displayedItem, level }) {
 		setTwinIndexDir: setTwinIndex,
 		setOpenItems,
 		setChartParametersDir: setChartParameters,
-		mapPagePosition,
+		mapPagePosition,interferePanelStyleRight:interferePanelStyle
 	} = useDirectorFun("left");
+	// const [currentGrandParent, setCurrentGrandParent] = useState(null);
 
+	// const parent = useRef(
+	// 	menuStructure.filter((child) => child.parent === displayedItem.key)[0]
+	// 		.parent
+	// );
+	// const grandParent = useRef(
+	// 	menuStructure.filter((child) => child.key === parent.current.key)[0].parent
+	// );
+	// useEffect(() => {
+	// 	if (grandParent.current !== currentGrandParent) {
+	// 		setCurrentGrandParent(grandParent.current);
+	// 	}
+	// 	console.log({ currentGrandParent });
+	// 	console.log({ gp: grandParent.current });
+	// }, [grandParent.current]);
 	const panelChildren = menuStructure.filter((child) => {
 		if (child.parent === displayedItem.key) {
 			const desiredPanel = panelData.filter(
