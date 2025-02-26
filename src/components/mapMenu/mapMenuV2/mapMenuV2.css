@@ -10,6 +10,7 @@
 	position: absolute;
 	bottom: 0;
 	left: 0;
+	top: unset;
 	display: flex;
 	flex-direction: row;
 	flex-shrink: 1;
@@ -26,38 +27,28 @@
 	bottom: 0px;
 }
 .direction-right {
-	left: 0;
-	bottom: 32px;
-}
-/* .icon-column.level0 {
-	left: 0px;
-	bottom: 0px;
-}
-.icon-column.level1 {
 	left: 0px;
 	bottom: 32px;
-} */
+}
+
 .rotate90 {
 	transform: rotate(90deg);
 	transition: transform 3s ease-out;
 }
 
-/* .icon-column.level2 {
-	left: 0px;
-	bottom: 32px;
-	z-index: 4000;
-} */
-/* .icon-column.level2 {
-	left: 0px;
-	bottom: 32px;
-} */
-
 .panel-restrictive-wrapper {
 	position: absolute;
 	display: inline;
-	bottom: 2rem;
+	bottom: 3.2rem;
 	left: 0rem;
 	z-index: 5000;
+}
+.panel-restrictive-wrapper.left {
+	top: unset;
+	left: -32px;
+	right: unset;
+	
+
 }
 .vertical-menu {
 	display: flex;
@@ -166,6 +157,90 @@
 	height: 2rem;
 	text-align: center;
 }
+.level0 {
+	position: absolute;
+	left: 0px;
+	bottom: 0px;
+	top: unset;
+	display: flex;
+	flex-direction: row;
+	background-color: var(--primary-color1);
+	height: fit-content;
+	width: fit-content;
+	z-index: 5001;
+}
+
+.level1 {
+	position: absolute;
+	left: 0px;
+	bottom: 30px;
+	top: unset;
+	display: flex;
+	flex-direction: row;
+	background-color: var(--primary-color1);
+	height: fit-content;
+	width: fit-content;
+	z-index: 5001;
+	/* box-shadow: 5px 0px 10px 0px rgba(0, 0, 0, 0.75); */
+}
+
+.level2 {
+	position: absolute;
+	left: 0px;
+	bottom: 60px;
+	top: unset;
+	display: flex;
+	flex-direction: row;
+	background-color: var(--primary-color1);
+	height: fit-content;
+	/* width: 50px; */
+	margin-left: -1;
+	z-index: 1000;
+}
+.level3 {
+	position: absolute;
+	left: 0px;
+	top: unset;
+	bottom: 30px;
+	display: flex;
+	flex-direction: row;
+	background-color: var(--primary-color1);
+	height: fit-content;
+	width: fit-content;
+	z-index: 5001;
+}
+.level4 {
+	position: absolute;
+	left: 0px;
+	top: unset;
+	bottom: 120px;
+	display: flex;
+	flex-direction: row;
+	background-color: var(--primary-color1);
+	height: fit-content;
+	width: fit-content;
+	z-index: 5001;
+}
+.direction-down {
+	left: 32px;
+	top: unset;
+	bottom: 0px;
+}
+.direction-right {
+	left: -32px;
+	top: unset;
+	bottom: 32px;
+}
+.icon-column.left {
+	left: 0;
+	top: unset;
+	bottom: 0;
+}
+.icon-column.right {
+	left: unset;
+	right: 0;
+	top: 150px;
+}
 @media (max-width: 300px) {
 	.icon-wrapper {
 		position: absolute;
@@ -184,18 +259,14 @@
 		position: absolute;
 		top: 0rem;
 		left: 0rem;
-		/* flex-direction: row; */
 		justify-content: space-between;
-		/* flex-basis: 200px; */
-		/* flex-wrap: wrap; */
 		z-index: 401;
 		bottom: unset;
-		/* width: 45rem; */
 	}
 	.panel-restrictive-wrapper {
 		position: absolute;
 		display: inline;
-		top:0rem;
+		top: 0rem;
 		z-index: 5000;
 		height: fit-content;
 	}
@@ -203,6 +274,7 @@
 		top: -50px;
 		left: 5rem;
 		right: unset;
+	
 	}
 	.panel-restrictive-wrapper.right {
 		top: 150px;
@@ -222,10 +294,12 @@
 		height: 100%;
 		animation: scroll-from-top 0.2s ease-in;
 	}
+
 	.level0 {
 		position: absolute;
 		left: 0px;
 		top: 0px;
+		bottom: unset;
 		display: flex;
 		flex-direction: column;
 		background-color: var(--primary-color1);
@@ -238,6 +312,7 @@
 		position: absolute;
 		left: 50px;
 		top: 0;
+		bottom: unset;
 		display: flex;
 		flex-direction: column;
 		background-color: var(--primary-color1);
@@ -247,11 +322,11 @@
 		/* box-shadow: 5px 0px 10px 0px rgba(0, 0, 0, 0.75); */
 	}
 
-
-.level2 {
+	.level2 {
 		position: absolute;
 		left: 50px;
 		top: 0;
+		bottom: unset;
 		display: flex;
 		flex-direction: column;
 		background-color: var(--primary-color1);
@@ -260,10 +335,11 @@
 		margin-left: -1;
 		z-index: 1000;
 	}
-.level3 {
+	.level3 {
 		position: absolute;
 		left: 100px;
 		top: 0;
+		bottom: unset;
 		display: flex;
 		flex-direction: column;
 		background-color: var(--primary-color1);
@@ -271,10 +347,11 @@
 		width: fit-content;
 		z-index: 5001;
 	}
-.level4 {
+	.level4 {
 		position: absolute;
 		left: 150px;
 		top: 0;
+		bottom: unset;
 		display: flex;
 		flex-direction: column;
 		background-color: var(--primary-color1);
@@ -285,10 +362,12 @@
 	.direction-down {
 		left: 0px;
 		top: 50px;
+		bottom: unset;
 	}
 	.direction-right {
 		left: 50px;
-		top: 0px;
+		top: -50px;
+		bottom: unset;
 	}
 	.icon-column.left {
 		left: 0;
@@ -327,8 +406,8 @@
 		background-color: var(--primary-color2);
 	}
 	.icon img {
-		width: 3rem;
-		height: 3rem;
+		width: 3.2rem;
+		height: 3.2rem;
 		object-fit: cover;
 	}
 	.super-user-button {

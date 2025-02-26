@@ -42,7 +42,6 @@ function CustomSimulationChartV2() {
 		data: null,
 		dataToPlot: null,
 	});
-	// useInvalidationData({ dataTs, isLoadingTs });
 	useArrangeDataSim({
 		rawData,
 		dataTs,
@@ -51,14 +50,7 @@ function CustomSimulationChartV2() {
 	});
 
 	useCheckChartParameters();
-	console.log({
-		simResult,
-		isLoadingSim,
-		errorSim,
-		dataTs,
-		errorTs,
-		isLoadingTs,
-	});
+
 	useEffect(() => {
 		if (errorSim) {
 			dispatch(

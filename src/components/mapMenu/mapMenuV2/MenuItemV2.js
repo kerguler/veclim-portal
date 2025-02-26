@@ -10,6 +10,7 @@ import { lazy, Suspense } from "react";
 import { useState } from "react";
 import { setTwinIndex } from "store";
 import { setOpenItems } from "store";
+import useWindowSize from "customHooks/useWindowSize";
 const PanelChildren = lazy(() => import("./PanelChildren"));
 const MenuChildren = lazy(() => import("./MenuChildren"));
 function MenuItemV2({ item, onToggle, iconClassName }) {
@@ -21,7 +22,7 @@ function MenuItemV2({ item, onToggle, iconClassName }) {
 		mapVector,
 		mapPagePosition,
 	} = useDirectorFun("left");
-
+	const webApp = useWindowSize();
 	const isOpen = openItems[item.key];
 	const displayedItem = panelData.filter((panel) => panel.key === item.key)[0];
 	let imgClassName = "rotate0";
@@ -55,15 +56,15 @@ function MenuItemV2({ item, onToggle, iconClassName }) {
 
 	useEffect(() => {
 		panelChildren.forEach((panel) => {
-			let fifi = panelData.filter(
+			let myPanel = panelData.filter(
 				(panelData) => panelData.key === panel.key
 			)[0];
 			if (mapPagePosition.lat === null) {
 				if (
-					(fifi &&
-						fifi.chartParameters &&
-						Object.keys(fifi.chartParameters).length > 0) ||
-					fifi.positionDependent
+					(myPanel &&
+						myPanel.chartParameters &&
+						Object.keys(myPanel.chartParameters).length > 0) ||
+					myPanel.positionDependent
 				) {
 					setStyle({
 						backgroundColor: "var(--neutral-color1)",
@@ -72,23 +73,23 @@ function MenuItemV2({ item, onToggle, iconClassName }) {
 					});
 					setImgStyle({
 						color: "grey",
-						width: "20px",
-						height: "20px",
+						// width: "20px",
+						// height: "20px",
 					});
 				} else {
 					setStyle({ color: "white", pointerEvents: "all" });
 					setImgStyle({
 						color: "grey",
-						width: "32px",
-						height: "32px",
+						// width: webApp ? "20px" : "2px",
+						// height: webApp ? "20px" : "32px",
 					});
 				}
 			} else {
 				setStyle({ color: "white", pointerEvents: "all" });
 				setImgStyle({
 					color: "grey",
-					width: "32px",
-					height: "32px",
+					// width: webApp ? "20px" : "32px",
+					// height: webApp ? "20px" : "32px",
 				});
 			}
 		});

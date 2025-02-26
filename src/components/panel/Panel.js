@@ -14,7 +14,6 @@ function Panel({ onClosed, children, className, direction }) {
 		onClosed();
 		dispatch(setPanelOpenDir(!panelOpen));
 	};
-console.log({interferePanelStyle})
 	const outerClassNames = classNames("panel-container", className);
 	return (
 		<div className={outerClassNames} style={interferePanelStyle}>

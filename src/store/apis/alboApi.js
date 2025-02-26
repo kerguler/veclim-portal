@@ -4,10 +4,7 @@ import { getDateRange } from "./utils";
 const alboApi = createApi({
 	reducerPath: "alboInfo",
 	baseQuery: fetchBaseQuery({
-		// baseUrl: "http://localhost:8000/devapi/sim-runner/run-albochik",
-		// baseUrl: "http://localhost:9000/",
 
-		// baseUrl: `${process.env.REACT_APP_DEV_URL}/sim-runner/run-albochik`,
 		baseUrl: "https://veclim.com/devapi/sim-runner/",
 		prepareHeaders: (headers) => {
 			headers.set("Content-Type", "application/json");

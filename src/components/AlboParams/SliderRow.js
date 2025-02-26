@@ -12,6 +12,7 @@ import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import useDirectorFun from "customHooks/useDirectorFun";
 import { setInvalidateSimData } from "store";
+import useWindowSize from "customHooks/useWindowSize";
 const SliderRow = () => {
 	const [warnNoCoordinates, setWarnNoCoordinates] = useState(true);
 	const [submitAlboData, { isLoading: apiLoading, data: dataAlbo, error }] =
@@ -101,7 +102,7 @@ const SliderRow = () => {
 	if (error) {
 		setErrorSim(error);
 	}
-
+	const webApp = useWindowSize();
 	return (
 		<div className="slider-row">
 			<div className="albo-params">
@@ -121,7 +122,7 @@ const SliderRow = () => {
 				{...(!invalidateSimData ? { disabled: true } : {})}
 			>
 				{" "}
-				Confirm
+				<p style={{ fontSize: webApp ? "10px" : "14px" }}>Confirm</p>
 			</button>
 		</div>
 	);

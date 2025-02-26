@@ -81,7 +81,7 @@ const RenderedPanelV2 = ({
 					</div>{" "}
 				</Panel>
 			</div>
-			)
+			
 		</span>
 	);
 };

@@ -22,9 +22,8 @@ export default function MapMenuPicker() {
 		tree,
 		invalidateSimData,
 	} = useDirectorFun("left");
-	// Build the nested menu once
-	const dispatch = useDispatch();
 
+	const dispatch = useDispatch();
 	const [panelClassName, setPanelClassName] = useState("");
 	const [shimmerOn, setShimmerOn] = useState(false);
 	let className = classNames("icon");
@@ -39,16 +38,13 @@ export default function MapMenuPicker() {
 		if (invalidateSimData) {
 			console.log("should have set dataArrived False datasim null ");
 			dispatch(setDataArrivedRight(false));
-
 			setDataSim(null);
 		}
 	}, [invalidateSimData]);
-	// Here is the "close siblings" logic
-	const currentParent = useRef(null);
 
+	const currentParent = useRef(null);
 	function handleToggle(clickedKey) {
 		let tempOpenItems = { ...openItems };
-
 		let desiredParent = menuStructure.filter(
 			(item) => item.key === clickedKey
 		)[0].parent;
@@ -59,20 +55,10 @@ export default function MapMenuPicker() {
 		} else {
 			setParent(desiredParent);
 		}
-		// let panelChildrenToDisplay=menuStructure.filter((item) => {
-		// 	if (item.parent === clickedKey ){
-		// 		if (item.key.endsWith("_panel")){
-		// 			return item
-		// 		}
-		// 	}
-
-		// 	});
-
 		const findParents = (key) => {
 			let dataInStructure = menuStructure.filter((item) => item.key === key);
 			return dataInStructure[0].parent;
 		};
-
 		const findDestroyChildren = (key) => {
 			let dataInStructure = menuStructure.filter((item) => item.key === key)[0];
 			let children = menuStructure.filter((item) => item.parent === key);
@@ -112,7 +98,6 @@ export default function MapMenuPicker() {
 		dispatch(
 			setPanelLevel({ ...levelData, level: Object.keys(openItemsTemp).length })
 		);
-
 		dispatch(setOpenItems(openItemsTemp));
 		dispatch(setTwinIndex(0));
 	}
