@@ -31,12 +31,12 @@ function ChartIndicators() {
 
 	var fdate = "";
 	if (data.date && "fcast-ts" in data) {
-		var todate = new Date(data.date.date0);
-		todate.setDate(todate.getDate() + data["fcast-ts"].ecmwf.colegg.length);
+		var fromdate = new Date(data.date.date0)
+		var todate = new Date(data.date.date1);
 		fdate = (
 			<>
 				<p>
-					{data["fcast-ts"].ecmwf.overlap[0]} <span className="note">from</span>
+					{dateToString(fromdate, "-")} <span className="note">from</span>
 				</p>
 				<p>
 					{dateToString(todate, "-")} <span className="note">to</span>

@@ -31,10 +31,8 @@ export function getCurrentDate(sep = "") {
 }
 
 export function getDateRange(sep = ":") {
-	let today = new Date();
-	let tomorrow = new Date();
-	today.setDate(today.getDate() - 7*30);
-	tomorrow.setDate(tomorrow.getDate() + 7*30);
+	let today = new Date(new Date().getFullYear(), 0, 1);
+	let tomorrow = new Date(new Date().getFullYear(), 11, 31);
 	return dateToString(today,"-")+sep+dateToString(tomorrow,"-");
 }
 
