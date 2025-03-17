@@ -1,3 +1,5 @@
+import { setPanelOpen } from "store";
+import { setChartParameters } from "store";
 class mapMenuService {
 	static handlePanel(
 		id,
@@ -13,16 +15,17 @@ class mapMenuService {
 		setDisplayedPanelID,
 		setPanelOpen,
 		setChartParameters,
-		panelInterfere
+		panelInterfere,
+		direction
 	) {
 		let p = panelOpenRef.current;
 		const defaultBehav = () => {
-			dispatch(setDisplayedPanelID(p));
+			dispatch(setDisplayedPanelID({ direction, value: p }));
 
 			if (panel === panelData[p].content) {
 				if (id === -1) {
 				} else {
-					dispatch(setPanelOpen(false));
+					dispatch(setPanelOpen({ direction, value: false }));
 
 					setPanel(null);
 					setPanelChart(null);
@@ -32,14 +35,19 @@ class mapMenuService {
 				panelOpenRef.current = p;
 
 				if (Object.keys(panelData[p].chartParameters).length) {
-					dispatch(setChartParameters(panelData[p].chartParameters));
+					dispatch(
+						setChartParameters({
+							direction,
+							value: panelData[p].chartParameters,
+						})
+					);
 
 					setPanelChart(true);
 				} else {
 					setPanelChart(null);
 				}
 				if (!panelOpen) {
-					dispatch(setPanelOpen(true));
+					dispatch(setPanelOpen({ direction, value: true }));
 				}
 			}
 		};
@@ -92,16 +100,17 @@ class mapMenuService {
 		setDisplayedPanelID,
 		setPanelOpen,
 		setChartParameters,
-		panelInterfere
+		panelInterfere,
+		direction
 	) {
 		let p = panelOpenRef.current;
 		const defaultBehav = () => {
-			dispatch(setDisplayedPanelID(p));
+			dispatch(setDisplayedPanelID({ direction, value: p }));
 
 			if (panel === panelData[p].content) {
 				if (id === -1) {
 				} else {
-					dispatch(setPanelOpen(false));
+					dispatch(setPanelOpen({ direction, value: false }));
 
 					setPanel(null);
 					setPanelChart(null);
@@ -111,7 +120,12 @@ class mapMenuService {
 				panelOpenRef.current = p;
 
 				if (Object.keys(panelData[p].chartParameters).length) {
-					dispatch(setChartParameters(panelData[p].chartParameters));
+					dispatch(
+						setChartParameters({
+							direction,
+							value: panelData[p].chartParameters,
+						})
+					);
 
 					setPanelChart(true);
 				} else {

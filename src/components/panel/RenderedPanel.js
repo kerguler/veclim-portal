@@ -6,16 +6,16 @@ import "./Switcher/Switcher.css";
 import useDirectorFun from "customHooks/useDirectorFun";
 import usePanelResize from "./usePanelResize";
 import RenderedPanelChart from "./RenderedPanelChart";
+import { setPanelOpen } from "store";
 const RenderedPanel = ({ panel, panelChart, panelClassName, direction }) => {
 	const dispatch = useDispatch();
-	const { panelOpen, setPanelOpenDir } = useDirectorFun(direction);
+	const { panelOpen } = useDirectorFun(direction);
 	const panelRef = useRef(null);
-
 
 	usePanelResize({ panelRef, direction, setPanelTop });
 
 	const handlePanelClosed = (value) => {
-		dispatch(setPanelOpenDir(false));
+		dispatch(setPanelOpen({ direction, value: false }));
 	};
 
 	return (
@@ -37,6 +37,5 @@ const RenderedPanel = ({ panel, panelChart, panelClassName, direction }) => {
 		</span>
 	);
 };
-
 
 export default RenderedPanel;

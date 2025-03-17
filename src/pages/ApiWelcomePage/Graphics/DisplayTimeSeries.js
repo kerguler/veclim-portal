@@ -13,7 +13,7 @@ import PackageMapServices from "components/map/mapPackage/PackageMapServices";
 import { setBlinkers } from "store";
 function DisplayTimeSeries() {
 	const dispatch = useDispatch();
-
+	let direction = "left";
 	const timeSeriesDates = useSelector(
 		(state) => state.dashboard.timeSeriesDates
 	);
@@ -37,7 +37,12 @@ function DisplayTimeSeries() {
 		lineSlice: [],
 	});
 	let chartParameters = chartRef.current;
-	dispatch(setChartParameters(chartParameters));
+	dispatch(
+		setChartParameters({
+			direction: direction || "left",
+			value: chartParameters,
+		})
+	);
 
 	chartParameters.date0 = timeSeriesDates.date0;
 	chartParameters.date1 = timeSeriesDates.date1;

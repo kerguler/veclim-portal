@@ -1,5 +1,6 @@
 import useDirectorFun from "customHooks/useDirectorFun";
-import { useFetchTimeSeriesDataQuery } from "store";
+import { useFetchTimeSeriesDataQuery, setPlotReady } from "store";
+import { setMessenger, setBrushRange } from "store";
 import { useEffect, useRef } from "react";
 import ChartCalculatorService from "../services/ChartCalculatorService";
 import { useDispatch } from "react-redux";
@@ -8,8 +9,7 @@ import useSetDefaultCoordinates from "./customPlotterHooks/useSetDefaultCoordina
 import ErrorComponent from "./errorComponent/ErrorComponent";
 import ErrorBoundary from "components/errorBoundary/ErrorBoundary";
 import ChartLoadingSkeleton from "components/skeleton/Skeleton";
-import { useSelector } from "react-redux";
-function TsRequest() {
+function TsRequest({ direction }) {
 	const dispatch = useDispatch();
 
 	const rawData = useRef({
@@ -26,12 +26,10 @@ function TsRequest() {
 		mapPagePosition,
 		vectorName,
 		dateArray,
-		setPlotReadyDir,
 		chartParameters,
 		plotReady,
-		setBrushRangeDir,
+
 		messenger,
-		setMessengerDir,
 	} = useDirectorFun("left");
 
 	const { data, error, isFetching } = useFetchTimeSeriesDataQuery({
@@ -41,8 +39,9 @@ function TsRequest() {
 	});
 
 	useEffect(() => {
-		plotReady && dispatch(setPlotReadyDir(false));
-	}, [vectorName, dispatch, setPlotReadyDir]);
+		plotReady &&
+			dispatch(setPlotReady({ direction: direction || "left", value: false }));
+	}, [vectorName, dispatch, setPlotReady]);
 
 	useEffect(() => {
 		let r = rawData.current;
@@ -58,12 +57,15 @@ function TsRequest() {
 						chartParameters,
 						data,
 						dispatch,
-						setPlotReadyDir,
-						mapPagePosition
+						setPlotReady,
+						mapPagePosition,
+						direction
 					);
 				if (isError) {
 					console.log("shouldnt have come here");
-					dispatch(setMessengerDir({ id: 0, message: errorMessage }));
+					dispatch(
+						setMessenger({ direction, value: { id: 0, message: errorMessage } })
+					);
 					throw new Error(errorMessage);
 				}
 				r.data = data;
@@ -72,31 +74,45 @@ function TsRequest() {
 				ChartCalculatorService.createDateArray(rawData, chartParameters);
 				ChartCalculatorService.handleMixedKeys(rawData, chartParameters);
 				ChartCalculatorService.handleSlices(rawData, chartParameters);
-				dispatch(setPlotReadyDir(true));
-				dispatch(setMessengerDir({ id: null, message: null, isError: false }));
+				dispatch(setPlotReady({ direction: direction, value: true }));
 				dispatch(
-					setBrushRangeDir({
-						startIndex: 0,
-						endIndex: r.dataToPlot.length - 1,
+					setMessenger({
+						direction: direction,
+						value: { id: null, message: null, isError: false },
+					})
+				);
+				dispatch(
+					setBrushRange({
+						direction,
+						value: {
+							startIndex: 0,
+							endIndex: r.dataToPlot.length - 1,
+						},
 					})
 				);
 			} else {
 				console.log("no data or no chartparameters");
-				dispatch(setPlotReadyDir(false));
+				dispatch(setPlotReady({ direction: direction, value: false }));
 				mapPagePosition.lat &&
 					dispatch(
-						setMessengerDir({
-							...messenger,
-							message: "Data is not available yet. Please click on the Map",
+						setMessenger({
+							direction,
+							value: {
+								...messenger,
+								message: "Data is not available yet. Please click on the Map",
+							},
 						})
 					);
 			}
 		} catch (err) {
 			console.log("in catch block", err);
 			dispatch(
-				setMessengerDir({
-					...messenger,
-					message: err.message,
+				setMessenger({
+					direction,
+					value: {
+						...messenger,
+						message: err.message,
+					},
 				})
 			);
 		}
@@ -108,16 +124,19 @@ function TsRequest() {
 		isFetching,
 		mapPagePosition.lat,
 
-		setMessengerDir,
-		setPlotReadyDir,
+		setMessenger,
+		setPlotReady,
 	]);
 
 	!chartParameters &&
 		Object.keys(chartParameters).length === 0 &&
 		dispatch(
-			setMessengerDir({
-				...messenger,
-				message: "chart parameters are not available",
+			setMessenger({
+				direction,
+				value: {
+					...messenger,
+					message: "chart parameters are not available",
+				},
 			})
 		);
 

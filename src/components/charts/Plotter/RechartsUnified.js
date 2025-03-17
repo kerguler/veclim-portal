@@ -23,6 +23,9 @@ import CustomTooltip from "../chartComponents/CustomTooltip/CustomTooltip";
 import useYsliderPositioning from "customHooks/useYsliderPositioning";
 import ChartCalculatorService from "../services/ChartCalculatorService";
 import useDirectorFun from "customHooks/useDirectorFun";
+import { setBrushData } from "store";
+import { setBrushRange } from "store";
+import { setBrushDatay } from "store";
 
 function RechartsUnified({ direction, plotMat }) {
 	const myPlotMat = plotMat;
@@ -45,22 +48,20 @@ function RechartsUnified({ direction, plotMat }) {
 		chartParameters,
 		brushData,
 		vectorName,
-		setBrushRangeDir,
-		setBrushDatayDir,
-		setBrushDataDir,
+
 		brushDatay,
-		xBrushRange,
+		brushRange,
 		plotReady,
 	} = useDirectorFun(direction);
 
 	useEffect(() => {
-		dispatch(setBrushDataDir(myPlotMat));
+		dispatch(setBrushData({ direction, value: myPlotMat }));
 	}, [myPlotMat, dispatch, vectorName]);
 
 	useEffect(() => {
 		myPlotMat &&
 			dispatch(
-				setBrushRangeDir({ startIndex: 0, endIndex: myPlotMat.length - 1 })
+				setBrushRange({direction,value:{ startIndex: 0, endIndex: myPlotMat.length - 1 }})
 			);
 	}, [vectorName, dispatch, myPlotMat]);
 
@@ -91,7 +92,7 @@ function RechartsUnified({ direction, plotMat }) {
 			myPlotMat,
 			dispatch,
 			d,
-			xBrushRange
+			brushRange
 		);
 	} else {
 		ChartCalculatorService.decideBrushRangeAlbo(
@@ -99,7 +100,7 @@ function RechartsUnified({ direction, plotMat }) {
 			myPlotMat,
 			dispatch,
 			d,
-			xBrushRange
+			brushRange
 		);
 	}
 	const handleBrushChange = (range) => {
@@ -107,7 +108,7 @@ function RechartsUnified({ direction, plotMat }) {
 			range,
 			dispatch,
 			myPlotMat,
-			setBrushRangeDir
+			setBrushRange,direction
 		);
 	};
 
@@ -121,7 +122,7 @@ function RechartsUnified({ direction, plotMat }) {
 				});
 			});
 		s.brushDataY = { min: s.minmax.min, max: s.minmax.max };
-		dispatch(setBrushDatayDir(s.brushDataY));
+		dispatch(setBrushDatay({direction,value:s.brushDataY}));
 	}, [
 		myPlotMat,
 		chartParameters.plottedKeys,
@@ -136,7 +137,7 @@ function RechartsUnified({ direction, plotMat }) {
 			range,
 			scrlRef,
 			dispatch,
-			setBrushDatayDir
+			setBrushDatay,direction
 		);
 	};
 

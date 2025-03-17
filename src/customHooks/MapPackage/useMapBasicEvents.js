@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
 	setCurrentMapCenter,
 	setCurrentMapZoom,
-	setDirectInitErrorLeft,
+	setDirectInitError,
 } from "store";
 
 import PackageMapServices from "components/map/mapPackage/PackageMapServices";
@@ -18,13 +18,21 @@ function useMapBasicEvents(mapParRef, fitworld) {
 		(state) => state.fetcher.fetcherStates.vectorName
 	);
 
-	const {mapPagePositionLeft:mapPagePosition} = useDirectorFun("left");
+	const { mapPagePositionLeft: mapPagePosition } = useDirectorFun("left");
 	const { setDataSim } = useAlboData();
 	let p = mapParRef.current;
 	useEffect(() => {
 		const handleMapClick = (e) => {
 			setDataSim(null);
-			PackageMapServices.handleMapClick(e, mapParRef, vectorName, dispatch,null,null,mapPagePosition);
+			PackageMapServices.handleMapClick(
+				e,
+				mapParRef,
+				vectorName,
+				dispatch,
+				null,
+				null,
+				mapPagePosition,"left"
+			);
 		};
 
 		const handleMove = () => {
@@ -43,9 +51,12 @@ function useMapBasicEvents(mapParRef, fitworld) {
 				PackageMapServices.resizeMap(mapParRef, vectorName, dispatch);
 			} catch (error) {
 				dispatch(
-					setDirectInitErrorLeft({
-						...directInitErrorLeft,
-						message: error.message,
+					setDirectInitError({
+						direction: "left",
+						value: {
+							...directInitErrorLeft,
+							message: error.message,
+						},
 					})
 				);
 			}
@@ -62,7 +73,7 @@ function useMapBasicEvents(mapParRef, fitworld) {
 			p.map.off("move", handleMove);
 			p.map.off("mouseout", PackageMapServices.mouseOut, true);
 		};
-	}, [dispatch, mapParRef, p, vectorName,mapPagePosition]);
+	}, [dispatch, mapParRef, p, vectorName, mapPagePosition]);
 
 	useEffect(() => {
 		if (fitworld) {

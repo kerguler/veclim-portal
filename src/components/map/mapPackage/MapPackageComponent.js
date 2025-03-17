@@ -87,7 +87,8 @@ function MapPackageComponent({ fitworld }) {
 				dispatch,
 				directMapLeft,
 				directMapRight,
-				mapPagePosition
+				mapPagePosition,
+				"left"
 			);
 		}
 

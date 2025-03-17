@@ -8,10 +8,10 @@ import { useDispatch } from "react-redux";
 import { set, setPanelLevel } from "store";
 import { setTwinIndex } from "store";
 import { useAlboData } from "context/AlboDataContext";
-import { setDataArrivedRight } from "store";
+import { setDataArrived } from "store";
 import { setInterferePanelStyle } from "store";
 
-export default function MapMenuPicker() {
+export default function MapMenuPicker({ direction }) {
 	const {
 		menuStructure,
 		openItems,
@@ -37,7 +37,7 @@ export default function MapMenuPicker() {
 	useEffect(() => {
 		if (invalidateSimData) {
 			console.log("should have set dataArrived False datasim null ");
-			dispatch(setDataArrivedRight(false));
+			dispatch(setDataArrived({ direction: direction, value: false }));
 			setDataSim(null);
 		}
 	}, [invalidateSimData]);
@@ -112,6 +112,7 @@ export default function MapMenuPicker() {
 				items={tree}
 				iconClassName={className}
 				onToggle={handleToggle}
+				direction={direction}
 			/>
 		</MapMenuV2>
 	);

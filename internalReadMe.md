@@ -23,9 +23,9 @@ chartParameters: {
 				chartType: "rechart", // not necessarily important... just for the future when we want to add other charting options.1
 				years: "ecmwf", // years are actually important for when we are using arrows to pass to other panels. especially when we want to use the same panel for two charts (like Activity Forecast.)
 
-//xbrushStart and xbrushEnd are used when we want to initialize the x-brush at certain values.
-				// xbrushStart: -6,
-				// xbrushEnd: 3,
+//brushStart and brushEnd are used when we want to initialize the x-brush at certain values.
+				// brushStart: -6,
+				// brushEnd: 3,
 
 // mixedKeys represent your graph names and where to find the date for them.
 
@@ -136,8 +136,8 @@ If we wanted to have two curves and one of them should be sliced, we can mix and
 	chartParameters: {
 				chartType: "rechart",
 				years: "ecmwf",
-				// xbrushStart: -6,
-				// xbrushEnd: 3,
+				// brushStart: -6,
+				// brushEnd: 3,
 				mixedKeys: [
 					{
 						key: "g1",

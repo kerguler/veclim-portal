@@ -1,48 +1,31 @@
 import { useSelector } from "react-redux";
 import { useContext } from "react";
-import PanelContext from "context/panelsIcons";
-import { setMapMenuOpenLeft, setMapMenuOpenRight } from "store";
-import { setPanelOpenLeft, setPanelOpenRight } from "store";
-import { setDirectInitLeft, setDirectInitRight } from "store";
-import { setDirectMapLeft, setDirectMapRight } from "store";
+
 import { setTwinIndex } from "store";
 import { setTwinIndexRight } from "store";
-import { setDisplayedPanelIDLeft } from "store";
-import { setDisplayedPanelIDRight } from "store";
-import { setChartParameters, setChartParametersRight } from "store";
+
 import { setTwinArrayRight, setTwinArray } from "store";
 import { setSwitcher, setSwitcherRight } from "store";
 import { setDisplayedIcons, setDisplayedIconsRight } from "store";
-import {
-	appendToColorsChartParameters,
-	appendToColorsChartParametersRight,
-} from "store";
-import { setMapPagePosition } from "store";
-import {
-	appendToLabelsChartParameters,
-	appendToLabelsChartParametersRight,
-} from "store";
-import {
-	appendToPlottedKeysChartParameters,
-	appendToPlottedKeysChartParametersRight,
-} from "store";
-import {
-	spliceChartParametersForSlices,
-	spliceChartParametersForSlicesRight,
-} from "store";
-import { setBrushRangeLeft, setBrushRangeRight } from "store";
-import { setBrushDatay, setBrushDatayRight } from "store";
-import { setBrushData, setBrushDataRight } from "store";
-import { setPanelInterfere, setPanelInterfereRight } from "store";
-import { setPlotReadyLeft, setPlotReadyRight } from "store";
-import { setMapPagePositionRight } from "store";
-import { setMessengerLeft } from "store";
-import { setMessengerRight } from "store";
+
 import { useDispatch } from "react-redux";
 import PanelContextV2 from "context/panelsIconsV2";
 import { setOpenItems } from "store";
 import { setInterferePanelStyle } from "store";
 function useDirectorFun(direction) {
+	const shimmerIcons = useSelector(
+		(state) => state.fetcher.fetcherStates.menu[direction].chart.shimmer
+	);
+	const simSlider1Value = useSelector(
+		(state) =>
+			state.fetcher.fetcherStates.menu[direction].chart.sliders.slider1.value
+	);
+
+	const simSlider1Enabled = useSelector(
+		(state) =>
+			state.fetcher.fetcherStates.menu[direction].chart.sliders.slider1.enabled
+	);
+
 	const interferePanelStyleRight = useSelector(
 		(state) => state.fetcher.fetcherStates.menu.right.interferePanelStyle
 	);
@@ -64,21 +47,13 @@ function useDirectorFun(direction) {
 	const invalidateTsData = useSelector(
 		(state) => state.fetcher.fetcherStates.invalidateTsData
 	);
-	const messengerLeft = useSelector(
-		(state) => state.fetcher.fetcherStates.menu.left.chart.messenger
+	const messenger = useSelector(
+		(state) => state.fetcher.fetcherStates.menu[direction].chart.messenger
 	);
-	const messengerRight = useSelector(
-		(state) => state.fetcher.fetcherStates.menu.right.chart.messenger
+
+	const plotReady = useSelector(
+		(state) => state.fetcher.fetcherStates.menu[direction].chart.plotReady
 	);
-	const messenger = directorFun(direction, messengerLeft, messengerRight);
-	// PLOT READY
-	const plotReadyLeft = useSelector(
-		(state) => state.fetcher.fetcherStates.menu.left.chart.plotReady
-	);
-	const plotReadyRight = useSelector(
-		(state) => state.fetcher.fetcherStates.menu.right.chart.plotReady
-	);
-	const plotReady = directorFun(direction, plotReadyLeft, plotReadyRight);
 
 	// TWIN INDEX
 	const twinIndexLeft = useSelector((state) => state.graphSwitch.twinIndex);
@@ -88,16 +63,8 @@ function useDirectorFun(direction) {
 	const twinIndex = directorFun(direction, twinIndexLeft, twinIndexRight);
 
 	// DISPLAYED PANEL ID
-	const displayedPanelIDLeft = useSelector(
-		(state) => state.fetcher.fetcherStates.menu.left.displayedPanelID
-	);
-	const displayedPanelIDRight = useSelector(
-		(state) => state.fetcher.fetcherStates.menu.right.displayedPanelID
-	);
-	const displayedPanelID = directorFun(
-		direction,
-		displayedPanelIDLeft,
-		displayedPanelIDRight
+	const displayedPanelID = useSelector(
+		(state) => state.fetcher.fetcherStates.menu[direction].displayedPanelID
 	);
 
 	// DISPLAYED ICONS
@@ -113,22 +80,14 @@ function useDirectorFun(direction) {
 		displayedIconsRight
 	);
 	// DIRECT MAP
-	const directMapLeft = useSelector(
-		(state) => state.fetcher.fetcherStates.menu.left.directMap
+	const directMap = useSelector(
+		(state) => state.fetcher.fetcherStates.menu[direction].directMap
 	);
-	const directMapRight = useSelector(
-		(state) => state.fetcher.fetcherStates.menu.right.directMap
-	);
-	const directMap = directorFun(direction, directMapLeft, directMapRight);
 
 	// DIRECT INIT
-	const directInitLeft = useSelector(
-		(state) => state.fetcher.fetcherStates.menu.left.directInit
+	const directInit = useSelector(
+		(state) => state.fetcher.fetcherStates.menu[direction].directInit
 	);
-	const directInitRight = useSelector(
-		(state) => state.fetcher.fetcherStates.menu.right.directInit
-	);
-	const directInit = directorFun(direction, directInitLeft, directInitRight);
 
 	// MAP VECTOR
 	const mapVector = useSelector(
@@ -148,13 +107,9 @@ function useDirectorFun(direction) {
 	const { tileIcons, parPickerTileIcons } = useContext(PanelContextV2);
 	const tileIconsDir = directorFun(direction, tileIcons, parPickerTileIcons);
 	// MAP MENU OPEN
-	const mapMenuOpenLeft = useSelector(
-		(state) => state.fetcher.fetcherStates.menu.left.mapMenuOpen
+	const mapMenuOpen = useSelector(
+		(state) => state.fetcher.fetcherStates.menu[direction].mapMenuOpen
 	);
-	const mapMenuOpenRight = useSelector(
-		(state) => state.fetcher.fetcherStates.menu.right.mapMenuOpen
-	);
-	const mapMenuOpen = directorFun(direction, mapMenuOpenLeft, mapMenuOpenRight);
 
 	// TWIN ARRAY
 	const twinArrayLeft = useSelector((state) => state.graphSwitch.twinArray);
@@ -168,13 +123,9 @@ function useDirectorFun(direction) {
 	const switcherRight = useSelector((state) => state.graphSwitch.switcherRight);
 	const switcher = directorFun(direction, switcherLeft, switcherRight);
 	// PANEL OPEN
-	const panelOpenLeft = useSelector(
-		(state) => state.fetcher.fetcherStates.menu.left.panelOpen
+	const panelOpen = useSelector(
+		(state) => state.fetcher.fetcherStates.menu[direction].panelOpen
 	);
-	const panelOpenRight = useSelector(
-		(state) => state.fetcher.fetcherStates.menu.right.panelOpen
-	);
-	const panelOpen = directorFun(direction, panelOpenLeft, panelOpenRight);
 
 	const panelInterfereLeft = useSelector((state) => state.panel.panelInterfere);
 	const panelInterfereRight = useSelector(
@@ -188,71 +139,34 @@ function useDirectorFun(direction) {
 	const vectorName = useSelector(
 		(state) => state.fetcher.fetcherStates.vectorName
 	);
-	const mapPagePositionLeft = useSelector(
+	const mapPagePosition = useSelector(
 		(state) => state.fetcher.fetcherStates.map.mapPagePosition
 	);
-	const mapPagePositionRight = useSelector(
-		(state) => state.fetcher.fetcherStates.map.mapPagePositionRight
-	);
-	const mapPagePosition = directorFun(
-		direction,
-		mapPagePositionLeft,
-		mapPagePositionRight
-	);
 
-	const chartParametersLeft = useSelector(
-		(state) => state.panel.chartParameters
-	);
-	const chartParametersRight = useSelector(
-		(state) => state.panel.chartParametersRight
-	);
-	const chartParameters = directorFun(
-		direction,
-		chartParametersLeft,
-		chartParametersRight
+
+	const chartParameters = useSelector(
+		(state) => state.fetcher.fetcherStates.menu[direction].chart.chartParameters
 	);
 
 	// BRUSH DATA
-	const brushDataLeft = useSelector((state) => state.panel.brushData);
-	const brushDataRight = useSelector((state) => state.panel.brushDataRight);
-	const brushData = directorFun(direction, brushDataLeft, brushDataRight);
+	const brushData = useSelector(
+		(state) => state.fetcher.fetcherStates.menu[direction].chart.brush.brushData
+	);
 	// BRUSH DATAY
-	const brushDatayLeft = useSelector((state) => state.panel.brushDatay);
-	const brushDatayRight = useSelector((state) => state.panel.brushDatayRight);
-	const brushDatay = directorFun(direction, brushDatayLeft, brushDatayRight);
+	const brushDatay = useSelector(
+		(state) =>
+			state.fetcher.fetcherStates.menu[direction].chart.brush.brushDatay
+	);
 
-	const xBrushRangeLeft = useSelector(
-		(state) => state.fetcher.fetcherStates.menu.left.chart.brushRange
+	const brushRange = useSelector(
+		(state) =>
+			state.fetcher.fetcherStates.menu[direction].chart.brush.brushRange
 	);
-	const xBrushRangeRight = useSelector(
-		(state) => state.fetcher.fetcherStates.menu.right.chart.brushRange
-	);
-	const xBrushRange = directorFun(direction, xBrushRangeLeft, xBrushRangeRight);
 
 	const switchMap = useSelector(
 		(state) => state.fetcher.fetcherStates.switchMap
 	);
 	// SETTERS
-	const setMapMenuOpenDir = directorFun(
-		direction,
-		setMapMenuOpenLeft,
-		setMapMenuOpenRight
-	);
-	const setDirectInitDir = directorFun(
-		direction,
-		setDirectInitLeft,
-		setDirectInitRight
-	);
-	const setDirectMapDir = directorFun(
-		direction,
-		setDirectMapLeft,
-		setDirectMapRight
-	);
-	const setPanelOpenDir = directorFun(
-		direction,
-		setPanelOpenLeft,
-		setPanelOpenRight
-	);
 
 	const setTwinIndexDir = directorFun(
 		direction,
@@ -264,87 +178,23 @@ function useDirectorFun(direction) {
 		setTwinArray,
 		setTwinArrayRight
 	);
-	const setChartParametersDir = directorFun(
-		direction,
-		setChartParameters,
-		setChartParametersRight
-	);
-	const setDisplayedPanelIDDir = directorFun(
-		direction,
-		setDisplayedPanelIDLeft,
-		setDisplayedPanelIDRight
-	);
+
 	const setDisplayedIconsDir = directorFun(
 		direction,
 		setDisplayedIcons,
 		setDisplayedIconsRight
 	);
 	const setSwitcherDir = directorFun(direction, setSwitcher, setSwitcherRight);
-	const appendToColorsChartParametersDir = directorFun(
-		direction,
-		appendToColorsChartParameters,
-		appendToColorsChartParametersRight
-	);
 
-	const appendToLabelsChartParametersDir = directorFun(
-		direction,
-		appendToLabelsChartParameters,
-		appendToLabelsChartParametersRight
-	);
-	const setMapPagePositionDir = directorFun(
-		direction,
-		setMapPagePosition,
-		setMapPagePositionRight
-	);
-	const appendToPlottedKeysChartParametersDir = directorFun(
-		direction,
-		appendToPlottedKeysChartParameters,
-		appendToPlottedKeysChartParametersRight
-	);
-	const spliceChartParametersForSlicesDir = directorFun(
-		direction,
-		spliceChartParametersForSlices,
-		spliceChartParametersForSlicesRight
-	);
-	const setBrushRangeDir = directorFun(
-		direction,
-		setBrushRangeLeft,
-		setBrushRangeRight
-	);
-	const setBrushDatayDir = directorFun(
-		direction,
-		setBrushDatay,
-		setBrushDatayRight
-	);
-	const setBrushDataDir = directorFun(
-		direction,
-		setBrushData,
-		setBrushDataRight
-	);
-
-	const setPanelInterfereDir = directorFun(
-		direction,
-		setPanelInterfere,
-		setPanelInterfereRight
-	);
-
-	const setPlotReadyDir = directorFun(
-		direction,
-		setPlotReadyLeft,
-		setPlotReadyRight
-	);
-
-	const setMessengerDir = directorFun(
-		direction,
-		setMessengerLeft,
-		setMessengerRight
-	);
 	const panelLevelLeft = useSelector(
 		(state) => state.fetcher.fetcherStates.menu.left.panelLevel
 	);
 
 	return {
 		tree,
+		simSlider1Enabled,
+		shimmerIcons,
+		simSlider1Value,
 		setInterferePanelStyle,
 		interferePanelStyleRight,
 		simulationPanels,
@@ -352,8 +202,6 @@ function useDirectorFun(direction) {
 		menuStructure,
 		panelLevelLeft,
 		tileIconsDir,
-		setMessengerDir,
-		mapPagePositionLeft,
 		invalidateSimData,
 		invalidateTsData,
 		messenger,
@@ -361,22 +209,14 @@ function useDirectorFun(direction) {
 		dataArrivedLeft,
 		dataArrivedRight,
 		plotReady,
-		setPlotReadyDir,
-		setPanelInterfereDir,
-		setBrushDataDir,
+
 		switchMap,
-		setBrushDatayDir,
-		xBrushRange,
-		setBrushRangeDir,
+		brushRange,
 		brushDatay,
-		appendToColorsChartParametersDir,
-		appendToLabelsChartParametersDir,
-		appendToPlottedKeysChartParametersDir,
-		spliceChartParametersForSlicesDir,
+
 		mapPagePosition,
 		chartParameters,
 		brushData,
-		setMapPagePositionDir,
 		panelInterfere,
 		vectorName,
 		twinIndex,
@@ -390,14 +230,8 @@ function useDirectorFun(direction) {
 		directInit,
 		mapVector,
 		panelDataDir,
-		setMapMenuOpenDir,
 		mapMenuOpen,
-		setPanelOpenDir,
-		setDirectInitDir,
-		setDirectMapDir,
 		setTwinIndexDir,
-		setDisplayedPanelIDDir,
-		setChartParametersDir,
 		setTwinArrayDir,
 		setDisplayedIconsDir,
 		dispatch,

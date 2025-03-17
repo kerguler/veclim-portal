@@ -2,11 +2,11 @@ import { Link } from "react-router-dom";
 import veclimLogo from "assets/images/logos/VEClim-Icon.svg";
 import "./mapLogo.css";
 import { useDispatch } from "react-redux";
-import { setDisplayedPanelIDLeft } from "store";
+import { setDisplayedPanelID } from "store";
 function MapLogo() {
 	const dispatch = useDispatch();
 	const handleMainPageTransition = () => {
-		dispatch(setDisplayedPanelIDLeft(null));
+		dispatch(setDisplayedPanelID({ direction: "left", value: null }));
 		// dispatch(setMapVector(vectorName));
 	};
 

@@ -12,14 +12,14 @@ import { useAlboData } from "context/AlboDataContext";
 import useInvalidationData from "./customPlotterHooks/useInvalidationData";
 import useArrangeDataSim from "./customPlotterHooks/useArrangeDataSim";
 import useCheckChartParameters from "./customPlotterHooks/useCheckChartParameters";
-function CustomSimulationChart() {
+import { setMessenger } from "store";
+function CustomSimulationChart({ direction }) {
 	console.log("Custom Simulation Chart");
 
 	const {
 		chartParameters,
 		plotReady,
 		messenger,
-		setMessengerDir,
 		dispatch,
 		mapPagePosition,
 		vectorName,
@@ -52,6 +52,7 @@ function CustomSimulationChart() {
 		dataSim,
 		setAlboDataArrived,
 		alboDataArrived,
+		direction,
 	});
 
 	useCheckChartParameters();
@@ -59,10 +60,13 @@ function CustomSimulationChart() {
 	useEffect(() => {
 		if (errorSim) {
 			dispatch(
-				setMessengerDir({
-					isError: true,
-					id: 0,
-					message: "server responded with an error",
+				setMessenger({
+					direction,
+					value: {
+						isError: true,
+						id: 0,
+						message: "server responded with an error",
+					},
 				})
 			);
 		}
@@ -109,43 +113,3 @@ function CustomSimulationChart() {
 }
 
 export default CustomSimulationChart;
-
-// // useEffect(() => {
-// // 	const handleConfirm = async () => {
-// // 		try {
-// // 			const response = await submitAlboData(alboSlider1Value / 100).unwrap();
-// // 			response && setAlboDataArrived(true);
-// // 			dispatch(setAlboRequestPlot(false));
-// // 			dispatch(setInvalidateSimData(false));
-// // 		} catch (err) {
-// // 			setAlboDataArrived(false);
-// // 			dispatch(
-// // 				setMessengerDir({
-// // 					...messenger,
-// // 					id: 4,
-// // 					message: "the response from the server had an error",
-// // 				})
-// // 			);
-// // 		}
-// // 	};
-
-// // 	if (alboRequest) {
-// // 		handleConfirm();
-// // 		dispatch(
-// // 			setMessengerDir({ ...messenger, message: null, isError: false })
-// // 		);
-// // 	} else {
-// // 		setAlboDataArrived(false);
-// // 	}
-// // }, [alboSlider1Value, alboRequest, submitAlboData, dispatch]);
-// useEffect(() => {
-// 	if (errorTs) {
-// 		dispatch(
-// 			setMessengerDir({
-// 				...messenger,
-// 				id: 0,
-// 				message: "server responded with an error",
-// 			})
-// 		);
-// 	}
-// }, [errorTs]);

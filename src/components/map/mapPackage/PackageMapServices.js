@@ -5,7 +5,7 @@ import "leaflet-side-by-side";
 import {
 	setMapPagePosition,
 	setPanelInterfere,
-	setPanelOpenLeft,
+	setPanelOpen,
 	setSwitchMap,
 	setMapLoaded,
 	setLeftMapLoaded,
@@ -14,7 +14,7 @@ import {
 	setCurrentMapZoom,
 	setVectorName,
 	setTileArray,
-	setDisplayedPanelIDLeft,
+	setDisplayedPanelID,
 	setCurrentMapBounds,
 	setMapVector,
 } from "store";
@@ -22,10 +22,9 @@ import TileLoaderService from "../../../customHooks/TileLoaderService";
 import ErrorScreenMap from "components/map/errorScreen/ErrorScreenMap";
 import { setCurrentMaxBounds } from "store";
 import { setDisplayReady } from "store";
-import { setPanelInterfereRight } from "store";
 import { setIsTsDataSet } from "store";
 import { setInvalidateSimData } from "store";
-import { setDataArrivedRight } from "store";
+import { setDataArrived } from "store";
 import { setOpenItems } from "store";
 import { zIndex } from "material-ui/styles";
 
@@ -105,7 +104,7 @@ class PackageMapServices {
 		}
 
 		dispatch(setOpenItems({}));
-		dispatch(setPanelOpenLeft(false));
+		dispatch(setPanelOpen({ direction: "left", value: false }));
 	}
 
 	static handleMapClick(
@@ -115,25 +114,43 @@ class PackageMapServices {
 		dispatch,
 		directMap,
 		directMapRight,
-		mapPagePosition
+		mapPagePosition,
+		direction
 	) {
 		dispatch(setInvalidateSimData(true));
-		dispatch(setDataArrivedRight(false));
+		console.log("map click", direction);
+		dispatch(setDataArrived({ direction: direction, value: false }));
 
-		this.clickMap(e, mapParRef, vectorName, dispatch, mapPagePosition);
+		this.clickMap(
+			e,
+			mapParRef,
+			vectorName,
+			dispatch,
+			mapPagePosition,
+			direction
+		);
 
 		if (directMap) {
-			if (directMap.display === -2) dispatch(setPanelInterfere(-1));
+			if (directMap.display === -2)
+				dispatch(setPanelInterfere({ direction, value: -1 }));
 		} else {
-			dispatch(setPanelInterfere(-1));
+			dispatch(setPanelInterfere({ direction, value: -1 }));
 		}
 		if (directMapRight) {
-			if (directMapRight.display === -2) dispatch(setPanelInterfereRight(null));
+			if (directMapRight.display === -2)
+				dispatch(setPanelInterfere({ direction, value: null }));
 		} else {
-			dispatch(setPanelInterfereRight(null));
+			dispatch(setPanelInterfere({ direction, value: null }));
 		}
 	}
-	static clickMap = (e, mapParRef, vectorName, dispatch, mapPagePosition) => {
+	static clickMap = (
+		e,
+		mapParRef,
+		vectorName,
+		dispatch,
+		mapPagePosition,
+		direction
+	) => {
 		let p = mapParRef.current;
 		const switchZoom = 4;
 		let newPosition = this.roundPosition(
@@ -166,7 +183,7 @@ class PackageMapServices {
 			p.map.removeLayer(p.iconMarker);
 			dispatch(setMapPagePosition({ lat: null, lng: null }));
 			dispatch(setInvalidateSimData(true));
-			dispatch(setDataArrivedRight(false));
+			dispatch(setDataArrived({ direction: direction, value: false }));
 
 			p.iconMarker = null;
 		});
@@ -182,7 +199,7 @@ class PackageMapServices {
 			p.rectMarker = null;
 			dispatch(setMapPagePosition({ lat: null, lng: null }));
 			dispatch(setInvalidateSimData(true));
-			dispatch(setDataArrivedRight(false));
+			dispatch(setDataArrived({ direction: direction, value: false }));
 		} else {
 			p.rectMarker = this.highlightMarkerFunc(
 				newPosition.lat,
@@ -194,7 +211,6 @@ class PackageMapServices {
 				dispatch
 			).addTo(p.map);
 		}
-
 
 		if (p.map.getZoom() > switchZoom) {
 			p.iconMarker && p.map.removeLayer(p.iconMarker);

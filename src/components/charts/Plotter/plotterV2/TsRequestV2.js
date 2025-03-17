@@ -9,7 +9,10 @@ import ErrorComponent from "../errorComponent/ErrorComponent";
 import ErrorBoundary from "components/errorBoundary/ErrorBoundary";
 import ChartLoadingSkeleton from "components/skeleton/Skeleton";
 import { useSelector } from "react-redux";
-function TsRequestV2() {
+import { setPlotReady } from "store";
+import { setBrushRange } from "store";
+import { setMessenger } from "store";
+function TsRequestV2({ direction }) {
 	const dispatch = useDispatch();
 
 	const rawData = useRef({
@@ -20,19 +23,17 @@ function TsRequestV2() {
 	let r = rawData.current;
 	// This side effect arrangtes the map centers to default values
 	// in case the vectorName changes
-	useSetDefaultCoordinates("left");
+	useSetDefaultCoordinates(direction);
 
 	const {
 		mapPagePosition,
 		vectorName,
 		dateArray,
-		setPlotReadyDir,
 		chartParameters,
 		plotReady,
-		setBrushRangeDir,
+
 		messenger,
-		setMessengerDir,
-	} = useDirectorFun("left");
+	} = useDirectorFun(direction);
 
 	const { data, error, isFetching } = useFetchTimeSeriesDataQuery({
 		position: JSON.stringify(mapPagePosition),
@@ -41,8 +42,8 @@ function TsRequestV2() {
 	});
 
 	useEffect(() => {
-		plotReady && dispatch(setPlotReadyDir(false));
-	}, [vectorName, dispatch, setPlotReadyDir]);
+		plotReady && dispatch(setPlotReady({ direction, value: false }));
+	}, [vectorName, dispatch, setPlotReady]);
 
 	useEffect(() => {
 		let r = rawData.current;
@@ -63,12 +64,15 @@ function TsRequestV2() {
 						chartParameters,
 						data,
 						dispatch,
-						setPlotReadyDir,
-						mapPagePosition
+						setPlotReady,
+						mapPagePosition,
+						direction
 					);
 				if (isError) {
 					console.log("shouldnt have come here");
-					dispatch(setMessengerDir({ id: 0, message: errorMessage }));
+					dispatch(
+						setMessenger({ direction, value: { id: 0, message: errorMessage } })
+					);
 					throw new Error(errorMessage);
 				}
 				r.data = data;
@@ -77,31 +81,45 @@ function TsRequestV2() {
 				ChartCalculatorService.createDateArray(rawData, chartParameters);
 				ChartCalculatorService.handleMixedKeys(rawData, chartParameters);
 				ChartCalculatorService.handleSlices(rawData, chartParameters);
-				dispatch(setPlotReadyDir(true));
-				dispatch(setMessengerDir({ id: null, message: null, isError: false }));
+				dispatch(setPlotReady({ direction, value: true }));
 				dispatch(
-					setBrushRangeDir({
-						startIndex: 0,
-						endIndex: r.dataToPlot.length - 1,
+					setMessenger({
+						direction,
+						value: { id: null, message: null, isError: false },
+					})
+				);
+				dispatch(
+					setBrushRange({
+						direction,
+						value: {
+							startIndex: 0,
+							endIndex: r.dataToPlot.length - 1,
+						},
 					})
 				);
 			} else {
 				console.log("no data or no chartparameters");
-				dispatch(setPlotReadyDir(false));
+				dispatch(setPlotReady({ direction, value: false }));
 				mapPagePosition.lat &&
 					dispatch(
-						setMessengerDir({
-							...messenger,
-							message: "Data is not available yet. Please click on the Map",
+						setMessenger({
+							direction,
+							value: {
+								...messenger,
+								message: "Data is not available yet. Please click on the Map",
+							},
 						})
 					);
 			}
 		} catch (err) {
 			console.log("in catch block", err);
 			dispatch(
-				setMessengerDir({
-					...messenger,
-					message: err.message,
+				setMessenger({
+					direction,
+					value: {
+						...messenger,
+						message: err.message,
+					},
 				})
 			);
 		}
@@ -112,16 +130,19 @@ function TsRequestV2() {
 		error,
 		isFetching,
 		mapPagePosition.lat,
-		setMessengerDir,
-		setPlotReadyDir,
+		setMessenger,
+		setPlotReady,
 	]);
 
 	!chartParameters &&
 		Object.keys(chartParameters).length === 0 &&
 		dispatch(
-			setMessengerDir({
-				...messenger,
-				message: "chart parameters are not available",
+			setMessenger({
+				direction,
+				value: {
+					...messenger,
+					message: "chart parameters are not available",
+				},
 			})
 		);
 

@@ -37,9 +37,7 @@ const useFetcherStates = () => {
 	const [tiles, setTiles] = useState([]);
 	const [panels, setPanels] = useState([]);
 
-
 	useEffect(() => {
-
 		const defaultAlboBehaviour = () => {
 			dispatch(setMapVector("albopictus"));
 			dispatch(setVectorName("albopictus"));
@@ -52,7 +50,7 @@ const useFetcherStates = () => {
 		} else {
 			defaultAlboBehaviour();
 		}
-		dispatch(setDisplayedPanelID(0));
+		dispatch(setDisplayedPanelID({ direction: direction || "left", value: 0 }));
 	}, [session, dispatch, vectorNames]);
 
 	useEffect(() => {
@@ -83,7 +81,9 @@ const useFetcherStates = () => {
 				FetcherService.handleTiles(dispatch, tile, tiles, session);
 				FetcherService.handlePanels(dispatch, ts, decade, panels, lon, lat);
 			} catch (e) {
-				dispatch(setDisplayedPanelID(0));
+				dispatch(
+					setDisplayedPanelID({ direction: direction || "left", value: 0 })
+				);
 				dispatch(
 					setDirectInitError({
 						isError: true,
@@ -99,7 +99,12 @@ const useFetcherStates = () => {
 
 	useEffect(() => {
 		if (directMap.display !== -2 && directMap.display !== null) {
-			dispatch(setDisplayedPanelID(directMap.display));
+			dispatch(
+				setDisplayedPanelID({
+					direction: direction || "left",
+					value: directMap.display,
+				})
+			);
 			dispatch(setDirectInit(true));
 		} else {
 			setDirectInit(false);

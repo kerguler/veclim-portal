@@ -1,10 +1,7 @@
-import TsRequest from "../TsRequest";
-import AlboRequest from "../AlboRequest";
 import { useSelector } from "react-redux";
 import useDirectorFun from "customHooks/useDirectorFun";
 import { useState } from "react";
 import { useEffect } from "react";
-import CustomSimulationChart from "../CustomSimulationChart";
 import { useFetchTimeSeriesDataQuery } from "store";
 import ChartLoadingSkeleton from "components/skeleton/Skeleton";
 import { useAlboData } from "context/AlboDataContext";
@@ -12,12 +9,7 @@ import TsRequestV2 from "./TsRequestV2";
 import CustomSimulationChartV2 from "./CustomSimulationChartV2";
 
 function UnifiedRechartPlotterV2({ direction }) {
-	const {
-		panelDataDir: panelData,
-		mapPagePosition,
-		vectorName,
-		dateArray,
-	} = useDirectorFun(direction);
+	const { mapPagePosition, vectorName, dateArray } = useDirectorFun(direction);
 
 	const { data, error, isFetching } = useFetchTimeSeriesDataQuery({
 		position: JSON.stringify(mapPagePosition),
@@ -58,9 +50,9 @@ function UnifiedRechartPlotterV2({ direction }) {
 		);
 	} else if (data) {
 		if (graphType === "sim" && displayedPanel === "sim") {
-			return <CustomSimulationChartV2 />;
+			return <CustomSimulationChartV2 direction={direction} />;
 		} else if (graphType === "ts" && displayedPanel === "ts") {
-			return <TsRequestV2 />;
+			return <TsRequestV2 direction={direction} />;
 		}
 	} else {
 		return <div>error</div>;

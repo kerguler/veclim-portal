@@ -7,17 +7,16 @@ import { useRef } from "react";
 import ErrorBoundary from "components/errorBoundary/ErrorBoundary";
 import { useFetchTimeSeriesDataQuery } from "store";
 import RechartsPlot from "../RechartsPlot";
-
+import { setMessenger } from "store";
 import { useAlboData } from "context/AlboDataContext";
 import useInvalidationData from "../customPlotterHooks/useInvalidationData";
 import useArrangeDataSim from "../customPlotterHooks/useArrangeDataSim";
 import useCheckChartParameters from "../customPlotterHooks/useCheckChartParameters";
-function CustomSimulationChartV2() {
+function CustomSimulationChartV2({ direction }) {
 	const {
 		chartParameters,
 		plotReady,
 		messenger,
-		setMessengerDir,
 		dispatch,
 		mapPagePosition,
 		vectorName,
@@ -46,7 +45,7 @@ function CustomSimulationChartV2() {
 		rawData,
 		dataTs,
 		setAlboDataArrived,
-		alboDataArrived,
+		alboDataArrived,direction
 	});
 
 	useCheckChartParameters();
@@ -54,10 +53,13 @@ function CustomSimulationChartV2() {
 	useEffect(() => {
 		if (errorSim) {
 			dispatch(
-				setMessengerDir({
-					isError: true,
-					id: 0,
-					message: "server responded with an error",
+				setMessenger({
+					direction,
+					value: {
+						isError: true,
+						id: 0,
+						message: "server responded with an error",
+					},
 				})
 			);
 		}

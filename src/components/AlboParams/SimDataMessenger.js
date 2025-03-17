@@ -1,15 +1,12 @@
 import { useState } from "react";
 
-import { set, useSubmitAlboDataMutation } from "store"; // Adjust the import path if needed
 import { useEffect } from "react";
 import { useAlboData } from "context/AlboDataContext"; // Ensure this path is correct
 import useDirectorFun from "customHooks/useDirectorFun";
 import { useDispatch, useSelector } from "react-redux";
-import { setDataArrivedRight } from "store";
+import { setDataArrived } from "store";
 import { setInvalidateSimData } from "store";
-import { setDataArrivedLeft } from "store";
-import { useFetchSimStatusQuery } from "store";
-function SimDataMessenger() {
+function SimDataMessenger({ direction }) {
 	const {
 		setDataSim,
 		isLoadingSim: contextLoading,
@@ -19,13 +16,10 @@ function SimDataMessenger() {
 		errorSim,
 	} = useAlboData();
 	const dispatch = useDispatch();
-	const { mapPagePosition, invalidateSimData } = useDirectorFun("left");
+	const { mapPagePosition, invalidateSimData } = useDirectorFun(direction);
 
-	const {
-		isLoading: isLoadingStatus,
-		data: simStatus,
-		error: errorStatus,
-	} = useFetchSimStatusQuery(dataSim?.task_id, { pollingInterval: 3000 });
+	const dataSocket = dataSim;
+	const isLoadingSocket = contextLoading;
 	const [message, setMessage] = useState(null);
 	// Sync API state with context
 
@@ -49,7 +43,7 @@ function SimDataMessenger() {
 		if (mapPagePosition.lat) {
 			if (contextLoading) {
 				if (invalidateSimData) {
-					dispatch(setDataArrivedRight(false));
+					dispatch(setDataArrived({ direction, value: false }));
 					setDataSim(null);
 				} else {
 					setMessage(
@@ -62,26 +56,25 @@ function SimDataMessenger() {
 				}
 			}
 			if (dataSim) {
-				console.log({ state: simStatus.state });
 				if (invalidateSimData) {
 					setMessage(
 						"you have picked new coordinates, you need to resubmit your coordinates to run a new simulation"
 					);
-					dispatch(setDataArrivedRight(false));
+					dispatch(setDataArrived({ direction: direction, value: false }));
 					dispatch(setInvalidateSimData(false));
 					setDataSim(null);
 				} else {
-					if (isLoadingStatus) {
+					if (isLoadingSocket) {
 						setMessage("We are checking the status of your simulation");
-					} else if (simStatus.state === "SUCCESS") {
+					} else if (dataSocket.state === "SUCCESS") {
 						setMessage(
 							`We have received your simulation data for lat:${mapPagePosition.lat.toFixed(
 								2
 							)} lng:${mapPagePosition.lng.toFixed(2)}.`
 						);
-						setSimResult(simStatus.result);
+						setSimResult(dataSocket.result);
 					} else {
-						setMessage(`your status is ${simStatus.state}`);
+						setMessage(`your status is ${dataSocket.state}`);
 					}
 				}
 			}
@@ -93,7 +86,7 @@ function SimDataMessenger() {
 				);
 			}
 		} else {
-			dispatch(setDataArrivedRight(false));
+			dispatch({ direction: direction, value: false });
 			dispatch(setInvalidateSimData(false));
 			setMessage("you need to pick a coordinate from the map to simulate");
 		}
@@ -101,10 +94,15 @@ function SimDataMessenger() {
 		mapPagePosition.lat,
 		contextLoading,
 		dataSim,
-		isLoadingStatus,
-		simStatus,
+		isLoadingSocket,
+		dataSocket,
 		errorSim,
 	]);
+
+	// const StatusComponent = isLoadingSocket && (
+	// 	<p>Waiting for simulation updates...</p>
+	// );
+	// console.log({ dataSocket });
 	return (
 		<div>
 			<DisplayedContent mapPagePosition={mapPagePosition} />

@@ -13,13 +13,12 @@ import { setOpenItems } from "store";
 import useWindowSize from "customHooks/useWindowSize";
 const PanelChildren = lazy(() => import("./PanelChildren"));
 const MenuChildren = lazy(() => import("./MenuChildren"));
-function MenuItemV2({ item, onToggle, iconClassName }) {
+function MenuItemV2({ item, onToggle, iconClassName, direction }) {
 	const {
 		panelDataDir: panelData,
 		openItems,
 		panelLevelLeft: levelData,
-		vectorName,
-		mapVector,
+
 		mapPagePosition,
 	} = useDirectorFun("left");
 	const webApp = useWindowSize();
@@ -115,7 +114,11 @@ function MenuItemV2({ item, onToggle, iconClassName }) {
 				<>
 					{panelChildren.length > 0 && (
 						<Suspense>
-							<PanelChildren level={level} displayedItem={displayedItem} />
+							<PanelChildren
+								level={level}
+								displayedItem={displayedItem}
+								direction={direction}
+							/>
 						</Suspense>
 					)}
 
@@ -128,6 +131,7 @@ function MenuItemV2({ item, onToggle, iconClassName }) {
 								level={level}
 								iconClassName={iconClassName}
 								onToggle={onToggle}
+								direction={direction}
 							/>
 						</Suspense>
 						// <MapMenuV2 menuDirection={menuDirection} level={level}>

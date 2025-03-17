@@ -29,7 +29,7 @@ function ChangeMapIcon({image,className}) {
 			dispatch(setCurrentMapCenter([0, 0]));
 		}
 
-		dispatch(setDisplayedPanelID(0));
+		dispatch(setDisplayedPanelID({direction: "left", value: 0}));
 		dispatch(setPanelOpen(false));
 	};
 

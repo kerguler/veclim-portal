@@ -6,6 +6,8 @@ import useDirectorFun from "customHooks/useDirectorFun";
 import { useSelector } from "react-redux";
 import { setGraphType } from "store";
 import RenderedPanelV2 from "./RenderedPanelV2";
+import { setChartParameters } from "store";
+import { setDisplayedPanelID } from "store";
 function SwithcerV2({ direction, panelClassName }) {
 	const {
 		dataArrivedRight,
@@ -19,8 +21,6 @@ function SwithcerV2({ direction, panelClassName }) {
 		setTwinIndexDir,
 		setTwinArrayDir,
 		setSwitcherDir,
-		setDisplayedPanelIDDir,
-		setChartParametersDir,
 		invalidateSimData,
 	} = useDirectorFun(direction);
 	const graphType = useSelector(
@@ -56,17 +56,17 @@ function SwithcerV2({ direction, panelClassName }) {
 						dispatch(setTwinIndexDir(0));
 						setPanelChart(true);
 						desiredPanel = findDesiredPanel(p.panelArray[twinIndex]);
-						dispatch(setDisplayedPanelIDDir(p.id));
+						dispatch(setDisplayedPanelID({direction, value: p.id}));
 						setPanel(desiredPanel[0].content);
-						dispatch(setChartParametersDir(desiredPanel[0].chartParameters));
+						dispatch(setChartParameters({direction, value: desiredPanel[0].chartParameters}));
 					} else {
 						setPanelChart(false);
 						desiredPanel = findDesiredPanel(displayedPanelID);
 						setPanel(desiredPanel[0].content);
-						dispatch(setDisplayedPanelIDDir(p.id));
+						dispatch(setDisplayedPanelID({direction, value: p.id}));
 					}
 				} else if (p.panelArray.includes(directMap.display)) {
-					dispatch(setDisplayedPanelIDDir(p.id));
+					dispatch(setDisplayedPanelID({direction, value: p.id}));
 					if (p.panelArray.length > 1) {
 						dispatch(setTwinArrayDir(p.panelArray.length));
 						dispatch(setTwinIndexDir(p.panelArray.indexOf(directMap.display)));
@@ -78,9 +78,9 @@ function SwithcerV2({ direction, panelClassName }) {
 					setPanelChart(true);
 					desiredPanel = findDesiredPanel(directMap.display);
 
-					dispatch(setDisplayedPanelIDDir(p.id));
+					dispatch(setDisplayedPanelID({direction, value: p.id}));
 					setPanel(desiredPanel[0].content);
-					dispatch(setChartParametersDir(desiredPanel[0].chartParameters));
+					dispatch(setChartParameters({direction, value: desiredPanel[0].chartParameters}));
 				}
 			});
 		} else {
@@ -96,7 +96,7 @@ function SwithcerV2({ direction, panelClassName }) {
 						setPanelChart(true);
 						desiredPanel = findDesiredPanel(p.panelArray[twinIndex]);
 						setPanel(desiredPanel[0].content);
-						dispatch(setChartParametersDir(desiredPanel[0].chartParameters));
+						dispatch(setChartParameters({direction, value: desiredPanel[0].chartParameters}));
 					} else {
 						setPanelChart(false);
 						desiredPanel = panelDataDir.filter((item) => {
@@ -109,11 +109,11 @@ function SwithcerV2({ direction, panelClassName }) {
 						setPanel(desiredPanel[0].content);
 					}
 				} else if (p.panelArray.includes(displayedPanelID)) {
-					dispatch(setDisplayedPanelIDDir(p.id));
+					dispatch(setDisplayedPanelID({direction, value: p.id}));
 					let currentPanel = p.panelArray[twinIndex];
 					desiredPanel = findDesiredPanel(currentPanel);
 					setPanel(desiredPanel[0].content);
-					dispatch(setChartParametersDir(desiredPanel[0].chartParameters));
+					dispatch(setChartParameters({direction, value: desiredPanel[0].chartParameters}));
 				}
 			});
 		}
@@ -128,8 +128,8 @@ function SwithcerV2({ direction, panelClassName }) {
 		directMap.display,
 		mapVector,
 		setTwinIndexDir,
-		setDisplayedPanelIDDir,
-		setChartParametersDir,
+		setDisplayedPanelID,
+		setChartParameters,
 		setTwinArrayDir,
 		setSwitcherDir,
 	]);

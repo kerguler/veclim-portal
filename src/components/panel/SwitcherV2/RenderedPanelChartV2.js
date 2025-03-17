@@ -1,5 +1,4 @@
 import ErrorBoundary from "components/errorBoundary/ErrorBoundary";
-// import UnifiedRechartPlotter from "components/charts/Plotter/UnifiedRechartPlotter";
 import rightArrow from "assets/icons/arrow-teal-16px.png";
 import useDirectorFun from "customHooks/useDirectorFun";
 import { useDispatch, useSelector } from "react-redux";
@@ -7,22 +6,17 @@ import { useState } from "react";
 import { useRef } from "react";
 import { useEffect } from "react";
 import { lazy, Suspense } from "react";
-import { setGraphType } from "store";
 import UnifiedRechartPlotterV2 from "components/charts/Plotter/plotterV2/UnifiedRechartPlotterV2";
-const UnifiedRechartPlotter = lazy(() =>
-	import("components/charts/Plotter/UnifiedRechartPlotter")
-);
+import { setPlotReady } from "store";
+
 const RenderedPanelChartV2 = ({ direction, siblingCount }) => {
-	const { twinIndex, setTwinIndexDir, setPlotReadyDir } =
-		useDirectorFun(direction);
+	const { twinIndex, setTwinIndexDir } = useDirectorFun(direction);
 	const dispatch = useDispatch();
 	const [showSwitcherArrows, setShowSwitcherArrows] = useState({
 		left: false,
 		right: false,
 	});
-	const graphType = useSelector(
-		(state) => state.fetcher.fetcherStates.graphType
-	);
+
 	const switcherRefLeft = useRef(null);
 	const switcherRefRight = useRef(null);
 
@@ -46,14 +40,14 @@ const RenderedPanelChartV2 = ({ direction, siblingCount }) => {
 			return;
 		}
 		dispatch(setTwinIndexDir(twinIndex - 1));
-		dispatch(setPlotReadyDir(false));
+		dispatch(setPlotReady({ direction, value: false }));
 	};
 
 	const handleNext = (params) => {
 		if (twinIndex === siblingCount - 1) {
 			return;
 		}
-		dispatch(setPlotReadyDir(false));
+		dispatch(setPlotReady({ direction, value: false }));
 
 		dispatch(setTwinIndexDir(twinIndex + 1));
 	};

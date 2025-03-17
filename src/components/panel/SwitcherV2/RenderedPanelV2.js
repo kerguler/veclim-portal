@@ -21,8 +21,6 @@ const RenderedPanelV2 = ({
 }) => {
 	const dispatch = useDispatch();
 	const {
-		panelOpen,
-		setPanelOpenDir,
 		openItems,
 		panelLevelLeft: levelData,
 		mapPagePosition,
@@ -68,8 +66,7 @@ const RenderedPanelV2 = ({
 			className={`panel-restrictive-wrapper ${direction}`}
 			style={interferePanelStyle}
 		>
-			<div ref={panelRef}
-			style={interferePanelStyle}>
+			<div ref={panelRef} style={interferePanelStyle}>
 				<Panel
 					direction={direction}
 					className={panelClassName}
@@ -81,7 +78,6 @@ const RenderedPanelV2 = ({
 					</div>{" "}
 				</Panel>
 			</div>
-			
 		</span>
 	);
 };

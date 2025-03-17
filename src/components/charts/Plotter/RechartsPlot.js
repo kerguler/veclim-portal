@@ -23,7 +23,9 @@ import CustomTooltip from "../chartComponents/CustomTooltip/CustomTooltip";
 import useYsliderPositioning from "customHooks/useYsliderPositioning";
 import ChartCalculatorService from "../services/ChartCalculatorService";
 import useDirectorFun from "customHooks/useDirectorFun";
-
+import { setBrushDatay } from "store";
+import { setBrushRange } from "store";
+import { setBrushData } from "store";
 function RechartsPlot({ direction, plotMat }) {
 	const args = {
 		years: { firstYear: null, lastYear: null },
@@ -44,11 +46,9 @@ function RechartsPlot({ direction, plotMat }) {
 	const {
 		brushData,
 		vectorName,
-		setBrushRangeDir,
-		setBrushDatayDir,
-		setBrushDataDir,
+
 		brushDatay,
-		xBrushRange,
+		brushRange,
 		plotReady,
 		mapVector,
 		chartParameters,
@@ -64,14 +64,22 @@ function RechartsPlot({ direction, plotMat }) {
 
 	useEffect(() => {
 		if (plotMat) {
-			plotMat && dispatch(setBrushDataDir(plotMat));
+			plotMat && dispatch(setBrushData({ direction, value: plotMat }));
 			dispatch(
-				setBrushRangeDir({ startIndex: 0, endIndex: plotMat.length - 1 })
+				setBrushRange({
+					direction,
+					value: { startIndex: 0, endIndex: plotMat.length - 1 },
+				})
 			);
 		} else {
-			dispatch(setBrushDataDir({ startIndex: 0, endIndex: 0 }));
+			dispatch(
+				setBrushData({
+					direction,
+					value: { direction, value: { startIndex: 0, endIndex: 0 } },
+				})
+			);
 		}
-	}, [dispatch, plotMat, brushData, setBrushRangeDir, setBrushDataDir]);
+	}, [dispatch, plotMat, brushData, setBrushRange, setBrushData]);
 
 	const [transform, setTransform] = useState([0, 0]);
 
@@ -102,7 +110,7 @@ function RechartsPlot({ direction, plotMat }) {
 					plotMat,
 					dispatch,
 					d,
-					xBrushRange
+					brushRange
 				);
 		} else {
 			plotMat &&
@@ -111,7 +119,7 @@ function RechartsPlot({ direction, plotMat }) {
 					plotMat,
 					dispatch,
 					d,
-					xBrushRange
+					brushRange
 				);
 		}
 	}, [plotMat, vectorName]);
@@ -120,7 +128,8 @@ function RechartsPlot({ direction, plotMat }) {
 			range,
 			dispatch,
 			plotMat,
-			setBrushRangeDir
+			setBrushRange,
+			direction
 		);
 	};
 
@@ -135,7 +144,7 @@ function RechartsPlot({ direction, plotMat }) {
 				});
 			});
 		s.brushDataY = { min: s.minmax.min, max: s.minmax.max };
-		plotMat && dispatch(setBrushDatayDir(s.brushDataY));
+		plotMat && dispatch(setBrushDatay({ direction, value: s.brushDataY }));
 	}, [
 		plotMat,
 		dispatch,
@@ -143,7 +152,7 @@ function RechartsPlot({ direction, plotMat }) {
 		s.minmax.min,
 		s.minmax.max,
 		vectorName,
-		setBrushDatayDir,
+		setBrushDatay,
 	]);
 
 	const handleBrushChangeY = (range) => {
@@ -151,7 +160,8 @@ function RechartsPlot({ direction, plotMat }) {
 			range,
 			scrlRef,
 			dispatch,
-			setBrushDatayDir
+			setBrushDatay,
+			direction
 		);
 	};
 

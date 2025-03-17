@@ -28,32 +28,37 @@ const fetcherSlice = createSlice({
 				userPosition: { lat: null, lng: null },
 				globalPosition: { lat: null, lng: null },
 				mapPagePosition: { lat: null, lng: null },
-				mapPagePositionRight: { lat: null, lng: null },
 			},
 			menu: {
 				right: {
 					directInit: false,
-					menuIconDisplay: true,
 					panelOpen: false,
 					mapMenuOpen: false,
 					displayedPanelID: 0,
 					interferePanelStyle: {},
 					directMap: { lon: null, lat: null, display: -2 },
 					directInitError: { isError: false, message: "", type: "" },
+					panel: { panelInterfere: 0 },
 					chart: {
+						chartParameters: {},
 						shimmer: null,
 						dataArrived: false,
 						dates: { first: null, last: null },
 						plotReady: false,
 						requestPlot: false,
 						sliders: { slider1: { enabled: true, value: 50 } },
-						brushRange: { startIndex: null, endIndex: null },
+						brush: {
+							brushRange: { startIndex: null, endIndex: null },
+							brushDatay: { min: 0, max: 0 },
+							brushData: { min: 0, max: 0 },
+						},
+
 						messenger: { message: null, id: null, isError: false },
 					},
 				},
 				left: {
 					panelLevel: { path: [0, 0], level: 0, key: "menu_icon" },
-
+					panel: { panelInterfere: 0 },
 					directInit: false,
 					panelOpen: false,
 					mapMenuOpen: false,
@@ -62,9 +67,16 @@ const fetcherSlice = createSlice({
 					directInitError: { isError: false, message: "", type: "" },
 					openItems: {},
 					chart: {
+						chartParameters: {},
 						shimmer: {},
 						dataArrived: false,
-						brushRange: { startIndex: null, endIndex: null },
+						brush: {
+							brushRange: { startIndex: null, endIndex: null },
+							brushDatay: { min: 0, max: 0 },
+							brushData: { min: 0, max: 0 },
+						},
+						sliders: { slider1: { enabled: true, value: 50 } },
+
 						dates: { first: null, last: null },
 						plotReady: false,
 						messenger: { message: null, id: null, isError: false },
@@ -77,6 +89,69 @@ const fetcherSlice = createSlice({
 	},
 
 	reducers: {
+		appendToPlottedKeysChartParameters(state, action) {
+			const { direction, value } = action.payload;
+			state.fetcherStates.menu[
+				direction
+			].chart.chartParameters.plottedKeys.push(value);
+		},
+		appendToLabelsChartParameters(state, action) {
+			const { direction, value } = action.payload;
+			state.fetcherStates.menu[direction].chart.chartParameters.labels = [
+				...state.fetcherStates.menu[direction].chart.chartParameters.labels,
+				...value,
+			];
+		},
+		appendToColorsChartParameters(state, action) {
+			const { direction, value } = action.payload;
+
+			state.fetcherStates.menu[direction].chart.chartParameters.colors = [
+				...state.fetcherStates.menu[direction].chart.chartParameters.colors,
+				...value,
+			];
+		},
+		spliceChartParametersForSlices(state, action) {
+			const { direction, value } = action.payload;
+			let loc = state.fetcherStates.menu[
+				direction
+			].chart.chartParameters.plottedKeys.indexOf(
+				state.fetcherStates.menu[direction].chart.chartParameters.lineSlice[
+					value
+				]
+			);
+			state.fetcherStates.menu[
+				direction
+			].chart.chartParameters.plottedKeys.splice(loc, 1);
+			state.fetcherStates.menu[direction].chart.chartParameters.labels.splice(
+				loc,
+				1
+			);
+			state.fetcherStates.menu[direction].chart.chartParameters.colors.splice(
+				loc,
+				1
+			);
+		},
+		setChartParameters(state, action) {
+			const { direction, value } = action.payload;
+			state.fetcherStates.menu[direction].chart.chartParameters = value;
+		},
+		setPanelInterfere(state, action) {
+			const { direction, value } = action.payload;
+			state.fetcherStates.menu[direction].panel.panelInterfere = value;
+		},
+		setBrushRange(state, action) {
+			const { direction, value } = action.payload;
+			state.fetcherStates.menu[direction].chart.brush.brushRange = value;
+		},
+		setBrushData(state, action) {
+			const { direction, value } = action.payload;
+			state.fetcherStates.menu[direction].chart.brush.brushData = value;
+		},
+		setBrushDatay(state, action) {
+			const { direction, value } = action.payload;
+			state.fetcherStates.menu[direction].chart.brush.brushDatay = value;
+		},
+
 		setInterferePanelStyle(state, action) {
 			state.fetcherStates.menu.right.interferePanelStyle = action.payload;
 		},
@@ -90,25 +165,29 @@ const fetcherSlice = createSlice({
 		setGraphType(state, action) {
 			state.fetcherStates.graphType = action.payload;
 		},
-		setShimmerLeft(state, action) {
-			state.fetcherStates.menu.left.chart.shimmer = action.payload;
-		},
-		setShimmerRight(state, action) {
-			state.fetcherStates.menu.right.chart.shimmer = action.payload;
+
+		setShimmer(state, action) {
+			const { direction, value } = action.payload;
+			state.fetcherStates.menu[direction].chart.shimmer = value;
 		},
 
-		setDataArrivedLeft(state, action) {
-			state.fetcherStates.menu.left.chart.dataArrived = action.payload;
+		setDataArrived(state, action) {
+			const { direction, value } = action.payload;
+			console.log("setDataArrived called with:", direction, value);
+
+			if (!state.fetcherStates.menu[direction]) {
+				console.error(`menu[${direction}] is undefined!`);
+				return;
+			}
+			state.fetcherStates.menu[direction].chart.dataArrived = value;
 		},
-		setDataArrivedRight(state, action) {
-			state.fetcherStates.menu.right.chart.dataArrived = action.payload;
+
+		setMessenger(state, action) {
+			const { direction, value } = action.payload;
+
+			state.fetcherStates.menu[direction].chart.messenger = value;
 		},
-		setMessengerLeft(state, action) {
-			state.fetcherStates.menu.left.chart.messenger = action.payload;
-		},
-		setMessengerRight(state, action) {
-			state.fetcherStates.menu.right.chart.messenger = action.payload;
-		},
+
 		setInvalidateTsData(state, action) {
 			state.fetcherStates.invalidateTsData = action.payload;
 		},
@@ -121,34 +200,31 @@ const fetcherSlice = createSlice({
 		setTsData(state, action) {
 			state.fetcherStates.data = action.payload;
 		},
-		setMapPagePositionRight(state, action) {
-			state.fetcherStates.map.mapPagePositionRight = action.payload;
+		setMapPagePosition(state, action) {
+			state.fetcherStates.map.mapPagePosition = action.payload;
 		},
-		setSlider1EnabledRight(state, action) {
-			state.fetcherStates.menu.right.chart.sliders.slider1.enabled =
-				action.payload;
+
+		setSimSlider1Enabled(state, action) {
+			const { direction, value } = action.payload;
+			state.fetcherStates.menu[direction].chart.sliders.slider1.enabled = value;
 		},
-		setChartDatesLeft(state, action) {
-			state.fetcherStates.menu.left.chart.dates = action.payload;
+
+		setChartDates(state, action) {
+			const { direction, value } = action.payload;
+			state.fetcherStates.menu[direction].chart.dates = value;
 		},
-		setChartDatesRight(state, action) {
-			state.fetcherStates.menu.right.chart.dates = action.payload;
+
+		setPlotReady(state, action) {
+			const { direction, value } = action.payload;
+			state.fetcherStates.menu[direction].chart.plotReady = value;
 		},
-		setPlotReadyLeft(state, action) {
-			state.fetcherStates.menu.left.chart.plotReady = action.payload;
-		},
-		setPlotReadyRight(state, action) {
-			state.fetcherStates.menu.right.chart.plotReady = action.payload;
-		},
+
 		setAlboRequestPlot(state, action) {
 			state.fetcherStates.menu.right.chart.requestPlot = action.payload;
 		},
-		setAlboParamsSlider1Value(state, action) {
-			state.fetcherStates.menu.right.chart.sliders.slider1.value =
-				action.payload;
-		},
-		setRightMenuIconDisplay(state, action) {
-			state.fetcherStates.menu.right.menuIconDisplay = action.payload;
+		setSimulationParameterSlider1(state, action) {
+			const { direction, value } = action.payload;
+			state.fetcherStates.menu[direction].chart.sliders.slider1.value = value;
 		},
 
 		setReadyToView(state, action) {
@@ -206,106 +282,82 @@ const fetcherSlice = createSlice({
 		setMapPagePosition(state, action) {
 			state.fetcherStates.map.mapPagePosition = action.payload;
 		},
-		setBrushRangeLeft(state, action) {
-			state.fetcherStates.menu.left.chart.brushRange = action.payload;
-		},
-		setBrushRangeRight(state, action) {
-			state.fetcherStates.menu.right.chart.brushRange = action.payload;
-		},
 
-		setDirectMapLeft(state, action) {
-			state.fetcherStates.menu.left.directMap = action.payload;
+		setDirectMap(state, action) {
+			const { direction, value } = action.payload;
+			state.fetcherStates.menu[direction].directMap = value;
 		},
-		setDirectMapRight(state, action) {
-			state.fetcherStates.menu.right.directMap = action.payload;
+		setDirectInit(state, action) {
+			const { direction, value } = action.payload;
+			state.fetcherStates.menu[direction].directInit = value;
 		},
-		setDirectInitLeft(state, action) {
-			state.fetcherStates.menu.left.directInit = action.payload;
+		setDirectInitError(state, action) {
+			const { direction, value } = action.payload;
+			state.fetcherStates.menu[direction].directInitError = value;
 		},
-		setDirectInitRight(state, action) {
-			state.fetcherStates.menu.right.directInit = action.payload;
+		setPanelOpen(state, action) {
+			const { direction, value } = action.payload;
+			state.fetcherStates.menu[direction].panelOpen = value;
 		},
-		setDirectInitErrorLeft(state, action) {
-			state.fetcherStates.menu.left.directInitError = action.payload;
+		setMapMenuOpen(state, action) {
+			const { direction, value } = action.payload;
+			state.fetcherStates.menu[direction].mapMenuOpen = value;
 		},
-		setDirectInitErrorRight(state, action) {
-			state.fetcherStates.menu.right.directInitError = action.payload;
-		},
-		setPanelOpenLeft(state, action) {
-			state.fetcherStates.menu.left.panelOpen = action.payload;
-		},
-		setPanelOpenRight(state, action) {
-			state.fetcherStates.menu.right.panelOpen = action.payload;
-		},
-		setMapMenuOpenLeft(state, action) {
-			state.fetcherStates.menu.left.mapMenuOpen = action.payload;
-		},
-		setMapMenuOpenRight(state, action) {
-			state.fetcherStates.menu.right.mapMenuOpen = action.payload;
-		},
-		setDisplayedPanelIDLeft(state, action) {
-			state.fetcherStates.menu.left.displayedPanelID = action.payload;
-		},
-		setDisplayedPanelIDRight(state, action) {
-			state.fetcherStates.menu.right.displayedPanelID = action.payload;
+		setDisplayedPanelID(state, action) {
+			const { direction, value } = action.payload;
+			state.fetcherStates.menu[direction].displayedPanelID = value;
 		},
 	},
 });
 
 export const {
+	appendToColorsChartParameters,
+	appendToLabelsChartParameters,
+	appendToPlottedKeysChartParameters,
+	spliceChartParametersForSlices,
+	setPanelInterfere,
+	setChartParameters,
 	setOpenItems,
 	setInterferePanelStyle,
 	setPanelLevel,
 	setGraphType,
-	setShimmerLeft,
-	setShimmerRight,
-	setDataArrivedLeft,
-	setDataArrivedRight,
-	setMessengerLeft,
-	setMessengerRight,
+	setShimmer,
+	setDataArrived,
+	setMessenger,
 	setInvalidateTsData,
 	setInvalidateSimData,
 	setIsTsDataSet,
 	setTsData,
-	setMapPagePositionRight,
-	setAlboParamsSlider1Value,
+	setSimulationParameterSlider1,
+	setSimSlider1Enabled,
 	setAlboRequestPlot,
-	setBrushRangeLeft,
-	setBrushRangeRight,
-	setChartDatesLeft,
-	setChartDatesRight,
+	setBrushRange,
+	setBrushData,
+	setBrushDatay,
+	setChartDates,
 	setCurrentMapBounds,
 	setCurrentMapCenter,
 	setCurrentMapZoom,
 	setCurrentMaxBounds,
-	setDirectInitErrorLeft,
-	setDirectInitErrorRight,
-	setDirectInitLeft,
-	setDirectInitRight,
-	setDirectMapLeft,
-	setDirectMapRight,
-	setDisplayedPanelIDLeft,
-	setDisplayedPanelIDRight,
+	setDirectInitError,
+	setDirectInit,
+	setDirectMap,
+	setDisplayedPanelID,
 	setFetcherStates,
 	setGlobalPosition,
 	setLeftMapLoaded,
 	setMapLoaded,
-	setMapMenuOpenLeft,
-	setMapMenuOpenRight,
+	setMapMenuOpen,
 	setMapPagePosition,
 	setMapVector,
-	setPanelOpenLeft,
-	setPanelOpenRight,
+	setPanelOpen,
 	setReadyToView,
 	setRightMapLoaded,
-	setSlider1EnabledRight,
 	setSwitchMap,
 	setTileArray,
 	setUserPosition,
 	setVectorName,
 	setAvailableTiles,
-	setPlotReadyLeft,
-	setPlotReadyRight,
-	setRightMenuIconDisplay,
+	setPlotReady,
 } = fetcherSlice.actions;
 export const fetcherReducer = fetcherSlice.reducer;

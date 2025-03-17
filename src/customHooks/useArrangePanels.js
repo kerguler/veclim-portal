@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import useDirectorFun from "./useDirectorFun";
 import { set, setTwinIndex } from "store";
-import { setShimmerLeft } from "store";
+import { setShimmer } from "store";
 import { useState } from "react";
 import classNames from "classnames";
 function useArrangePanels(handlePanel, direction) {
@@ -66,7 +66,12 @@ function useArrangePanels(handlePanel, direction) {
 								if (dataArrivedRight) {
 									console.log("simulation panel ADDED");
 									panelArray.unshift(twin.id);
-									dispatch(setShimmerLeft({ panel: panel.id, shimmer: true }));
+									dispatch(
+										setShimmer(direction || "left", {
+											panel: panel.id,
+											shimmer: true,
+										})
+									);
 								} else {
 									dispatch(setTwinIndex(0));
 								}

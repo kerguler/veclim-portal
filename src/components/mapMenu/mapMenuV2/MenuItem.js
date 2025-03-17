@@ -7,7 +7,6 @@ import { setPanelLevel } from "store";
 import { useRef } from "react";
 import { useDispatch } from "react-redux";
 import useDirectorFun from "customHooks/useDirectorFun";
-import UnifiedRechartPlotter from "components/charts/Plotter/UnifiedRechartPlotter";
 function MenuItem({ key, item, iconClassName1 }) {
 
 	const panelChildren = item.children.filter((child) =>

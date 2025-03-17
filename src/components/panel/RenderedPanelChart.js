@@ -1,5 +1,4 @@
 import ErrorBoundary from "components/errorBoundary/ErrorBoundary";
-// import UnifiedRechartPlotter from "components/charts/Plotter/UnifiedRechartPlotter";
 import rightArrow from "assets/icons/arrow-teal-16px.png";
 import useDirectorFun from "customHooks/useDirectorFun";
 import { useDispatch, useSelector } from "react-redux";
@@ -17,7 +16,6 @@ const RenderedPanelChart = ({ direction }) => {
 		twinIndex,
 		setTwinIndexDir,
 		twinArray,
-		setPlotReadyDir,
 		panelDataDir,
 		displayedIcons,
 		dataArrivedRight,
@@ -53,14 +51,14 @@ const RenderedPanelChart = ({ direction }) => {
 			return;
 		}
 		dispatch(setTwinIndexDir(twinIndex - 1));
-		dispatch(setPlotReadyDir(false));
+		dispatch(setPlotReady({direction, value: false}));
 	};
 
 	const handleNext = (params) => {
 		if (twinIndex === twinArray - 1) {
 			return;
 		}
-		dispatch(setPlotReadyDir(false));
+		dispatch(setPlotReady({direction, value: false}));
 
 		dispatch(setTwinIndexDir(twinIndex + 1));
 	};

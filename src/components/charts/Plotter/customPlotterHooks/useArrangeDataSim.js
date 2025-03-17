@@ -1,9 +1,10 @@
 import useDirectorFun from "customHooks/useDirectorFun";
 import { useEffect } from "react";
 import ChartCalculatorService from "components/charts/services/ChartCalculatorService";
-import { setAlboRequestPlot } from "store";
-import { setSlider1EnabledRight } from "store";
+import { setAlboRequestPlot, setSimSlider1Enabled } from "store";
 import { useAlboData } from "context/AlboDataContext";
+import { setPlotReady } from "store";
+import { setMessenger } from "store";
 
 function useArrangeDataSim({
 	rawData,
@@ -11,6 +12,7 @@ function useArrangeDataSim({
 
 	setAlboDataArrived,
 	alboDataArrived,
+	direction,
 }) {
 	const { simResult: dataSim } = useAlboData();
 
@@ -19,11 +21,9 @@ function useArrangeDataSim({
 		chartParameters,
 		invalidateSimData,
 		dispatch,
-		setPlotReadyDir,
-		mapPagePositionLeft,
-		setMessengerDir,
+		mapPagePosition,
 		messenger,
-	} = useDirectorFun("left");
+	} = useDirectorFun(direction);
 
 	useEffect(() => {
 		let r = rawData.current;
@@ -44,8 +44,9 @@ function useArrangeDataSim({
 								chartParameters,
 								r.data,
 								dispatch,
-								setPlotReadyDir,
-								mapPagePositionLeft
+								setPlotReady,
+								mapPagePosition,
+								direction
 							);
 
 						if (isError) {
@@ -54,31 +55,38 @@ function useArrangeDataSim({
 						ChartCalculatorService.createDateArray(rawData, chartParameters);
 						ChartCalculatorService.handleMixedKeys(rawData, chartParameters);
 						ChartCalculatorService.handleSlices(rawData, chartParameters);
-						dispatch(setPlotReadyDir(true));
+						dispatch(setPlotReady({ direction, value: true }));
 						dispatch(setAlboRequestPlot(false));
-						dispatch(setSlider1EnabledRight(true));
-						setPlotReadyDir(true);
+						dispatch(setSimSlider1Enabled({ direction, value: true }));
+						setPlotReady({ direction, value: true });
 					}
 				} else {
 					console.log({ dataTs, dataSim });
 					console.log("shouldnt have come here");
-					dispatch(setPlotReadyDir(false));
+					dispatch(setPlotReady({ direction, value: false }));
 				}
 			} else {
 				dispatch(
-					setMessengerDir({
-						id: 3,
-						isError: true,
-						message: "The panel doesnt work for this vector",
+					setMessenger({
+						direction,
+						value: {
+							id: 3,
+							isError: true,
+							message: "The panel doesnt work for this vector",
+						},
 					})
 				);
 			}
 		} catch (err) {
 			dispatch(
-				setMessengerDir({
-					id: 5,
+				setMessenger({
+					direction,
+					value: {
+						id: 5,
 
-					message: "something went wrong when dealing with data in simulation",
+						message:
+							"something went wrong when dealing with data in simulation",
+					},
 				})
 			);
 		}
@@ -91,9 +99,9 @@ function useArrangeDataSim({
 		rawData,
 		vectorName,
 		dataTs,
-		setPlotReadyDir,
-		mapPagePositionLeft,
-		setMessengerDir,
+		setPlotReady,
+		mapPagePosition,
+		setMessenger,
 		messenger,
 		setAlboDataArrived,
 	]);

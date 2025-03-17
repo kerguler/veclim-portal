@@ -4,10 +4,11 @@ import useDirectorFun from "customHooks/useDirectorFun";
 import { useEffect, useRef, useState } from "react";
 
 import { useDispatch } from "react-redux";
+import { setChartParameters } from "store";
 import { setPlotReadyLeft } from "store";
 import { setTwinArray } from "store";
 import { setGraphType } from "store";
-function PanelChildren({ displayedItem, level }) {
+function PanelChildren({ displayedItem, level, direction }) {
 	const dispatch = useDispatch();
 	const {
 		openItems,
@@ -18,8 +19,8 @@ function PanelChildren({ displayedItem, level }) {
 		twinIndex,
 		setTwinIndexDir: setTwinIndex,
 		setOpenItems,
-		setChartParametersDir: setChartParameters,
-		mapPagePosition,interferePanelStyleRight:interferePanelStyle
+		mapPagePosition,
+		interferePanelStyleRight: interferePanelStyle,
 	} = useDirectorFun("left");
 
 	const panelChildren = menuStructure.filter((child) => {
@@ -82,7 +83,7 @@ function PanelChildren({ displayedItem, level }) {
 	)[0];
 	const { content, chartParameters } = displayedPanelDetails;
 	useEffect(() => {
-		dispatch(setChartParameters(chartParameters));
+		dispatch(setChartParameters({ direction, value: chartParameters }));
 	}, [displayedPanelDetails]);
 
 	return (

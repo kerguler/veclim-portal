@@ -10,9 +10,14 @@ import useArrangePanels from "customHooks/useArrangePanels";
 import PackageMapServices from "components/map/mapPackage/PackageMapServices";
 import useDirectorFun from "customHooks/useDirectorFun";
 import { AlboDataProvider } from "context/AlboDataContext";
+import { setPanelOpen } from "store";
+import { setPanelInterfere } from "store";
+import { setDisplayedPanelID } from "store";
+import { setChartParameters } from "store";
+import { setDirectMap } from "store";
+import { setMapMenuOpen } from "store";
 function MapMenu({ direction }) {
 	const {
-		setMapMenuOpenDir,
 		mapMenuOpen,
 		displayedPanelID,
 		directInit,
@@ -21,15 +26,10 @@ function MapMenu({ direction }) {
 		panelOpen,
 		panelDataDir,
 		directMap,
-		setPanelOpenDir,
-		setDirectInitDir,
-		setDirectMapDir,
 		setTwinIndexDir,
-		setDisplayedPanelIDDir,
 		panelInterfere,
-		setChartParametersDir,
+		
 		vectorName,
-		setPanelInterfereDir,
 	} = useDirectorFun(direction);
 	const panelOpenRef = useRef(0);
 	const dispatch = useDispatch();
@@ -62,7 +62,7 @@ function MapMenu({ direction }) {
 
 	useEffect(() => {
 		if (directMap.display === -2) {
-			directInit && dispatch(setPanelOpenDir(false));
+			directInit && dispatch(setPanelOpen({direction, value: false}));
 			dispatch(setDirectInitDir(false));
 		}
 	}, [directMap.display, directInit, dispatch]);
@@ -84,10 +84,10 @@ function MapMenu({ direction }) {
 				setPanelChart,
 				directInit,
 				panelOpen,
-				setDisplayedPanelIDDir,
-				setPanelOpenDir,
-				setChartParametersDir,
-				panelInterfere
+				setDisplayedPanelID,
+				setPanelOpen,
+				setChartParameters,
+				panelInterfere,direction
 			);
 			// directInit && dispatch(setDirectInitDir(false));
 			// directMap.display &&
@@ -115,25 +115,25 @@ function MapMenu({ direction }) {
 			directMap.display !== -2 && handlePanel(directMap.display);
 			if (directMap.display === -2) {
 				// dispatch(setMapMenuOpenDir(false));
-				dispatch(setPanelOpenDir(false));
-				dispatch(setDirectMapDir({ ...directMap, display: null }));
+				dispatch(setPanelOpen({direction, value: false}));
+				dispatch(setDirectMap({directoin, value: { ...directMap, display: null }}));
 			}
 			setPanelClassName("no-anim");
 			dispatch(setDirectInitDir(false));
 		}
 		if (panelInterfere === -1) {
-			dispatch(setMapMenuOpenDir(true));
-			dispatch(setPanelOpenDir(true));
+			dispatch(setMapMenuOpen({direction,value:true}));
+			dispatch(setPanelOpen({direction,value:true}));
 			handlePanel(panelInterfere);
 			setPanelClassName("no-anim");
-			dispatch(setPanelInterfereDir(null));
+			dispatch(setPanelInterfere({direction,value:null}));
 		}
 	}, [panelInterfere, handlePanel, dispatch, directMap, directInit]);
 	useEffect(() => {
 		if (!mapMenuOpen) {
 			setPanel(null);
 			setPanelChart(null);
-			dispatch(setPanelOpenDir(false));
+			dispatch(setPanelOpen({direction,value:false}));
 		}
 	}, [mapMenuOpen, dispatch]);
 

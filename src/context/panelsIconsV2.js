@@ -23,10 +23,7 @@ import ChangeMapPanel from "../components/vectorSelection/ChangeMapPanel/ChangeM
 import { useEffect } from "react";
 import { useState } from "react";
 import AlboParams from "components/AlboParams/AlboParams";
-import AlboRequest from "components/charts/Plotter/AlboRequest";
 import SettingsPanel from "components/panel/SettingsPanel";
-import { icon } from "leaflet";
-import useDirectorFun from "customHooks/useDirectorFun";
 const PanelContextV2 = createContext();
 
 function PanelProviderV2({ children }) {
@@ -774,8 +771,7 @@ function PanelProviderV2({ children }) {
 			chartParameters: {
 				chartType: "rechart",
 				years: "ecmwf",
-				// xbrushStart: -6,
-				// xbrushEnd: 3,
+
 				mixedKeys: [
 					{
 						key: "g1",
@@ -826,8 +822,7 @@ function PanelProviderV2({ children }) {
 			chartParameters: {
 				chartType: "rechart",
 				years: "ecmwf",
-				// xbrushStart: -6,
-				// xbrushEnd: 3,
+
 				mixedKeys: [
 					{
 						key: "g1",
@@ -936,8 +931,7 @@ function PanelProviderV2({ children }) {
 			chartParameters: {
 				chartType: "rechart",
 				years: "2090-2100",
-				// xbrushStart: -6,
-				// xbrushEnd: 3,
+
 				mixedKeys: [
 					{
 						key: "g1",
@@ -1007,10 +1001,10 @@ function PanelProviderV2({ children }) {
 
 				chartType: "rechart",
 				years: "ecmwf",
-				//xBrushStart and xBrushEnd are used to set the
+				//brushStart and brushEnd are used to set the
 				//initial range of the brush [months from the current date]
-				// xbrushStart: -6,
-				// xbrushEnd: 3,
+				// brushStart: -6,
+				// brushEnd: 3,
 
 				mixedKeys: [
 					{
@@ -1074,8 +1068,8 @@ function PanelProviderV2({ children }) {
 			chartParameters: {
 				chartType: "rechart",
 				years: "2090-2100",
-				// xbrushStart: -6,
-				// xbrushEnd: 3,
+				// brushStart: -6,
+				// brushEnd: 3,
 				mixedKeys: [
 					{
 						key: "g1",
@@ -1144,8 +1138,8 @@ function PanelProviderV2({ children }) {
 
 				chartType: "rechart",
 				years: "ecmwf",
-				// xbrushStart: -6,
-				// xbrushEnd: 3,
+				// brushStart: -6,
+				// brushEnd: 3,
 				xinit: { date0: 15, date1: 125 },
 				mixedKeys: [
 					{
@@ -1209,8 +1203,8 @@ function PanelProviderV2({ children }) {
 			chartParameters: {
 				chartType: "rechart",
 				years: "2090-2100",
-				// xbrushStart: -6,
-				// xbrushEnd: 3,
+				// brushStart: -6,
+				// brushEnd: 3,
 				mixedKeys: [
 					{
 						key: "g1",
@@ -1456,8 +1450,8 @@ function PanelProviderV2({ children }) {
 									chartParameters: {
 										chartType: "rechart",
 										years: "ecmwf",
-										// xbrushStart: -6,
-										// xbrushEnd: 3,
+										// brushStart: -6,
+										// brushEnd: 3,
 										mixedKeys: [
 											{
 												key: "g1",
@@ -1514,8 +1508,8 @@ function PanelProviderV2({ children }) {
 									chartParameters: {
 										chartType: "rechart",
 										years: "ecmwf",
-										// xbrushStart: -6,
-										// xbrushEnd: 3,
+										// brushStart: -6,
+										// brushEnd: 3,
 										mixedKeys: [
 											{
 												key: "g1",
@@ -1623,8 +1617,8 @@ function PanelProviderV2({ children }) {
 									chartParameters: {
 										chartType: "rechart",
 										years: "2090-2100",
-										// xbrushStart: -6,
-										// xbrushEnd: 3,
+										// brushStart: -6,
+										// brushEnd: 3,
 										mixedKeys: [
 											{
 												key: "g1",
@@ -1695,10 +1689,10 @@ function PanelProviderV2({ children }) {
 
 										chartType: "rechart",
 										years: "ecmwf",
-										//xBrushStart and xBrushEnd are used to set the
+										//brushStart and brushEnd are used to set the
 										//initial range of the brush [months from the current date]
-										// xbrushStart: -6,
-										// xbrushEnd: 3,
+										// brushStart: -6,
+										// brushEnd: 3,
 
 										mixedKeys: [
 											{
@@ -1763,8 +1757,8 @@ function PanelProviderV2({ children }) {
 									chartParameters: {
 										chartType: "rechart",
 										years: "2090-2100",
-										// xbrushStart: -6,
-										// xbrushEnd: 3,
+										// brushStart: -6,
+										// brushEnd: 3,
 										mixedKeys: [
 											{
 												key: "g1",
@@ -1834,8 +1828,8 @@ function PanelProviderV2({ children }) {
 
 										chartType: "rechart",
 										years: "ecmwf",
-										// xbrushStart: -6,
-										// xbrushEnd: 3,
+										// brushStart: -6,
+										// brushEnd: 3,
 										xinit: { date0: 15, date1: 125 },
 										mixedKeys: [
 											{
@@ -1899,8 +1893,8 @@ function PanelProviderV2({ children }) {
 									chartParameters: {
 										chartType: "rechart",
 										years: "2090-2100",
-										// xbrushStart: -6,
-										// xbrushEnd: 3,
+										// brushStart: -6,
+										// brushEnd: 3,
 										mixedKeys: [
 											{
 												key: "g1",
@@ -2055,8 +2049,8 @@ function PanelProviderV2({ children }) {
 			chartParameters: {
 				chartType: "rechart",
 				years: "ecmwf",
-				// xbrushStart: -6,
-				// xbrushEnd: 3,
+				// brushStart: -6,
+				// brushEnd: 3,
 				mixedKeys: [
 					{
 						key: "g1",

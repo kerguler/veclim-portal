@@ -1,9 +1,6 @@
 import TsRequest from "./TsRequest";
-import AlboRequest from "./AlboRequest";
 import { useSelector } from "react-redux";
 import useDirectorFun from "customHooks/useDirectorFun";
-import { useState } from "react";
-import { useEffect } from "react";
 import CustomSimulationChart from "./CustomSimulationChart";
 import { useFetchTimeSeriesDataQuery } from "store";
 import ChartLoadingSkeleton from "components/skeleton/Skeleton";
@@ -11,13 +8,9 @@ import { useAlboData } from "context/AlboDataContext";
 
 function UnifiedRechartPlotter({ direction }) {
 	const {
-		displayedPanelID,
-		panelDataDir,
-		dataArrivedRight,
-		displayedIcons,
+		
 		mapPagePosition,
 		vectorName,
-		twinIndex,
 		dateArray,
 	} = useDirectorFun(direction);
 
@@ -54,10 +47,10 @@ function UnifiedRechartPlotter({ direction }) {
 	} else if (data) {
 		if (graphType === "sim") {
 			console.log("albo");
-			return <CustomSimulationChart />;
+			return <CustomSimulationChart direction={direction} />;
 		} else {
 			console.log("ts");
-			return <TsRequest />;
+			return <TsRequest direction={direction} />;
 		}
 	} else {
 		return <div>error</div>;

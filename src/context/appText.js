@@ -44,7 +44,7 @@ import imageSandFlyTime from "../assets/images/methods-sandfly-ts.webp";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
-import { setDisplayedPanelIDLeft, setReadyToView } from "store";
+import { setDisplayedPanelID, setReadyToView } from "store";
 import { setMapVector } from "store";
 import { setTileArray } from "store";
 import { setVectorName } from "store";
@@ -117,7 +117,9 @@ function TextProvider({ children }) {
 										mapVector
 									);
 									dispatch(setReadyToView(false));
-									dispatch(setDisplayedPanelIDLeft(0));
+									dispatch(
+										setDisplayedPanelID({ direction: "left", value: 0 })
+									);
 								}}
 								to="/MapPage"
 							>

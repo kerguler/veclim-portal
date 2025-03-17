@@ -32,8 +32,9 @@ class ChartCalculatorService {
 		chartParameters,
 		data,
 		dispatch,
-		setPlotReadyDir,
-		mapPagePosition
+		setPlotReady,
+		mapPagePosition,
+		direction
 	) {
 		if (!chartParameters || !chartParameters.mixedKeys) {
 			return {
@@ -59,7 +60,7 @@ class ChartCalculatorService {
 				} else {
 					// Update error state and exit
 					//watchout for this one....
-					// dispatch(setPlotReadyDir(false));
+			
 					error.errorMessage = `There is no data available for the position chosen lat:${mapPagePosition.lat.toFixed(
 						2
 					)} lng: ${mapPagePosition.lng.toFixed(2)}`;
@@ -189,20 +190,20 @@ class ChartCalculatorService {
 		});
 	}
 
-	static decideBrushRange(parameters, plotMat, dispatch, d, xBrushRange) {
+	static decideBrushRange(parameters, plotMat, dispatch, d, brushRange) {
 		d.currentDate = new Date();
 		d.dStart = new Date();
 		d.dEnd = new Date();
-		if (xBrushRange.startIndex !== null && xBrushRange.endIndex !== null) {
+		if (brushRange.startIndex !== null && brushRange.endIndex !== null) {
 			//that means someone has b4een fiddling with brush we need to set it
-			d.index[0] = xBrushRange.startIndex;
-			d.index[1] = xBrushRange.endIndex;
+			d.index[0] = brushRange.startIndex;
+			d.index[1] = brushRange.endIndex;
 		} else {
 			//noone has played with brush, so we need to set the brush to the start and end of the data
-			if (parameters.xbrushStart && parameters.xbrushEnd) {
+			if (parameters.brushStart && parameters.brushEnd) {
 				// there is a specified start and end
-				d.dStart.setMonth(d.currentDate.getMonth() + parameters.xbrushStart);
-				d.dEnd.setMonth(d.currentDate.getMonth() + parameters.xbrushEnd);
+				d.dStart.setMonth(d.currentDate.getMonth() + parameters.brushStart);
+				d.dEnd.setMonth(d.currentDate.getMonth() + parameters.brushEnd);
 			} else {
 				//no start and end specified, so we need to set the brush to the start and end of the data
 				d.dStart = new Date(plotMat[0].date);
@@ -228,20 +229,20 @@ class ChartCalculatorService {
 		}
 	}
 
-	static decideBrushRangeAlbo(parameters, plotMat, dispatch, d, xBrushRange) {
+	static decideBrushRangeAlbo(parameters, plotMat, dispatch, d, brushRange) {
 		d.currentDate = new Date();
 		d.dStart = new Date();
 		d.dEnd = new Date();
-		if (xBrushRange.startIndex !== null && xBrushRange.endIndex !== null) {
+		if (brushRange.startIndex !== null && brushRange.endIndex !== null) {
 			//that means someone has b4een fiddling with brush we need to set it
-			d.index[0] = xBrushRange.startIndex;
-			d.index[1] = xBrushRange.endIndex;
+			d.index[0] = brushRange.startIndex;
+			d.index[1] = brushRange.endIndex;
 		} else {
 			//noone has played with brush, so we need to set the brush to the start and end of the data
-			if (parameters.xbrushStart && parameters.xbrushEnd) {
+			if (parameters.brushStart && parameters.brushEnd) {
 				// there is a specified start and end
-				d.dStart.setMonth(d.currentDate.getMonth() + parameters.xbrushStart);
-				d.dEnd.setMonth(d.currentDate.getMonth() + parameters.xbrushEnd);
+				d.dStart.setMonth(d.currentDate.getMonth() + parameters.brushStart);
+				d.dEnd.setMonth(d.currentDate.getMonth() + parameters.brushEnd);
 			} else {
 				//no start and end specified, so we need to set the brush to the start and end of the data
 				d.dStart = new Date(plotMat[0].date);
@@ -267,11 +268,20 @@ class ChartCalculatorService {
 		}
 	}
 
-	static handleBrushChange = (range, dispatch, plotMat, setBrushRangeDir) => {
+	static handleBrushChange = (
+		range,
+		dispatch,
+		plotMat,
+		setBrushRange,
+		direction
+	) => {
 		dispatch(
-			setBrushRangeDir({
-				startIndex: range.startIndex,
-				endIndex: range.endIndex,
+			setBrushRange({
+				direction,
+				value: {
+					startIndex: range.startIndex,
+					endIndex: range.endIndex,
+				},
 			})
 		);
 	};
@@ -341,7 +351,13 @@ class ChartCalculatorService {
 		}
 	};
 
-	static handleBrushChangeY(range, scrlRef, dispatch, setBrushDatayDir) {
+	static handleBrushChangeY(
+		range,
+		scrlRef,
+		dispatch,
+		setBrushDatay,
+		direction
+	) {
 		let s = scrlRef.current && scrlRef.current;
 		if (scrlRef.current) {
 			s.brushDataY = {
@@ -363,23 +379,26 @@ class ChartCalculatorService {
 						),
 			};
 			dispatch(
-				setBrushDatayDir({
-					min:
-						s.minmax.min +
-						(s.minmax.max - s.minmax.min) *
-							Math.pow(
-								(s.minmaxId.max - range.endIndex) /
-									(s.minmaxId.max - s.minmaxId.min),
-								s.scrollScl
-							),
-					max:
-						s.minmax.min +
-						(s.minmax.max - s.minmax.min) *
-							Math.pow(
-								(s.minmaxId.max - range.startIndex) /
-									(s.minmaxId.max - s.minmaxId.min),
-								s.scrollScl
-							),
+				setBrushDatay({
+					direction,
+					value: {
+						min:
+							s.minmax.min +
+							(s.minmax.max - s.minmax.min) *
+								Math.pow(
+									(s.minmaxId.max - range.endIndex) /
+										(s.minmaxId.max - s.minmaxId.min),
+									s.scrollScl
+								),
+						max:
+							s.minmax.min +
+							(s.minmax.max - s.minmax.min) *
+								Math.pow(
+									(s.minmaxId.max - range.startIndex) /
+										(s.minmaxId.max - s.minmaxId.min),
+									s.scrollScl
+								),
+					},
 				})
 			);
 		} else {

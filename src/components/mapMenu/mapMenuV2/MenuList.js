@@ -2,7 +2,7 @@ import MenuItemV2 from "./MenuItemV2";
 import useDirectorFun from "customHooks/useDirectorFun";
 import classNames from "classnames";
 import { useAlboData } from "context/AlboDataContext";
-function MenuList({ items, onToggle, iconClassName }) {
+function MenuList({ items, onToggle, iconClassName,direction }) {
 	const {
 		openItems,
 		setOpenItems,
@@ -54,6 +54,7 @@ function MenuList({ items, onToggle, iconClassName }) {
 				onToggle={(clickedKey) => {
 					return onToggle(clickedKey, siblingKeys);
 				}}
+				direction={direction}
 			/>
 		);
 	});

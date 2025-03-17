@@ -6,7 +6,7 @@ import { useDispatch } from "react-redux";
 import HoverMenuMethods from "components/HoverMenuMethods/HoverMenuMethods";
 import { useEffect } from "react";
 import { setReadyToView } from "store";
-import { setPanelOpenLeft } from "store";
+import { setPanelOpen } from "store";
 import PackageMapServices from "components/map/mapPackage/PackageMapServices";
 function MyNavbar({ style }) {
 	const vectorName = useSelector(
@@ -30,7 +30,7 @@ function MyNavbar({ style }) {
 			vectorName,
 			mapVector
 		);
-		dispatch(setPanelOpenLeft(false));
+		dispatch(setPanelOpen({ direction: "left", value: false }));
 		dispatch(setReadyToView(false));
 	};
 
