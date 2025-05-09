@@ -1,8 +1,8 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { getCurrentDate } from "./utils";
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { getCurrentDate } from './utils';
 
 const newsApi = createApi({
-	reducerPath: "newsApi",
+	reducerPath: 'newsApi',
 	baseQuery: fetchBaseQuery({
 		baseUrl: `${process.env.REACT_APP_DEV_URL}/news`,
 	}),
@@ -13,8 +13,8 @@ const newsApi = createApi({
 
 				query: () => {
 					return {
-						url: "",
-						method: "GET",
+						url: '',
+						method: 'GET',
 					};
 				},
 			}),

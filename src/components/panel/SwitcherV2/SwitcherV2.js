@@ -1,16 +1,19 @@
-import React, { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
-import "../Switcher/Switcher.css";
+import React, { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import '../Switcher/Switcher.css';
 
-import useDirectorFun from "customHooks/useDirectorFun";
-import { useSelector } from "react-redux";
-import { setGraphType } from "store";
-import RenderedPanelV2 from "./RenderedPanelV2";
-import { setChartParameters } from "store";
-import { setDisplayedPanelID } from "store";
+import useDirectorFun from 'customHooks/useDirectorFun';
+import { useSelector } from 'react-redux';
+import { setGraphType } from 'store';
+import RenderedPanelV2 from './RenderedPanelV2';
+import { setChartParameters } from 'store';
+import { setDisplayedPanelID } from 'store';
+import { setSwitcher } from 'store';
+import { setTwinIndex } from 'store';
+import { setTwinArray } from 'store';
 function SwithcerV2({ direction, panelClassName }) {
 	const {
-		dataArrivedRight,
+		dataArrived,
 		twinIndex,
 		displayedPanelID,
 		displayedIcons,
@@ -18,13 +21,10 @@ function SwithcerV2({ direction, panelClassName }) {
 		directInit,
 		mapVector,
 		panelDataDir,
-		setTwinIndexDir,
-		setTwinArrayDir,
-		setSwitcherDir,
 		invalidateSimData,
 	} = useDirectorFun(direction);
 	const graphType = useSelector(
-		(state) => state.fetcher.fetcherStates.graphType
+		(state) => state.fetcher.fetcherStates.graphType,
 	);
 	const dispatch = useDispatch();
 	const [panelChart, setPanelChart] = useState(null);
@@ -48,39 +48,70 @@ function SwithcerV2({ direction, panelClassName }) {
 				if (p.id === directMap.display) {
 					if (p.panelArray.length > 0) {
 						if (p.panelArray.length > 1) {
-							dispatch(setTwinArrayDir(p.panelArray.length));
-							dispatch(setSwitcherDir(true));
+							dispatch(
+								setTwinArray({
+									direction,
+									value: p.panelArray.length,
+								}),
+							);
+							dispatch(setSwitcher({ direction, value: true }));
 						} else {
-							dispatch(setSwitcherDir(false));
+							dispatch(setSwitcher({ direction, value: false }));
 						}
-						dispatch(setTwinIndexDir(0));
+						dispatch(setTwinIndex({ direction, value: 0 }));
 						setPanelChart(true);
-						desiredPanel = findDesiredPanel(p.panelArray[twinIndex]);
-						dispatch(setDisplayedPanelID({direction, value: p.id}));
+						desiredPanel = findDesiredPanel(
+							p.panelArray[twinIndex],
+						);
+						dispatch(
+							setDisplayedPanelID({ direction, value: p.id }),
+						);
 						setPanel(desiredPanel[0].content);
-						dispatch(setChartParameters({direction, value: desiredPanel[0].chartParameters}));
+						dispatch(
+							setChartParameters({
+								direction,
+								value: desiredPanel[0].chartParameters,
+							}),
+						);
 					} else {
 						setPanelChart(false);
 						desiredPanel = findDesiredPanel(displayedPanelID);
 						setPanel(desiredPanel[0].content);
-						dispatch(setDisplayedPanelID({direction, value: p.id}));
+						dispatch(
+							setDisplayedPanelID({ direction, value: p.id }),
+						);
 					}
 				} else if (p.panelArray.includes(directMap.display)) {
-					dispatch(setDisplayedPanelID({direction, value: p.id}));
+					dispatch(setDisplayedPanelID({ direction, value: p.id }));
 					if (p.panelArray.length > 1) {
-						dispatch(setTwinArrayDir(p.panelArray.length));
-						dispatch(setTwinIndexDir(p.panelArray.indexOf(directMap.display)));
-						dispatch(setSwitcherDir(true));
+						dispatch(
+							setTwinArray({
+								direction,
+								value: p.panelArray.length,
+							}),
+						);
+						dispatch(
+							setTwinIndex({
+								direction,
+								value: p.panelArray.indexOf(directMap.display),
+							}),
+						);
+						dispatch(setSwitcher({ direction, value: true }));
 					} else {
-						dispatch(setSwitcherDir(false));
+						dispatch(setSwitcher({ direction, value: false }));
 					}
 
 					setPanelChart(true);
 					desiredPanel = findDesiredPanel(directMap.display);
 
-					dispatch(setDisplayedPanelID({direction, value: p.id}));
+					dispatch(setDisplayedPanelID({ direction, value: p.id }));
 					setPanel(desiredPanel[0].content);
-					dispatch(setChartParameters({direction, value: desiredPanel[0].chartParameters}));
+					dispatch(
+						setChartParameters({
+							direction,
+							value: desiredPanel[0].chartParameters,
+						}),
+					);
 				}
 			});
 		} else {
@@ -88,15 +119,27 @@ function SwithcerV2({ direction, panelClassName }) {
 				if (p.id === displayedPanelID) {
 					if (p.panelArray.length > 0) {
 						if (p.panelArray.length > 1) {
-							dispatch(setTwinArrayDir(p.panelArray.length));
-							dispatch(setSwitcherDir(true));
+							dispatch(
+								setTwinArray({
+									direction,
+									value: p.panelArray.length,
+								}),
+							);
+							dispatch(setSwitcher({ direction, value: true }));
 						} else {
-							dispatch(setSwitcherDir(false));
+							dispatch(setSwitcher({ direction, value: false }));
 						}
 						setPanelChart(true);
-						desiredPanel = findDesiredPanel(p.panelArray[twinIndex]);
+						desiredPanel = findDesiredPanel(
+							p.panelArray[twinIndex],
+						);
 						setPanel(desiredPanel[0].content);
-						dispatch(setChartParameters({direction, value: desiredPanel[0].chartParameters}));
+						dispatch(
+							setChartParameters({
+								direction,
+								value: desiredPanel[0].chartParameters,
+							}),
+						);
 					} else {
 						setPanelChart(false);
 						desiredPanel = panelDataDir.filter((item) => {
@@ -109,11 +152,16 @@ function SwithcerV2({ direction, panelClassName }) {
 						setPanel(desiredPanel[0].content);
 					}
 				} else if (p.panelArray.includes(displayedPanelID)) {
-					dispatch(setDisplayedPanelID({direction, value: p.id}));
+					dispatch(setDisplayedPanelID({ direction, value: p.id }));
 					let currentPanel = p.panelArray[twinIndex];
 					desiredPanel = findDesiredPanel(currentPanel);
 					setPanel(desiredPanel[0].content);
-					dispatch(setChartParameters({direction, value: desiredPanel[0].chartParameters}));
+					dispatch(
+						setChartParameters({
+							direction,
+							value: desiredPanel[0].chartParameters,
+						}),
+					);
 				}
 			});
 		}
@@ -127,11 +175,11 @@ function SwithcerV2({ direction, panelClassName }) {
 		directInit,
 		directMap.display,
 		mapVector,
-		setTwinIndexDir,
+		setTwinIndex,
 		setDisplayedPanelID,
 		setChartParameters,
-		setTwinArrayDir,
-		setSwitcherDir,
+		setTwinArray,
+		setSwitcher,
 	]);
 
 	useEffect(() => {
@@ -151,9 +199,9 @@ function SwithcerV2({ direction, panelClassName }) {
 				if (icon.panelArray.length > 0) {
 					if (result.includes(icon.panelArray[twinIndex])) {
 						// graphType === "ts" &&
-						dispatch(setGraphType("sim"));
+						dispatch(setGraphType('sim'));
 					} else {
-						dispatch(setGraphType("ts"));
+						dispatch(setGraphType('ts'));
 					}
 				}
 			}
@@ -162,7 +210,7 @@ function SwithcerV2({ direction, panelClassName }) {
 		displayedIcons,
 		displayedPanelID,
 		twinIndex,
-		dataArrivedRight,
+		dataArrived,
 		panelDataDir,
 		dispatch,
 	]);

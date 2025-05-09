@@ -1,10 +1,10 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
 const vectorSelectorSlice = createSlice({
-	name: "vector",
+	name: 'vector',
 	initialState: {
-		vectorName: "albopictus",
-		vectorNames: ["albopictus", "papatasi"],
-		mapVector: "albopictus",
+		vectorName: 'albopictus',
+		vectorNames: ['albopictus', 'papatasi'],
+		mapVector: 'albopictus',
 	},
 	reducers: {
 		setMapVector(state, action) {

@@ -1,5 +1,4 @@
-const { createSlice } = require("@reduxjs/toolkit");
-
+import { createSlice } from "@reduxjs/toolkit";
 const simulationSlice = createSlice({
 	name: "simulation",
 	initialState: {
@@ -13,7 +12,7 @@ const simulationSlice = createSlice({
 			returnMethod: "",
 			modelType: "",
 			modelData: "",
-			popJson:null
+			popJson: null,
 		},
 		addedSimulation: {
 			id: null,
@@ -22,7 +21,7 @@ const simulationSlice = createSlice({
 			returnMethod: "",
 			modelType: "",
 			modelData: "",
-			popJson:null
+			popJson: null,
 		},
 		parsedJson: {},
 	},
@@ -49,11 +48,13 @@ const simulationSlice = createSlice({
 			state.simList.push(action.payload);
 		},
 		deleteSimulation(state, action) {
-			state.simList = state.simList.filter((sim) => sim.id !== action.payload);
+			state.simList = state.simList.filter(
+				(sim) => sim.id !== action.payload,
+			);
 		},
 		modifySimulation(state, action) {
 			const index = state.simList.findIndex(
-				(sim) => sim.id === action.payload.id
+				(sim) => sim.id === action.payload.id,
 			);
 			state.simList[index] = action.payload;
 		},

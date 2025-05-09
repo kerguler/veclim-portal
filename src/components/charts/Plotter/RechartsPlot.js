@@ -1,6 +1,6 @@
-import { useDispatch, useSelector } from "react-redux";
-import { useState } from "react";
-import { useEffect } from "react";
+import { useDispatch, useSelector } from 'react-redux';
+import { useState } from 'react';
+import { useEffect } from 'react';
 import {
 	LineChart,
 	Line,
@@ -12,20 +12,20 @@ import {
 	ResponsiveContainer,
 	Brush,
 	BrushY,
-} from "@kerguler/recharts";
-import { useRef } from "react";
-import "./RechartsPlot.css";
-import "./rechart.css";
+} from '@kerguler/recharts';
+import { useRef } from 'react';
+import './RechartsPlot.css';
+import './rechart.css';
 
-import CustomXAxisTick from "../chartComponents/CustomXAxisTick/CustomXAxisTick";
-import CustomLegend from "../chartComponents/CustomLegend/CustomLegend";
-import CustomTooltip from "../chartComponents/CustomTooltip/CustomTooltip";
-import useYsliderPositioning from "customHooks/useYsliderPositioning";
-import ChartCalculatorService from "../services/ChartCalculatorService";
-import useDirectorFun from "customHooks/useDirectorFun";
-import { setBrushDatay } from "store";
-import { setBrushRange } from "store";
-import { setBrushData } from "store";
+import CustomXAxisTick from '../chartComponents/CustomXAxisTick/CustomXAxisTick';
+import CustomLegend from '../chartComponents/CustomLegend/CustomLegend';
+import CustomTooltip from '../chartComponents/CustomTooltip/CustomTooltip';
+import useYsliderPositioning from 'customHooks/useYsliderPositioning';
+import ChartCalculatorService from '../services/ChartCalculatorService';
+import useDirectorFun from 'customHooks/useDirectorFun';
+import { setBrushDatay } from 'store';
+import { setBrushRange } from 'store';
+import { setBrushData } from 'store';
 function RechartsPlot({ direction, plotMat }) {
 	const args = {
 		years: { firstYear: null, lastYear: null },
@@ -69,14 +69,14 @@ function RechartsPlot({ direction, plotMat }) {
 				setBrushRange({
 					direction,
 					value: { startIndex: 0, endIndex: plotMat.length - 1 },
-				})
+				}),
 			);
 		} else {
 			dispatch(
 				setBrushData({
 					direction,
 					value: { direction, value: { startIndex: 0, endIndex: 0 } },
-				})
+				}),
 			);
 		}
 	}, [dispatch, plotMat, brushData, setBrushRange, setBrushData]);
@@ -97,20 +97,20 @@ function RechartsPlot({ direction, plotMat }) {
 	const keyRef = useRef([]);
 
 	const formatYAxisTick = (value) => {
-		if (typeof value === "number") {
+		if (typeof value === 'number') {
 			return value.toFixed(2);
 		}
 		return value; // If not a number, return it as is
 	};
 	useEffect(() => {
-		if (direction === "left") {
+		if (direction === 'left') {
 			plotMat &&
 				ChartCalculatorService.decideBrushRangeAlbo(
 					chartParameters,
 					plotMat,
 					dispatch,
 					d,
-					brushRange
+					brushRange,
 				);
 		} else {
 			plotMat &&
@@ -119,7 +119,7 @@ function RechartsPlot({ direction, plotMat }) {
 					plotMat,
 					dispatch,
 					d,
-					brushRange
+					brushRange,
 				);
 		}
 	}, [plotMat, vectorName]);
@@ -129,7 +129,7 @@ function RechartsPlot({ direction, plotMat }) {
 			dispatch,
 			plotMat,
 			setBrushRange,
-			direction
+			direction,
 		);
 	};
 
@@ -161,7 +161,7 @@ function RechartsPlot({ direction, plotMat }) {
 			scrlRef,
 			dispatch,
 			setBrushDatay,
-			direction
+			direction,
 		);
 	};
 
@@ -171,42 +171,45 @@ function RechartsPlot({ direction, plotMat }) {
 		plotMat[0] &&
 		Object.keys(plotMat[0]).length > 1 &&
 		Object.keys(plotMat[0]).map((key, index) => {
-			if (key === "date") return null;
+			if (key === 'date') return null;
 			let uniqueKey = `${key}-${index}`;
 			keyRef.current.push(uniqueKey);
 			// deterimine color of the line
 			let primaryKey = null;
 			let secondaryKey = null;
 			let color;
-			if (key.split(".").length > 1) {
-				primaryKey = key.split(".")[0];
-				secondaryKey = key.split(".")[1];
+			if (key.split('.').length > 1) {
+				primaryKey = key.split('.')[0];
+				secondaryKey = key.split('.')[1];
 
 				if (primaryKey in chartParameters.sliceInfo) {
 					if (
-						secondaryKey in chartParameters.sliceInfo[primaryKey].sliceColors
+						secondaryKey in
+						chartParameters.sliceInfo[primaryKey].sliceColors
 					) {
 						color =
-							chartParameters.sliceInfo[primaryKey].sliceColors[secondaryKey] ||
-							"black";
+							chartParameters.sliceInfo[primaryKey].sliceColors[
+								secondaryKey
+							] || 'black';
 					}
 				}
 			} else {
 				primaryKey = key;
-				color = chartParameters.sliceInfo[primaryKey].sliceColors["slice0"];
+				color =
+					chartParameters.sliceInfo[primaryKey].sliceColors['slice0'];
 			}
 
 			return (
 				<Line
 					id={uniqueKey}
 					key={`${uniqueKey}${direction}`}
-					type="monotone"
+					type='monotone'
 					dataKey={key}
 					stroke={color}
-					strokeWidth="1.5"
+					strokeWidth='1.5'
 					dot={false}
 				>
-					{" "}
+					{' '}
 				</Line>
 			);
 		});
@@ -215,21 +218,25 @@ function RechartsPlot({ direction, plotMat }) {
 		return <div>Loading data...</div>;
 	}
 	return (
-		<ResponsiveContainer key={`${direction}`} maxHeight={400} maxWidth={600}>
+		<ResponsiveContainer
+			key={`${direction}`}
+			maxHeight={400}
+			maxWidth={600}
+		>
 			<LineChart
-				id="line-chart"
+				id='line-chart'
 				key={`line-chart-${direction}`}
-				className="chart"
+				className='chart'
 				width={500}
 				height={400}
 				data={plotMat}
 				margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
 			>
 				{renderedLines}
-				<CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
+				<CartesianGrid stroke='#ccc' strokeDasharray='5 5' />
 				<XAxis
 					key={`xaxis${direction}`}
-					dataKey="date"
+					dataKey='date'
 					tick={
 						<CustomXAxisTick
 							key={`${direction}`}
@@ -247,8 +254,8 @@ function RechartsPlot({ direction, plotMat }) {
 				/>
 				<Brush
 					key={`brushx${direction}`}
-					className="myBrush"
-					dataKey="date"
+					className='myBrush'
+					dataKey='date'
 					height={15}
 					data={plotMat}
 					onChange={handleBrushChange}
@@ -258,7 +265,7 @@ function RechartsPlot({ direction, plotMat }) {
 					//  endIndex={brushRange.endIndex}
 				/>
 				<Tooltip
-					contentStyle={{ margin: "20px" }}
+					contentStyle={{ margin: '20px' }}
 					content={
 						<CustomTooltip
 							keys={argRef.current.keys}
@@ -267,37 +274,37 @@ function RechartsPlot({ direction, plotMat }) {
 					}
 				/>
 				<Legend
-					key={"legend"}
+					key={'legend'}
 					wrapperStyle={{
-						top: "10px",
+						top: '10px',
 						right: 0,
-						border: "1px solid black",
-						borderRadius: "0.5rem",
-						background: "white",
-						padding: "0rem",
+						border: '1px solid black',
+						borderRadius: '0.5rem',
+						background: 'white',
+						padding: '0rem',
 					}}
-					className="myLegend"
-					layout="box"
-					align="top"
+					className='myLegend'
+					layout='box'
+					align='top'
 					margin={10}
 					content={
 						<CustomLegend
 							keys={argRef.current.keys}
-							key={"customLegend"}
+							key={'customLegend'}
 							direction={direction}
 						/>
 					}
 				/>
 				<g
-					className="brushY-wrapper"
+					className='brushY-wrapper'
 					style={{
 						transform: `translate(${transform[0]}px, ${transform[1]}px)`,
 					}}
 				>
 					<BrushY
 						key={`brushy${direction}`}
-						className="myBrushY"
-						dataKey=""
+						className='myBrushY'
+						dataKey=''
 						height={150}
 						width={15}
 						data={plotMat}

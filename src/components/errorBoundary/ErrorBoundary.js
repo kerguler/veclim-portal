@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 class ErrorBoundary extends React.Component {
 	constructor(props) {
 		super(props);
@@ -22,7 +22,7 @@ class ErrorBoundary extends React.Component {
 			// You can render any custom fallback UI
 			return (
 				<h1>
-					Something went wrong. {error} {errorInfo}{" "}
+					Something went wrong. {error} {errorInfo}{' '}
 				</h1>
 			);
 		}

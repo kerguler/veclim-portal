@@ -118,7 +118,7 @@
 }
 
 .icon-row-label {
-	font-family: "Inter-Bold", sens-serif;
+	font-family: 'Inter-Bold', sens-serif;
 	font-weight: bold;
 	color: var(--secondary-color1);
 	width: fit-content;
@@ -133,7 +133,7 @@
 }
 
 .icon-row-label {
-	font-family: "Inter-Bold", sens-serif;
+	font-family: 'Inter-Bold', sens-serif;
 	font-weight: bold;
 	color: var(--secondary-color1);
 	width: fit-content;
@@ -240,7 +240,7 @@
 	}
 
 	.icon-row-label {
-		font-family: "Inter-Bold", sens-serif;
+		font-family: 'Inter-Bold', sens-serif;
 		font-weight: bold;
 		color: var(--secondary-color1);
 		width: fit-content;
@@ -255,7 +255,7 @@
 	}
 
 	.icon-row-label {
-		font-family: "Inter-Bold", sens-serif;
+		font-family: 'Inter-Bold', sens-serif;
 		font-weight: bold;
 		color: var(--secondary-color1);
 		width: fit-content;

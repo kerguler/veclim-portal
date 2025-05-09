@@ -1,30 +1,36 @@
-import { useEffect } from "react";
-import PackageMapServices from "components/map/mapPackage/PackageMapServices";
-import { useDispatch } from "react-redux";
-import { useSelector } from "react-redux";
+import { useEffect } from 'react';
+import PackageMapServices from 'components/map/mapPackage/PackageMapServices';
+import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 function useZoomActions(mapParRef) {
 	const vectorName = useSelector(
-		(state) => state.fetcher.fetcherStates.vectorName
+		(state) => state.fetcher.fetcherStates.vectorName,
 	);
 	const mapPagePosition = useSelector(
-		(state) => state.fetcher.fetcherStates.map.mapPagePosition
+		(state) => state.fetcher.fetcherStates.map.mapPagePosition,
 	);
 	const switchMap = useSelector(
-		(state) => state.fetcher.fetcherStates.map.switchMap
+		(state) => state.fetcher.fetcherStates.map.switchMap,
 	);
 	let p = mapParRef.current;
 	const dispatch = useDispatch();
 	useEffect(() => {
 		const handleMarkers = () => {
-			PackageMapServices.markerHandler(mapParRef, 4, vectorName, dispatch,mapPagePosition);
+			PackageMapServices.markerHandler(
+				mapParRef,
+				4,
+				vectorName,
+				dispatch,
+				mapPagePosition,
+			);
 		};
-		p.map.on("zoomend", handleMarkers);
+		p.map.on('zoomend', handleMarkers);
 		if (switchMap) {
 			handleMarkers();
 		}
 		return () => {
-			p.map.off("zoomend", handleMarkers);
+			p.map.off('zoomend', handleMarkers);
 		};
 	}, [vectorName, p.map, mapParRef, dispatch, switchMap]);
 }

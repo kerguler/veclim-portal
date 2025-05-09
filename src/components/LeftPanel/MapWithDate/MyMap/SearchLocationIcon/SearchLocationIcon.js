@@ -1,17 +1,17 @@
 // import { IconContext } from "react-icons/lib";
 // import { AiOutlineSearch } from "react-icons/ai";
-import searchIcon from "assets/icons/search_icon.png";
-import LiveSearchCaps from "components/LeftPanel/MapWithDate/MyMap/SearchLocationIcon/LiveSearchCaps/LiveSearchCaps";
-import { useDispatch, useSelector } from "react-redux";
+import searchIcon from 'assets/icons/search_icon.png';
+import LiveSearchCaps from 'components/LeftPanel/MapWithDate/MyMap/SearchLocationIcon/LiveSearchCaps/LiveSearchCaps';
+import { useDispatch, useSelector } from 'react-redux';
 import {
 	toggleShowSearchBar,
 	setShowSearchBar,
 	setLocationRequested,
-} from "store";
-import ToolTip from "components/Tooltip/ToolTip";
-import "./SearchLocationIcon.css";
-import "components/Tooltip/ToolTip.css";
-import { useEffect, useRef } from "react";
+} from 'store';
+import ToolTip from 'components/Tooltip/ToolTip';
+import './SearchLocationIcon.css';
+import 'components/Tooltip/ToolTip.css';
+import { useEffect, useRef } from 'react';
 function SearchLocationIcon({ border }) {
 	const dispatch = useDispatch();
 
@@ -29,7 +29,8 @@ function SearchLocationIcon({ border }) {
 		const handleMouseMove = (event) => {
 			event.stopPropagation();
 			if (searchContainerRef1.current) {
-				const bounds = searchContainerRef1.current.getBoundingClientRect();
+				const bounds =
+					searchContainerRef1.current.getBoundingClientRect();
 				const isBeyondBounds =
 					event.clientX < bounds.left ||
 					event.clientX > bounds.right + 30 ||
@@ -40,18 +41,18 @@ function SearchLocationIcon({ border }) {
 				}
 			}
 		};
-		window.addEventListener("mousemove", handleMouseMove);
+		window.addEventListener('mousemove', handleMouseMove);
 		return () => {
-			window.removeEventListener("mousemove", handleMouseMove);
+			window.removeEventListener('mousemove', handleMouseMove);
 		};
 	}, [dispatch]);
 
 	return (
-		<div className="" ref={searchContainerRef1}>
-			<div className="tooltip-element search-icon">
+		<div className='' ref={searchContainerRef1}>
+			<div className='tooltip-element search-icon'>
 				<img
-					alt="search-icon"
-					className="locate-me-icon"
+					alt='search-icon'
+					className='locate-me-icon'
 					onClick={handleSearchIconClick}
 					src={searchIcon}
 				/>

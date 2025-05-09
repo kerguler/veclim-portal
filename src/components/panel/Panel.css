@@ -36,7 +36,7 @@
 	align-self: center;
 	box-shadow: 0px 2px 2px 3px rgba(19, 16, 16, 0.3);
 	position: relative;
-width:90%;
+	width: 90%;
 }
 .panel-inner-box h1 {
 	color: var(--secondary-color1);
@@ -117,7 +117,6 @@ width:90%;
 		padding: 1rem;
 		align-items: center;
 		animation: panel-open-from-left 0.5s ease-out;
-
 	}
 	.panel-container.no-anim {
 		animation: unset;

@@ -51,7 +51,7 @@
 	overflow: hidden;
 }
 .icon.shimmer-on::after {
-	content: "";
+	content: '';
 	position: absolute;
 	top: 0%;
 	left: 200%;

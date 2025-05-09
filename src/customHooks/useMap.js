@@ -1,17 +1,19 @@
-import { useEffect } from "react";
-import L from "leaflet";
+import { useEffect } from 'react';
+import L from 'leaflet';
 
-import { useDispatch, useSelector } from "react-redux";
-import PackageMapServices from "components/map/mapPackage/PackageMapServices";
-import useMapResize from "./useMapResize";
-import { setCurrentMapCenter, setCurrentMapBounds } from "store";
-import { current } from "@reduxjs/toolkit";
-import useFetcherVariables from "./useFetcherVariables";
+import { useDispatch, useSelector } from 'react-redux';
+import PackageMapServices from 'components/map/mapPackage/PackageMapServices';
+import useMapResize from './useMapResize';
+import { setCurrentMapCenter, setCurrentMapBounds } from 'store';
+import { current } from '@reduxjs/toolkit';
+import useFetcherVariables from './useFetcherVariables';
 function useMap(mapParRef) {
 	useMapResize();
 	const dispatch = useDispatch();
 
-	const pageTransition = useSelector((state) => state.location.pageTransition);
+	const pageTransition = useSelector(
+		(state) => state.location.pageTransition,
+	);
 	let m = mapParRef.current;
 
 	const {
@@ -33,9 +35,9 @@ function useMap(mapParRef) {
 			switchMap,
 			currentMapCenter,
 			currentMapZoom,
-			dispatch
+			dispatch,
 		);
-		p.map = L.map("map1", {
+		p.map = L.map('map1', {
 			maxBoundsViscosity: 0,
 			maxBounds: p.maxBounds,
 			zoomControl: false,

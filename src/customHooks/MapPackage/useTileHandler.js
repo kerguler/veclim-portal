@@ -1,18 +1,18 @@
-import { useEffect } from "react";
-import PackageMapServices from "components/map/mapPackage/PackageMapServices";
-import { useContext } from "react";
-import PanelContext from "context/panelsIcons";
-import useFetcherVariables from "customHooks/useFetcherVariables";
-import TileLoaderService from "customHooks/TileLoaderService";
-import { useDispatch, useSelector } from "react-redux";
-import PanelContextV2 from "context/panelsIconsV2";
-import useDirectorFun from "customHooks/useDirectorFun";
+import { useEffect } from 'react';
+import PackageMapServices from 'components/map/mapPackage/PackageMapServices';
+import { useContext } from 'react';
+import PanelContext from 'context/panelsIcons';
+import useFetcherVariables from 'customHooks/useFetcherVariables';
+import TileLoaderService from 'customHooks/TileLoaderService';
+import { useDispatch, useSelector } from 'react-redux';
+import PanelContextV2 from 'context/panelsIconsV2';
+import useDirectorFun from 'customHooks/useDirectorFun';
 function useTileHandler(mapParRef) {
 	let p = mapParRef.current;
 	const dispatch = useDispatch();
-	const { tileIconsDir: tileIcons } = useDirectorFun("left");
+	const { tileIconsDir: tileIcons } = useDirectorFun('left');
 	const tileArray = useSelector(
-		(state) => state.fetcher.fetcherStates.tileArray
+		(state) => state.fetcher.fetcherStates.tileArray,
 	);
 	useEffect(() => {
 		// const tiles = PackageMapServices.chooseTileIcons(tileArray, tileIcons);
@@ -21,9 +21,14 @@ function useTileHandler(mapParRef) {
 			mapParRef,
 			tileArray,
 			tileIcons,
-			dispatch
+			dispatch,
 		);
-		PackageMapServices.handleDoubleMap(mapParRef, tileMat, tileArray, dispatch);
+		PackageMapServices.handleDoubleMap(
+			mapParRef,
+			tileMat,
+			tileArray,
+			dispatch,
+		);
 
 		return () => {
 			TileLoaderService.removeTileStyles(tileMat);

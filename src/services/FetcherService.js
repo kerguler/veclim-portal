@@ -1,8 +1,8 @@
-import PackageMapServices from "components/map/mapPackage/PackageMapServices";
-import { setTileArray } from "store";
-import { setPanelOpenLeft } from "store";
-import { setMapMenuOpenLeft } from "store";
-import { setDirectMapLeft } from "store";
+import PackageMapServices from 'components/map/mapPackage/PackageMapServices';
+import { setTileArray } from 'store';
+import { setPanelOpenLeft } from 'store';
+import { setMapMenuOpenLeft } from 'store';
+import { setDirectMapLeft } from 'store';
 
 class FetcherService {
 	static handleTiles(dispatch, tile, vectorDependentTiles, sessionState) {
@@ -10,14 +10,14 @@ class FetcherService {
 			return;
 		}
 		let localTileArray = [];
-		let heading = "No tile found";
+		let heading = 'No tile found';
 		const error = new Error(heading);
-		error.type = "TileError";
-		if (tile === null || tile === "") {
+		error.type = 'TileError';
+		if (tile === null || tile === '') {
 			let explanation =
-				"available tiles are:" +
+				'available tiles are:' +
 				`${vectorDependentTiles.map((tile) => {
-					return tile + "\n";
+					return tile + '\n';
 				})}`;
 			error.heading = heading;
 			error.explanation = explanation;
@@ -27,7 +27,7 @@ class FetcherService {
 				return;
 			}
 		} else {
-			localTileArray = tile.split(":");
+			localTileArray = tile.split(':');
 			if (localTileArray.length === 1) {
 				if (vectorDependentTiles.includes(localTileArray[0])) {
 					dispatch(setTileArray(localTileArray));
@@ -37,8 +37,8 @@ class FetcherService {
 					error.heading = `Tile ${localTileArray[0]} Not Found`;
 					error.explanation = `available tiles are: ${vectorDependentTiles.map(
 						(tile) => {
-							return tile + "\n";
-						}
+							return tile + '\n';
+						},
 					)}`;
 					throw error;
 				}
@@ -56,8 +56,8 @@ class FetcherService {
 					const heading = `two tiles were entered but only the first tile was found  ${localTileArray[0]}`;
 					const explanation = `available tiles are: ${vectorDependentTiles.map(
 						(tile) => {
-							return tile + "\n";
-						}
+							return tile + '\n';
+						},
 					)}`;
 					error.heading = heading;
 					error.explanation = explanation;
@@ -69,8 +69,8 @@ class FetcherService {
 					const heading = `two tiles were entered but only the second tile was found  ${localTileArray[0]}`;
 					const explanation = `available tiles are: ${vectorDependentTiles.map(
 						(tile) => {
-							return tile + "\n";
-						}
+							return tile + '\n';
+						},
 					)}`;
 					error.heading = heading;
 					error.explanation = explanation;
@@ -80,8 +80,8 @@ class FetcherService {
 					const heading = `two tiles were entered but none was found `;
 					const explanation = `available tiles are: ${vectorDependentTiles.map(
 						(tile) => {
-							return tile + "\n";
-						}
+							return tile + '\n';
+						},
 					)}`;
 					error.heading = heading;
 					error.explanation = explanation;
@@ -94,9 +94,9 @@ class FetcherService {
 		if (panels.length === 0) {
 			return;
 		}
-		let heading = "No panel found";
+		let heading = 'No panel found';
 		let longi, lati;
-		if (lon == null || lat === null || lon === "" || lat === "") {
+		if (lon == null || lat === null || lon === '' || lat === '') {
 			longi = PackageMapServices.defaultCypCenter[1];
 			lati = PackageMapServices.defaultCypCenter[0];
 		} else if (-90 <= lat && lat <= 90 && -180 <= lon && lat <= lon) {
@@ -107,15 +107,15 @@ class FetcherService {
 			lati = PackageMapServices.defaultCypCenter[0];
 		}
 		const error = new Error(heading);
-		error.type = "PanelError";
+		error.type = 'PanelError';
 
-		if (ts === null || ts === "") {
+		if (ts === null || ts === '') {
 			dispatch(
 				setDirectMapLeft({
 					lon: null,
 					lat: null,
 					display: -2,
-				})
+				}),
 			);
 
 			dispatch(setPanelOpenLeft(false));
@@ -130,11 +130,11 @@ class FetcherService {
 						lon: null,
 						lat: null,
 						display: -2,
-					})
+					}),
 				);
 			} else {
 				let panelWithDecade = panels.filter(
-					(p) => p.key === ts && p.decade === decade
+					(p) => p.key === ts && p.decade === decade,
 				);
 				if (panelWithDecade.length !== 0) {
 					dispatch(
@@ -142,21 +142,21 @@ class FetcherService {
 							lon: parseFloat(longi),
 							lat: parseFloat(lati),
 							display: panelWithDecade[0].id,
-						})
+						}),
 					);
 				} else {
-					if (decade === null || decade === "") {
+					if (decade === null || decade === '') {
 						dispatch(
 							setDirectMapLeft({
 								lon: parseFloat(longi),
 								lat: parseFloat(lati),
 								display: panelsFound[0].id,
-							})
+							}),
 						);
 						return;
 					}
 					const heading = `No panel with name ${ts} and decade ${decade} was found`;
-					const explanation = "";
+					const explanation = '';
 					error.heading = heading;
 					error.explanation = explanation;
 					dispatch(
@@ -164,7 +164,7 @@ class FetcherService {
 							lon: null,
 							lat: null,
 							display: -2,
-						})
+						}),
 					);
 					throw error;
 				}

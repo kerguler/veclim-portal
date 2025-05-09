@@ -1,18 +1,14 @@
-import TsRequest from "./TsRequest";
-import { useSelector } from "react-redux";
-import useDirectorFun from "customHooks/useDirectorFun";
-import CustomSimulationChart from "./CustomSimulationChart";
-import { useFetchTimeSeriesDataQuery } from "store";
-import ChartLoadingSkeleton from "components/skeleton/Skeleton";
-import { useAlboData } from "context/AlboDataContext";
+import TsRequest from './TsRequest';
+import { useSelector } from 'react-redux';
+import useDirectorFun from 'customHooks/useDirectorFun';
+import CustomSimulationChart from './CustomSimulationChart';
+import { useFetchTimeSeriesDataQuery } from 'store';
+import ChartLoadingSkeleton from 'components/skeleton/Skeleton';
+import { useAlboData } from 'context/AlboDataContext';
 
 function UnifiedRechartPlotter({ direction }) {
-	const {
-		
-		mapPagePosition,
-		vectorName,
-		dateArray,
-	} = useDirectorFun(direction);
+	const { mapPagePosition, vectorName, dateArray } =
+		useDirectorFun(direction);
 
 	const { data, error, isFetching } = useFetchTimeSeriesDataQuery({
 		position: JSON.stringify(mapPagePosition),
@@ -21,9 +17,8 @@ function UnifiedRechartPlotter({ direction }) {
 	});
 	const { dataSim, isLoadingSim, errorSim } = useAlboData();
 	const graphType = useSelector(
-		(state) => state.fetcher.fetcherStates.graphType
+		(state) => state.fetcher.fetcherStates.graphType,
 	);
-
 
 	if (dataSim && graphType === null) {
 		return (
@@ -45,11 +40,11 @@ function UnifiedRechartPlotter({ direction }) {
 			</ChartLoadingSkeleton>
 		);
 	} else if (data) {
-		if (graphType === "sim") {
-			console.log("albo");
+		if (graphType === 'sim') {
+			console.log('albo');
 			return <CustomSimulationChart direction={direction} />;
 		} else {
-			console.log("ts");
+			console.log('ts');
 			return <TsRequest direction={direction} />;
 		}
 	} else {

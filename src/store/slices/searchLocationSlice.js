@@ -1,17 +1,17 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { getCurrentDate } from "../apis/utils";
+import { createSlice } from '@reduxjs/toolkit';
+import { getCurrentDate } from '../apis/utils';
 
 const searchLocationSlice = createSlice({
-	name: "form",
+	name: 'form',
 	initialState: {
-		locationName: "",
+		locationName: '',
 		showInstructions: false,
 		locationRequested: true,
-		date: getCurrentDate("-"),
+		date: getCurrentDate('-'),
 		capitalArray: [],
 		superUser: false,
 		pageTransition: null,
-		dividerPosition: 0.50,
+		dividerPosition: 0.5,
 	},
 	reducers: {
 		setDividerPosition(state, action) {
@@ -42,10 +42,10 @@ const searchLocationSlice = createSlice({
 			var currentLocation = {
 				CapitalLatitude: 0,
 				CapitalLongitude: 0,
-				CapitalName: "Use current location",
-				ContinentName: "NULL",
-				CountryCode: "NULL",
-				CountryName: "NULL",
+				CapitalName: 'Use current location',
+				ContinentName: 'NULL',
+				CountryCode: 'NULL',
+				CountryName: 'NULL',
 			};
 			action.payload.unshift(currentLocation);
 			state.capitalArray = action.payload;

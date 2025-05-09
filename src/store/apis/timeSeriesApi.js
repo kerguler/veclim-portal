@@ -1,9 +1,9 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { getDateRange } from "./utils";
-import { useSelector } from "react-redux";
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { getDateRange } from './utils';
+import { useSelector } from 'react-redux';
 
 const timeSeriesApi = createApi({
-	reducerPath: "timeSeriesInfo",
+	reducerPath: 'timeSeriesInfo',
 	baseQuery: fetchBaseQuery({
 		baseUrl: process.env.REACT_APP_BASE_URL,
 		fetchFn: async (input, init) => {
@@ -13,7 +13,7 @@ const timeSeriesApi = createApi({
 			// console.log("Raw Response Text:", rawText);
 
 			// Replace all instances of NaN with null in the raw text
-			const sanitizedText = rawText.replace(/NaN/g, "null");
+			const sanitizedText = rawText.replace(/NaN/g, 'null');
 
 			//  console.log("Sanitized Response Text:", sanitizedText);
 
@@ -26,19 +26,19 @@ const timeSeriesApi = createApi({
 					headers: response.headers,
 				});
 			} catch (error) {
-				console.error("Error parsing sanitized JSON:", error);
+				console.error('Error parsing sanitized JSON:', error);
 				return {
 					error: {
 						status: response.status,
 						statusText: response.statusText,
-						message: "Failed to parse sanitized response JSON.",
+						message: 'Failed to parse sanitized response JSON.',
 					},
 				};
 			}
 		},
 	}),
 
-	tagTypes: ["TimeSeries"],
+	tagTypes: ['TimeSeries'],
 	endpoints(builder) {
 		return {
 			fetchTimeSeriesData: builder.query({
@@ -47,31 +47,31 @@ const timeSeriesApi = createApi({
 					location = JSON.parse(data.position);
 
 					// const dateRange = `${"2024-01-01:2025-12-31"}`;
-					const dateRange = getDateRange(":");
+					const dateRange = getDateRange(':');
 					const vectorName = data.vectorName;
 					let param;
-					if (vectorName === "albopictus") {
+					if (vectorName === 'albopictus') {
 						param = {
-							vec: "albopictus",
+							vec: 'albopictus',
 							lon: location.lng,
 							lat: location.lat,
 							dates: dateRange,
-							opr: "ts",
+							opr: 'ts',
 						};
 					} else {
 						param = {
-							vec: "papatasi",
+							vec: 'papatasi',
 							lon: location.lng,
 							lat: location.lat,
-							dates: `${"2015-03-31:2015-12-31"}`,
-							opr: "ts",
+							dates: `${'2015-03-31:2015-12-31'}`,
+							opr: 'ts',
 						};
 					}
 
 					return {
-						url: "",
+						url: '',
 						params: param,
-						method: "GET",
+						method: 'GET',
 					};
 				},
 

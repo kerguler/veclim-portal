@@ -3,7 +3,7 @@
 	overflow: hidden;
 }
 .button::before {
-	content: "";
+	content: '';
 	position: absolute;
 	top: 0;
 	left: -150%; /* Start from the left */

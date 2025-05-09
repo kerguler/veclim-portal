@@ -1,22 +1,22 @@
-import { useEffect } from "react";
-import "../MapComponent/mapComponent.css";
-import MapCircularProgressBar from "../MapCircularProgessBar/MapCircularProgressBar";
-import { useRef } from "react";
-import ColorBarComponent from "../ColorBar/ColorBarComponent";
-import PackageMapServices from "./PackageMapServices";
-import useLMapCoordinateUpdate from "customHooks/MapPackage/useLMapCoordinateUpdate";
-import ErrorScreenMap from "../errorScreen/ErrorScreenMap";
-import TileNameDisplay from "../tileNameDisplay/TileNameDisplay";
-import useFetcherVariables from "customHooks/useFetcherVariables";
-import useLMap from "customHooks/MapPackage/useLMap";
-import { useDispatch } from "react-redux";
-import useTileHandler from "customHooks/MapPackage/useTileHandler";
-import useSeparatorActions from "customHooks/MapPackage/useSeparatorActions";
-import useZoomActions from "customHooks/useZoomActions";
-import useMapBasicEvents from "customHooks/MapPackage/useMapBasicEvents";
-import useLMapResize from "customHooks/MapPackage/useLMapResize";
-import { useSelector } from "react-redux";
-import { setMapPagePosition } from "store";
+import { useEffect } from 'react';
+import '../MapComponent/mapComponent.css';
+import MapCircularProgressBar from '../MapCircularProgessBar/MapCircularProgressBar';
+import { useRef } from 'react';
+import ColorBarComponent from '../ColorBar/ColorBarComponent';
+import PackageMapServices from './PackageMapServices';
+import useLMapCoordinateUpdate from 'customHooks/MapPackage/useLMapCoordinateUpdate';
+import ErrorScreenMap from '../errorScreen/ErrorScreenMap';
+import TileNameDisplay from '../tileNameDisplay/TileNameDisplay';
+import useFetcherVariables from 'customHooks/useFetcherVariables';
+import useLMap from 'customHooks/MapPackage/useLMap';
+import { useDispatch } from 'react-redux';
+import useTileHandler from 'customHooks/MapPackage/useTileHandler';
+import useSeparatorActions from 'customHooks/MapPackage/useSeparatorActions';
+import useZoomActions from 'customHooks/useZoomActions';
+import useMapBasicEvents from 'customHooks/MapPackage/useMapBasicEvents';
+import useLMapResize from 'customHooks/MapPackage/useLMapResize';
+import { useSelector } from 'react-redux';
+import { setMapPagePosition } from 'store';
 function MapPackageComponent({ fitworld }) {
 	const dispatch = useDispatch();
 	const {
@@ -32,7 +32,7 @@ function MapPackageComponent({ fitworld }) {
 		switchMap,
 	} = useFetcherVariables();
 	const userPosition = useSelector(
-		(state) => state.fetcher.fetcherStates.map.userPosition
+		(state) => state.fetcher.fetcherStates.map.userPosition,
 	);
 
 	const mapParameters = {
@@ -88,7 +88,7 @@ function MapPackageComponent({ fitworld }) {
 				directMapLeft,
 				directMapRight,
 				mapPagePosition,
-				"left"
+				'left',
 			);
 		}
 
@@ -126,8 +126,8 @@ function MapPackageComponent({ fitworld }) {
 			<MapCircularProgressBar />
 			<ColorBarComponent times={tileArray.length}></ColorBarComponent>
 			<TileNameDisplay></TileNameDisplay>
-			<div className="map" id="map1">
-				<div id="coordinates"></div>
+			<div className='map' id='map1'>
+				<div id='coordinates'></div>
 			</div>
 		</>
 	);

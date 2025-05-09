@@ -1,35 +1,31 @@
-import { current } from "@reduxjs/toolkit";
-import RenderedPanelV2 from "components/panel/SwitcherV2/RenderedPanelV2";
-import useDirectorFun from "customHooks/useDirectorFun";
-import { useEffect, useRef, useState } from "react";
+import { current } from '@reduxjs/toolkit';
+import RenderedPanelV2 from 'components/panel/SwitcherV2/RenderedPanelV2';
+import useDirectorFun from 'customHooks/useDirectorFun';
+import { useEffect, useRef, useState } from 'react';
 
-import { useDispatch } from "react-redux";
-import { setChartParameters } from "store";
-import { setPlotReadyLeft } from "store";
-import { setTwinArray } from "store";
-import { setGraphType } from "store";
+import { useDispatch } from 'react-redux';
+import { setChartParameters } from 'store';
+import { setGraphType } from 'store';
 function PanelChildren({ displayedItem, level, direction }) {
 	const dispatch = useDispatch();
 	const {
 		openItems,
 		panelDataDir: panelData,
-		dataArrivedRight,
-		dataArrivedLeft,
+		dataArrived,
 		menuStructure,
 		twinIndex,
-		setTwinIndexDir: setTwinIndex,
 		setOpenItems,
 		mapPagePosition,
 		interferePanelStyleRight: interferePanelStyle,
-	} = useDirectorFun("left");
+	} = useDirectorFun(direction);
 
 	const panelChildren = menuStructure.filter((child) => {
 		if (child.parent === displayedItem.key) {
 			const desiredPanel = panelData.filter(
-				(panel) => panel.key === child.key
+				(panel) => panel.key === child.key,
 			)[0];
-			if (desiredPanel.simulation && !dataArrivedRight) {
-			} else if (desiredPanel.simulation && dataArrivedRight) {
+			if (desiredPanel.simulation && !dataArrived) {
+			} else if (desiredPanel.simulation && dataArrived) {
 				return child;
 			} else {
 				return child;
@@ -40,7 +36,7 @@ function PanelChildren({ displayedItem, level, direction }) {
 	useEffect(() => {
 		if (panelChildren && panelChildren[twinIndex]) {
 			let panel = panelData.filter(
-				(panel) => panel.key === panelChildren[twinIndex].key
+				(panel) => panel.key === panelChildren[twinIndex].key,
 			)[0];
 
 			if (
@@ -56,12 +52,12 @@ function PanelChildren({ displayedItem, level, direction }) {
 
 			if (
 				panelData.filter(
-					(panel) => panel.key === panelChildren[twinIndex].key
+					(panel) => panel.key === panelChildren[twinIndex].key,
 				)[0].simulation
 			) {
-				dispatch(setGraphType("sim"));
+				dispatch(setGraphType('sim'));
 			} else {
-				dispatch(setGraphType("ts"));
+				dispatch(setGraphType('ts'));
 			}
 		}
 	}, [
@@ -79,7 +75,7 @@ function PanelChildren({ displayedItem, level, direction }) {
 
 	const displayedPanel = panelChildren && panelChildren[twinIndex];
 	const displayedPanelDetails = panelData.filter(
-		(panel) => panel.key === displayedPanel.key
+		(panel) => panel.key === displayedPanel.key,
 	)[0];
 	const { content, chartParameters } = displayedPanelDetails;
 	useEffect(() => {
@@ -89,7 +85,7 @@ function PanelChildren({ displayedItem, level, direction }) {
 	return (
 		<RenderedPanelV2
 			siblingCount={siblingCount}
-			direction="left"
+			direction='left'
 			panelClassName={null}
 			panel={content}
 			level={level}

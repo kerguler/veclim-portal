@@ -5,48 +5,47 @@ import { useEffect, useState } from "react";
 import SimulationEditPanel from "./SimulationEditPanel/SimulationEditPanel";
 import { setSimList } from "store";
 import SimulationTiles from "./SimulationTiles/SimulationTiles";
-import { useNavigate } from "react-router-dom";
-
-function SimulationList() {
-	const navigate = useNavigate();
+import { use } from "react";
+import { areArraysIdentical } from "../utils/simUtils";
+function SimulationList({ direction }) {
 	const dispatch = useDispatch();
-	const id = localStorage.getItem("id");
-	const userDetails = useSelector((state) => state.login.apiRegisterResponse);
-	let userId = userDetails.userId ? userDetails.userId : id;
-const blinkers=useSelector((state)=>state.dashboard.blinkers)
-	if (userId === undefined || userId === null) {
-		navigate("/login");
-	}
-
+	const blinkers = useSelector((state) => state.dashboard.blinkers);
+	const simList = useSelector((state) => state.simulation.simList);
+	let id = null;
 	const {
-		data: SimData,
+		data: simData,
 		isFetching: isSimListFetching,
 		error: simListError,
-	} = useGetSimulationListQuery(userId ? userId.toString() : "");
+	} = useGetSimulationListQuery({ return_results: false });
 
 	useEffect(() => {
-		SimData && dispatch(setSimList(SimData.simulations));
-	}, [SimData, dispatch]);
+		if (!simData) return;
+		dispatch(setSimList(simData));
+		console.log("SimList updated", simData);
+	}, [simData, simList, dispatch]);
 
 	let renderedSimulationList = null;
-	if (isSimListFetching) {
-	} else if (simListError) {
-		console.log("error", simListError.status);
-	} else if (SimData) {
-		// console.log(SimData);
-		// dispatch(setSimList(SimData.simulations));
-		renderedSimulationList = <SimulationTiles SimData={SimData} />;
+	if (simData) {
+		renderedSimulationList = (
+			<SimulationTiles simData={simData} direction={direction} />
+		);
+	} else {
+		renderedSimulationList = (
+			<div>
+				<p>somethingg terrible happened</p>
+			</div>
+		);
 	}
-   
-	return (
-		<div className="simlist-container  ">
-			{blinkers.displayEditPage && <SimulationEditPanel  />}
 
-			<div className="title-simulations ">
-				<h3>Current Simulations</h3>{" "}
+	return (
+		<div className='simlist-container  '>
+			{blinkers.displayEditPage && <SimulationEditPanel />}
+
+			<div className='title-simulations '>
+				<p>Current Simulations</p>{" "}
 			</div>
 
-			<div className="scrollable-list  ">{renderedSimulationList}</div>
+			<div className='scrollable-list  '>{renderedSimulationList}</div>
 		</div>
 	);
 }

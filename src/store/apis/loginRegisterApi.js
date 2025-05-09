@@ -2,15 +2,9 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 const loginRegisterApi = createApi({
 	reducerPath: "loginRegisterApi",
 	baseQuery: fetchBaseQuery({
-		baseUrl: process.env.REACT_APP_DEV_URL,
+		baseUrl: process.env.REACT_APP_LOCAL_DEV_URL,
 		prepareHeaders: (headers, { getState }) => {
-			const csrf = localStorage.getItem("csrfToken");
 			headers.set("Content-Type", "application/json");
-			headers.set("Access-Control-Allow-Origin", "*");
-			if (csrf) {
-				headers.set("X-CSRFToken", csrf); 
-			}
-
 			return headers;
 		},
 		credentials: "include",
@@ -37,7 +31,7 @@ const loginRegisterApi = createApi({
 			login: builder.mutation({
 				query: (data) => {
 					return {
-						url: "auth/",
+						url: "sauth/",
 						method: "POST",
 						body: data,
 					};

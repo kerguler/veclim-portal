@@ -43,7 +43,7 @@
 	width: 50px;
 	height: 60px;
 	color: white;
-	background-image: url("/src/assets/images/VEClim-drop.svg");
+	background-image: url('/src/assets/images/VEClim-drop.svg');
 	background-position: 0px 14px;
 	background-repeat: no-repeat;
 }
@@ -80,7 +80,7 @@
 		width: 70px;
 		height: 85px;
 		color: white;
-		background-image: url("/src/assets/images/VEClim-drop.svg");
+		background-image: url('/src/assets/images/VEClim-drop.svg');
 		background-repeat: no-repeat;
 		background-position: 0px 20px;
 	}

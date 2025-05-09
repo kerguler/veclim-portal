@@ -1,4 +1,4 @@
-@import url("styles/colors.css");
+@import url('styles/colors.css');
 
 .cover {
 	position: relative;
@@ -35,7 +35,7 @@
 	position: fixed;
 	z-index: 3000;
 	max-width: 100vw;
-	background: url("assets/images/dark_background.webp") center center/cover;
+	background: url('assets/images/dark_background.webp') center center/cover;
 	opacity: 1;
 	clip-path: polygon(0 0, 100% 0, 100% 85%, 0 60%);
 	/* overflow: visible; */
@@ -49,7 +49,7 @@
 	padding: 0.1rem 0.1rem;
 	height: var(--mobile-nav-height);
 	width: 100vw;
-	background: url("assets/images/logos/VEClim-Logo-monochrome-white-200px.png")
+	background: url('assets/images/logos/VEClim-Logo-monochrome-white-200px.png')
 		center no-repeat;
 	background-position: 50% 20%;
 	background-size: 40%;
@@ -65,7 +65,7 @@
 	color: white;
 	padding: 3px;
 	margin: 3px;
-	background-image: url("assets/icons/menu-white-32px.png");
+	background-image: url('assets/icons/menu-white-32px.png');
 	background-size: 32px;
 	background-repeat: no-repeat;
 	background-position: center;

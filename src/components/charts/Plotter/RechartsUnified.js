@@ -1,6 +1,6 @@
-import { useDispatch } from "react-redux";
-import { useState } from "react";
-import { useEffect } from "react";
+import { useDispatch } from 'react-redux';
+import { useState } from 'react';
+import { useEffect } from 'react';
 import {
 	LineChart,
 	Line,
@@ -12,20 +12,20 @@ import {
 	ResponsiveContainer,
 	Brush,
 	BrushY,
-} from "@kerguler/recharts";
-import { useRef } from "react";
-import "./RechartsPlot.css";
-import "./rechart.css";
+} from '@kerguler/recharts';
+import { useRef } from 'react';
+import './RechartsPlot.css';
+import './rechart.css';
 
-import CustomXAxisTick from "../chartComponents/CustomXAxisTick/CustomXAxisTick";
-import CustomLegend from "../chartComponents/CustomLegend/CustomLegend";
-import CustomTooltip from "../chartComponents/CustomTooltip/CustomTooltip";
-import useYsliderPositioning from "customHooks/useYsliderPositioning";
-import ChartCalculatorService from "../services/ChartCalculatorService";
-import useDirectorFun from "customHooks/useDirectorFun";
-import { setBrushData } from "store";
-import { setBrushRange } from "store";
-import { setBrushDatay } from "store";
+import CustomXAxisTick from '../chartComponents/CustomXAxisTick/CustomXAxisTick';
+import CustomLegend from '../chartComponents/CustomLegend/CustomLegend';
+import CustomTooltip from '../chartComponents/CustomTooltip/CustomTooltip';
+import useYsliderPositioning from 'customHooks/useYsliderPositioning';
+import ChartCalculatorService from '../services/ChartCalculatorService';
+import useDirectorFun from 'customHooks/useDirectorFun';
+import { setBrushData } from 'store';
+import { setBrushRange } from 'store';
+import { setBrushDatay } from 'store';
 
 function RechartsUnified({ direction, plotMat }) {
 	const myPlotMat = plotMat;
@@ -61,7 +61,10 @@ function RechartsUnified({ direction, plotMat }) {
 	useEffect(() => {
 		myPlotMat &&
 			dispatch(
-				setBrushRange({direction,value:{ startIndex: 0, endIndex: myPlotMat.length - 1 }})
+				setBrushRange({
+					direction,
+					value: { startIndex: 0, endIndex: myPlotMat.length - 1 },
+				}),
 			);
 	}, [vectorName, dispatch, myPlotMat]);
 
@@ -81,18 +84,18 @@ function RechartsUnified({ direction, plotMat }) {
 	const keyRef = useRef([]);
 
 	const formatYAxisTick = (value) => {
-		if (typeof value === "number") {
+		if (typeof value === 'number') {
 			return value.toFixed(2);
 		}
 		return value; // If not a number, return it as is
 	};
-	if (direction === "left") {
+	if (direction === 'left') {
 		ChartCalculatorService.decideBrushRange(
 			chartParameters,
 			myPlotMat,
 			dispatch,
 			d,
-			brushRange
+			brushRange,
 		);
 	} else {
 		ChartCalculatorService.decideBrushRangeAlbo(
@@ -100,7 +103,7 @@ function RechartsUnified({ direction, plotMat }) {
 			myPlotMat,
 			dispatch,
 			d,
-			brushRange
+			brushRange,
 		);
 	}
 	const handleBrushChange = (range) => {
@@ -108,7 +111,8 @@ function RechartsUnified({ direction, plotMat }) {
 			range,
 			dispatch,
 			myPlotMat,
-			setBrushRange,direction
+			setBrushRange,
+			direction,
 		);
 	};
 
@@ -122,7 +126,7 @@ function RechartsUnified({ direction, plotMat }) {
 				});
 			});
 		s.brushDataY = { min: s.minmax.min, max: s.minmax.max };
-		dispatch(setBrushDatay({direction,value:s.brushDataY}));
+		dispatch(setBrushDatay({ direction, value: s.brushDataY }));
 	}, [
 		myPlotMat,
 		chartParameters.plottedKeys,
@@ -137,7 +141,8 @@ function RechartsUnified({ direction, plotMat }) {
 			range,
 			scrlRef,
 			dispatch,
-			setBrushDatay,direction
+			setBrushDatay,
+			direction,
 		);
 	};
 
@@ -145,29 +150,29 @@ function RechartsUnified({ direction, plotMat }) {
 		let uniqueKey = `${key}-${index}`;
 		keyRef.current.push(uniqueKey);
 		console.log({ key, chartParameters });
-		return direction === "left" ? (
+		return direction === 'left' ? (
 			<Line
 				id={uniqueKey}
 				key={uniqueKey}
-				type="monotone"
+				type='monotone'
 				dataKey={key}
 				stroke={chartParameters.colors[index]}
-				strokeWidth="1.5"
+				strokeWidth='1.5'
 				dot={false}
 			>
-				{" "}
+				{' '}
 			</Line>
 		) : (
 			<Line
 				id={uniqueKey}
 				key={uniqueKey}
-				type="monotone"
+				type='monotone'
 				dataKey={key}
 				stroke={chartParameters.colorsAlbo[index]}
-				strokeWidth="1.5"
+				strokeWidth='1.5'
 				dot={false}
 			>
-				{" "}
+				{' '}
 			</Line>
 		);
 	});
@@ -179,19 +184,24 @@ function RechartsUnified({ direction, plotMat }) {
 	return (
 		<ResponsiveContainer maxHeight={400} maxWidth={600}>
 			<LineChart
-				id="line-chart"
-				key={"line-chart"}
-				className="chart"
+				id='line-chart'
+				key={'line-chart'}
+				className='chart'
 				width={500}
 				height={400}
 				data={myPlotMat}
 				margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
 			>
 				{renderedLines}
-				<CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
+				<CartesianGrid stroke='#ccc' strokeDasharray='5 5' />
 				<XAxis
-					dataKey="date"
-					tick={<CustomXAxisTick brushData={brushData} argRef={argRef} />}
+					dataKey='date'
+					tick={
+						<CustomXAxisTick
+							brushData={brushData}
+							argRef={argRef}
+						/>
+					}
 				/>
 				<YAxis
 					domain={[brushDatay.min, brushDatay.max]}
@@ -199,9 +209,9 @@ function RechartsUnified({ direction, plotMat }) {
 					tickFormatter={formatYAxisTick}
 				/>
 				<Brush
-					key={"brushx"}
-					className="myBrush"
-					dataKey="date"
+					key={'brushx'}
+					className='myBrush'
+					dataKey='date'
 					height={15}
 					data={myPlotMat}
 					onChange={handleBrushChange}
@@ -212,37 +222,40 @@ function RechartsUnified({ direction, plotMat }) {
 				/>
 
 				<Tooltip
-					contentStyle={{ margin: "20px" }}
+					contentStyle={{ margin: '20px' }}
 					content={<CustomTooltip parameters={chartParameters} />}
 				/>
 				<Legend
-					key={"legend"}
+					key={'legend'}
 					wrapperStyle={{
-						top: "10px",
+						top: '10px',
 						right: 0,
-						border: "1px solid black",
-						borderRadius: "0.5rem",
-						background: "white",
-						padding: "0rem",
+						border: '1px solid black',
+						borderRadius: '0.5rem',
+						background: 'white',
+						padding: '0rem',
 					}}
-					className="myLegend"
-					layout="box"
-					align="top"
+					className='myLegend'
+					layout='box'
+					align='top'
 					margin={10}
 					content={
-						<CustomLegend key={"customLegend"} parameters={chartParameters} />
+						<CustomLegend
+							key={'customLegend'}
+							parameters={chartParameters}
+						/>
 					}
 				/>
 				<g
-					className="brushY-wrapper"
+					className='brushY-wrapper'
 					style={{
 						transform: `translate(${transform[0]}px, ${transform[1]}px)`,
 					}}
 				>
 					<BrushY
-						key={"brushy"}
-						className="myBrushY"
-						dataKey=""
+						key={'brushy'}
+						className='myBrushY'
+						dataKey=''
 						height={150}
 						width={15}
 						data={myPlotMat}

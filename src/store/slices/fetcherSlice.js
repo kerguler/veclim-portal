@@ -1,14 +1,14 @@
-import { createSlice } from "@reduxjs/toolkit";
-import PackageMapServices from "components/map/mapPackage/PackageMapServices";
+import { createSlice } from '@reduxjs/toolkit';
+import PackageMapServices from 'components/map/mapPackage/PackageMapServices';
 
 const fetcherSlice = createSlice({
-	name: "fetcher",
+	name: 'fetcher',
 	initialState: {
 		fetcherStates: {
 			readyToView: false,
-			mapVector: "albopictus",
-			vectorName: "albopictus",
-			tileArray: ["colegg"],
+			mapVector: 'albopictus',
+			vectorName: 'albopictus',
+			tileArray: ['colegg'],
 			availableTiles: [],
 			data: {},
 			isTsDataSet: false,
@@ -16,6 +16,8 @@ const fetcherSlice = createSlice({
 			invalidateTsData: false,
 			graphType: null,
 			map: {
+				displayTileNames: { left: false, right: false, center: true },
+
 				currentMapCenter: [35.1966527, 33.3217152],
 				currentMapZoom: 2,
 				mapLoaded: false,
@@ -37,8 +39,8 @@ const fetcherSlice = createSlice({
 					displayedPanelID: 0,
 					interferePanelStyle: {},
 					directMap: { lon: null, lat: null, display: -2 },
-					directInitError: { isError: false, message: "", type: "" },
-					panel: { panelInterfere: 0 },
+					directInitError: { isError: false, message: '', type: '' },
+					panel: { panelInterfere: 0, panelTop: 0 },
 					chart: {
 						chartParameters: {},
 						shimmer: null,
@@ -57,14 +59,16 @@ const fetcherSlice = createSlice({
 					},
 				},
 				left: {
-					panelLevel: { path: [0, 0], level: 0, key: "menu_icon" },
-					panel: { panelInterfere: 0 },
+					panelLevel: { path: [0, 0], level: 0, key: 'menu_icon' },
+					panel: { panelInterfere: 0, panelTop: 0 },
 					directInit: false,
 					panelOpen: false,
 					mapMenuOpen: false,
+					interferePanelStyle: {},
+
 					displayedPanelID: 0,
 					directMap: { lon: null, lat: null, display: -2 },
-					directInitError: { isError: false, message: "", type: "" },
+					directInitError: { isError: false, message: '', type: '' },
 					openItems: {},
 					chart: {
 						chartParameters: {},
@@ -89,6 +93,13 @@ const fetcherSlice = createSlice({
 	},
 
 	reducers: {
+		setPanelTop(state, action) {
+			const { direction, value } = action.payload;
+			state.fetcherStates.menu[direction].panel.panelTop = value;
+		},
+		setDisplayTileNames(state, action) {
+			state.fetcherStates.map.displayTileNames = action.payload;
+		},
 		appendToPlottedKeysChartParameters(state, action) {
 			const { direction, value } = action.payload;
 			state.fetcherStates.menu[
@@ -98,7 +109,8 @@ const fetcherSlice = createSlice({
 		appendToLabelsChartParameters(state, action) {
 			const { direction, value } = action.payload;
 			state.fetcherStates.menu[direction].chart.chartParameters.labels = [
-				...state.fetcherStates.menu[direction].chart.chartParameters.labels,
+				...state.fetcherStates.menu[direction].chart.chartParameters
+					.labels,
 				...value,
 			];
 		},
@@ -106,7 +118,8 @@ const fetcherSlice = createSlice({
 			const { direction, value } = action.payload;
 
 			state.fetcherStates.menu[direction].chart.chartParameters.colors = [
-				...state.fetcherStates.menu[direction].chart.chartParameters.colors,
+				...state.fetcherStates.menu[direction].chart.chartParameters
+					.colors,
 				...value,
 			];
 		},
@@ -115,21 +128,18 @@ const fetcherSlice = createSlice({
 			let loc = state.fetcherStates.menu[
 				direction
 			].chart.chartParameters.plottedKeys.indexOf(
-				state.fetcherStates.menu[direction].chart.chartParameters.lineSlice[
-					value
-				]
+				state.fetcherStates.menu[direction].chart.chartParameters
+					.lineSlice[value],
 			);
 			state.fetcherStates.menu[
 				direction
 			].chart.chartParameters.plottedKeys.splice(loc, 1);
-			state.fetcherStates.menu[direction].chart.chartParameters.labels.splice(
-				loc,
-				1
-			);
-			state.fetcherStates.menu[direction].chart.chartParameters.colors.splice(
-				loc,
-				1
-			);
+			state.fetcherStates.menu[
+				direction
+			].chart.chartParameters.labels.splice(loc, 1);
+			state.fetcherStates.menu[
+				direction
+			].chart.chartParameters.colors.splice(loc, 1);
 		},
 		setChartParameters(state, action) {
 			const { direction, value } = action.payload;
@@ -153,7 +163,8 @@ const fetcherSlice = createSlice({
 		},
 
 		setInterferePanelStyle(state, action) {
-			state.fetcherStates.menu.right.interferePanelStyle = action.payload;
+			const { direction, value } = action.payload;
+			state.fetcherStates.menu[direction].interferePanelStyle = value;
 		},
 		setOpenItems(state, action) {
 			state.fetcherStates.menu.left.openItems = action.payload;
@@ -173,12 +184,7 @@ const fetcherSlice = createSlice({
 
 		setDataArrived(state, action) {
 			const { direction, value } = action.payload;
-			console.log("setDataArrived called with:", direction, value);
 
-			if (!state.fetcherStates.menu[direction]) {
-				console.error(`menu[${direction}] is undefined!`);
-				return;
-			}
 			state.fetcherStates.menu[direction].chart.dataArrived = value;
 		},
 
@@ -206,7 +212,8 @@ const fetcherSlice = createSlice({
 
 		setSimSlider1Enabled(state, action) {
 			const { direction, value } = action.payload;
-			state.fetcherStates.menu[direction].chart.sliders.slider1.enabled = value;
+			state.fetcherStates.menu[direction].chart.sliders.slider1.enabled =
+				value;
 		},
 
 		setChartDates(state, action) {
@@ -224,7 +231,8 @@ const fetcherSlice = createSlice({
 		},
 		setSimulationParameterSlider1(state, action) {
 			const { direction, value } = action.payload;
-			state.fetcherStates.menu[direction].chart.sliders.slider1.value = value;
+			state.fetcherStates.menu[direction].chart.sliders.slider1.value =
+				value;
 		},
 
 		setReadyToView(state, action) {
@@ -311,6 +319,8 @@ const fetcherSlice = createSlice({
 });
 
 export const {
+	setPanelTop,
+	setDisplayTileNames,
 	appendToColorsChartParameters,
 	appendToLabelsChartParameters,
 	appendToPlottedKeysChartParameters,

@@ -1,10 +1,10 @@
-import React, { useState, useEffect, useRef } from "react";
-import { io } from "socket.io-client";
+import React, { useState, useEffect } from "react";
 import { useAlboData } from "context/AlboDataContext";
 import {
 	setAlboRequestPlot,
 	setDataArrived,
 	setInvalidateSimData,
+	useFetchSimStatusQuery,
 } from "store";
 import useDirectorFun from "customHooks/useDirectorFun";
 import useWindowSize from "customHooks/useWindowSize";
@@ -12,138 +12,76 @@ import {
 	setSimSlider1Enabled,
 	setSimulationParameterSlider1 as setSimSlider1Value,
 } from "store";
-const SOCKET_URL = "ws://localhost:8000/sim"; // Adjust as needed
-
+import { useCreateSimulationMutation } from "store";
 const SliderRow = ({ direction }) => {
 	const [taskId, setTaskId] = useState(null); // Store Task ID
-	const socketRef = useRef(null); // Store WebSocket connection
-
+	const [shouldCheck, setShouldCheck] = useState(true);
 	const { mapPagePosition, invalidateSimData, simSlider1Value, dispatch } =
 		useDirectorFun(direction);
 
-	const { setDataSim, isLoadingSim, setIsLoadingSim, setErrorSim } =
-		useAlboData();
+	const { setDataSim, setIsLoadingSim } = useAlboData();
 
-	useEffect(() => {
-		// Avoid creating multiple sockets
-		if (!socketRef.current) {
-			const socket = io(SOCKET_URL, {
-				path: "/devapi/sim-runner/socket.io/",
-				transports: ["websocket", "polling"],
-				reconnectionAttempts: 5,
-				reconnectionDelay: 2000,
-			});
-			socketRef.current = socket;
-
-			socket.on("connect", () => {
-				console.log("WebSocket Connected to /sim");
-			});
-
-			socket.on("disconnect", () => {
-				console.log("WebSocket Disconnected");
-			});
-		}
-
-		return () => {
-			if (socketRef.current) {
-				socketRef.current.disconnect();
-				socketRef.current = null;
-			}
-		};
-	}, []); // Run once on mount
-
-	useEffect(() => {
-		const socket = socketRef.current;
-		if (!socket) return;
-
-		const handleTaskUpdate = (message) => {
-			console.log("Received WebSocket Update:", message);
-
-			if (message.task_id === taskId) {
-				if (message.status === "SUBMITTED") {
-					setIsLoadingSim(true);
-				} else if (message.status === "PENDING") {
-					// TODO: need to convery to SimDataMessenger that the simulation is in progress and we need to make sure that dataSim stays null
-					setIsLoadingSim(true);
-					// setDataSim()
-				} else if (message.status === "SUCCESS") {
-					setDataSim(message.result); // Store final data
-					setIsLoadingSim(false);
-					console.log({ m: message.result });
-					dispatch(setDataArrived({ direction: direction, value: true })); // Notify Redux of data arrival
-				} else {
-					console.log(`Simulation in Progress: ${message.status}`);
-				}
-			}
-		};
-
-		socket.on("task_update", handleTaskUpdate);
-
-		return () => {
-			socket.off("task_update", handleTaskUpdate);
-		};
-	}, [taskId]); // Only re-run when `taskId` changes
+	const [createSimulation /* { isLoading, isError, data }*/] =
+		useCreateSimulationMutation();
 
 	// Handle Slider Change
 	const handleSliderChange = (e) => {
 		dispatch(
-			setSimSlider1Value({ direction: direction, value: e.target.value })
+			setSimSlider1Value({ direction: direction, value: e.target.value }),
 		);
 	};
 
-	// Handle Confirm Button Click
-	const handleConfirm = () => {
-		const socket = socketRef.current;
-		if (!socket) return;
+	const simulationData = {
+		model_data: {
+			param: [
+				{
+					lon: 33.0,
+					lat: 35.0,
+					pr: simSlider1Value / 100,
+					thisisatest: true,
+				},
+			],
+		},
 
+		model_type: "model_albochik",
+
+		title: "Albochik",
+	};
+
+	// Handle Confirm Button Click
+	const handleConfirm = async () => {
 		dispatch(setSimSlider1Enabled({ direction: direction, value: false }));
 		dispatch(setAlboRequestPlot(true));
+		console.log("Sending  Request to Start Simulation...", simulationData);
+		const response = await createSimulation(simulationData);
+
 		setIsLoadingSim(true); // Update context state
 
-		const simulationData = {
-			lon: 33.0,
-			lat: 35.0,
-			pr: simSlider1Value / 100,
-		};
-
 		dispatch(setInvalidateSimData(false));
-
-		console.log(
-			"Sending WebSocket Request to Start Simulation...",
-			simulationData
-		);
-		socket.emit("start_sim", simulationData); // Send WebSocket event
-
-		// Listen for task_id only once
-		const handleTaskSubmitted = (message) => {
-			if (message.status === "SUBMITTED") {
-				setTaskId(message.task_id);
-				console.log(`Received Task ID: ${message.task_id}`);
-				socket.off("task_update", handleTaskSubmitted); // Remove listener after first use
-			}
-		};
-
-		socket.on("task_update", handleTaskSubmitted);
+		if ("task_id" in response.data) {
+			setTaskId(response.data.task_id);
+			localStorage.setItem("task_id", response.data.task_id);
+			// console.log(`Received Task ID: ${response.data.task_id}`);
+		}
 	};
 
 	useEffect(() => {
 		if (mapPagePosition.lat === null) {
 			setDataSim(null);
-			dispatch(setDataArrived({ direction: direction, value: false }));
+			dispatch(setDataArrived({ direction, value: false }));
 			dispatch(setInvalidateSimData(true));
-		} else {
 		}
 	}, [mapPagePosition.lat]);
 
 	const webApp = useWindowSize();
 
 	return (
-		<div className="slider-row">
-			<div className="albo-params">
+		<div className='slider-row'>
+			<div className='albo-params'>
 				<input
-					type="range"
-					min="0"
-					max="100"
+					type='range'
+					min='0'
+					max='100'
 					onChange={handleSliderChange}
 					value={simSlider1Value}
 					disabled={!invalidateSimData}
@@ -152,7 +90,7 @@ const SliderRow = ({ direction }) => {
 			<div>{simSlider1Value}</div> {/* Display the value */}
 			<button
 				onClick={handleConfirm}
-				className="confirm-button"
+				className='confirm-button'
 				disabled={!invalidateSimData}
 			>
 				<p style={{ fontSize: webApp ? "10px" : "14px" }}>Confirm</p>
@@ -162,3 +100,44 @@ const SliderRow = ({ direction }) => {
 };
 
 export default SliderRow;
+
+// const { data: simStatus, refetch } = useFetchSimStatusQuery(
+// 	localStorage.getItem("task_id"),
+// 	{
+// 		skip: !shouldCheck, // Avoid fetching if no taskId
+// 		pollingInterval: 3000, // Fetch status every 3 seconds
+// 	},
+// );
+
+// useEffect(() => {
+// 	if (!taskId) {
+// 		setShouldCheck(false);
+// 	} else if (
+// 		simStatus?.state === "SUCCESS" ||
+// 		simStatus?.state === "FAILED"
+// 	) {
+// 		setShouldCheck(false);
+// 	} else {
+// 		setShouldCheck(true);
+// 	}
+// 	if (simStatus) {
+// 		console.log("Simulation Status:", simStatus);
+
+// 		if (
+// 			simStatus.state === "SUBMITTED" ||
+// 			simStatus.state === "PENDING"
+// 		) {
+// 			setIsLoadingSim(true);
+// 		} else if (simStatus.state === "SUCCESS") {
+// 			setDataSim(simStatus.result.result);
+// 			setIsLoadingSim(false);
+// 			console.log({ result: simStatus.result.result });
+// 			dispatch(setDataArrived({ direction, value: true }));
+// 		} else if (simStatus.state === "FAILED") {
+// 			setIsLoadingSim(false);
+// 			console.error("Simulation Failed:", simStatus);
+// 		}
+// 	}
+
+// 	return () => {};
+// }, [taskId, simStatus]); // Only re-run when `taskId` changes

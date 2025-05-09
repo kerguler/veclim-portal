@@ -1,8 +1,8 @@
-import MyMap from "./MyMap/MyMap";
-import DateDisplay from "./DateDisplay/DateDisplay";
+import MyMap from './MyMap/MyMap';
+import DateDisplay from './DateDisplay/DateDisplay';
 const MapWithDate = () => {
 	return (
-		<div className="map-container">
+		<div className='map-container'>
 			<MyMap maxZoom={7} />
 
 			<DateDisplay />

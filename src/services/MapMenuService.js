@@ -1,5 +1,5 @@
-import { setPanelOpen } from "store";
-import { setChartParameters } from "store";
+import { setPanelOpen } from 'store';
+import { setChartParameters } from 'store';
 class mapMenuService {
 	static handlePanel(
 		id,
@@ -16,7 +16,7 @@ class mapMenuService {
 		setPanelOpen,
 		setChartParameters,
 		panelInterfere,
-		direction
+		direction,
 	) {
 		let p = panelOpenRef.current;
 		const defaultBehav = () => {
@@ -39,7 +39,7 @@ class mapMenuService {
 						setChartParameters({
 							direction,
 							value: panelData[p].chartParameters,
-						})
+						}),
 					);
 
 					setPanelChart(true);
@@ -54,7 +54,7 @@ class mapMenuService {
 
 		if (id === -1) {
 			// this means whereever we were, someone clicked the map
-			if (vectorName === "albopictus") {
+			if (vectorName === 'albopictus') {
 				if (p === 7 || p === 8) {
 					// this means we are on albo and we are either channging tiles or changing vectors
 					p = 3;
@@ -65,7 +65,7 @@ class mapMenuService {
 
 					defaultBehav();
 				}
-			} else if (vectorName === "papatasi") {
+			} else if (vectorName === 'papatasi') {
 				if (p === 2 || p === 3) {
 					// this means we are on papartasi and change tile or vecvtor
 					p = 1;
@@ -101,7 +101,7 @@ class mapMenuService {
 		setPanelOpen,
 		setChartParameters,
 		panelInterfere,
-		direction
+		direction,
 	) {
 		let p = panelOpenRef.current;
 		const defaultBehav = () => {
@@ -124,7 +124,7 @@ class mapMenuService {
 						setChartParameters({
 							direction,
 							value: panelData[p].chartParameters,
-						})
+						}),
 					);
 
 					setPanelChart(true);
@@ -139,7 +139,7 @@ class mapMenuService {
 
 		if (id === -1) {
 			// this means whereever we were, someone clicked the map
-			if (vectorName === "albopictus") {
+			if (vectorName === 'albopictus') {
 				if (p === 7 || p === 8) {
 					// this means we are on albo and we are either channging tiles or changing vectors
 					p = 3;
@@ -150,7 +150,7 @@ class mapMenuService {
 
 					defaultBehav();
 				}
-			} else if (vectorName === "papatasi") {
+			} else if (vectorName === 'papatasi') {
 				if (p === 2 || p === 3) {
 					// this means we are on papartasi and change tile or vecvtor
 					p = 1;

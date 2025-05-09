@@ -1,24 +1,24 @@
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import {
 	setCurrentMapCenter,
 	setCurrentMapZoom,
 	setDirectInitError,
-} from "store";
+} from 'store';
 
-import PackageMapServices from "components/map/mapPackage/PackageMapServices";
-import { useAlboData } from "context/AlboDataContext";
-import useDirectorFun from "customHooks/useDirectorFun";
+import PackageMapServices from 'components/map/mapPackage/PackageMapServices';
+import { useAlboData } from 'context/AlboDataContext';
+import useDirectorFun from 'customHooks/useDirectorFun';
 function useMapBasicEvents(mapParRef, fitworld) {
 	const dispatch = useDispatch();
 	const directInitErrorLeft = useSelector(
-		(state) => state.fetcher.fetcherStates.menu.left.directInitError
+		(state) => state.fetcher.fetcherStates.menu.left.directInitError,
 	);
 	const vectorName = useSelector(
-		(state) => state.fetcher.fetcherStates.vectorName
+		(state) => state.fetcher.fetcherStates.vectorName,
 	);
 
-	const { mapPagePositionLeft: mapPagePosition } = useDirectorFun("left");
+	const { mapPagePositionLeft: mapPagePosition } = useDirectorFun('left');
 	const { setDataSim } = useAlboData();
 	let p = mapParRef.current;
 	useEffect(() => {
@@ -31,7 +31,8 @@ function useMapBasicEvents(mapParRef, fitworld) {
 				dispatch,
 				null,
 				null,
-				mapPagePosition,"left"
+				mapPagePosition,
+				'left',
 			);
 		};
 
@@ -52,26 +53,26 @@ function useMapBasicEvents(mapParRef, fitworld) {
 			} catch (error) {
 				dispatch(
 					setDirectInitError({
-						direction: "left",
+						direction: 'left',
 						value: {
 							...directInitErrorLeft,
 							message: error.message,
 						},
-					})
+					}),
 				);
 			}
 		};
 
-		p.map.on("click", handleMapClick);
-		p.map.on("mouseout", handleMouseOut);
-		p.map.on("resize", handleResize);
-		p.map.on("move", handleMove);
+		p.map.on('click', handleMapClick);
+		p.map.on('mouseout', handleMouseOut);
+		p.map.on('resize', handleResize);
+		p.map.on('move', handleMove);
 		return () => {
-			p.map.off("click", handleMapClick);
-			p.map.off("mouseout", handleMouseOut);
-			p.map.off("resize", handleResize);
-			p.map.off("move", handleMove);
-			p.map.off("mouseout", PackageMapServices.mouseOut, true);
+			p.map.off('click', handleMapClick);
+			p.map.off('mouseout', handleMouseOut);
+			p.map.off('resize', handleResize);
+			p.map.off('move', handleMove);
+			p.map.off('mouseout', PackageMapServices.mouseOut, true);
 		};
 	}, [dispatch, mapParRef, p, vectorName, mapPagePosition]);
 

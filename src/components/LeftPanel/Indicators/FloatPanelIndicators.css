@@ -17,16 +17,16 @@
 .clim-info h1 {
 	margin: 0;
 	font-size: 1.4rem;
-	font-family: "Inter-Bold", sens-serif;
+	font-family: 'Inter-Bold', sens-serif;
 	font-weight: bold;
 }
 .clim-info strong {
-	font-family: "Inter-Bold", sens-serif;
+	font-family: 'Inter-Bold', sens-serif;
 	font-weight: bold;
 }
 .clim-info p {
 	padding: 0.5rem 0 0.5rem 0;
-	font-family: "Inter", sens-serif;
+	font-family: 'Inter', sens-serif;
 }
 .clim-data {
 	padding: 1rem;

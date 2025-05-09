@@ -1,17 +1,17 @@
-import caps from "assets/capitals.json";
-import SearchBar from "./SearchBar/SearchBar";
-import "./LiveSearchCaps.css";
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import caps from 'assets/capitals.json';
+import SearchBar from './SearchBar/SearchBar';
+import './LiveSearchCaps.css';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import {
 	setUserPosition,
 	setGlobalPosition,
 	setShowInstructions,
 	setLocationRequested,
-} from "store";
-import { setShowSearchBar } from "store";
-import { useUserLocation } from "store/apis/utils";
-import PackageMapServices from "components/map/mapPackage/PackageMapServices";
+} from 'store';
+import { setShowSearchBar } from 'store';
+import { useUserLocation } from 'store/apis/utils';
+import PackageMapServices from 'components/map/mapPackage/PackageMapServices';
 
 function LiveSearchCaps({ showInstructions, border }) {
 	const dispatch = useDispatch();
@@ -19,17 +19,21 @@ function LiveSearchCaps({ showInstructions, border }) {
 	const [showList, setShowList] = useState(false);
 	const [selectedTerm, setSelectedTerm] = useState(null);
 	const [myRenderedList, setMyRenderedList] = useState([]);
-	const searchBarState = useSelector((state) => state.searchBar.showSearchBar);
-	const userLocationData = useSelector((state) => state.location.userPosition);
+	const searchBarState = useSelector(
+		(state) => state.searchBar.showSearchBar,
+	);
+	const userLocationData = useSelector(
+		(state) => state.location.userPosition,
+	);
 
 	const currentLocationName = useSelector(
-		(state) => state.location.locationName
+		(state) => state.location.locationName,
 	);
 
 	useEffect(() => {
 		const myRenderedList = caps.filter((cap) => {
 			return cap.CapitalName.toLowerCase().includes(
-				currentLocationName.toLowerCase()
+				currentLocationName.toLowerCase(),
 			);
 		});
 		setMyRenderedList(myRenderedList);
@@ -44,16 +48,18 @@ function LiveSearchCaps({ showInstructions, border }) {
 		if (!submittedLocation || submittedLocation.length === 0) {
 			dispatch(setUserPosition(userLocationData));
 		} else {
-			if (submittedLocation[0].CountryName === "YourCountry") {
-				navigator.permissions.query({ name: "geolocation" }).then((result) => {
-					if (result.state === "granted") {
-						dispatch(setShowInstructions(false));
-						dispatch(setLocationRequested(true));
-					} else {
-						dispatch(setShowInstructions(true));
-						dispatch(setLocationRequested(true));
-					}
-				});
+			if (submittedLocation[0].CountryName === 'YourCountry') {
+				navigator.permissions
+					.query({ name: 'geolocation' })
+					.then((result) => {
+						if (result.state === 'granted') {
+							dispatch(setShowInstructions(false));
+							dispatch(setLocationRequested(true));
+						} else {
+							dispatch(setShowInstructions(true));
+							dispatch(setLocationRequested(true));
+						}
+					});
 			} else {
 				let pos = {
 					lat: parseFloat(submittedLocation[0].CapitalLatitude),
@@ -61,7 +67,6 @@ function LiveSearchCaps({ showInstructions, border }) {
 				};
 				dispatch(setGlobalPosition(pos));
 				dispatch(setUserPosition(pos));
-				
 			}
 		}
 	};
@@ -77,7 +82,7 @@ function LiveSearchCaps({ showInstructions, border }) {
 				value={item.CapitalName}
 				key={item.CountryName}
 				onClick={() => handleListClick(item)}
-				className="city-list-item"
+				className='city-list-item'
 			>
 				{item.CapitalName}
 			</div>
@@ -86,7 +91,7 @@ function LiveSearchCaps({ showInstructions, border }) {
 	const handleShowList = (value) => {
 		setShowList(value);
 	};
-	let capBorder = border ? "border" : "";
+	let capBorder = border ? 'border' : '';
 	return (
 		<div className={`search-bar-master-container `}>
 			<div className={`search-bar-container ${capBorder} `}>
@@ -97,7 +102,7 @@ function LiveSearchCaps({ showInstructions, border }) {
 				></SearchBar>
 			</div>
 
-			{showList && <div className="city-list">{content}</div>}
+			{showList && <div className='city-list'>{content}</div>}
 		</div>
 	);
 }

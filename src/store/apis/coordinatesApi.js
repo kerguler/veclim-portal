@@ -1,15 +1,15 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { getCurrentDate } from "./utils";
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { getCurrentDate } from './utils';
 
 const coordinatesApi = createApi({
-	reducerPath: "coordinateInfo",
+	reducerPath: 'coordinateInfo',
 	baseQuery: fetchBaseQuery({
-		 baseUrl: process.env.REACT_APP_BASE_URL,
+		baseUrl: process.env.REACT_APP_BASE_URL,
 	}),
 	endpoints(builder) {
 		return {
 			fetchCoordinateData: builder.query({
-				providesTags: ["Coordinate"],
+				providesTags: ['Coordinate'],
 
 				query: (jsonString) => {
 					let location;
@@ -17,13 +17,13 @@ const coordinatesApi = createApi({
 					location = JSON.parse(jsonString);
 
 					return {
-						url: "",
+						url: '',
 						params: {
 							lon: location.lng,
 							lat: location.lat,
-							date: getCurrentDate("-"),
+							date: getCurrentDate('-'),
 						},
-						method: "GET",
+						method: 'GET',
 					};
 				},
 			}),

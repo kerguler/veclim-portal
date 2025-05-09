@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect } from 'react';
 function useYsliderPositioning(setTransform) {
 	useEffect(() => {
 		const handleBrushPosition = () => {
@@ -16,9 +16,9 @@ function useYsliderPositioning(setTransform) {
 			}
 		};
 		handleBrushPosition();
-		window.addEventListener("resize", handleBrushPosition, true);
+		window.addEventListener('resize', handleBrushPosition, true);
 		return () => {
-			window.removeEventListener("resize", handleBrushPosition, true);
+			window.removeEventListener('resize', handleBrushPosition, true);
 		};
 	}, []);
 }

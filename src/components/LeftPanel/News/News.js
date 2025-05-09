@@ -1,11 +1,11 @@
-import news from "assets/texts/news.json";
-import { useEffect } from "react";
-import { useState } from "react";
-import "./News.css";
-import { useRef } from "react";
-import { useCallback } from "react";
-import rightArrow from "assets/icons/arrow-teal-16px.png";
-import { set } from "react-ga";
+import news from 'assets/texts/news.json';
+import { useEffect } from 'react';
+import { useState } from 'react';
+import './News.css';
+import { useRef } from 'react';
+import { useCallback } from 'react';
+import rightArrow from 'assets/icons/arrow-teal-16px.png';
+import { set } from 'react-ga';
 
 const News = ({ width }) => {
 	const [readMore, setReadMore] = useState(false);
@@ -22,7 +22,7 @@ const News = ({ width }) => {
 		setRotateShow(false);
 		clearTimeout(timerRef.current);
 		setReadMore((prevReadMore) => !prevReadMore);
-		window.open(url, "_blank", "noreferrer");
+		window.open(url, '_blank', 'noreferrer');
 	};
 
 	const handleLineClick = (id) => {
@@ -35,7 +35,7 @@ const News = ({ width }) => {
 
 	const goToNexTSlide = useCallback(() => {
 		setDisplayedArticleId(
-			displayedArticleId < news.length ? displayedArticleId + 1 : 1
+			displayedArticleId < news.length ? displayedArticleId + 1 : 1,
 		);
 	}, [displayedArticleId]);
 
@@ -57,7 +57,7 @@ const News = ({ width }) => {
 	}, [goToNexTSlide, rotateShow]);
 
 	return (
-		<div className="news-wrapper">
+		<div className='news-wrapper'>
 			<RenderedContent
 				displayedArticleId={displayedArticleId}
 				handleLineClick={handleLineClick}
@@ -65,7 +65,7 @@ const News = ({ width }) => {
 				handleReadMore={handleReadMore}
 				handleReadMoreLink={handleReadMoreLink}
 			/>
-			<div className="lines-container">
+			<div className='lines-container'>
 				<RenderedLines
 					// news={news}
 					displayedArticleId={displayedArticleId}
@@ -83,38 +83,41 @@ const RenderedContent = ({
 	handleReadMore,
 	handleReadMoreLink,
 }) => {
-
 	const temp = news.map((newsArticle) => {
 		if (newsArticle.id !== displayedArticleId) {
 			return null;
 		}
-		let images = require.context("assets/images/news", true);
+		let images = require.context('assets/images/news', true);
 		let image = images(newsArticle.Image);
 		return (
 			<div
 				key={newsArticle.id}
-				className="news-container"
+				className='news-container'
 				onClick={() => {
 					handleReadMore(newsArticle.id);
 				}}
 			>
 				<div
-					className="news-container-img"
+					className='news-container-img'
 					style={{
 						backgroundImage: `url(${image})`,
 					}}
 				></div>
-				<div className="news-title">
+				<div className='news-title'>
 					<h1>{newsArticle.Title}</h1>
 				</div>
 				<div
-					className="read-more-less"
+					className='read-more-less'
 					onClick={() => {
 						handleReadMoreLink(newsArticle.url);
 					}}
 				>
 					Read more
-					<img loading="lazy" alt="right-arrow" src={rightArrow}></img>
+					<img
+						loading='lazy'
+						alt='right-arrow'
+						src={rightArrow}
+					></img>
 				</div>
 			</div>
 		);
@@ -123,16 +126,15 @@ const RenderedContent = ({
 };
 
 const RenderedLines = ({ displayedArticleId, handleLineClick }) => {
-
 	let temp = news.map((article) => {
 		const selected = article.id === displayedArticleId;
 		return (
 			<div
 				onClick={() => handleLineClick(article.id)}
 				key={article.id}
-				className={selected ? "lines-selected" : "lines"}
+				className={selected ? 'lines-selected' : 'lines'}
 			>
-				{" "}
+				{' '}
 			</div>
 		);
 	});

@@ -62,7 +62,9 @@
 	background-color: white;
 	color: var(--primary-color1);
 	border: 2px solid var(--www-color-float-bg2);
-	transition: opacity 300ms, transform 300ms;
+	transition:
+		opacity 300ms,
+		transform 300ms;
 	visibility: hidden;
 }
 

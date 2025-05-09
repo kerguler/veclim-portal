@@ -1,16 +1,17 @@
-import ErrorBoundary from "components/errorBoundary/ErrorBoundary";
-import rightArrow from "assets/icons/arrow-teal-16px.png";
-import useDirectorFun from "customHooks/useDirectorFun";
-import { useDispatch, useSelector } from "react-redux";
-import { useState } from "react";
-import { useRef } from "react";
-import { useEffect } from "react";
-import { lazy, Suspense } from "react";
-import UnifiedRechartPlotterV2 from "components/charts/Plotter/plotterV2/UnifiedRechartPlotterV2";
-import { setPlotReady } from "store";
+import ErrorBoundary from 'components/errorBoundary/ErrorBoundary';
+import rightArrow from 'assets/icons/arrow-teal-16px.png';
+import useDirectorFun from 'customHooks/useDirectorFun';
+import { useDispatch, useSelector } from 'react-redux';
+import { useState } from 'react';
+import { useRef } from 'react';
+import { useEffect } from 'react';
+import { lazy, Suspense } from 'react';
+import UnifiedRechartPlotterV2 from 'components/charts/Plotter/plotterV2/UnifiedRechartPlotterV2';
+import { setPlotReady } from 'store';
+import { setTwinIndex } from 'store';
 
 const RenderedPanelChartV2 = ({ direction, siblingCount }) => {
-	const { twinIndex, setTwinIndexDir } = useDirectorFun(direction);
+	const { twinIndex } = useDirectorFun(direction);
 	const dispatch = useDispatch();
 	const [showSwitcherArrows, setShowSwitcherArrows] = useState({
 		left: false,
@@ -30,7 +31,7 @@ const RenderedPanelChartV2 = ({ direction, siblingCount }) => {
 				setShowSwitcherArrows({ left: true, right: false });
 			}
 		} else {
-			console.log("siblingCount", siblingCount);
+			console.log('siblingCount', siblingCount);
 			setShowSwitcherArrows({ left: false, right: false });
 		}
 	}, [siblingCount, twinIndex]);
@@ -39,7 +40,7 @@ const RenderedPanelChartV2 = ({ direction, siblingCount }) => {
 		if (twinIndex === 0) {
 			return;
 		}
-		dispatch(setTwinIndexDir(twinIndex - 1));
+		dispatch(setTwinIndex({ direction, value: twinIndex - 1 }));
 		dispatch(setPlotReady({ direction, value: false }));
 	};
 
@@ -49,37 +50,37 @@ const RenderedPanelChartV2 = ({ direction, siblingCount }) => {
 		}
 		dispatch(setPlotReady({ direction, value: false }));
 
-		dispatch(setTwinIndexDir(twinIndex + 1));
+		dispatch(setTwinIndex({ direction, value: twinIndex + 1 }));
 	};
 	let pointerRight, pointerLeft;
 
 	showSwitcherArrows.left === false
-		? (pointerLeft = "default")
-		: (pointerLeft = "pointer");
+		? (pointerLeft = 'default')
+		: (pointerLeft = 'pointer');
 	showSwitcherArrows.right === false
-		? (pointerRight = "default")
-		: (pointerRight = "pointer");
+		? (pointerRight = 'default')
+		: (pointerRight = 'pointer');
 	return (
-		<div className="panel-content chart">
-			{" "}
-			<div ref={switcherRefLeft} className="switcher-arrows left">
+		<div className='panel-content chart'>
+			{' '}
+			<div ref={switcherRefLeft} className='switcher-arrows left'>
 				{showSwitcherArrows.left && (
 					<img
 						onClick={handlePrev}
-						className="switcher-arrow left"
+						className='switcher-arrow left'
 						src={rightArrow}
-						alt="left arrow"
+						alt='left arrow'
 						style={{ cursor: `${pointerLeft}` }}
 					/>
 				)}
 			</div>
-			<div ref={switcherRefRight} className="switcher-arrows right">
+			<div ref={switcherRefRight} className='switcher-arrows right'>
 				{showSwitcherArrows.right && (
 					<img
 						onClick={handleNext}
-						className="switcher-arrow right"
+						className='switcher-arrow right'
 						src={rightArrow}
-						alt="right arrow"
+						alt='right arrow'
 						style={{ cursor: `${pointerRight}` }}
 					/>
 				)}

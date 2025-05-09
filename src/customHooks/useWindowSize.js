@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { useRef } from "react";
+import { useState, useEffect } from 'react';
+import { useRef } from 'react';
 const useWindowSize = () => {
 	const [webApp, setWebApp] = useState(null);
 
@@ -12,11 +12,11 @@ const useWindowSize = () => {
 			}
 		};
 		handleResize();
-		window.addEventListener("resize", handleResize);
+		window.addEventListener('resize', handleResize);
 
-		return () => window.removeEventListener("resize", handleResize);
+		return () => window.removeEventListener('resize', handleResize);
 	}, []);
 
-	return  {webApp} ;
+	return { webApp };
 };
 export default useWindowSize;

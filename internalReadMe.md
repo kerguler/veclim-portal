@@ -7,9 +7,9 @@ Some helpful explanation of functionality
 ## Table of Contents
 
 - [Internal ReadMe](#internal-readme)
-  - [Helpful explanations](#helpful-explanations)
-  - [Table of Contents](#table-of-contents)
-  - [Using chartParameters](#using-chartparameters)
+    - [Helpful explanations](#helpful-explanations)
+    - [Table of Contents](#table-of-contents)
+    - [Using chartParameters](#using-chartparameters)
 
 ## Using chartParameters
 

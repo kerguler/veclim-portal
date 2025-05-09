@@ -1,4 +1,3 @@
-
 ```mermaid
 graph TD
     A[MapLeftMenu render ] --> B[check all panels \n see if there are any icons that are not to be displayed]
@@ -8,7 +7,7 @@ graph TD
 D2-->E[render Switcher]
 
 E1[switcher]--> E2[qwe]
-    
-    
+
+
 
 ```

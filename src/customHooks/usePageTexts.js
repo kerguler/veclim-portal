@@ -1,7 +1,7 @@
-import PageRows from "pages/GenericPage/PageRows/PageRows";
-import { useContext } from "react";
-import TextContext from "context/appText";
-import Topper from "pages/GenericPage/Topper/Topper";
+import PageRows from 'pages/GenericPage/PageRows/PageRows';
+import { useContext } from 'react';
+import TextContext from 'context/appText';
+import Topper from 'pages/GenericPage/Topper/Topper';
 function usePageTexts() {
 	const { pageTexts } = useContext(TextContext);
 
@@ -22,7 +22,7 @@ function usePageTexts() {
 	);
 	const renderedContent = pageTexts[0].rows.map((row) => {
 		const newsStyle = row.newsStyle ? true : false;
-		const caption = row.caption ? row.caption : "";
+		const caption = row.caption ? row.caption : '';
 		const rotateMe = row.rotate ? true : false;
 		const reverse = row.reverse ? true : false;
 		const wide = row.wide ? true : false;

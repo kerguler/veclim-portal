@@ -1,63 +1,53 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
 
 const graphSwitcherSlice = createSlice({
-	name: "graphSwitch",
+	name: 'graphSwitch',
 	initialState: {
-		switcher: false,
-		switcherRight: false,
-		twinsNotDisplayedRight: [],
-		twinsNotDisplayed: [],
-		twinIndex: 0,
-		twinIndexRight: 0,
-		twinArrayRight: [],
-		twinArray: [],
-		switcherArrows: { left: false, right: false },
-		switcherArrowsRight: { left: false, right: false },
-		displayedIcons: [{ id: null, panelArray: [] }],
-		displayedIconsRight: [{ id: null, panelArray: [] }],
+		left: {
+			switcher: false,
+			twinsNotDisplayed: [],
+			twinIndex: 0,
+			twinArray: [],
+			switcherArrows: { left: false, right: false },
+			displayedIcons: [{ id: null, panelArray: [] }],
+		},
+		right: {
+			switcher: false,
+			twinsNotDisplayed: [],
+			twinIndex: 0,
+			twinArray: [],
+			switcherArrows: { left: false, right: false },
+			displayedIcons: [{ id: null, panelArray: [] }],
+		},
 	},
 	reducers: {
 		setSwitcher(state, action) {
-			state.switcher = action.payload;
-		},
-		setSwitcherRight(state, action) {
-			state.switcherRight = action.payload;
-		},
-		setTwinsNotDisplayed(state, action) {
-			state.twinsNotDisplayed = action.payload;
+			const { direction, value } = action.payload;
+			state[direction].switcher = value;
 		},
 
-		setTwinsNotDisplayedRight(state, action) {
-			state.twinsNotDisplayedRight = action.payload;
+		setTwinsNotDisplayed(state, action) {
+			const { direction, value } = action.payload;
+			state[direction].twinsNotDisplayed = value;
 		},
 
 		setTwinIndex(state, action) {
-			state.twinIndex = action.payload;
-		},
-		setTwinIndexRight(state, action) {
-			state.twinIndexRight = action.payload;
+			const { direction, value } = action.payload;
+			state[direction].twinIndex = value;
 		},
 		setTwinArray(state, action) {
-			state.twinArray = action.payload;
-		},
-
-		setTwinArrayRight(state, action) {
-			state.twinArrayRight = action.payload;
+			const { direction, value } = action.payload;
+			state[direction].twinArray = value;
 		},
 
 		setSwitcherArrows(state, action) {
-			state.switcherArrows = action.payload;
-		},
-
-		setDisplayedIconsRight(state, action) {
-			state.displayedIconsRight = action.payload;
-		},
-		setSwitcherArrowsRight(state, action) {
-			state.switcherArrowsRight = action.payload;
+			const { direction, value } = action.payload;
+			state[direction].switcherArrows = value;
 		},
 
 		setDisplayedIcons(state, action) {
-			state.displayedIcons = action.payload;
+			const { direction, value } = action.payload;
+			state[direction].displayedIcons = value;
 		},
 	},
 });
@@ -69,11 +59,5 @@ export const {
 	setTwinArray,
 	setSwitcherArrows,
 	setDisplayedIcons,
-	setSwitcherRight,
-	setTwinsNotDisplayedRight,
-	setTwinIndexRight,
-	setTwinArrayRight,
-	setSwitcherArrowsRight,
-	setDisplayedIconsRight,
 } = graphSwitcherSlice.actions;
 export const graphSwitcherReducer = graphSwitcherSlice.reducer;

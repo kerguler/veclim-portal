@@ -1,17 +1,17 @@
-import { useEffect } from "react";
-import useDirectorFun from "customHooks/useDirectorFun";
-import { useState } from "react";
-import ChartLoadingSkeleton from "components/skeleton/Skeleton";
-import ErrorComponent from "../errorComponent/ErrorComponent";
-import { useRef } from "react";
-import ErrorBoundary from "components/errorBoundary/ErrorBoundary";
-import { useFetchTimeSeriesDataQuery } from "store";
-import RechartsPlot from "../RechartsPlot";
-import { setMessenger } from "store";
-import { useAlboData } from "context/AlboDataContext";
-import useInvalidationData from "../customPlotterHooks/useInvalidationData";
-import useArrangeDataSim from "../customPlotterHooks/useArrangeDataSim";
-import useCheckChartParameters from "../customPlotterHooks/useCheckChartParameters";
+import { useEffect } from 'react';
+import useDirectorFun from 'customHooks/useDirectorFun';
+import { useState } from 'react';
+import ChartLoadingSkeleton from 'components/skeleton/Skeleton';
+import ErrorComponent from '../errorComponent/ErrorComponent';
+import { useRef } from 'react';
+import ErrorBoundary from 'components/errorBoundary/ErrorBoundary';
+import { useFetchTimeSeriesDataQuery } from 'store';
+import RechartsPlot from '../RechartsPlot';
+import { setMessenger } from 'store';
+import { useAlboData } from 'context/AlboDataContext';
+import useInvalidationData from '../customPlotterHooks/useInvalidationData';
+import useArrangeDataSim from '../customPlotterHooks/useArrangeDataSim';
+import useCheckChartParameters from '../customPlotterHooks/useCheckChartParameters';
 function CustomSimulationChartV2({ direction }) {
 	const {
 		chartParameters,
@@ -21,7 +21,7 @@ function CustomSimulationChartV2({ direction }) {
 		mapPagePosition,
 		vectorName,
 		dateArray,
-	} = useDirectorFun("left");
+	} = useDirectorFun('left');
 
 	const { dataSim, isLoadingSim, errorSim, simResult } = useAlboData();
 	const {
@@ -45,7 +45,8 @@ function CustomSimulationChartV2({ direction }) {
 		rawData,
 		dataTs,
 		setAlboDataArrived,
-		alboDataArrived,direction
+		alboDataArrived,
+		direction,
 	});
 
 	useCheckChartParameters();
@@ -58,9 +59,9 @@ function CustomSimulationChartV2({ direction }) {
 					value: {
 						isError: true,
 						id: 0,
-						message: "server responded with an error",
+						message: 'server responded with an error',
 					},
-				})
+				}),
 			);
 		}
 	}, [errorSim]);
@@ -81,7 +82,7 @@ function CustomSimulationChartV2({ direction }) {
 				plotReady && (
 					<ErrorBoundary>
 						<RechartsPlot
-							direction="left"
+							direction='left'
 							plotMat={r.dataToPlot}
 						></RechartsPlot>
 					</ErrorBoundary>

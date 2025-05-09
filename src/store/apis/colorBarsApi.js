@@ -1,26 +1,26 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 const colorBarsApi = createApi({
-	reducerPath: "colorBarsInfo",
+	reducerPath: 'colorBarsInfo',
 	baseQuery: fetchBaseQuery({
 		baseUrl: process.env.REACT_APP_BASE_URL,
 	}),
-	tagTypes: ["ColorBars"],
+	tagTypes: ['ColorBars'],
 	endpoints(builder) {
 		return {
 			fetchColorBarsData: builder.query({
-				providesTags: ["ColorBars"],
+				providesTags: ['ColorBars'],
 
 				query: () => {
 					return {
-						url: "",
+						url: '',
 						params: {
-							v: "colegg",
+							v: 'colegg',
 						},
-						method: "GET",
+						method: 'GET',
 					};
 				},
-				invalidatesTags: ["ColorBars"],
+				invalidatesTags: ['ColorBars'],
 			}),
 		};
 	},

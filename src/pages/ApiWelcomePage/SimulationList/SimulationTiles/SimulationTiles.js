@@ -1,24 +1,29 @@
 import { useSelector } from "react-redux";
 import "./SimulationTiles.css";
+import { areArraysIdentical } from "pages/ApiWelcomePage/utils/simUtils";
 import SimTile from "./SimTile/SimTile";
-function SimulationTiles({ SimData }) {
-	let simulationList = SimData;
-	// const simulationList = useSelector((state) => state.simulation.simList);
-	console.log({ SimData });
-	if (simulationList && simulationList.length === 0) {
+import React from "react";
+function SimulationTiles({ simData, direction }) {
+	if (simData && simData.length === 0) {
 		return (
-			<div className="flex-row full-width">
-				<div className="flex-column border-r5 float-bg2">
-					<h3>No simulations found</h3>
+			<div className='flex-row full-width'>
+				<div className='flex-column border-r5 float-bg2'>
+					<p>No simulations found</p>
 				</div>
 			</div>
 		);
 	} else {
 		return (
-			simulationList &&
-			simulationList.map((sim) => {
-				console.log({ sim });
-				return <SimTile sim={sim}></SimTile>;
+			simData &&
+			simData.map((sim) => {
+				// console.log(sim.id);
+				return (
+					<SimTile
+						direction={direction}
+						key={sim.id}
+						sim={sim}
+					></SimTile>
+				);
 			})
 		);
 	}

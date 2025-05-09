@@ -1,14 +1,14 @@
-import useDirectorFun from "customHooks/useDirectorFun";
-import { useFetchTimeSeriesDataQuery, setPlotReady } from "store";
-import { setMessenger, setBrushRange } from "store";
-import { useEffect, useRef } from "react";
-import ChartCalculatorService from "../services/ChartCalculatorService";
-import { useDispatch } from "react-redux";
-import RechartsPlot from "./RechartsPlot";
-import useSetDefaultCoordinates from "./customPlotterHooks/useSetDefaultCoordinates";
-import ErrorComponent from "./errorComponent/ErrorComponent";
-import ErrorBoundary from "components/errorBoundary/ErrorBoundary";
-import ChartLoadingSkeleton from "components/skeleton/Skeleton";
+import useDirectorFun from 'customHooks/useDirectorFun';
+import { useFetchTimeSeriesDataQuery, setPlotReady } from 'store';
+import { setMessenger, setBrushRange } from 'store';
+import { useEffect, useRef } from 'react';
+import ChartCalculatorService from '../services/ChartCalculatorService';
+import { useDispatch } from 'react-redux';
+import RechartsPlot from './RechartsPlot';
+import useSetDefaultCoordinates from './customPlotterHooks/useSetDefaultCoordinates';
+import ErrorComponent from './errorComponent/ErrorComponent';
+import ErrorBoundary from 'components/errorBoundary/ErrorBoundary';
+import ChartLoadingSkeleton from 'components/skeleton/Skeleton';
 function TsRequest({ direction }) {
 	const dispatch = useDispatch();
 
@@ -30,7 +30,7 @@ function TsRequest({ direction }) {
 		plotReady,
 
 		messenger,
-	} = useDirectorFun("left");
+	} = useDirectorFun('left');
 
 	const { data, error, isFetching } = useFetchTimeSeriesDataQuery({
 		position: JSON.stringify(mapPagePosition),
@@ -40,7 +40,9 @@ function TsRequest({ direction }) {
 
 	useEffect(() => {
 		plotReady &&
-			dispatch(setPlotReady({ direction: direction || "left", value: false }));
+			dispatch(
+				setPlotReady({ direction: direction || 'left', value: false }),
+			);
 	}, [vectorName, dispatch, setPlotReady]);
 
 	useEffect(() => {
@@ -51,7 +53,11 @@ function TsRequest({ direction }) {
 		// 	error,
 		// });
 		try {
-			if (!isFetching && data && Object.keys(chartParameters).length > 0) {
+			if (
+				!isFetching &&
+				data &&
+				Object.keys(chartParameters).length > 0
+			) {
 				const { errorMessage, isError } =
 					ChartCalculatorService.checkDataForMixedKeys(
 						chartParameters,
@@ -59,27 +65,36 @@ function TsRequest({ direction }) {
 						dispatch,
 						setPlotReady,
 						mapPagePosition,
-						direction
+						direction,
 					);
 				if (isError) {
-					console.log("shouldnt have come here");
+					console.log('shouldnt have come here');
 					dispatch(
-						setMessenger({ direction, value: { id: 0, message: errorMessage } })
+						setMessenger({
+							direction,
+							value: { id: 0, message: errorMessage },
+						}),
 					);
 					throw new Error(errorMessage);
 				}
 				r.data = data;
 				r.dataToPlot = {};
 				r.rawDataToPlot = {};
-				ChartCalculatorService.createDateArray(rawData, chartParameters);
-				ChartCalculatorService.handleMixedKeys(rawData, chartParameters);
+				ChartCalculatorService.createDateArray(
+					rawData,
+					chartParameters,
+				);
+				ChartCalculatorService.handleMixedKeys(
+					rawData,
+					chartParameters,
+				);
 				ChartCalculatorService.handleSlices(rawData, chartParameters);
 				dispatch(setPlotReady({ direction: direction, value: true }));
 				dispatch(
 					setMessenger({
 						direction: direction,
 						value: { id: null, message: null, isError: false },
-					})
+					}),
 				);
 				dispatch(
 					setBrushRange({
@@ -88,10 +103,10 @@ function TsRequest({ direction }) {
 							startIndex: 0,
 							endIndex: r.dataToPlot.length - 1,
 						},
-					})
+					}),
 				);
 			} else {
-				console.log("no data or no chartparameters");
+				console.log('no data or no chartparameters');
 				dispatch(setPlotReady({ direction: direction, value: false }));
 				mapPagePosition.lat &&
 					dispatch(
@@ -99,13 +114,14 @@ function TsRequest({ direction }) {
 							direction,
 							value: {
 								...messenger,
-								message: "Data is not available yet. Please click on the Map",
+								message:
+									'Data is not available yet. Please click on the Map',
 							},
-						})
+						}),
 					);
 			}
 		} catch (err) {
-			console.log("in catch block", err);
+			console.log('in catch block', err);
 			dispatch(
 				setMessenger({
 					direction,
@@ -113,7 +129,7 @@ function TsRequest({ direction }) {
 						...messenger,
 						message: err.message,
 					},
-				})
+				}),
 			);
 		}
 	}, [
@@ -135,9 +151,9 @@ function TsRequest({ direction }) {
 				direction,
 				value: {
 					...messenger,
-					message: "chart parameters are not available",
+					message: 'chart parameters are not available',
 				},
-			})
+			}),
 		);
 
 	if (isFetching) {
@@ -156,7 +172,10 @@ function TsRequest({ direction }) {
 		return (
 			plotReady && (
 				<ErrorBoundary>
-					<RechartsPlot direction="left" plotMat={r.dataToPlot}></RechartsPlot>
+					<RechartsPlot
+						direction='left'
+						plotMat={r.dataToPlot}
+					></RechartsPlot>
 				</ErrorBoundary>
 			)
 		);

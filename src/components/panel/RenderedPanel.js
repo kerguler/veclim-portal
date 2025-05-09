@@ -1,12 +1,12 @@
-import Panel from "./Panel";
-import { useDispatch } from "react-redux";
-import { useRef } from "react";
-import { setPanelTop } from "store";
-import "./Switcher/Switcher.css";
-import useDirectorFun from "customHooks/useDirectorFun";
-import usePanelResize from "./usePanelResize";
-import RenderedPanelChart from "./RenderedPanelChart";
-import { setPanelOpen } from "store";
+import Panel from './Panel';
+import { useDispatch } from 'react-redux';
+import { useRef } from 'react';
+import { setPanelTop } from 'store';
+import './Switcher/Switcher.css';
+import useDirectorFun from 'customHooks/useDirectorFun';
+import usePanelResize from './usePanelResize';
+import RenderedPanelChart from './RenderedPanelChart';
+import { setPanelOpen } from 'store';
 const RenderedPanel = ({ panel, panelChart, panelClassName, direction }) => {
 	const dispatch = useDispatch();
 	const { panelOpen } = useDirectorFun(direction);
@@ -27,10 +27,15 @@ const RenderedPanel = ({ panel, panelChart, panelClassName, direction }) => {
 						className={panelClassName}
 						onClosed={() => handlePanelClosed(true)}
 					>
-						<div className="panel-content" style={{ userSelect: "none" }}>
+						<div
+							className='panel-content'
+							style={{ userSelect: 'none' }}
+						>
 							{panel}
-							{panelChart && <RenderedPanelChart direction={direction} />}
-						</div>{" "}
+							{panelChart && (
+								<RenderedPanelChart direction={direction} />
+							)}
+						</div>{' '}
 					</Panel>
 				</div>
 			)}

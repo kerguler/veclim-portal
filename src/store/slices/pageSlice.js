@@ -1,9 +1,9 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
 
 const pageSlice = createSlice({
-	name: "page",
+	name: 'page',
 	initialState: {
-		pageSelect: "albopictus",
+		pageSelect: 'albopictus',
 	},
 	reducers: {
 		setPageSelect(state, action) {

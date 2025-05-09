@@ -1,15 +1,15 @@
-import Panel from "../Panel";
-import { useDispatch } from "react-redux";
-import { useRef } from "react";
-import { setPanelTop } from "store";
-import "components/panel/Switcher/Switcher.css";
-import useDirectorFun from "customHooks/useDirectorFun";
-import usePanelResize from "../usePanelResize";
-import RenderedPanelChartV2 from "./RenderedPanelChartV2";
-import { useEffect } from "react";
-import { useState } from "react";
-import { setOpenItems } from "store";
-import { setPanelLevel } from "store";
+import Panel from '../Panel';
+import { useDispatch } from 'react-redux';
+import { useRef } from 'react';
+import { setPanelTop } from 'store';
+import 'components/panel/Switcher/Switcher.css';
+import useDirectorFun from 'customHooks/useDirectorFun';
+import usePanelResize from '../usePanelResize';
+import RenderedPanelChartV2 from './RenderedPanelChartV2';
+import { useEffect } from 'react';
+import { useState } from 'react';
+import { setOpenItems } from 'store';
+import { setPanelLevel } from 'store';
 const RenderedPanelV2 = ({
 	panel,
 	panelChart,
@@ -34,7 +34,10 @@ const RenderedPanelV2 = ({
 		delete openItemsTemp[passedKey.parent];
 		dispatch(setOpenItems(openItemsTemp));
 		dispatch(
-			setPanelLevel({ ...levelData, level: Object.keys(openItemsTemp).length })
+			setPanelLevel({
+				...levelData,
+				level: Object.keys(openItemsTemp).length,
+			}),
 		);
 	};
 
@@ -72,10 +75,13 @@ const RenderedPanelV2 = ({
 					className={panelClassName}
 					onClosed={(key) => handlePanelClosed(key)}
 				>
-					<div className="panel-content" style={{ userSelect: "none" }}>
+					<div
+						className='panel-content'
+						style={{ userSelect: 'none' }}
+					>
 						{panel}
 						{displayedPanel}
-					</div>{" "}
+					</div>{' '}
 				</Panel>
 			</div>
 		</span>

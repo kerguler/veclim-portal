@@ -47,8 +47,6 @@
 	top: unset;
 	left: -32px;
 	right: unset;
-	
-
 }
 .vertical-menu {
 	display: flex;
@@ -74,7 +72,7 @@
 	overflow: hidden;
 }
 .icon.shimmer-on::after {
-	content: "";
+	content: '';
 	position: absolute;
 	top: 0%;
 	left: 200%;
@@ -274,7 +272,6 @@
 		top: -50px;
 		left: 5rem;
 		right: unset;
-	
 	}
 	.panel-restrictive-wrapper.right {
 		top: 150px;

@@ -31,7 +31,7 @@ import { zIndex } from "material-ui/styles";
 class PackageMapServices {
 	static baseLayer = L.tileLayer(
 		"http://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.webp",
-		{ attribution: "", noWrap: true }
+		{ attribution: "", noWrap: true },
 	);
 	static cyprusBounds = [
 		[34.25, 31.5],
@@ -115,10 +115,9 @@ class PackageMapServices {
 		directMap,
 		directMapRight,
 		mapPagePosition,
-		direction
+		direction,
 	) {
 		dispatch(setInvalidateSimData(true));
-		console.log("map click", direction);
 		dispatch(setDataArrived({ direction: direction, value: false }));
 
 		this.clickMap(
@@ -127,7 +126,7 @@ class PackageMapServices {
 			vectorName,
 			dispatch,
 			mapPagePosition,
-			direction
+			direction,
 		);
 
 		if (directMap) {
@@ -149,27 +148,29 @@ class PackageMapServices {
 		vectorName,
 		dispatch,
 		mapPagePosition,
-		direction
+		direction,
 	) => {
 		let p = mapParRef.current;
 		const switchZoom = 4;
 		let newPosition = this.roundPosition(
 			vectorName,
 			e.latlng.lat,
-			e.latlng.lng
+			e.latlng.lng,
 		);
 
 		newPosition = { ...newPosition, res: [0.125, 0.125] };
 		p.prevClickPointRef = newPosition;
 		dispatch(
-			setMapPagePosition({ lat: newPosition.lat, lng: newPosition.lng })
+			setMapPagePosition({ lat: newPosition.lat, lng: newPosition.lng }),
 		);
 		p.highlightMarker && p.map.removeLayer(p.highlightMarker);
 		p.iconMarker && p.map.removeLayer(p.iconMarker);
 		p.rectMarker && p.map.removeLayer(p.rectMarker);
 		const { res, ...newPosition1 } = newPosition;
 
-		p.iconMarker = L.marker(newPosition1, { icon: this.icon1 }).addTo(p.map);
+		p.iconMarker = L.marker(newPosition1, { icon: this.icon1 }).addTo(
+			p.map,
+		);
 		p.iconMarker.on("click", (markerEvent) => {
 			if (markerEvent.originalEvent) {
 				markerEvent.originalEvent.preventDefault();
@@ -199,7 +200,7 @@ class PackageMapServices {
 			p.rectMarker = null;
 			dispatch(setMapPagePosition({ lat: null, lng: null }));
 			dispatch(setInvalidateSimData(true));
-			dispatch(setDataArrived({ direction: direction, value: false }));
+			dispatch(setDataArrived({ direction, value: false }));
 		} else {
 			p.rectMarker = this.highlightMarkerFunc(
 				newPosition.lat,
@@ -208,7 +209,7 @@ class PackageMapServices {
 				"",
 				"green",
 				vectorName,
-				dispatch
+				dispatch,
 			).addTo(p.map);
 		}
 
@@ -226,7 +227,7 @@ class PackageMapServices {
 		className,
 		color,
 		vectorName,
-		dispatch
+		dispatch,
 	) => {
 		let p = mapParRef && mapParRef.current;
 		let newMarker;
@@ -251,7 +252,7 @@ class PackageMapServices {
 					fill: true,
 					fillOpacity: 0.3,
 					pane: "markerPane",
-				}
+				},
 			);
 			newMarker.addTo(p.map);
 		}
@@ -268,8 +269,10 @@ class PackageMapServices {
 			};
 		}
 		function roundPositionSand(lat, lng) {
-			let roundedLat = 0.009 + Math.round((lat - 0.009) / 0.0215) * 0.0215;
-			let roundedLng = 0.0033 + Math.round((lng - 0.0033) / 0.0215) * 0.0215;
+			let roundedLat =
+				0.009 + Math.round((lat - 0.009) / 0.0215) * 0.0215;
+			let roundedLng =
+				0.0033 + Math.round((lng - 0.0033) / 0.0215) * 0.0215;
 			return {
 				lat: roundedLat,
 				lng: roundedLng,
@@ -299,18 +302,18 @@ class PackageMapServices {
 			mapParRef,
 			"marker-green",
 			"blue",
-			vectorName
+			vectorName,
 		);
 		let elm = document.getElementById("coordinates");
 		elm.innerHTML = `lat<br/>${newPosition.lat.toFixed(
-			2
+			2,
 		)}<br/>${newPosition.lng.toFixed(2)}<br/>lon`;
 		elm.style.display = "flex";
 	}
 	static calculateBounds(value) {
 		return L.latLngBounds(
 			L.latLng(value[0][0], value[0][1]),
-			L.latLng(value[1][0], value[1][1])
+			L.latLng(value[1][0], value[1][1]),
 		);
 	}
 
@@ -321,7 +324,7 @@ class PackageMapServices {
 		switchMap,
 		currentMapCenter,
 		currentMapZoom,
-		dispatch
+		dispatch,
 	) {
 		let p = mapParRef.current;
 
@@ -347,7 +350,6 @@ class PackageMapServices {
 		if (pageTransition) {
 			p.center = currentMapCenter;
 			p.zoom = currentMapZoom;
-		} else {
 		}
 		bounds && dispatch(setCurrentMapBounds(boundsArray));
 
@@ -396,7 +398,8 @@ class PackageMapServices {
 			var scaleY = window.innerHeight / boundsSize;
 
 			// Calculate the zoom adjustment based on the scaling factor
-			var zoomAdjustment = Math.log(Math.min(scaleX, scaleY)) / Math.log(2);
+			var zoomAdjustment =
+				Math.log(Math.min(scaleX, scaleY)) / Math.log(2);
 			// Adjust the current zoom level
 			var newZoom = zoom + zoomAdjustment;
 
@@ -460,15 +463,15 @@ class PackageMapServices {
 		if (tileArray.length === 0) return [];
 		tileArray.forEach((tile, index) => {
 			let selectedTile = tilesFromContext.find(
-				(tileIcon) => tileIcon.key === tile
+				(tileIcon) => tileIcon.key === tile,
 			);
 			try {
 				selectedTile &&
 					tileMat.push(
 						L.tileLayer(
 							selectedTile.tileLayer.tile,
-							selectedTile.tileLayer.props
-						)
+							selectedTile.tileLayer.props,
+						),
 					);
 			} catch (e) {
 				<ErrorScreenMap error={e}></ErrorScreenMap>;
@@ -504,7 +507,7 @@ class PackageMapServices {
 		switchZoom,
 		vectorName,
 		dispatch,
-		mapPagePosition
+		mapPagePosition,
 	) => {
 		let p = mapParRef.current;
 		if (p) {
@@ -526,13 +529,15 @@ class PackageMapServices {
 							mapParRef,
 							"",
 							"green",
-							vectorName
+							vectorName,
 						);
 				} else {
 					p.rectMarker && p.map.removeLayer(p.rectMarker);
 					p.iconMarker =
 						p.rectMarker &&
-						L.marker(newPosition, { icon: this.icon1 }).addTo(p.map);
+						L.marker(newPosition, { icon: this.icon1 }).addTo(
+							p.map,
+						);
 				}
 			} else {
 				p.prevClickPointRef = null;

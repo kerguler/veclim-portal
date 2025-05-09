@@ -1,33 +1,35 @@
-import MenuItemV2 from "./MenuItemV2";
-import useDirectorFun from "customHooks/useDirectorFun";
-import classNames from "classnames";
-import { useAlboData } from "context/AlboDataContext";
-function MenuList({ items, onToggle, iconClassName,direction }) {
+import MenuItemV2 from './MenuItemV2';
+import useDirectorFun from 'customHooks/useDirectorFun';
+import classNames from 'classnames';
+import { useAlboData } from 'context/AlboDataContext';
+function MenuList({ items, onToggle, iconClassName, direction }) {
 	const {
 		openItems,
 		setOpenItems,
-		dataArrivedRight,
+		dataArrived,
 		menuStructure,
 		simulationPanels,
 		invalidateSimData,
-	} = useDirectorFun("left");
+	} = useDirectorFun('left');
 	const { dataSim } = useAlboData();
 
 	if (!items || items.length === 0) return null;
 
-	let className = classNames("icon");
+	let className = classNames('icon');
 	if (Object.keys(openItems).length === 0) {
-		className = classNames("icon", "shimmer-on");
+		className = classNames('icon', 'shimmer-on');
 	} else {
-		className = classNames("icon", "shimmer-off");
+		className = classNames('icon', 'shimmer-off');
 	}
 	return items.map((item) => {
-		let siblingKeys = items.filter((i) => i.key !== item.key).map((i) => i.key);
-		if (dataArrivedRight && !invalidateSimData && dataSim) {
+		let siblingKeys = items
+			.filter((i) => i.key !== item.key)
+			.map((i) => i.key);
+		if (dataArrived && !invalidateSimData && dataSim) {
 			let parents = [];
 			const findParents = (key) => {
-				let parent = menuStructure.filter((item) => item.key === key)[0].parent;
-
+				let parent = menuStructure.filter((item) => item.key === key)[0]
+					.parent;
 				return parent;
 			};
 
@@ -39,9 +41,9 @@ function MenuList({ items, onToggle, iconClassName,direction }) {
 			});
 
 			if (parents.includes(item.key)) {
-				className = classNames("icon", "shimmer-on");
+				className = classNames('icon', 'shimmer-on');
 			} else {
-				className = classNames("icon", "shimmer-off");
+				className = classNames('icon', 'shimmer-off');
 			}
 		}
 

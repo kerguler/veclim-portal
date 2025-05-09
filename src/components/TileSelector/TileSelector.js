@@ -1,14 +1,14 @@
-import "./TileSelector.css";
-import { useContext, useEffect, useState } from "react";
-import { setDisplayTileNames, setSuperUser, setTileArray } from "store";
-import { useDispatch, useSelector } from "react-redux";
-import { useFetchColorBarsDataQuery } from "store";
-import { iconClasses } from "@mui/material";
-import Panel from "components/panel/Panel";
-import PanelContext from "context/panelsIconsV2";
+import './TileSelector.css';
+import { useContext, useEffect, useState } from 'react';
+import { setDisplayTileNames, setSuperUser, setTileArray } from 'store';
+import { useDispatch, useSelector } from 'react-redux';
+import { useFetchColorBarsDataQuery } from 'store';
+import { iconClasses } from '@mui/material';
+import Panel from 'components/panel/Panel';
+import PanelContext from 'context/panelsIconsV2';
 function TileSelector({ tileIcons }) {
 	const selectedTiles = useSelector(
-		(state) => state.fetcher.fetcherStates.tileArray
+		(state) => state.fetcher.fetcherStates.tileArray,
 	);
 	const { data, error, isFetching } = useFetchColorBarsDataQuery();
 
@@ -22,7 +22,9 @@ function TileSelector({ tileIcons }) {
 	const handleIconClick = (item) => {
 		let temp;
 		// item is the icon that was clicked
-		const filteredArray = selectedTiles.filter((element) => element === item);
+		const filteredArray = selectedTiles.filter(
+			(element) => element === item,
+		);
 		// if the icon is already selected it will be in the array
 		const exists = filteredArray.length > 0;
 		// if the icon is already selected and there is more than one icon selected
@@ -79,7 +81,7 @@ function TileSelector({ tileIcons }) {
 				center: temp.length === 1,
 				left: temp.length === 2,
 				right: temp.length === 2,
-			})
+			}),
 		);
 	};
 
@@ -97,14 +99,14 @@ function TileSelector({ tileIcons }) {
 		let displayedIcons = tileIcons.map((item, index) => {
 			let internalClassName;
 			const filteredArray = selectedTiles.filter(
-				(element) => element === item.key
+				(element) => element === item.key,
 			);
 			const exists = filteredArray.length > 0;
 			if (exists) {
-				internalClassName = "panel-content icons-area  active";
+				internalClassName = 'panel-content icons-area  active';
 				description = item.description;
 			} else {
-				internalClassName = "panel-content icons-area inactive";
+				internalClassName = 'panel-content icons-area inactive';
 			}
 			return (
 				<div
@@ -118,7 +120,11 @@ function TileSelector({ tileIcons }) {
 						handleContextMenu(e, item.key);
 					}}
 				>
-					<img key={item.key} alt="mapped-tile-icon" src={item.icon}></img>
+					<img
+						key={item.key}
+						alt='mapped-tile-icon'
+						src={item.icon}
+					></img>
 				</div>
 			);
 		});
@@ -128,7 +134,7 @@ function TileSelector({ tileIcons }) {
 		return (
 			<>
 				<IconGrid icons={displayedIcons} />
-				<div className="tile-select-description">{description}</div>
+				<div className='tile-select-description'>{description}</div>
 			</>
 		);
 	};
@@ -140,17 +146,20 @@ function TileSelector({ tileIcons }) {
 		}, 1000);
 	}, [displayNoTileWarning, displayWarning]);
 	return (
-		<div className="icons-area">
+		<div className='icons-area'>
 			<h1>Map Tiles</h1>
 			<RenderedContent />
 			{displayWarning && (
-				<div className="icons-area warning">
-					{" "}
-					you can select a maximum of 2 tiles{" "}
+				<div className='icons-area warning'>
+					{' '}
+					you can select a maximum of 2 tiles{' '}
 				</div>
 			)}
 			{displayNoTileWarning && (
-				<div className="icons-area warning"> you have to have 1 tile </div>
+				<div className='icons-area warning'>
+					{' '}
+					you have to have 1 tile{' '}
+				</div>
 			)}
 			{/* <div className="tile-select-button"> <p>Submit</p></div> */}
 		</div>
@@ -183,42 +192,55 @@ const IconGrid = ({ icons }) => {
 		return acc;
 	}, {});
 	return (
-		<div className="icon-grid">
+		<div className='icon-grid'>
 			{Object.keys(groupedIcons).map((row) => {
 				const rowIcons = groupedIcons[row];
 				const emptySlots = columnsPerRow - rowIcons.length;
 				return (
-					<div className="icon-row-container" key={`id-icon-row-container-${row}`}>
-						<div className="icon-row-label" key={`id-icon-row-label-${row}`}>
+					<div
+						className='icon-row-container'
+						key={`id-icon-row-container-${row}`}
+					>
+						<div
+							className='icon-row-label'
+							key={`id-icon-row-label-${row}`}
+						>
 							{
 								tileIconsRowHeadings.filter(
-									(heading) => heading.row === parseInt(row)
+									(heading) => heading.row === parseInt(row),
 								)[0].label
 							}
 						</div>
 						<div
 							key={`id-icon-row-${row}`}
-							className="icon-row"
+							className='icon-row'
 							style={{
 								gridTemplateColumns:
-									"repeat(" + rowIcons.length + ", minmax(50px, 1fr))",
+									'repeat(' +
+									rowIcons.length +
+									', minmax(50px, 1fr))',
 							}}
 						>
 							{rowIcons
 								.sort((a, b) => (a.id % 10) - (b.id % 10))
 								.map((icon) => {
 									return (
-										<div key={`id-icon-row-${row}-${icon.key}`} className="icon-item">
+										<div
+											key={`id-icon-row-${row}-${icon.key}`}
+											className='icon-item'
+										>
 											{icon}
 										</div>
 									);
 								})}
-							{Array.from({ length: emptySlots }).map((_, idx) => (
-								<div
-									key={`empty-${row}-${idx}`}
-									className="icon-item empty"
-								></div>
-							))}
+							{Array.from({ length: emptySlots }).map(
+								(_, idx) => (
+									<div
+										key={`empty-${row}-${idx}`}
+										className='icon-item empty'
+									></div>
+								),
+							)}
 						</div>
 					</div>
 				);
@@ -229,7 +251,7 @@ const IconGrid = ({ icons }) => {
 
 function IconRowLabels({ row }) {
 	return (
-		<div key={`label-${row}`} className="icon-row-label">
+		<div key={`label-${row}`} className='icon-row-label'>
 			2010-2020
 		</div>
 	);

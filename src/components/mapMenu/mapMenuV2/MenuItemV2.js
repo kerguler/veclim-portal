@@ -1,18 +1,11 @@
-import useDirectorFun from "customHooks/useDirectorFun";
-import RenderedPanelV2 from "components/panel/SwitcherV2/RenderedPanelV2";
-import MenuList from "./MenuList";
-import { setGraphType } from "store";
-import { setShimmerLeft } from "store";
-import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
-import { useEffect } from "react";
-import { lazy, Suspense } from "react";
-import { useState } from "react";
-import { setTwinIndex } from "store";
-import { setOpenItems } from "store";
-import useWindowSize from "customHooks/useWindowSize";
-const PanelChildren = lazy(() => import("./PanelChildren"));
-const MenuChildren = lazy(() => import("./MenuChildren"));
+import useDirectorFun from 'customHooks/useDirectorFun';
+
+import { useEffect } from 'react';
+import { lazy, Suspense } from 'react';
+import { useState } from 'react';
+import useWindowSize from 'customHooks/useWindowSize';
+const PanelChildren = lazy(() => import('./PanelChildren'));
+const MenuChildren = lazy(() => import('./MenuChildren'));
 function MenuItemV2({ item, onToggle, iconClassName, direction }) {
 	const {
 		panelDataDir: panelData,
@@ -20,20 +13,22 @@ function MenuItemV2({ item, onToggle, iconClassName, direction }) {
 		panelLevelLeft: levelData,
 
 		mapPagePosition,
-	} = useDirectorFun("left");
+	} = useDirectorFun('left');
 	const webApp = useWindowSize();
 	const isOpen = openItems[item.key];
-	const displayedItem = panelData.filter((panel) => panel.key === item.key)[0];
-	let imgClassName = "rotate0";
+	const displayedItem = panelData.filter(
+		(panel) => panel.key === item.key,
+	)[0];
+	let imgClassName = 'rotate0';
 	if (displayedItem && displayedItem?.rotate === 90) {
-		imgClassName = "rotate90";
+		imgClassName = 'rotate90';
 	}
 	const panelChildren = item.children.filter((child) =>
-		child.key.endsWith("_panel")
+		child.key.endsWith('_panel'),
 	);
 
 	const menuChildren = item.children.filter(
-		(child) => !child.key.endsWith("_panel")
+		(child) => !child.key.endsWith('_panel'),
 	);
 
 	const [level, setLevel] = useState(0);
@@ -56,7 +51,7 @@ function MenuItemV2({ item, onToggle, iconClassName, direction }) {
 	useEffect(() => {
 		panelChildren.forEach((panel) => {
 			let myPanel = panelData.filter(
-				(panelData) => panelData.key === panel.key
+				(panelData) => panelData.key === panel.key,
 			)[0];
 			if (mapPagePosition.lat === null) {
 				if (
@@ -66,27 +61,27 @@ function MenuItemV2({ item, onToggle, iconClassName, direction }) {
 					myPanel.positionDependent
 				) {
 					setStyle({
-						backgroundColor: "var(--neutral-color1)",
-						pointerEvents: "none",
-						cursor: "not-allowed",
+						backgroundColor: 'var(--neutral-color1)',
+						pointerEvents: 'none',
+						cursor: 'not-allowed',
 					});
 					setImgStyle({
-						color: "grey",
+						color: 'grey',
 						// width: "20px",
 						// height: "20px",
 					});
 				} else {
-					setStyle({ color: "white", pointerEvents: "all" });
+					setStyle({ color: 'white', pointerEvents: 'all' });
 					setImgStyle({
-						color: "grey",
+						color: 'grey',
 						// width: webApp ? "20px" : "2px",
 						// height: webApp ? "20px" : "32px",
 					});
 				}
 			} else {
-				setStyle({ color: "white", pointerEvents: "all" });
+				setStyle({ color: 'white', pointerEvents: 'all' });
 				setImgStyle({
-					color: "grey",
+					color: 'grey',
 					// width: webApp ? "20px" : "32px",
 					// height: webApp ? "20px" : "32px",
 				});
@@ -96,7 +91,7 @@ function MenuItemV2({ item, onToggle, iconClassName, direction }) {
 
 	return (
 		<>
-			{" "}
+			{' '}
 			<div
 				key={displayedItem.key}
 				className={iconClassName}
@@ -106,7 +101,7 @@ function MenuItemV2({ item, onToggle, iconClassName, direction }) {
 				<img
 					style={imgStyle}
 					className={imgClassName}
-					alt="item icon"
+					alt='item icon'
 					src={displayedItem.icon}
 				></img>
 			</div>

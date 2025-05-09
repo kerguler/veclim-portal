@@ -56,7 +56,7 @@
 	justify-content: center;
 }
 .color-bar-texts p {
-	font-family: "Inter-Bold", sans-serif;
+	font-family: 'Inter-Bold', sans-serif;
 	font-weight: 600;
 	text-align: center;
 	text-justify: center;
@@ -156,7 +156,7 @@
 		flex-direction: column;
 	}
 	.color-bar-texts p {
-		font-family: "Inter-Bold", sans-serif;
+		font-family: 'Inter-Bold', sans-serif;
 		font-weight: 600;
 		text-align: left;
 		justify-self: center;

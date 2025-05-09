@@ -3,14 +3,14 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 const simulationApi = createApi({
 	reducerPath: "simulationApi",
 	baseQuery: fetchBaseQuery({
-		baseUrl: process.env.REACT_APP_DEV_URL,
+		baseUrl: process.env.REACT_APP_LOCAL_DEV_URL,
 		prepareHeaders: (headers, { getState }) => {
 			const csrf = localStorage.getItem("csrfToken");
 			headers.set("Content-Type", "application/json");
-			headers.set("Origin", process.env.REACT_APP_SIM_URL);
+			// headers.set("Origin", process.env.REACT_APP_SIM_URL);
 			if (csrf) {
 				headers.set("X-CSRFToken", csrf);
-				headers.set("Access-Control-Allow-Origin", "*");
+				// 	// headers.set("Access-Control-Allow-Origin", "*");
 			}
 			return headers;
 		},
@@ -30,8 +30,26 @@ const simulationApi = createApi({
 			}),
 			getSimulationList: builder.query({
 				query: (data) => {
+					const params = new URLSearchParams();
+
+					// Handle optional include_results param
+					if (data?.return_results) {
+						params.append("include_results", "true");
+					} else if (data?.return_results === false) {
+						params.append("include_results", "false");
+					}
+
+					// If fetching a single simulation by ID
+					if (data?.id) {
+						return {
+							url: `simulations/${data.id}/?${params.toString()}`,
+							method: "GET",
+						};
+					}
+
+					// If fetching the list
 					return {
-						url: `api/simulations/`,
+						url: `simulations/?${params.toString()}`,
 						method: "GET",
 					};
 				},
@@ -40,9 +58,9 @@ const simulationApi = createApi({
 			createSimulation: builder.mutation({
 				query: (data) => {
 					return {
-						url: `api/simulations/`,
+						url: `simulations/`,
 						method: "POST",
-						body:  data,
+						body: data,
 					};
 				},
 				invalidatesTags: ["Simulation List"],
@@ -50,7 +68,7 @@ const simulationApi = createApi({
 			deleteSimulation: builder.mutation({
 				query: (data) => {
 					return {
-						url: `api/simulation/${data.id}/`,
+						url: `simulations/${data.id}/`,
 						method: "DELETE",
 					};
 				},
@@ -59,7 +77,7 @@ const simulationApi = createApi({
 			editSimulation: builder.mutation({
 				query: (data) => {
 					return {
-						url: `api/simulation/${data.id}/`,
+						url: `simulations/${data.id}/`,
 						method: "PUT",
 						body: data,
 					};

@@ -1,4 +1,4 @@
-@import url("styles/colors.css");
+@import url('styles/colors.css');
 /*@import url("styles/index.css"); */
 
 .text-area {
@@ -10,7 +10,7 @@
 }
 .text-area strong,
 .text-area .strong {
-	font-family: "Inter", sens-serif;
+	font-family: 'Inter', sens-serif;
 	font-weight: bold;
 }
 .chart-indicators {

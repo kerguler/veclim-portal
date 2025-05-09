@@ -1,20 +1,23 @@
 @font-face {
-  font-family: "Inter";
-  src: url("./fonts/Inter/Inter-VariableFont_slnt\,wght.ttf") format("truetype");
-  font-weight: normal;
-  font-style: normal;
+	font-family: 'Inter';
+	src: url('./fonts/Inter/Inter-VariableFont_slnt\,wght.ttf')
+		format('truetype');
+	font-weight: normal;
+	font-style: normal;
 }
 
 @font-face {
-  font-family: "Inter-Bold";
-  src: local("Inter-Bold"), url("./fonts/Inter/static/Inter-Bold.ttf") format("truetype");
-  font-weight: bold;
-  font-style: normal;
+	font-family: 'Inter-Bold';
+	src:
+		local('Inter-Bold'),
+		url('./fonts/Inter/static/Inter-Bold.ttf') format('truetype');
+	font-weight: bold;
+	font-style: normal;
 }
 
 @font-face {
-  font-family: "Roboto";
-  src: url("./fonts/Roboto/Roboto-Medium.ttf");
-  font-weight: normal;
-  font-style: normal;
+	font-family: 'Roboto';
+	src: url('./fonts/Roboto/Roboto-Medium.ttf');
+	font-weight: normal;
+	font-style: normal;
 }

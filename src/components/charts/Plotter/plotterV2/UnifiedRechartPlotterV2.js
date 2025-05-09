@@ -1,15 +1,16 @@
-import { useSelector } from "react-redux";
-import useDirectorFun from "customHooks/useDirectorFun";
-import { useState } from "react";
-import { useEffect } from "react";
-import { useFetchTimeSeriesDataQuery } from "store";
-import ChartLoadingSkeleton from "components/skeleton/Skeleton";
-import { useAlboData } from "context/AlboDataContext";
-import TsRequestV2 from "./TsRequestV2";
-import CustomSimulationChartV2 from "./CustomSimulationChartV2";
+import { useSelector } from 'react-redux';
+import useDirectorFun from 'customHooks/useDirectorFun';
+import { useState } from 'react';
+import { useEffect } from 'react';
+import { useFetchTimeSeriesDataQuery } from 'store';
+import ChartLoadingSkeleton from 'components/skeleton/Skeleton';
+import { useAlboData } from 'context/AlboDataContext';
+import TsRequestV2 from './TsRequestV2';
+import CustomSimulationChartV2 from './CustomSimulationChartV2';
 
 function UnifiedRechartPlotterV2({ direction }) {
-	const { mapPagePosition, vectorName, dateArray } = useDirectorFun(direction);
+	const { mapPagePosition, vectorName, dateArray } =
+		useDirectorFun(direction);
 
 	const { data, error, isFetching } = useFetchTimeSeriesDataQuery({
 		position: JSON.stringify(mapPagePosition),
@@ -18,14 +19,14 @@ function UnifiedRechartPlotterV2({ direction }) {
 	});
 	const { dataSim, isLoadingSim, errorSim, simResult } = useAlboData();
 	const graphType = useSelector(
-		(state) => state.fetcher.fetcherStates.graphType
+		(state) => state.fetcher.fetcherStates.graphType,
 	);
 	const [displayedPanel, setDisplayedPanel] = useState(null);
 	useEffect(() => {
-		if (graphType === "sim") {
-			setDisplayedPanel("sim");
+		if (graphType === 'sim') {
+			setDisplayedPanel('sim');
 		} else {
-			setDisplayedPanel("ts");
+			setDisplayedPanel('ts');
 		}
 	}, [graphType]);
 
@@ -49,9 +50,9 @@ function UnifiedRechartPlotterV2({ direction }) {
 			</ChartLoadingSkeleton>
 		);
 	} else if (data) {
-		if (graphType === "sim" && displayedPanel === "sim") {
+		if (graphType === 'sim' && displayedPanel === 'sim') {
 			return <CustomSimulationChartV2 direction={direction} />;
-		} else if (graphType === "ts" && displayedPanel === "ts") {
+		} else if (graphType === 'ts' && displayedPanel === 'ts') {
 			return <TsRequestV2 direction={direction} />;
 		}
 	} else {

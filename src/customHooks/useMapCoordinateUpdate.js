@@ -1,8 +1,8 @@
-import { useEffect } from "react";
-import PackageMapServices from "components/map/mapPackage/PackageMapServices";
-import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
-import useFetcherVariables from "./useFetcherVariables";
+import { useEffect } from 'react';
+import PackageMapServices from 'components/map/mapPackage/PackageMapServices';
+import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import useFetcherVariables from './useFetcherVariables';
 
 function useMapCoordinateUpdate(mapParRef) {
 	let p = mapParRef.current;
@@ -20,9 +20,9 @@ function useMapCoordinateUpdate(mapParRef) {
 			});
 		}
 
-		p.map.on("mousemove", handleCoordinateUpdate);
+		p.map.on('mousemove', handleCoordinateUpdate);
 		return () => {
-			p.map.off("mousemove", handleCoordinateUpdate);
+			p.map.off('mousemove', handleCoordinateUpdate);
 		};
 	}, [tileArray, vectorName, switchMap, dispatch, p.bounds, directInit]);
 }

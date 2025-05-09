@@ -18,7 +18,6 @@ export default function MapMenuPicker({ direction }) {
 		setOpenItems,
 		panelLevelLeft: levelData,
 		panelDataDir: panelData,
-		dataArrivedRight,
 		tree,
 		invalidateSimData,
 	} = useDirectorFun("left");
@@ -32,13 +31,13 @@ export default function MapMenuPicker({ direction }) {
 	} else {
 		className = classNames("icon", "shimmer-off");
 	}
-	const { setDataSim } = useAlboData();
+	const { setDataSim, simResult, setSimResult } = useAlboData();
 	const [parent, setParent] = useState(null);
 	useEffect(() => {
 		if (invalidateSimData) {
-			console.log("should have set dataArrived False datasim null ");
 			dispatch(setDataArrived({ direction: direction, value: false }));
 			setDataSim(null);
+			setSimResult(null);
 		}
 	}, [invalidateSimData]);
 
@@ -46,21 +45,28 @@ export default function MapMenuPicker({ direction }) {
 	function handleToggle(clickedKey) {
 		let tempOpenItems = { ...openItems };
 		let desiredParent = menuStructure.filter(
-			(item) => item.key === clickedKey
+			(item) => item.key === clickedKey,
 		)[0].parent;
-		console.log({ desiredParent, parent });
 		if (desiredParent === parent) {
-			console.log("same parent");
-			dispatch(setInterferePanelStyle({ animation: "none" }));
+			dispatch(
+				setInterferePanelStyle({
+					direction,
+					value: { animation: "none" },
+				}),
+			);
 		} else {
 			setParent(desiredParent);
 		}
 		const findParents = (key) => {
-			let dataInStructure = menuStructure.filter((item) => item.key === key);
+			let dataInStructure = menuStructure.filter(
+				(item) => item.key === key,
+			);
 			return dataInStructure[0].parent;
 		};
 		const findDestroyChildren = (key) => {
-			let dataInStructure = menuStructure.filter((item) => item.key === key)[0];
+			let dataInStructure = menuStructure.filter(
+				(item) => item.key === key,
+			)[0];
 			let children = menuStructure.filter((item) => item.parent === key);
 			children = menuStructure.filter((item) => item.parent === key);
 
@@ -75,7 +81,7 @@ export default function MapMenuPicker({ direction }) {
 				setPanelLevel({
 					...levelData,
 					level: Object.keys(openItemsTemp).length,
-				})
+				}),
 			);
 		};
 		let parentKey = findParents(clickedKey);
@@ -89,17 +95,20 @@ export default function MapMenuPicker({ direction }) {
 		} else {
 			delete openItemsTemp[clickedKey];
 			let currentPanel = panelData.filter(
-				(panel) => panel.key === clickedKey
+				(panel) => panel.key === clickedKey,
 			)[0];
 			if (currentPanel.selfClose) {
 				delete openItemsTemp[findParents(clickedKey)];
 			}
 		}
 		dispatch(
-			setPanelLevel({ ...levelData, level: Object.keys(openItemsTemp).length })
+			setPanelLevel({
+				...levelData,
+				level: Object.keys(openItemsTemp).length,
+			}),
 		);
 		dispatch(setOpenItems(openItemsTemp));
-		dispatch(setTwinIndex(0));
+		dispatch(setTwinIndex({ direction, value: 0 }));
 	}
 
 	if (!tree || !tree.length) return null;

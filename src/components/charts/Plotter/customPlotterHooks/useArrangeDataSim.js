@@ -14,7 +14,7 @@ function useArrangeDataSim({
 	alboDataArrived,
 	direction,
 }) {
-	const { simResult: dataSim } = useAlboData();
+	const { simResult } = useAlboData();
 
 	const {
 		vectorName,
@@ -26,17 +26,19 @@ function useArrangeDataSim({
 	} = useDirectorFun(direction);
 
 	useEffect(() => {
+		console.log("useArrangeDataSim");
 		let r = rawData.current;
 		try {
 			if (vectorName === "albopictus") {
 				if (
-					dataSim &&
+					simResult &&
 					dataTs &&
 					chartParameters &&
 					Object.keys(chartParameters).length > 0
 				) {
-					if (dataSim) {
-						r.data = { ...dataSim };
+					if (simResult) {
+						console.log("simResult", simResult);
+						r.data = { ...simResult };
 						r.data["ts"] = dataTs;
 
 						const { errorMessage, isError } =
@@ -46,22 +48,33 @@ function useArrangeDataSim({
 								dispatch,
 								setPlotReady,
 								mapPagePosition,
-								direction
+								direction,
 							);
 
 						if (isError) {
 							throw new Error(errorMessage);
 						}
-						ChartCalculatorService.createDateArray(rawData, chartParameters);
-						ChartCalculatorService.handleMixedKeys(rawData, chartParameters);
-						ChartCalculatorService.handleSlices(rawData, chartParameters);
+						ChartCalculatorService.createDateArray(
+							rawData,
+							chartParameters,
+						);
+						ChartCalculatorService.handleMixedKeys(
+							rawData,
+							chartParameters,
+						);
+						ChartCalculatorService.handleSlices(
+							rawData,
+							chartParameters,
+						);
 						dispatch(setPlotReady({ direction, value: true }));
 						dispatch(setAlboRequestPlot(false));
-						dispatch(setSimSlider1Enabled({ direction, value: true }));
+						dispatch(
+							setSimSlider1Enabled({ direction, value: true }),
+						);
 						setPlotReady({ direction, value: true });
 					}
 				} else {
-					console.log({ dataTs, dataSim });
+					console.log({ dataTs, simResult });
 					console.log("shouldnt have come here");
 					dispatch(setPlotReady({ direction, value: false }));
 				}
@@ -74,7 +87,7 @@ function useArrangeDataSim({
 							isError: true,
 							message: "The panel doesnt work for this vector",
 						},
-					})
+					}),
 				);
 			}
 		} catch (err) {
@@ -87,13 +100,13 @@ function useArrangeDataSim({
 						message:
 							"something went wrong when dealing with data in simulation",
 					},
-				})
+				}),
 			);
 		}
 	}, [
 		invalidateSimData,
 		chartParameters,
-		dataSim,
+		simResult,
 		dispatch,
 		alboDataArrived,
 		rawData,

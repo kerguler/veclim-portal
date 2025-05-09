@@ -1,8 +1,8 @@
 .sim-list-item {
-	width: 90%;
-	min-height: 5rem;
+	width: 100%;
+	min-height: 3rem;
 	display: flex;
-	border-radius: 5px;
+	/* border-radius: 5px; */
 }
 .sim-list-item p {
 	color: black;
@@ -11,19 +11,35 @@
 .tile-entry {
 	display: flex;
 	align-items: center;
-	width: 100%;
+	justify-content: left;
+	width: 80%;
 }
 .tile-entry p {
-	font-size: 1.5rem;
+	font-size: 1.2rem;
+}
+.sim-date p {
+	font-size: 1rem;
+	color: var(--meteo-text);
 }
 
+.hidden {
+	display: none;
+	pointer-events: none;
+}
 .icon-area {
-	width: 100%;
+	/* width: 100%; */
 	display: flex;
-	justify-content: flex-end;
+	flex-direction: row;
+	justify-content: left;
 	color: var(--meteo-text);
-	align-items: center;
+	align-items: left;
 	margin-right: 1rem;
+}
+.icon-area.status {
+	display: flex;
+	align-items: baseline;
+	justify-self: flex-end;
+	align-self: flex-end;
 }
 .sim-list-item:hover {
 	background-color: #b9dff1;
@@ -38,9 +54,23 @@
 	width: 2.5rem;
 	height: 2.5rem;
 	cursor: pointer;
+	transition: opacity 0.2s ease;
 }
+
 .sim-icon path {
 	stroke: var(--meteo-text);
+}
+.sim-icon.icon-img.green path {
+	fill: green;
+	stroke: green;
+}
+.sim-icon.icon-img.blue path {
+	fill: blue;
+	stroke: blue;
+}
+.sim-icon.icon-img.red path {
+	fill: red;
+	stroke: red;
 }
 
 .sim-icon:hover path {

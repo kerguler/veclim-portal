@@ -7,15 +7,15 @@ class ChartCalculatorService {
 				...r.data[params.mixedKeys[0].key],
 			};
 		} else {
-			r.dateInfo.dates["overlaps"] = {};
+			r.dateInfo.dates['overlaps'] = {};
 			params.mixedKeys.forEach((item) => {
 				const { key, levels } = item;
 				let val = r.data;
 
 				if (val != null) {
 					levels.forEach((v) => {
-						if ("overlap" in val) {
-							r.dateInfo.dates.overlaps[key] = val["overlap"];
+						if ('overlap' in val) {
+							r.dateInfo.dates.overlaps[key] = val['overlap'];
 						}
 						if (v in val) {
 							val = val[v];
@@ -34,11 +34,11 @@ class ChartCalculatorService {
 		dispatch,
 		setPlotReady,
 		mapPagePosition,
-		direction
+		direction,
 	) {
 		if (!chartParameters || !chartParameters.mixedKeys) {
 			return {
-				errorMessage: "chart parameters are not available",
+				errorMessage: 'chart parameters are not available',
 				isError: true,
 			};
 		}
@@ -60,9 +60,9 @@ class ChartCalculatorService {
 				} else {
 					// Update error state and exit
 					//watchout for this one....
-			
+
 					error.errorMessage = `There is no data available for the position chosen lat:${mapPagePosition.lat.toFixed(
-						2
+						2,
 					)} lng: ${mapPagePosition.lng.toFixed(2)}`;
 					error.isError = true;
 					return error; // Exit immediately when an error is found
@@ -83,9 +83,12 @@ class ChartCalculatorService {
 
 			Object.keys(r.rawDataToPlot).forEach((key) => {
 				const keyData = r.rawDataToPlot[key];
-				if (key !== "key") {
+				if (key !== 'key') {
 					// If there are no slices, use the main key data directly
-					if (!keyData.slices || Object.keys(keyData.slices).length === 0) {
+					if (
+						!keyData.slices ||
+						Object.keys(keyData.slices).length === 0
+					) {
 						entry[key] = keyData[index] || null; // Add value or null if out of range
 					} else {
 						// If there are slices, add each slice as key.slice1, key.slice2, etc.
@@ -103,7 +106,7 @@ class ChartCalculatorService {
 
 		// Log the resulting array
 		r.dataToPlot = resultArray;
-		r["done"] = true;
+		r['done'] = true;
 	}
 
 	static handleSlices(rawData, params) {
@@ -119,10 +122,13 @@ class ChartCalculatorService {
 			const { key } = item;
 			r.dateInfo.dates.sliceIndices[key] = [];
 			let mat1 = [...r.rawDataToPlot[key]];
-			let alignedMat1 = Array(r.dateInfo.dateArray.total.length).fill(null);
+			let alignedMat1 = Array(r.dateInfo.dateArray.total.length).fill(
+				null,
+			);
 
 			let startDate = r.dateInfo.dateArray[key][0];
-			let endDate = r.dateInfo.dateArray[key][r.dateInfo.dates[key].length - 1];
+			let endDate =
+				r.dateInfo.dateArray[key][r.dateInfo.dates[key].length - 1];
 			// we have to only copy the values for where the domains match.
 			r.dateInfo.dateArray.total.forEach((date, index) => {
 				if (date < startDate) {
@@ -130,7 +136,8 @@ class ChartCalculatorService {
 				} else if (date > endDate) {
 					alignedMat1[index] = null;
 				} else {
-					alignedMat1[index] = mat1[r.dateInfo.dateArray[key].indexOf(date)];
+					alignedMat1[index] =
+						mat1[r.dateInfo.dateArray[key].indexOf(date)];
 				}
 			});
 			r.rawDataToPlot[key] = {};
@@ -139,16 +146,17 @@ class ChartCalculatorService {
 			let result = [];
 			// we have to deteremine where to cut the data so lets find and index for each overlap date.
 			if (!r.dateInfo.dates.overlaps[key]) {
-				r.rawDataToPlot[key].slices["slice0"] = r.rawDataToPlot[key][key];
+				r.rawDataToPlot[key].slices['slice0'] =
+					r.rawDataToPlot[key][key];
 			} else {
 				r.dateInfo.dates.overlaps[key].forEach((date) => {
 					r.dateInfo.dates.sliceIndices[key].push(
-						r.dateInfo.dateArray.total.indexOf(date)
+						r.dateInfo.dateArray.total.indexOf(date),
 					);
 				});
 
 				let sortedIndices = r.dateInfo.dates.sliceIndices[key].sort(
-					(a, b) => a - b
+					(a, b) => a - b,
 				);
 
 				let starter = 0;
@@ -176,9 +184,11 @@ class ChartCalculatorService {
 
 				// Handle the last range
 				let finalSlice = Array(totalLength).fill(null); // Initialize with nulls
-				r.rawDataToPlot[key][key].slice(starter).forEach((value, idx) => {
-					finalSlice[starter + idx] = value; // Copy values into their original positions
-				});
+				r.rawDataToPlot[key][key]
+					.slice(starter)
+					.forEach((value, idx) => {
+						finalSlice[starter + idx] = value; // Copy values into their original positions
+					});
 				result.push(finalSlice);
 
 				// Store slices back into r.rawDataToPlot
@@ -202,7 +212,9 @@ class ChartCalculatorService {
 			//noone has played with brush, so we need to set the brush to the start and end of the data
 			if (parameters.brushStart && parameters.brushEnd) {
 				// there is a specified start and end
-				d.dStart.setMonth(d.currentDate.getMonth() + parameters.brushStart);
+				d.dStart.setMonth(
+					d.currentDate.getMonth() + parameters.brushStart,
+				);
 				d.dEnd.setMonth(d.currentDate.getMonth() + parameters.brushEnd);
 			} else {
 				//no start and end specified, so we need to set the brush to the start and end of the data
@@ -211,20 +223,20 @@ class ChartCalculatorService {
 			}
 			d.finalStart = Math.max(
 				d.dStart.getTime(),
-				new Date(plotMat[0].date).getTime()
+				new Date(plotMat[0].date).getTime(),
 			);
 
 			d.finalEnd = Math.min(
 				d.dEnd.getTime(),
-				new Date(plotMat[plotMat.length - 1].date).getTime()
+				new Date(plotMat[plotMat.length - 1].date).getTime(),
 			);
 			d.index[0] = ChartCalculatorService.dateToIndex(
 				ChartCalculatorService.formatDate(d.finalStart),
-				plotMat
+				plotMat,
 			);
 			d.index[1] = ChartCalculatorService.dateToIndex(
 				ChartCalculatorService.formatDate(d.finalEnd),
-				plotMat
+				plotMat,
 			);
 		}
 	}
@@ -241,7 +253,9 @@ class ChartCalculatorService {
 			//noone has played with brush, so we need to set the brush to the start and end of the data
 			if (parameters.brushStart && parameters.brushEnd) {
 				// there is a specified start and end
-				d.dStart.setMonth(d.currentDate.getMonth() + parameters.brushStart);
+				d.dStart.setMonth(
+					d.currentDate.getMonth() + parameters.brushStart,
+				);
 				d.dEnd.setMonth(d.currentDate.getMonth() + parameters.brushEnd);
 			} else {
 				//no start and end specified, so we need to set the brush to the start and end of the data
@@ -250,20 +264,20 @@ class ChartCalculatorService {
 			}
 			d.finalStart = Math.max(
 				d.dStart.getTime(),
-				new Date(plotMat[0].date).getTime()
+				new Date(plotMat[0].date).getTime(),
 			);
 
 			d.finalEnd = Math.min(
 				d.dEnd.getTime(),
-				new Date(plotMat[plotMat.length - 1].date).getTime()
+				new Date(plotMat[plotMat.length - 1].date).getTime(),
 			);
 			d.index[0] = ChartCalculatorService.dateToIndex(
 				ChartCalculatorService.formatDate(d.finalStart),
-				plotMat
+				plotMat,
 			);
 			d.index[1] = ChartCalculatorService.dateToIndex(
 				ChartCalculatorService.formatDate(d.finalEnd),
-				plotMat
+				plotMat,
 			);
 		}
 	}
@@ -273,7 +287,7 @@ class ChartCalculatorService {
 		dispatch,
 		plotMat,
 		setBrushRange,
-		direction
+		direction,
 	) => {
 		dispatch(
 			setBrushRange({
@@ -282,7 +296,7 @@ class ChartCalculatorService {
 					startIndex: range.startIndex,
 					endIndex: range.endIndex,
 				},
-			})
+			}),
 		);
 	};
 
@@ -296,8 +310,8 @@ class ChartCalculatorService {
 			let val = r.data;
 			if (val != null) {
 				levels.forEach((v) => {
-					if ("date" in val) {
-						r.dateInfo.dates[key] = val["date"];
+					if ('date' in val) {
+						r.dateInfo.dates[key] = val['date'];
 						r.dateInfo.dateArray[key] = [];
 						let date0 = new Date(r.dateInfo.dates[key].date0);
 						let date1 = new Date(r.dateInfo.dates[key].date1);
@@ -317,16 +331,20 @@ class ChartCalculatorService {
 
 		let tempDatesArray = [];
 		Object.keys(r.dateInfo.dates).forEach((key) => {
-			tempDatesArray.push(new Date(r.dateInfo.dates[key].date0).getTime());
-			tempDatesArray.push(new Date(r.dateInfo.dates[key].date1).getTime());
+			tempDatesArray.push(
+				new Date(r.dateInfo.dates[key].date0).getTime(),
+			);
+			tempDatesArray.push(
+				new Date(r.dateInfo.dates[key].date1).getTime(),
+			);
 		});
 		let dateMin = new Date(Math.min(...tempDatesArray));
 		let dateMax = new Date(Math.max(...tempDatesArray));
-		r.dateInfo.dateArray["total"] = [];
+		r.dateInfo.dateArray['total'] = [];
 		let currentDate = new Date(dateMin);
 		while (currentDate <= new Date(dateMax)) {
 			let formattedDate = this.formatDate(currentDate);
-			r.dateInfo.dateArray["total"].push(formattedDate);
+			r.dateInfo.dateArray['total'].push(formattedDate);
 			currentDate.setDate(currentDate.getDate() + 1);
 		}
 	}
@@ -344,7 +362,7 @@ class ChartCalculatorService {
 			throw new Error(
 				`date not found in plotMat date you entered is ${date} our range is ${
 					plotMat[0].date
-				} -- ${plotMat[plotMat.length - 1].date}`
+				} -- ${plotMat[plotMat.length - 1].date}`,
 			);
 		} else {
 			return dateIndex;
@@ -356,7 +374,7 @@ class ChartCalculatorService {
 		scrlRef,
 		dispatch,
 		setBrushDatay,
-		direction
+		direction,
 	) {
 		let s = scrlRef.current && scrlRef.current;
 		if (scrlRef.current) {
@@ -367,7 +385,7 @@ class ChartCalculatorService {
 						Math.pow(
 							(s.minmaxId.max - range.endIndex) /
 								(s.minmaxId.max - s.minmaxId.min),
-							s.scrollScl
+							s.scrollScl,
 						),
 				max:
 					s.minmax.min +
@@ -375,7 +393,7 @@ class ChartCalculatorService {
 						Math.pow(
 							(s.minmaxId.max - range.startIndex) /
 								(s.minmaxId.max - s.minmaxId.min),
-							s.scrollScl
+							s.scrollScl,
 						),
 			};
 			dispatch(
@@ -388,7 +406,7 @@ class ChartCalculatorService {
 								Math.pow(
 									(s.minmaxId.max - range.endIndex) /
 										(s.minmaxId.max - s.minmaxId.min),
-									s.scrollScl
+									s.scrollScl,
 								),
 						max:
 							s.minmax.min +
@@ -396,13 +414,13 @@ class ChartCalculatorService {
 								Math.pow(
 									(s.minmaxId.max - range.startIndex) /
 										(s.minmaxId.max - s.minmaxId.min),
-									s.scrollScl
+									s.scrollScl,
 								),
 					},
-				})
+				}),
 			);
 		} else {
-			HTMLFormControlsCollection.log("no scrlRef");
+			HTMLFormControlsCollection.log('no scrlRef');
 			// setBrushDataY({ min: range.startIndex, max: range.endIndex });
 		}
 	}

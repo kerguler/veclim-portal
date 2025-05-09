@@ -1,11 +1,11 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { getCurrentDate } from "store/apis/utils";
+import { createSlice } from '@reduxjs/toolkit';
+import { getCurrentDate } from 'store/apis/utils';
 
 const dashboardSlice = createSlice({
-	name: "dashboard",
+	name: 'dashboard',
 	initialState: {
-		timeSeriesDates: { date0: "2022-07-01", date1: getCurrentDate("-") },
-		user: { userName: "" },
+		timeSeriesDates: { date0: '2022-07-01', date1: getCurrentDate('-') },
+		user: { userName: '' },
 		blinkers: {
 			disableDate0: false,
 			disableDate1: false,
@@ -16,9 +16,9 @@ const dashboardSlice = createSlice({
 			displayAddVEClimModel: false,
 			displayTimeSeries: false,
 			displaySimList: false,
-			displayVEClimModelList:false,
+			displayVEClimModelList: false,
 			displayUserName: true,
-			displayEditPage:false,
+			displayEditPage: false,
 		},
 	},
 	reducers: {
@@ -36,5 +36,6 @@ const dashboardSlice = createSlice({
 	},
 });
 
-export const { setTimeSeriesDates, setBlinkers,setUser } = dashboardSlice.actions;
+export const { setTimeSeriesDates, setBlinkers, setUser } =
+	dashboardSlice.actions;
 export const dashboardReducer = dashboardSlice.reducer;

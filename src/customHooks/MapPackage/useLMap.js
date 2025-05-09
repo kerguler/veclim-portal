@@ -1,24 +1,31 @@
-import { useEffect } from "react";
-import L from "leaflet";
+import { useEffect } from 'react';
+import L from 'leaflet';
 
-import { useDispatch, useSelector } from "react-redux";
-import PackageMapServices from "components/map/mapPackage/PackageMapServices";
-import useLMapResize from "./useLMapResize";
-import { setCurrentMapCenter, setCurrentMapBounds } from "store";
-import { current } from "@reduxjs/toolkit";
-import useFetcherVariables from "customHooks/useFetcherVariables";
+import { useDispatch, useSelector } from 'react-redux';
+import PackageMapServices from 'components/map/mapPackage/PackageMapServices';
+import useLMapResize from './useLMapResize';
+import { setCurrentMapCenter, setCurrentMapBounds } from 'store';
+import { current } from '@reduxjs/toolkit';
+import useFetcherVariables from 'customHooks/useFetcherVariables';
 function useLMap(mapParRef) {
 	useLMapResize();
 	const dispatch = useDispatch();
 
-	const pageTransition = useSelector((state) => state.location.pageTransition);
+	const pageTransition = useSelector(
+		(state) => state.location.pageTransition,
+	);
 	let p = mapParRef.current;
 
-	const { vectorName, switchMap, currentMapCenter, currentMapZoom, mapVector } =
-		useFetcherVariables();
+	const {
+		vectorName,
+		switchMap,
+		currentMapCenter,
+		currentMapZoom,
+		mapVector,
+	} = useFetcherVariables();
 
 	useEffect(() => {
-		p.map = L.map("map1", {
+		p.map = L.map('map1', {
 			maxBoundsViscosity: 0,
 			maxBounds: p.maxBounds,
 			zoomControl: false,
@@ -33,7 +40,7 @@ function useLMap(mapParRef) {
 	useEffect(() => {
 		p.map.setView(
 			{ lat: currentMapCenter[0], lng: currentMapCenter[1] },
-			currentMapZoom
+			currentMapZoom,
 		);
 
 		PackageMapServices.mapBounds(
@@ -43,7 +50,7 @@ function useLMap(mapParRef) {
 			switchMap,
 			currentMapCenter,
 			currentMapZoom,
-			dispatch
+			dispatch,
 		);
 	}, [dispatch, pageTransition, switchMap, vectorName]);
 }

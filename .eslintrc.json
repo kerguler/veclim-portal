@@ -1,0 +1,32 @@
+{
+	"parser": "@babel/eslint-parser",
+	"parserOptions": {
+		"ecmaVersion": 2021,
+		"sourceType": "module",
+		"ecmaFeatures": {
+			"jsx": true
+		},
+		"requireConfigFile": false
+	},
+	"plugins": ["react", "react-hooks", "jsx"],
+
+	"env": {
+		"browser": true,
+		"es2021": true
+	},
+	"extends": [
+		"eslint:recommended",
+		"plugin:react/recommended",
+		"plugin:react-hooks/recommended"
+	],
+
+	"rules": {
+		"react/react-in-jsx-scope": "off",
+		"react/prop-types": "off",
+		"no-unused-vars": 1,
+		// "prettier/prettier": ["error"],
+		// "no-undef": "error",
+		"indent": ["error", "tab"]
+		// "no-mixed-spaces-and-tabs": ["error", "smart-tabs"]
+	}
+}

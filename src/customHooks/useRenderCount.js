@@ -1,11 +1,11 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from 'react';
 
 function useRenderCount(text) {
 	const renderCount = useRef(0);
 	useEffect(() => {
 		// renderCount.current += 1;
 		renderCount.current = renderCount.current + 1;
-		console.log(renderCount.current, ". render ", text);
+		console.log(renderCount.current, '. render ', text);
 	});
 }
 

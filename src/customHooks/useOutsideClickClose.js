@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect } from 'react';
 function useOutsideClickClose(reference, closefun) {
 	useEffect(() => {
 		const handleClickOnDoc = (event) => {
@@ -10,9 +10,9 @@ function useOutsideClickClose(reference, closefun) {
 			}
 		};
 		// console.log("useOutsideClickClose.js");
-		window.addEventListener("click", handleClickOnDoc, true);
+		window.addEventListener('click', handleClickOnDoc, true);
 		return () => {
-			window.removeEventListener("click", handleClickOnDoc);
+			window.removeEventListener('click', handleClickOnDoc);
 		};
 	});
 }

@@ -15,7 +15,6 @@ import { useLoginMutation } from "store";
 import { setApiRegisterResponse } from "store";
 import { useNavigate } from "react-router-dom";
 import { loginUser } from "../Services/backEndFunctions";
-import useCsrf from "../Services/useCsrf";
 function LoginPage() {
 	const navigate = useNavigate();
 
@@ -29,12 +28,12 @@ function LoginPage() {
 	const dispatch = useDispatch();
 	const username = useSelector((state) => state.login.username);
 	const password = useSelector((state) => state.login.password);
-	const rememberLogin = useSelector((state) => state.login.rememberLogin);
+	const rememberLogin =
+		useSelector((state) => state.login.rememberLogin) === "true";
 	const [login] = useLoginMutation();
 
-	useCsrf();
 	useEffect(() => {
-		const rememberLogin = localStorage.getItem("rememberLogin");
+		const rememberLogin = localStorage.getItem("rememberLogin") === "true";
 		const username = localStorage.getItem("username");
 		const password = localStorage.getItem("password");
 		if (rememberLogin && username && password) {
@@ -52,8 +51,10 @@ function LoginPage() {
 	};
 
 	const handleRememberMeChange = (e) => {
-		dispatch(setRememberLogin(e.target.checked));
-		localStorage.setItem("rememberLogin", e.target.checked);
+		const isChecked = e.target.checked;
+		dispatch(setRememberLogin(isChecked));
+
+		localStorage.setItem("rememberLogin", isChecked ? "true" : "false");
 		localStorage.setItem("username", username);
 		localStorage.setItem("password", password);
 	};
@@ -69,7 +70,7 @@ function LoginPage() {
 					token: response.token,
 					userName: username,
 					userId: response.userId,
-				})
+				}),
 			);
 			console.log({ response });
 			localStorage.setItem("username", response.userName);
@@ -82,46 +83,46 @@ function LoginPage() {
 	};
 
 	return (
-		<div className="login-base">
-			<div className="login-logo">
+		<div className='login-base'>
+			<div className='login-logo'>
 				{" "}
-				<img alt="veclim-logo" src={veclimLogo}></img>{" "}
+				<img alt='veclim-logo' src={veclimLogo}></img>{" "}
 			</div>
-			<div className="login-boxes">
+			<div className='login-boxes'>
 				<h3>Login Page</h3>
 				<input
-					className="email-field"
-					type="email"
-					placeholder="Email"
+					className='email-field'
+					type='email'
+					placeholder='Email'
 					value={username}
 					onChange={handleUsernameChange}
 					required
 				/>
 				<input
-					className="password-field"
-					type="password"
-					placeholder="Password"
+					className='password-field'
+					type='password'
+					placeholder='Password'
 					value={password}
 					onChange={handlePasswordChange}
 					required
 				/>
-				<label className="checkbox-field">
+				<label className='checkbox-field'>
 					<input
-						type="checkbox"
+						type='checkbox'
 						checked={rememberLogin}
 						onChange={handleRememberMeChange}
 					/>
 					Remember me
 				</label>
-				<button className="login-submit-button" onClick={handleLogin}>
+				<button className='login-submit-button' onClick={handleLogin}>
 					Login
 				</button>
 				<div>{displayWarning.message}</div>
 			</div>
-			<div className="register-text">
+			<div className='register-text'>
 				{" "}
 				If you don't have an account. You can get one from{" "}
-				<Link to="/RegistrationPage">here</Link>
+				<Link to='/RegistrationPage'>here</Link>
 			</div>
 		</div>
 	);

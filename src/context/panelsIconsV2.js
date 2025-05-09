@@ -28,10 +28,10 @@ const PanelContextV2 = createContext();
 
 function PanelProviderV2({ children }) {
 	const mapVector = useSelector(
-		(state) => state.fetcher.fetcherStates.mapVector
+		(state) => state.fetcher.fetcherStates.mapVector,
 	);
 	const mapPagePosition = useSelector(
-		(state) => state.fetcher.fetcherStates.map.mapPagePosition
+		(state) => state.fetcher.fetcherStates.map.mapPagePosition,
 	);
 	const tileBase = process.env.REACT_APP_BASE_URL;
 	const tileIconRowHeadings = [
@@ -62,9 +62,10 @@ function PanelProviderV2({ children }) {
 			description: (
 				<>
 					<p>
-						Average decadal mosquito activity in 2010-2020 as predicted by the
-						model (assumes tiger mosquito presence). The colour scale is
-						proportional to the activity predicted in Emilia-Romagna.
+						Average decadal mosquito activity in 2010-2020 as
+						predicted by the model (assumes tiger mosquito
+						presence). The colour scale is proportional to the
+						activity predicted in Emilia-Romagna.
 					</p>
 				</>
 			),
@@ -87,9 +88,10 @@ function PanelProviderV2({ children }) {
 			description: (
 				<>
 					<p>
-						The first calendar month when the predicted number of larva (in a
-						typical breeding site) exceeds 1. No data is shown when the number
-						of larva is always higher or lower than 1.
+						The first calendar month when the predicted number of
+						larva (in a typical breeding site) exceeds 1. No data is
+						shown when the number of larva is always higher or lower
+						than 1.
 					</p>
 				</>
 			),
@@ -106,31 +108,32 @@ function PanelProviderV2({ children }) {
 			description: (
 				<>
 					<p>
-						All the grid cells that are somehow connected to an administrative
-						polygon where the tiger mosquito has been reported.
+						All the grid cells that are somehow connected to an
+						administrative polygon where the tiger mosquito has been
+						reported.
 					</p>
 					<p>
 						We obtained the polygons from{" "}
 						<a
-							href="https://data.apps.fao.org/catalog/dataset/global-administrative-unit-layers-gaul"
-							target="_blank"
-							rel="noreferrer"
+							href='https://data.apps.fao.org/catalog/dataset/global-administrative-unit-layers-gaul'
+							target='_blank'
+							rel='noreferrer'
 						>
 							GAUL
 						</a>
 						,{" "}
 						<a
-							href="https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/administrative-units-statistical-units/nuts"
-							target="_blank"
-							rel="noreferrer"
+							href='https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/administrative-units-statistical-units/nuts'
+							target='_blank'
+							rel='noreferrer'
 						>
 							NUTS3
 						</a>
 						, and{" "}
 						<a
-							href="https://www.ecdc.europa.eu/en/disease-vectors/surveillance-and-disease-data/mosquito-maps"
-							target="_blank"
-							rel="noreferrer"
+							href='https://www.ecdc.europa.eu/en/disease-vectors/surveillance-and-disease-data/mosquito-maps'
+							target='_blank'
+							rel='noreferrer'
 						>
 							ECDC/EFSA Mosquito Maps
 						</a>{" "}
@@ -157,11 +160,11 @@ function PanelProviderV2({ children }) {
 			description: (
 				<>
 					<p>
-						Decadal averages of outbreak risk in 2010-2020 measured as the
-						likeliness of starting an outbreak out of 100 independent
-						importations in the first 60 days. The value shown represents a
-						potential derived from the model. We assume vector presence in each
-						grid cell.
+						Decadal averages of outbreak risk in 2010-2020 measured
+						as the likeliness of starting an outbreak out of 100
+						independent importations in the first 60 days. The value
+						shown represents a potential derived from the model. We
+						assume vector presence in each grid cell.
 					</p>
 				</>
 			),
@@ -184,10 +187,11 @@ function PanelProviderV2({ children }) {
 			description: (
 				<>
 					<p>
-						Decadal averages (2010-2020) of the expected impact of an infectious
-						case imported in a population of 4000 susceptible individuals. The
-						value shown represents a potential derived from the model. We assume
-						vector presence in each grid cell.
+						Decadal averages (2010-2020) of the expected impact of
+						an infectious case imported in a population of 4000
+						susceptible individuals. The value shown represents a
+						potential derived from the model. We assume vector
+						presence in each grid cell.
 					</p>
 				</>
 			),
@@ -210,10 +214,11 @@ function PanelProviderV2({ children }) {
 			description: (
 				<>
 					<p>
-						Average decadal mosquito activity in 2090-2100 as predicted by the
-						model under the optimistic (SSP 2-4.5) scenario (assumes tiger
-						mosquito presence). The colour scale is proportional to the activity
-						predicted in Emilia-Romagna.
+						Average decadal mosquito activity in 2090-2100 as
+						predicted by the model under the optimistic (SSP 2-4.5)
+						scenario (assumes tiger mosquito presence). The colour
+						scale is proportional to the activity predicted in
+						Emilia-Romagna.
 					</p>
 				</>
 			),
@@ -236,11 +241,12 @@ function PanelProviderV2({ children }) {
 			description: (
 				<>
 					<p>
-						Decadal averages of outbreak risk in 2090-2100 under the optimistic
-						SSP 2-4.5 scenario. The risk is measured as the likeliness of
-						starting an outbreak out of 100 independent importations in the
-						first 60 days. The value shown represents a potential derived from
-						the model. We assume vector presence in each grid cell.
+						Decadal averages of outbreak risk in 2090-2100 under the
+						optimistic SSP 2-4.5 scenario. The risk is measured as
+						the likeliness of starting an outbreak out of 100
+						independent importations in the first 60 days. The value
+						shown represents a potential derived from the model. We
+						assume vector presence in each grid cell.
 					</p>
 				</>
 			),
@@ -263,11 +269,12 @@ function PanelProviderV2({ children }) {
 			description: (
 				<>
 					<p>
-						Decadal averages (2090-2100 under the optimistic SSP 2-4.5 scenario)
-						of the expected impact of an infectious case imported in a
-						population of 4000 susceptible individuals. The value shown
-						represents a potential derived from the model. We assume vector
-						presence in each grid cell.
+						Decadal averages (2090-2100 under the optimistic SSP
+						2-4.5 scenario) of the expected impact of an infectious
+						case imported in a population of 4000 susceptible
+						individuals. The value shown represents a potential
+						derived from the model. We assume vector presence in
+						each grid cell.
 					</p>
 				</>
 			),
@@ -290,10 +297,11 @@ function PanelProviderV2({ children }) {
 			description: (
 				<>
 					<p>
-						Average decadal mosquito activity in 2090-2100 as predicted by the
-						model under the pessimistic (SSP 5-8.5) scenario (assumes tiger
-						mosquito presence). The colour scale is proportional to the activity
-						predicted in Emilia-Romagna.
+						Average decadal mosquito activity in 2090-2100 as
+						predicted by the model under the pessimistic (SSP 5-8.5)
+						scenario (assumes tiger mosquito presence). The colour
+						scale is proportional to the activity predicted in
+						Emilia-Romagna.
 					</p>
 				</>
 			),
@@ -316,11 +324,12 @@ function PanelProviderV2({ children }) {
 			description: (
 				<>
 					<p>
-						Decadal averages of outbreak risk in 2090-2100 under the pessimistic
-						SSP 5-8.5 scenario. The risk is measured as the likeliness of
-						starting an outbreak out of 100 independent importations in the
-						first 60 days. The value shown represents a potential derived from
-						the model. We assume vector presence in each grid cell.
+						Decadal averages of outbreak risk in 2090-2100 under the
+						pessimistic SSP 5-8.5 scenario. The risk is measured as
+						the likeliness of starting an outbreak out of 100
+						independent importations in the first 60 days. The value
+						shown represents a potential derived from the model. We
+						assume vector presence in each grid cell.
 					</p>
 				</>
 			),
@@ -343,11 +352,12 @@ function PanelProviderV2({ children }) {
 			description: (
 				<>
 					<p>
-						Decadal averages (2090-2100 under the pessimistic SSP 5-8.5
-						scenario) of the expected impact of an infectious case imported in a
-						population of 4000 susceptible individuals. The value shown
-						represents a potential derived from the model. We assume vector
-						presence in each grid cell.
+						Decadal averages (2090-2100 under the pessimistic SSP
+						5-8.5 scenario) of the expected impact of an infectious
+						case imported in a population of 4000 susceptible
+						individuals. The value shown represents a potential
+						derived from the model. We assume vector presence in
+						each grid cell.
 					</p>
 				</>
 			),
@@ -370,9 +380,10 @@ function PanelProviderV2({ children }) {
 			description: (
 				<>
 					<p>
-						Average decadal mosquito activity in 1980-1990 as predicted by the
-						model (assumes tiger mosquito presence). The colour scale is
-						proportional to the activity predicted in Emilia-Romagna.
+						Average decadal mosquito activity in 1980-1990 as
+						predicted by the model (assumes tiger mosquito
+						presence). The colour scale is proportional to the
+						activity predicted in Emilia-Romagna.
 					</p>
 				</>
 			),
@@ -395,11 +406,11 @@ function PanelProviderV2({ children }) {
 			description: (
 				<>
 					<p>
-						Decadal averages of outbreak risk in 1980-1990 measured as the
-						likeliness of starting an outbreak out of 100 independent
-						importations in the first 60 days. The value shown represents a
-						potential derived from the model. We assume vector presence in each
-						grid cell.
+						Decadal averages of outbreak risk in 1980-1990 measured
+						as the likeliness of starting an outbreak out of 100
+						independent importations in the first 60 days. The value
+						shown represents a potential derived from the model. We
+						assume vector presence in each grid cell.
 					</p>
 				</>
 			),
@@ -422,10 +433,11 @@ function PanelProviderV2({ children }) {
 			description: (
 				<>
 					<p>
-						Decadal averages (1980-1990) of the expected impact of an infectious
-						case imported in a population of 4000 susceptible individuals. The
-						value shown represents a potential derived from the model. We assume
-						vector presence in each grid cell.
+						Decadal averages (1980-1990) of the expected impact of
+						an infectious case imported in a population of 4000
+						susceptible individuals. The value shown represents a
+						potential derived from the model. We assume vector
+						presence in each grid cell.
 					</p>
 				</>
 			),
@@ -446,8 +458,8 @@ function PanelProviderV2({ children }) {
 			description: (
 				<>
 					<p>
-						Average number of <i>Phlebotomus papatasi</i> females from April to
-						December.
+						Average number of <i>Phlebotomus papatasi</i> females
+						from April to December.
 					</p>
 				</>
 			),
@@ -464,8 +476,8 @@ function PanelProviderV2({ children }) {
 			description: (
 				<>
 					<p>
-						Average number of <i>Phlebotomus papatasi</i> females from April to
-						June.
+						Average number of <i>Phlebotomus papatasi</i> females
+						from April to June.
 					</p>
 				</>
 			),
@@ -482,8 +494,8 @@ function PanelProviderV2({ children }) {
 			description: (
 				<>
 					<p>
-						Average number of <i>Phlebotomus papatasi</i> females from July to
-						September.
+						Average number of <i>Phlebotomus papatasi</i> females
+						from July to September.
 					</p>
 				</>
 			),
@@ -500,8 +512,8 @@ function PanelProviderV2({ children }) {
 			description: (
 				<>
 					<p>
-						Average number of <i>Phlebotomus papatasi</i> females from October
-						to December.
+						Average number of <i>Phlebotomus papatasi</i> females
+						from October to December.
 					</p>
 				</>
 			),
@@ -691,7 +703,7 @@ function PanelProviderV2({ children }) {
 			positionDependent: true,
 
 			content: (
-				<div className="text-area">
+				<div className='text-area'>
 					<h1>Location Information</h1>
 					<div>
 						<ChartIndicators />
@@ -744,16 +756,16 @@ function PanelProviderV2({ children }) {
 			},
 
 			content: (
-				<div className="text-area">
+				<div className='text-area'>
 					<h1>Seasonal Profile</h1>
 					<div>
 						<p>
-							Decadal averages (2010-2020) of some of the environmental
-							variables obtained from the{" "}
+							Decadal averages (2010-2020) of some of the
+							environmental variables obtained from the{" "}
 							<a
-								target="_blank"
-								rel="noreferrer"
-								href="https://cds.climate.copernicus.eu/cdsapp#!/dataset/reanalysis-era5-single-levels"
+								target='_blank'
+								rel='noreferrer'
+								href='https://cds.climate.copernicus.eu/cdsapp#!/dataset/reanalysis-era5-single-levels'
 							>
 								ERA5
 							</a>{" "}
@@ -803,12 +815,12 @@ function PanelProviderV2({ children }) {
 				},
 			},
 			content: (
-				<div className="text-area">
+				<div className='text-area'>
 					<h1>Larva Forecast</h1>
 					<div>
 						<p>
-							Predicted number of larvae in a typical breeding site compared
-							with the decadal averages.
+							Predicted number of larvae in a typical breeding
+							site compared with the decadal averages.
 						</p>
 					</div>
 				</div>
@@ -826,7 +838,7 @@ function PanelProviderV2({ children }) {
 				mixedKeys: [
 					{
 						key: "g1",
-						levels: ["test", "fcast-ts", "ecmwf", "iouts"],
+						levels: ["fcast-ts", "ecmwf", "iouts"],
 					},
 					{
 						key: "g2",
@@ -863,7 +875,7 @@ function PanelProviderV2({ children }) {
 				},
 			},
 			content: (
-				<div className="text-area">
+				<div className='text-area'>
 					<h1>Simulation Data </h1>
 					<div>
 						<p>Here we will display simulation graphics</p>{" "}
@@ -913,12 +925,12 @@ function PanelProviderV2({ children }) {
 				},
 			},
 			content: (
-				<div className="text-area">
+				<div className='text-area'>
 					<h1>Activity Forecast</h1>
 					<div>
 						<p>
-							Daily number of eggs laid by the Asian tiger mosquito as a proxy
-							to biting activity.
+							Daily number of eggs laid by the Asian tiger
+							mosquito as a proxy to biting activity.
 						</p>
 					</div>
 				</div>
@@ -972,13 +984,14 @@ function PanelProviderV2({ children }) {
 			},
 
 			content: (
-				<div className="text-area">
+				<div className='text-area'>
 					<h1>Activity Projections</h1>
 					<div>
 						<p>
-							Daily number of eggs in 2010-2020, compared to the historical
-							(1980-1990) and projected future (2090-2100) decadal averages. SSP
-							2-4.5 and SSP 5-8.5 represent the optimistic and pessimistic
+							Daily number of eggs in 2010-2020, compared to the
+							historical (1980-1990) and projected future
+							(2090-2100) decadal averages. SSP 2-4.5 and SSP
+							5-8.5 represent the optimistic and pessimistic
 							scenarios, respectively.
 						</p>
 					</div>
@@ -1037,25 +1050,26 @@ function PanelProviderV2({ children }) {
 				horizontalAxis: "date",
 			},
 			content: (
-				<div className="text-area">
+				<div className='text-area'>
 					<h1>Outbreak Forecast</h1>
 					<div>
 						<p>
-							The likeliness of an outbreak in response to an imported
-							infectious case according to the{" "}
+							The likeliness of an outbreak in response to an
+							imported infectious case according to the{" "}
 							<a
-								target="_blank"
-								rel="noreferrer"
-								href="https://doi.org/10.1371/journal.pone.0174293"
+								target='_blank'
+								rel='noreferrer'
+								href='https://doi.org/10.1371/journal.pone.0174293'
 							>
 								Chikungunya model
 							</a>
 							.
 						</p>
 						<p>
-							We introduce an infectious case in a population of 4000. Outbreak{" "}
-							<strong>risk</strong> is the number of times (out of 100) when an
-							autochthonous case is observed.
+							We introduce an infectious case in a population of
+							4000. Outbreak <strong>risk</strong> is the number
+							of times (out of 100) when an autochthonous case is
+							observed.
 						</p>
 					</div>
 				</div>
@@ -1109,13 +1123,14 @@ function PanelProviderV2({ children }) {
 				horizontalAxis: "date",
 			},
 			content: (
-				<div className="text-area">
+				<div className='text-area'>
 					<h1>Outbreak Projections</h1>
 					<div>
 						<p>
-							Average outbreak risk in 2010-2020, compared to the historical
-							(1980-1990) and projected future (2090-2100) decadal averages. SSP
-							2-4.5 and SSP 5-8.5 represent the optimistic and pessimistic
+							Average outbreak risk in 2010-2020, compared to the
+							historical (1980-1990) and projected future
+							(2090-2100) decadal averages. SSP 2-4.5 and SSP
+							5-8.5 represent the optimistic and pessimistic
 							scenarios, respectively.
 						</p>
 					</div>
@@ -1172,25 +1187,25 @@ function PanelProviderV2({ children }) {
 				},
 			},
 			content: (
-				<div className="text-area">
+				<div className='text-area'>
 					<h1>Impact Forecast</h1>
 					<div>
 						<p>
-							The expected impact of an imported infectious case according to
-							the{" "}
+							The expected impact of an imported infectious case
+							according to the{" "}
 							<a
-								target="_blank"
-								rel="noreferrer"
-								href="https://doi.org/10.1371/journal.pone.0174293"
+								target='_blank'
+								rel='noreferrer'
+								href='https://doi.org/10.1371/journal.pone.0174293'
 							>
 								Chikungunya model
 							</a>
 							.
 						</p>
 						<p>
-							We introduce an infectious case in a population of 4000. The{" "}
-							<strong>impact</strong> is the average number of autochthonous
-							cases in 60 days.
+							We introduce an infectious case in a population of
+							4000. The <strong>impact</strong> is the average
+							number of autochthonous cases in 60 days.
 						</p>
 					</div>
 				</div>
@@ -1244,14 +1259,15 @@ function PanelProviderV2({ children }) {
 				horizontalAxis: "date",
 			},
 			content: (
-				<div className="text-area">
+				<div className='text-area'>
 					<h1>Impact Projections</h1>
 					<div>
 						<p>
-							Average importation impact in 2010-2020, compared to the
-							historical (1980-1990) and projected future (2090-2100) decadal
-							averages. SSP 2-4.5 and SSP 5-8.5 represent the optimistic and
-							pessimistic scenarios, respectively.
+							Average importation impact in 2010-2020, compared to
+							the historical (1980-1990) and projected future
+							(2090-2100) decadal averages. SSP 2-4.5 and SSP
+							5-8.5 represent the optimistic and pessimistic
+							scenarios, respectively.
 						</p>
 					</div>
 				</div>
@@ -1298,7 +1314,7 @@ function PanelProviderV2({ children }) {
 			id: [0, 5, 0],
 			chartParameters: {},
 			content: (
-				<div className="text-area">
+				<div className='text-area'>
 					<h1>Simulation Data </h1>
 					<div>
 						<AlboParams />
@@ -1320,7 +1336,7 @@ function PanelProviderV2({ children }) {
 			id: [0, 6, 0],
 			chartParameters: {},
 			content: (
-				<div className="text-area">
+				<div className='text-area'>
 					<h1>Settings Panel </h1>
 
 					<SettingsPanel />
@@ -1352,7 +1368,7 @@ function PanelProviderV2({ children }) {
 							chartParameters: {},
 
 							content: (
-								<div className="text-area">
+								<div className='text-area'>
 									<h1>Location Information</h1>
 									<div>
 										<ChartIndicators />
@@ -1377,15 +1393,27 @@ function PanelProviderV2({ children }) {
 								mixedKeys: [
 									{
 										key: "g1",
-										levels: ["meteo-ts", "2010-2019", "atemp"],
+										levels: [
+											"meteo-ts",
+											"2010-2019",
+											"atemp",
+										],
 									},
 									{
 										key: "g2",
-										levels: ["meteo-ts", "2010-2019", "rehum"],
+										levels: [
+											"meteo-ts",
+											"2010-2019",
+											"rehum",
+										],
 									},
 									{
 										key: "g3",
-										levels: ["meteo-ts", "2010-2019", "precp"],
+										levels: [
+											"meteo-ts",
+											"2010-2019",
+											"precp",
+										],
 									},
 								],
 
@@ -1399,27 +1427,32 @@ function PanelProviderV2({ children }) {
 										},
 									},
 									g2: {
-										sliceLabels: { slice0: "Rel. humidity (%)" },
+										sliceLabels: {
+											slice0: "Rel. humidity (%)",
+										},
 										sliceColors: { slice0: "#50C0AD" },
 									},
 									g3: {
-										sliceLabels: { slice0: "Precipitation (mm)" },
+										sliceLabels: {
+											slice0: "Precipitation (mm)",
+										},
 										sliceColors: { slice0: "#1B3958" },
 									},
 								},
 							},
 
 							content: (
-								<div className="text-area">
+								<div className='text-area'>
 									<h1>Seasonal Profile</h1>
 									<div>
 										<p>
-											Decadal averages (2010-2020) of some of the environmental
-											variables obtained from the{" "}
+											Decadal averages (2010-2020) of some
+											of the environmental variables
+											obtained from the{" "}
 											<a
-												target="_blank"
-												rel="noreferrer"
-												href="https://cds.climate.copernicus.eu/cdsapp#!/dataset/reanalysis-era5-single-levels"
+												target='_blank'
+												rel='noreferrer'
+												href='https://cds.climate.copernicus.eu/cdsapp#!/dataset/reanalysis-era5-single-levels'
 											>
 												ERA5
 											</a>{" "}
@@ -1455,11 +1488,19 @@ function PanelProviderV2({ children }) {
 										mixedKeys: [
 											{
 												key: "g1",
-												levels: ["fcast-ts", "ecmwf", "coln2"],
+												levels: [
+													"fcast-ts",
+													"ecmwf",
+													"coln2",
+												],
 											},
 											{
 												key: "g2",
-												levels: ["sim-ts", "2010-2019", "coln2"],
+												levels: [
+													"sim-ts",
+													"2010-2019",
+													"coln2",
+												],
 											},
 										],
 										horizontalAxis: "date",
@@ -1477,18 +1518,24 @@ function PanelProviderV2({ children }) {
 												},
 											},
 											g2: {
-												sliceLabels: { slice0: "Decadal average" },
-												sliceColors: { slice0: "#1B3958" },
+												sliceLabels: {
+													slice0: "Decadal average",
+												},
+												sliceColors: {
+													slice0: "#1B3958",
+												},
 											},
 										},
 									},
 									content: (
-										<div className="text-area">
+										<div className='text-area'>
 											<h1>Larva Forecast</h1>
 											<div>
 												<p>
-													Predicted number of larvae in a typical breeding site
-													compared with the decadal averages.
+													Predicted number of larvae
+													in a typical breeding site
+													compared with the decadal
+													averages.
 												</p>
 											</div>
 										</div>
@@ -1513,11 +1560,21 @@ function PanelProviderV2({ children }) {
 										mixedKeys: [
 											{
 												key: "g1",
-												levels: ["test", "fcast-ts", "ecmwf", "iouts"],
+												levels: [
+													"test",
+													"fcast-ts",
+													"ecmwf",
+													"iouts",
+												],
 											},
 											{
 												key: "g2",
-												levels: ["ts", "fcast-ts", "ecmwf", "iouts"],
+												levels: [
+													"ts",
+													"fcast-ts",
+													"ecmwf",
+													"iouts",
+												],
 											},
 										],
 
@@ -1550,10 +1607,13 @@ function PanelProviderV2({ children }) {
 										},
 									},
 									content: (
-										<div className="text-area">
+										<div className='text-area'>
 											<h1>Simulation Data </h1>
 											<div>
-												<p>Here we will display simulation graphics</p>{" "}
+												<p>
+													Here we will display
+													simulation graphics
+												</p>{" "}
 											</div>
 										</div>
 									),
@@ -1562,7 +1622,11 @@ function PanelProviderV2({ children }) {
 									id: [0, 2, 1, 1],
 									chartParameters: {
 										twins: [
-											{ id: 12, display: false, simulation: true },
+											{
+												id: 12,
+												display: false,
+												simulation: true,
+											},
 											{ id: 4, display: false },
 										],
 
@@ -1571,11 +1635,19 @@ function PanelProviderV2({ children }) {
 										mixedKeys: [
 											{
 												key: "g1",
-												levels: ["fcast-ts", "ecmwf", "colegg"],
+												levels: [
+													"fcast-ts",
+													"ecmwf",
+													"colegg",
+												],
 											},
 											{
 												key: "g2",
-												levels: ["sim-ts", "2010-2019", "colegg"],
+												levels: [
+													"sim-ts",
+													"2010-2019",
+													"colegg",
+												],
 											},
 										],
 										horizontalAxis: "date",
@@ -1593,18 +1665,23 @@ function PanelProviderV2({ children }) {
 												},
 											},
 											g2: {
-												sliceLabels: { slice0: "Decadal activity" },
-												sliceColors: { slice0: "#1B3958" },
+												sliceLabels: {
+													slice0: "Decadal activity",
+												},
+												sliceColors: {
+													slice0: "#1B3958",
+												},
 											},
 										},
 									},
 									content: (
-										<div className="text-area">
+										<div className='text-area'>
 											<h1>Activity Forecast</h1>
 											<div>
 												<p>
-													Daily number of eggs laid by the Asian tiger mosquito
-													as a proxy to biting activity.
+													Daily number of eggs laid by
+													the Asian tiger mosquito as
+													a proxy to biting activity.
 												</p>
 											</div>
 										</div>
@@ -1622,52 +1699,89 @@ function PanelProviderV2({ children }) {
 										mixedKeys: [
 											{
 												key: "g1",
-												levels: ["fcast-ts", "nasa", "ssp245", "colegg"],
+												levels: [
+													"fcast-ts",
+													"nasa",
+													"ssp245",
+													"colegg",
+												],
 											},
 											{
 												key: "g2",
-												levels: ["fcast-ts", "nasa", "ssp585", "colegg"],
+												levels: [
+													"fcast-ts",
+													"nasa",
+													"ssp585",
+													"colegg",
+												],
 											},
 											{
 												key: "g3",
-												levels: ["sim-ts", "2010-2019", "colegg"],
+												levels: [
+													"sim-ts",
+													"2010-2019",
+													"colegg",
+												],
 											},
 											{
 												key: "g4",
-												levels: ["sim-ts", "1980-1989", "colegg"],
+												levels: [
+													"sim-ts",
+													"1980-1989",
+													"colegg",
+												],
 											},
 										],
 										sliceInfo: {
 											g1: {
-												sliceColors: { slice0: "orange" },
-												sliceLabels: { slice0: "SSP2-4.5" },
+												sliceColors: {
+													slice0: "orange",
+												},
+												sliceLabels: {
+													slice0: "SSP2-4.5",
+												},
 											},
 											g2: {
-												sliceColors: { slice0: "#F15A48" },
-												sliceLabels: { slice0: "SSP5-8.5" },
+												sliceColors: {
+													slice0: "#F15A48",
+												},
+												sliceLabels: {
+													slice0: "SSP5-8.5",
+												},
 											},
 											g3: {
-												sliceColors: { slice0: "#1B3958" },
-												sliceLabels: { slice0: "2010-2020" },
+												sliceColors: {
+													slice0: "#1B3958",
+												},
+												sliceLabels: {
+													slice0: "2010-2020",
+												},
 											},
 											g4: {
-												sliceColors: { slice0: "#50C0AD" },
-												sliceLabels: { slice0: "1980-1990" },
+												sliceColors: {
+													slice0: "#50C0AD",
+												},
+												sliceLabels: {
+													slice0: "1980-1990",
+												},
 											},
 										},
 										horizontalAxis: "date",
 									},
 
 									content: (
-										<div className="text-area">
+										<div className='text-area'>
 											<h1>Activity Projections</h1>
 											<div>
 												<p>
-													Daily number of eggs in 2010-2020, compared to the
-													historical (1980-1990) and projected future
-													(2090-2100) decadal averages. SSP 2-4.5 and SSP 5-8.5
-													represent the optimistic and pessimistic scenarios,
-													respectively.
+													Daily number of eggs in
+													2010-2020, compared to the
+													historical (1980-1990) and
+													projected future (2090-2100)
+													decadal averages. SSP 2-4.5
+													and SSP 5-8.5 represent the
+													optimistic and pessimistic
+													scenarios, respectively.
 												</p>
 											</div>
 										</div>
@@ -1697,11 +1811,19 @@ function PanelProviderV2({ children }) {
 										mixedKeys: [
 											{
 												key: "g1",
-												levels: ["fcast-ts", "ecmwf", "pouts"],
+												levels: [
+													"fcast-ts",
+													"ecmwf",
+													"pouts",
+												],
 											},
 											{
 												key: "g2",
-												levels: ["sim-ts", "2010-2019", "pouts"],
+												levels: [
+													"sim-ts",
+													"2010-2019",
+													"pouts",
+												],
 											},
 										],
 										sliceInfo: {
@@ -1718,33 +1840,42 @@ function PanelProviderV2({ children }) {
 												},
 											},
 											g2: {
-												sliceLabels: { slice0: "Decadal average" },
-												sliceColors: { slice0: "#1B3958" },
+												sliceLabels: {
+													slice0: "Decadal average",
+												},
+												sliceColors: {
+													slice0: "#1B3958",
+												},
 											},
 										},
 										horizontalAxis: "date",
 									},
 									content: (
-										<div className="text-area">
+										<div className='text-area'>
 											<h1>Outbreak Forecast</h1>
 											<div>
 												<p>
-													The likeliness of an outbreak in response to an
-													imported infectious case according to the{" "}
+													The likeliness of an
+													outbreak in response to an
+													imported infectious case
+													according to the{" "}
 													<a
-														target="_blank"
-														rel="noreferrer"
-														href="https://doi.org/10.1371/journal.pone.0174293"
+														target='_blank'
+														rel='noreferrer'
+														href='https://doi.org/10.1371/journal.pone.0174293'
 													>
 														Chikungunya model
 													</a>
 													.
 												</p>
 												<p>
-													We introduce an infectious case in a population of
-													4000. Outbreak <strong>risk</strong> is the number of
-													times (out of 100) when an autochthonous case is
-													observed.
+													We introduce an infectious
+													case in a population of
+													4000. Outbreak{" "}
+													<strong>risk</strong> is the
+													number of times (out of 100)
+													when an autochthonous case
+													is observed.
 												</p>
 											</div>
 										</div>
@@ -1762,51 +1893,88 @@ function PanelProviderV2({ children }) {
 										mixedKeys: [
 											{
 												key: "g1",
-												levels: ["fcast-ts", "nasa", "ssp245", "pouts"],
+												levels: [
+													"fcast-ts",
+													"nasa",
+													"ssp245",
+													"pouts",
+												],
 											},
 											{
 												key: "g2",
-												levels: ["fcast-ts", "nasa", "ssp585", "pouts"],
+												levels: [
+													"fcast-ts",
+													"nasa",
+													"ssp585",
+													"pouts",
+												],
 											},
 											{
 												key: "g3",
-												levels: ["sim-ts", "2010-2019", "pouts"],
+												levels: [
+													"sim-ts",
+													"2010-2019",
+													"pouts",
+												],
 											},
 											{
 												key: "g4",
-												levels: ["sim-ts", "1980-1989", "pouts"],
+												levels: [
+													"sim-ts",
+													"1980-1989",
+													"pouts",
+												],
 											},
 										],
 										sliceInfo: {
 											g1: {
-												sliceLabels: { slice0: "SSP2-4.5" },
-												sliceColors: { slice0: "orange" },
+												sliceLabels: {
+													slice0: "SSP2-4.5",
+												},
+												sliceColors: {
+													slice0: "orange",
+												},
 											},
 											g2: {
-												sliceLabels: { slice0: "SSP5-8.5" },
-												sliceColors: { slice0: "#F15A48" },
+												sliceLabels: {
+													slice0: "SSP5-8.5",
+												},
+												sliceColors: {
+													slice0: "#F15A48",
+												},
 											},
 											g3: {
-												sliceLabels: { slice0: "2010-2020" },
-												sliceColors: { slice0: "#1B3958" },
+												sliceLabels: {
+													slice0: "2010-2020",
+												},
+												sliceColors: {
+													slice0: "#1B3958",
+												},
 											},
 											g4: {
-												sliceLabels: { slice0: "1980-1990" },
-												sliceColors: { slice0: "#50C0AD" },
+												sliceLabels: {
+													slice0: "1980-1990",
+												},
+												sliceColors: {
+													slice0: "#50C0AD",
+												},
 											},
 										},
 										horizontalAxis: "date",
 									},
 									content: (
-										<div className="text-area">
+										<div className='text-area'>
 											<h1>Outbreak Projections</h1>
 											<div>
 												<p>
-													Average outbreak risk in 2010-2020, compared to the
-													historical (1980-1990) and projected future
-													(2090-2100) decadal averages. SSP 2-4.5 and SSP 5-8.5
-													represent the optimistic and pessimistic scenarios,
-													respectively.
+													Average outbreak risk in
+													2010-2020, compared to the
+													historical (1980-1990) and
+													projected future (2090-2100)
+													decadal averages. SSP 2-4.5
+													and SSP 5-8.5 represent the
+													optimistic and pessimistic
+													scenarios, respectively.
 												</p>
 											</div>
 										</div>
@@ -1834,11 +2002,19 @@ function PanelProviderV2({ children }) {
 										mixedKeys: [
 											{
 												key: "g1",
-												levels: ["fcast-ts", "ecmwf", "iouts"],
+												levels: [
+													"fcast-ts",
+													"ecmwf",
+													"iouts",
+												],
 											},
 											{
 												key: "g2",
-												levels: ["sim-ts", "2010-2019", "iouts"],
+												levels: [
+													"sim-ts",
+													"2010-2019",
+													"iouts",
+												],
 											},
 										],
 										horizontalAxis: "date",
@@ -1856,31 +2032,40 @@ function PanelProviderV2({ children }) {
 												},
 											},
 											g2: {
-												sliceLabels: { slice0: "Decadal average" },
-												sliceColors: { slice0: "#1B3958" },
+												sliceLabels: {
+													slice0: "Decadal average",
+												},
+												sliceColors: {
+													slice0: "#1B3958",
+												},
 											},
 										},
 									},
 									content: (
-										<div className="text-area">
+										<div className='text-area'>
 											<h1>Impact Forecast</h1>
 											<div>
 												<p>
-													The expected impact of an imported infectious case
+													The expected impact of an
+													imported infectious case
 													according to the{" "}
 													<a
-														target="_blank"
-														rel="noreferrer"
-														href="https://doi.org/10.1371/journal.pone.0174293"
+														target='_blank'
+														rel='noreferrer'
+														href='https://doi.org/10.1371/journal.pone.0174293'
 													>
 														Chikungunya model
 													</a>
 													.
 												</p>
 												<p>
-													We introduce an infectious case in a population of
-													4000. The <strong>impact</strong> is the average
-													number of autochthonous cases in 60 days.
+													We introduce an infectious
+													case in a population of
+													4000. The{" "}
+													<strong>impact</strong> is
+													the average number of
+													autochthonous cases in 60
+													days.
 												</p>
 											</div>
 										</div>
@@ -1898,51 +2083,89 @@ function PanelProviderV2({ children }) {
 										mixedKeys: [
 											{
 												key: "g1",
-												levels: ["fcast-ts", "nasa", "ssp245", "iouts"],
+												levels: [
+													"fcast-ts",
+													"nasa",
+													"ssp245",
+													"iouts",
+												],
 											},
 											{
 												key: "g2",
-												levels: ["fcast-ts", "nasa", "ssp585", "iouts"],
+												levels: [
+													"fcast-ts",
+													"nasa",
+													"ssp585",
+													"iouts",
+												],
 											},
 											{
 												key: "g3",
-												levels: ["sim-ts", "2010-2019", "iouts"],
+												levels: [
+													"sim-ts",
+													"2010-2019",
+													"iouts",
+												],
 											},
 											{
 												key: "g4",
-												levels: ["sim-ts", "1980-1989", "iouts"],
+												levels: [
+													"sim-ts",
+													"1980-1989",
+													"iouts",
+												],
 											},
 										],
 										sliceInfo: {
 											g1: {
-												sliceLabels: { slice0: "SSP2-4.5" },
-												sliceColors: { slice0: "orange" },
+												sliceLabels: {
+													slice0: "SSP2-4.5",
+												},
+												sliceColors: {
+													slice0: "orange",
+												},
 											},
 											g2: {
-												sliceLabels: { slice0: "SSP5-8.5" },
-												sliceColors: { slice0: "#F15A48" },
+												sliceLabels: {
+													slice0: "SSP5-8.5",
+												},
+												sliceColors: {
+													slice0: "#F15A48",
+												},
 											},
 											g3: {
-												sliceLabels: { slice0: "2010-2020" },
-												sliceColors: { slice0: "#1B3958" },
+												sliceLabels: {
+													slice0: "2010-2020",
+												},
+												sliceColors: {
+													slice0: "#1B3958",
+												},
 											},
 											g4: {
-												sliceLabels: { slice0: "1980-1990" },
-												sliceColors: { slice0: "#50C0AD" },
+												sliceLabels: {
+													slice0: "1980-1990",
+												},
+												sliceColors: {
+													slice0: "#50C0AD",
+												},
 											},
 										},
 										horizontalAxis: "date",
 									},
 									content: (
-										<div className="text-area">
+										<div className='text-area'>
 											<h1>Impact Projections</h1>
 											<div>
 												<p>
-													Average importation impact in 2010-2020, compared to
-													the historical (1980-1990) and projected future
-													(2090-2100) decadal averages. SSP 2-4.5 and SSP 5-8.5
-													represent the optimistic and pessimistic scenarios,
-													respectively.
+													Average importation impact
+													in 2010-2020, compared to
+													the historical (1980-1990)
+													and projected future
+													(2090-2100) decadal
+													averages. SSP 2-4.5 and SSP
+													5-8.5 represent the
+													optimistic and pessimistic
+													scenarios, respectively.
 												</p>
 											</div>
 										</div>
@@ -1962,7 +2185,11 @@ function PanelProviderV2({ children }) {
 						{
 							id: [0, 3, 0],
 							chartParameters: {},
-							content: <TileSelector tileIcons={tileIcons}></TileSelector>,
+							content: (
+								<TileSelector
+									tileIcons={tileIcons}
+								></TileSelector>
+							),
 						},
 					],
 				},
@@ -1989,7 +2216,7 @@ function PanelProviderV2({ children }) {
 							id: [0, 5, 0],
 							chartParameters: {},
 							content: (
-								<div className="text-area">
+								<div className='text-area'>
 									<h1>Simulation Data </h1>
 									<div>
 										<AlboParams />
@@ -2011,7 +2238,7 @@ function PanelProviderV2({ children }) {
 							id: [0, 6, 0],
 							chartParameters: {},
 							content: (
-								<div className="text-area">
+								<div className='text-area'>
 									<h1>Settings Panel </h1>
 
 									<SettingsPanel />
@@ -2033,7 +2260,7 @@ function PanelProviderV2({ children }) {
 			chartParameters: {},
 
 			content: (
-				<div className="text-area">
+				<div className='text-area'>
 					<h1>Location Information</h1>
 					<div>
 						<ChartIndicators />
@@ -2092,7 +2319,7 @@ function PanelProviderV2({ children }) {
 			},
 
 			content: (
-				<div className="text-area">
+				<div className='text-area'>
 					<h1>Simulation Data </h1>
 					<div>
 						<AlboParams />
@@ -2141,7 +2368,7 @@ function PanelProviderV2({ children }) {
 			chartParameters: {},
 			icon: info,
 			content: (
-				<div className="text-area">
+				<div className='text-area'>
 					<h1>Location Information</h1>
 					<div>
 						<ChartIndicators />
@@ -2184,16 +2411,16 @@ function PanelProviderV2({ children }) {
 			},
 
 			content: (
-				<div className="text-area">
+				<div className='text-area'>
 					<h1>Sand fly population size</h1>
 					<div>
 						<p>
-							The number of females (normalised) for the year 2015 as simulated
-							in{" "}
+							The number of females (normalised) for the year 2015
+							as simulated in{" "}
 							<a
-								target="_blank"
-								rel="noreferrer"
-								href="https://doi.org/10.1016/j.crpvbd.2023.100152"
+								target='_blank'
+								rel='noreferrer'
+								href='https://doi.org/10.1016/j.crpvbd.2023.100152'
 							>
 								Christou et al. (2023)
 							</a>

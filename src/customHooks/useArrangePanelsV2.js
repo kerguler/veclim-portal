@@ -1,50 +1,44 @@
-import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
-import useDirectorFun from "./useDirectorFun";
-import { set, setTwinIndex } from "store";
-import { setShimmerLeft } from "store";
-import { useState } from "react";
-import classNames from "classnames";
-function useArrangePanelsV2({ handlePanel }) {
+import { useDispatch, useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import useDirectorFun from './useDirectorFun';
+
+import { useState } from 'react';
+import classNames from 'classnames';
+function useArrangePanelsV2({ handlePanel, direction }) {
 	const {
 		panelDataDir,
 		displayedPanelID,
-		directInit,
-		mapVector,
-		panelOpen,
-		setDisplayedIconsDir,
-		dataArrivedRight,
-	} = useDirectorFun("left");
+
+		dataArrived,
+	} = useDirectorFun(direction);
 	const dispatch = useDispatch();
 
-	let iconClassName = classNames("icon");
+	let iconClassName = classNames('icon');
 	const [shimmerIcon, setShimmerIcon] = useState(null);
 
 	const shimmerLeft = useSelector(
-		(state) => state.fetcher.fetcherStates.menu.left.chart.shimmer
+		(state) => state.fetcher.fetcherStates.menu.left.chart.shimmer,
 	);
 	useEffect(() => {
 		shimmerLeft?.shimmer && setShimmerIcon(shimmerLeft?.panel);
 	}, [shimmerLeft]);
-	
 
-	const twinsNotDisplayed = null
+	const twinsNotDisplayed = null;
 
 	const icons = panelDataDir.map((item) => {
 		var iconClassName1;
 		if (item.id === displayedPanelID) {
-			iconClassName1 = classNames(iconClassName, "active");
+			iconClassName1 = classNames(iconClassName, 'active');
 		} else {
-			iconClassName1 = classNames(iconClassName, "inactive");
+			iconClassName1 = classNames(iconClassName, 'inactive');
 		}
 		if (item.id === shimmerIcon) {
-			if (dataArrivedRight) {
-				iconClassName1 = classNames(iconClassName1, "shimmer-on");
+			if (dataArrived) {
+				iconClassName1 = classNames(iconClassName1, 'shimmer-on');
 			} else {
 			}
 		}
 
-		
 		return (
 			<div
 				id={item.id}
@@ -54,7 +48,7 @@ function useArrangePanelsV2({ handlePanel }) {
 					handlePanel(item.id);
 				}}
 			>
-				<img alt="item icon" src={item.icon}></img>
+				<img alt='item icon' src={item.icon}></img>
 			</div>
 		);
 	});

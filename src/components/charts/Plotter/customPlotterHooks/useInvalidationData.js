@@ -1,5 +1,5 @@
-import { useEffect } from "react";
-import useDirectorFun from "customHooks/useDirectorFun";
+import { useEffect } from 'react';
+import useDirectorFun from 'customHooks/useDirectorFun';
 function useInvalidationData({ dataTs, isFetching }) {
 	const {
 		invalidateTsData,
@@ -8,7 +8,7 @@ function useInvalidationData({ dataTs, isFetching }) {
 		setMessengerDir,
 		messenger,
 		mapPagePositionLeft,
-	} = useDirectorFun("left");
+	} = useDirectorFun('left');
 
 	// useEffect(() => {
 	// 	dataTs &&

@@ -1,8 +1,8 @@
-import { setFetcherStates } from "store";
-import { useDispatch } from "react-redux";
-import { useEffect } from "react";
-import useFetcherVariables from "./useFetcherVariables";
-import PackageMapServices from "components/map/mapPackage/PackageMapServices";
+import { setFetcherStates } from 'store';
+import { useDispatch } from 'react-redux';
+import { useEffect } from 'react';
+import useFetcherVariables from './useFetcherVariables';
+import PackageMapServices from 'components/map/mapPackage/PackageMapServices';
 
 import {
 	setReadyToView,
@@ -14,11 +14,10 @@ import {
 	setTileArray,
 	setVectorName,
 	setMapVector,
-} from "store";
+} from 'store';
 
-import {} from "store";
-function 
-useMapStarter(startConditions) {
+import {} from 'store';
+function useMapStarter(startConditions) {
 	const dispatch = useDispatch();
 	const { readyToView, vectorName, mapVector, switchMap, tileArray } =
 		useFetcherVariables();
@@ -27,17 +26,21 @@ useMapStarter(startConditions) {
 		if (startConditions) {
 			dispatch(setFetcherStates(startConditions));
 		} else {
-			if (mapVector === "papatasi") {
-				console.log("papatasi is being dispatched");
-				if (!tileArray.includes("papatasi")) {
-					dispatch(setTileArray(["papatasi_aprdec"]));
+			if (mapVector === 'papatasi') {
+				console.log('papatasi is being dispatched');
+				if (!tileArray.includes('papatasi')) {
+					dispatch(setTileArray(['papatasi_aprdec']));
 				}
-				dispatch(setCurrentMapCenter(PackageMapServices.defaultCypCenter));
+				dispatch(
+					setCurrentMapCenter(PackageMapServices.defaultCypCenter),
+				);
 				dispatch(setCurrentMaxBounds(PackageMapServices.cyprusBounds));
-				dispatch(setMapPagePosition(PackageMapServices.defaultCypCenter));
+				dispatch(
+					setMapPagePosition(PackageMapServices.defaultCypCenter),
+				);
 				dispatch(setCurrentMapZoom(8));
 				dispatch(setReadyToView(true));
-				dispatch(setVectorName("papatasi"));
+				dispatch(setVectorName('papatasi'));
 			} else {
 				dispatch(setReadyToView(true));
 			}
