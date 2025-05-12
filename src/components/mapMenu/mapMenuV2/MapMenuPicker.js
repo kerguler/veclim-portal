@@ -4,12 +4,13 @@ import MapMenuV2 from "./MapMenuV2";
 import classNames from "classnames";
 import RenderedPanelV2 from "components/panel/SwitcherV2/RenderedPanelV2";
 import MenuList from "./MenuList";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { set, setPanelLevel } from "store";
 import { setTwinIndex } from "store";
 import { useAlboData } from "context/AlboDataContext";
 import { setDataArrived } from "store";
 import { setInterferePanelStyle } from "store";
+import { setDisplaySimulationPanel } from "store";
 
 export default function MapMenuPicker({ direction }) {
 	const {
@@ -40,6 +41,16 @@ export default function MapMenuPicker({ direction }) {
 			setSimResult(null);
 		}
 	}, [invalidateSimData]);
+
+	const displaySimulationPanel = useSelector(
+		(state) =>
+			state.fetcher.fetcherStates.menu["left"].displaySimulationPanel,
+	);
+	useEffect(() => {
+		if (displaySimulationPanel) {
+			handleToggle(displaySimulationPanel);
+		}
+	}, [displaySimulationPanel]);
 
 	const currentParent = useRef(null);
 	function handleToggle(clickedKey) {

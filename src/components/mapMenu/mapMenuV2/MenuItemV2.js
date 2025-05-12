@@ -1,49 +1,91 @@
-import useDirectorFun from 'customHooks/useDirectorFun';
+import useDirectorFun from "customHooks/useDirectorFun";
 
-import { useEffect } from 'react';
-import { lazy, Suspense } from 'react';
-import { useState } from 'react';
-import useWindowSize from 'customHooks/useWindowSize';
-const PanelChildren = lazy(() => import('./PanelChildren'));
-const MenuChildren = lazy(() => import('./MenuChildren'));
-function MenuItemV2({ item, onToggle, iconClassName, direction }) {
+import { useEffect } from "react";
+import { lazy, Suspense } from "react";
+import { useState } from "react";
+import useWindowSize from "customHooks/useWindowSize";
+import { useSelector } from "react-redux";
+const PanelChildren = lazy(() => import("./PanelChildren"));
+const MenuChildren = lazy(() => import("./MenuChildren"));
+import classNames from "classnames";
+import { useRef } from "react";
+import { useDispatch } from "react-redux";
+import { setDisplaySimulationPanel } from "store";
+import { setShimmered } from "store";
+function MenuItemV2({ item, onToggle, shouldShimmer, shimmerList, direction }) {
 	const {
 		panelDataDir: panelData,
 		openItems,
 		panelLevelLeft: levelData,
-
 		mapPagePosition,
-	} = useDirectorFun('left');
-	const webApp = useWindowSize();
+	} = useDirectorFun("left");
+
+	let className = classNames("icon");
+	const [shimmerOn, setShimmerOn] = useState(false);
+
+	const dispatch = useDispatch();
+	const displaySimulationPanel = useSelector(
+		(state) =>
+			state.fetcher.fetcherStates.menu["left"].displaySimulationPanel,
+	);
+
 	const isOpen = openItems[item.key];
 	const displayedItem = panelData.filter(
 		(panel) => panel.key === item.key,
 	)[0];
-	let imgClassName = 'rotate0';
+	let imgClassName = "rotate0";
 	if (displayedItem && displayedItem?.rotate === 90) {
-		imgClassName = 'rotate90';
+		imgClassName = "rotate90";
 	}
 	const panelChildren = item.children.filter((child) =>
-		child.key.endsWith('_panel'),
+		child.key.endsWith("_panel"),
 	);
 
 	const menuChildren = item.children.filter(
-		(child) => !child.key.endsWith('_panel'),
+		(child) => !child.key.endsWith("_panel"),
 	);
 
 	const [level, setLevel] = useState(0);
+
+	useEffect(() => {
+		if (displayedItem.initialOpen && !displaySimulationPanel) {
+			onToggle(displayedItem.key);
+		}
+		if (displayedItem.key === displaySimulationPanel) {
+			console.log("SET simulation panel NULL");
+			dispatch(setDisplaySimulationPanel({ direction, value: null }));
+		}
+	}, []);
+	const shimmered = useSelector(
+		(state) => state.fetcher.fetcherStates.menu["left"].shimmered,
+	);
+
+	useEffect(() => {
+		if (shouldShimmer && !shimmered[item.key]) {
+			setShimmerOn(true);
+			const timeout = setTimeout(() => {
+				setShimmerOn(false);
+				let key = item["key"];
+				console.log("SHIMMER OFF BY TIMER", key);
+				dispatch(
+					setShimmered({
+						direction,
+						value: { ...shimmered, [key]: true },
+					}),
+				);
+				console.log("SHIMMER OFF BY TIMER");
+			}, 3000);
+
+			return () => clearTimeout(timeout);
+		}
+	}, [shouldShimmer, shimmered]);
+	className = classNames("icon", shimmerOn ? "shimmer-on" : "shimmer-off");
 
 	useEffect(() => {
 		isOpen && setLevel(levelData.level);
 	}, [isOpen, levelData.level]);
 
 	let menuDirection = displayedItem?.subMenuOpenDirection;
-
-	useEffect(() => {
-		if (displayedItem.initialOpen) {
-			onToggle(displayedItem.key);
-		}
-	}, []);
 
 	const [style, setStyle] = useState({});
 	const [imgStyle, setImgStyle] = useState({});
@@ -61,27 +103,27 @@ function MenuItemV2({ item, onToggle, iconClassName, direction }) {
 					myPanel.positionDependent
 				) {
 					setStyle({
-						backgroundColor: 'var(--neutral-color1)',
-						pointerEvents: 'none',
-						cursor: 'not-allowed',
+						backgroundColor: "var(--neutral-color1)",
+						pointerEvents: "none",
+						cursor: "not-allowed",
 					});
 					setImgStyle({
-						color: 'grey',
-						// width: "20px",
+						color: "grey",
+						//width: "20px",
 						// height: "20px",
 					});
 				} else {
-					setStyle({ color: 'white', pointerEvents: 'all' });
+					setStyle({ color: "white", pointerEvents: "all" });
 					setImgStyle({
-						color: 'grey',
+						color: "grey",
 						// width: webApp ? "20px" : "2px",
 						// height: webApp ? "20px" : "32px",
 					});
 				}
 			} else {
-				setStyle({ color: 'white', pointerEvents: 'all' });
+				setStyle({ color: "white", pointerEvents: "all" });
 				setImgStyle({
-					color: 'grey',
+					color: "grey",
 					// width: webApp ? "20px" : "32px",
 					// height: webApp ? "20px" : "32px",
 				});
@@ -91,10 +133,10 @@ function MenuItemV2({ item, onToggle, iconClassName, direction }) {
 
 	return (
 		<>
-			{' '}
+			{" "}
 			<div
 				key={displayedItem.key}
-				className={iconClassName}
+				className={className}
 				style={style}
 				onClick={() => onToggle(displayedItem.key)}
 			>
@@ -124,7 +166,7 @@ function MenuItemV2({ item, onToggle, iconClassName, direction }) {
 								openItems={openItems}
 								menuDirection={menuDirection}
 								level={level}
-								iconClassName={iconClassName}
+								iconClassName={className}
 								onToggle={onToggle}
 								direction={direction}
 							/>
@@ -144,3 +186,29 @@ function MenuItemV2({ item, onToggle, iconClassName, direction }) {
 	);
 }
 export default MenuItemV2;
+
+// useEffect(() => {
+// 	if (shouldShimmer && s) {
+// 		console.log("SHIMMER CTRL", s);
+
+// 		setShimmerOn(true);
+// 		className = classNames("icon", "shimmer-on");
+// 	} else {
+// 		setShimmerOn(false);
+// 		s = false;
+// 		className = classNames("icon", "shimmer-off");
+// 	}
+// }, [shouldShimmer]);
+
+// className = classNames("icon", shimmerOn ? "shimmer-on" : "shimmer-off");
+// useEffect(() => {
+// 	if (shimmerOn) {
+// 		const timeout = setTimeout(() => {
+// 			className = classNames("icon", "shimmer-off");
+// 			console.log("SHIMMER OFF BY TIMER");
+// 			setShimmerOn(false);
+// 			s = false;
+// 		}, 3000);
+// 		return () => clearTimeout(timeout);
+// 	}
+// });

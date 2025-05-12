@@ -26,7 +26,6 @@ function useArrangeDataSim({
 	} = useDirectorFun(direction);
 
 	useEffect(() => {
-		console.log("useArrangeDataSim");
 		let r = rawData.current;
 		try {
 			if (vectorName === "albopictus") {
@@ -37,7 +36,6 @@ function useArrangeDataSim({
 					Object.keys(chartParameters).length > 0
 				) {
 					if (simResult) {
-						console.log("simResult", simResult);
 						r.data = { ...simResult };
 						r.data["ts"] = dataTs;
 
@@ -74,7 +72,6 @@ function useArrangeDataSim({
 						setPlotReady({ direction, value: true });
 					}
 				} else {
-					console.log({ dataTs, simResult });
 					console.log("shouldnt have come here");
 					dispatch(setPlotReady({ direction, value: false }));
 				}

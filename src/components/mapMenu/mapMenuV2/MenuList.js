@@ -1,8 +1,17 @@
-import MenuItemV2 from './MenuItemV2';
-import useDirectorFun from 'customHooks/useDirectorFun';
-import classNames from 'classnames';
-import { useAlboData } from 'context/AlboDataContext';
+import MenuItemV2 from "./MenuItemV2";
+import useDirectorFun from "customHooks/useDirectorFun";
+import classNames from "classnames";
+import { useAlboData } from "context/AlboDataContext";
+import { useEffect } from "react";
+import { useSelector } from "react-redux";
+import { useState } from "react";
+import { timeSeriesApi } from "store/apis/timeSeriesApi";
+import { useDispatch } from "react-redux";
+import { setDisplaySimulationPanel } from "store";
+import { setShimmered } from "store";
+
 function MenuList({ items, onToggle, iconClassName, direction }) {
+	const dispatch = useDispatch();
 	const {
 		openItems,
 		setOpenItems,
@@ -10,46 +19,54 @@ function MenuList({ items, onToggle, iconClassName, direction }) {
 		menuStructure,
 		simulationPanels,
 		invalidateSimData,
-	} = useDirectorFun('left');
+	} = useDirectorFun("left");
 	const { dataSim } = useAlboData();
-
+	const vectorName = useSelector(
+		(state) => state.fetcher.fetcherStates.vectorName,
+	);
 	if (!items || items.length === 0) return null;
 
-	let className = classNames('icon');
-	if (Object.keys(openItems).length === 0) {
-		className = classNames('icon', 'shimmer-on');
-	} else {
-		className = classNames('icon', 'shimmer-off');
-	}
+	let shouldShimmer = Object.keys(openItems).length === 0 ? true : false;
+	let shimmerList = {};
+
 	return items.map((item) => {
 		let siblingKeys = items
 			.filter((i) => i.key !== item.key)
 			.map((i) => i.key);
-		if (dataArrived && !invalidateSimData && dataSim) {
+		if (
+			dataArrived &&
+			!invalidateSimData &&
+			dataSim &&
+			vectorName !== "papatasi"
+		) {
 			let parents = [];
 			const findParents = (key) => {
 				let parent = menuStructure.filter((item) => item.key === key)[0]
 					.parent;
 				return parent;
 			};
-
 			simulationPanels.forEach((panel) => {
-				parents.push(findParents(panel.key));
-				while (parents[parents.length - 1] !== null) {
-					parents.push(findParents(parents[parents.length - 1]));
+				const parentChain = [];
+				let current = findParents(panel.key);
+				while (current !== null) {
+					parentChain.push(current);
+					current = findParents(current);
 				}
+				parents.push(...parentChain);
 			});
 
 			if (parents.includes(item.key)) {
-				className = classNames('icon', 'shimmer-on');
+				shouldShimmer = true;
 			} else {
-				className = classNames('icon', 'shimmer-off');
+				shouldShimmer = false;
 			}
 		}
 
 		return (
 			<MenuItemV2
-				iconClassName={className}
+				shouldShimmer={shouldShimmer}
+				// iconClassName={className}
+				shimmerList={shimmerList}
 				key={item.key}
 				item={item}
 				openItems={openItems}

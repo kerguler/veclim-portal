@@ -1,14 +1,14 @@
-import { createSlice } from '@reduxjs/toolkit';
-import PackageMapServices from 'components/map/mapPackage/PackageMapServices';
+import { createSlice } from "@reduxjs/toolkit";
+import PackageMapServices from "components/map/mapPackage/PackageMapServices";
 
 const fetcherSlice = createSlice({
-	name: 'fetcher',
+	name: "fetcher",
 	initialState: {
 		fetcherStates: {
 			readyToView: false,
-			mapVector: 'albopictus',
-			vectorName: 'albopictus',
-			tileArray: ['colegg'],
+			mapVector: "albopictus",
+			vectorName: "albopictus",
+			tileArray: ["colegg"],
 			availableTiles: [],
 			data: {},
 			isTsDataSet: false,
@@ -38,8 +38,11 @@ const fetcherSlice = createSlice({
 					mapMenuOpen: false,
 					displayedPanelID: 0,
 					interferePanelStyle: {},
+					displaySimulationPanel: null,
+					shimmered: false,
+
 					directMap: { lon: null, lat: null, display: -2 },
-					directInitError: { isError: false, message: '', type: '' },
+					directInitError: { isError: false, message: "", type: "" },
 					panel: { panelInterfere: 0, panelTop: 0 },
 					chart: {
 						chartParameters: {},
@@ -59,16 +62,17 @@ const fetcherSlice = createSlice({
 					},
 				},
 				left: {
-					panelLevel: { path: [0, 0], level: 0, key: 'menu_icon' },
+					panelLevel: { path: [0, 0], level: 0, key: "menu_icon" },
 					panel: { panelInterfere: 0, panelTop: 0 },
+					shimmered: {},
 					directInit: false,
 					panelOpen: false,
 					mapMenuOpen: false,
 					interferePanelStyle: {},
-
+					displaySimulationPanel: "",
 					displayedPanelID: 0,
 					directMap: { lon: null, lat: null, display: -2 },
-					directInitError: { isError: false, message: '', type: '' },
+					directInitError: { isError: false, message: "", type: "" },
 					openItems: {},
 					chart: {
 						chartParameters: {},
@@ -93,6 +97,14 @@ const fetcherSlice = createSlice({
 	},
 
 	reducers: {
+		setShimmered(state, action) {
+			const { direction, value } = action.payload;
+			state.fetcherStates.menu[direction].shimmered = value;
+		},
+		setDisplaySimulationPanel(state, action) {
+			const { direction, value } = action.payload;
+			state.fetcherStates.menu[direction].displaySimulationPanel = value;
+		},
 		setPanelTop(state, action) {
 			const { direction, value } = action.payload;
 			state.fetcherStates.menu[direction].panel.panelTop = value;
@@ -287,9 +299,9 @@ const fetcherSlice = createSlice({
 				state.fetcherStates.map.globalPosition = state.userPosition;
 			}
 		},
-		setMapPagePosition(state, action) {
-			state.fetcherStates.map.mapPagePosition = action.payload;
-		},
+		// setMapPagePosition(state, action) {
+		// 	state.fetcherStates.map.mapPagePosition = action.payload;
+		// },
 
 		setDirectMap(state, action) {
 			const { direction, value } = action.payload;
@@ -319,6 +331,8 @@ const fetcherSlice = createSlice({
 });
 
 export const {
+	setShimmered,
+	setDisplaySimulationPanel,
 	setPanelTop,
 	setDisplayTileNames,
 	appendToColorsChartParameters,

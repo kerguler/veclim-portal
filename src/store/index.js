@@ -1,14 +1,14 @@
-import { configureStore } from '@reduxjs/toolkit';
-import { setupListeners } from '@reduxjs/toolkit/query';
-import { coordinatesApi } from './apis/coordinatesApi';
-import { timeSeriesApi } from './apis/timeSeriesApi';
-import { colorBarsApi } from './apis/colorBarsApi';
-import { alboApi } from './apis/alboApi';
+import { configureStore } from "@reduxjs/toolkit";
+import { setupListeners } from "@reduxjs/toolkit/query";
+import { coordinatesApi } from "./apis/coordinatesApi";
+import { timeSeriesApi } from "./apis/timeSeriesApi";
+import { colorBarsApi } from "./apis/colorBarsApi";
+import { alboApi } from "./apis/alboApi";
 import {
 	searchBarReducer,
 	setShowSearchBar,
 	toggleShowSearchBar,
-} from './slices/searchBarSlice';
+} from "./slices/searchBarSlice";
 import {
 	setNews,
 	setPreloadedImages,
@@ -19,8 +19,10 @@ import {
 	newsReducer,
 	setTimer,
 	clearTimer,
-} from './slices/newsSlice';
+} from "./slices/newsSlice";
 import {
+	setShimmered,
+	setDisplaySimulationPanel,
 	setDisplayTileNames,
 	setPanelTop,
 	setOpenItems,
@@ -72,8 +74,8 @@ import {
 	appendToLabelsChartParameters,
 	appendToPlottedKeysChartParameters,
 	spliceChartParametersForSlices,
-} from './slices/fetcherSlice';
-import { languageReducer, changeLanguage } from './slices/languageSlice';
+} from "./slices/fetcherSlice";
+import { languageReducer, changeLanguage } from "./slices/languageSlice";
 import {
 	setTwinArray,
 	setTwinIndex,
@@ -82,9 +84,9 @@ import {
 	setDisplayedIcons,
 	setSwitcherArrows,
 	graphSwitcherReducer,
-} from './slices/switcherSlice';
-import { vectorSelectorReducer } from './slices/vectorSelectorSlice';
-import { pageReducer, setPageSelect } from './slices/pageSlice';
+} from "./slices/switcherSlice";
+import { vectorSelectorReducer } from "./slices/vectorSelectorSlice";
+import { pageReducer, setPageSelect } from "./slices/pageSlice";
 import {
 	setUsername,
 	setPassword,
@@ -93,7 +95,7 @@ import {
 	loginReducer,
 	setCsrfToken,
 	setApiRegisterResponse,
-} from './slices/loginSlice';
+} from "./slices/loginSlice";
 import {
 	setTitle,
 	setDescription,
@@ -105,7 +107,7 @@ import {
 	setAddedSimulation,
 	simulationReducer,
 	setParsedJson,
-} from './slices/simulationSlice';
+} from "./slices/simulationSlice";
 import {
 	setLocationRequested,
 	setShowInstructions,
@@ -116,19 +118,19 @@ import {
 	setSuperUser,
 	setPageTransition,
 	setDividerPosition,
-} from './slices/searchLocationSlice';
+} from "./slices/searchLocationSlice";
 
-import { loginRegisterApi } from './apis/loginRegisterApi';
+import { loginRegisterApi } from "./apis/loginRegisterApi";
 
 import {
 	setTimeSeriesDates,
 	setBlinkers,
 	setUser,
 	dashboardReducer,
-} from './slices/dashboardSlice';
+} from "./slices/dashboardSlice";
 
-import { newsApi } from './apis/newsApi';
-import { simulationApi } from './apis/simulationApi';
+import { newsApi } from "./apis/newsApi";
+import { simulationApi } from "./apis/simulationApi";
 
 export const store = configureStore({
 	reducer: {
@@ -151,7 +153,7 @@ export const store = configureStore({
 		fetcher: fetcherReducer,
 		news: newsReducer,
 	},
-	devTools: process.env.NODE_ENV !== 'production',
+	devTools: process.env.NODE_ENV !== "production",
 	middleware: (getDefaultMiddleware) => {
 		return getDefaultMiddleware()
 			.concat(coordinatesApi.middleware)
@@ -164,24 +166,24 @@ export const store = configureStore({
 	},
 });
 setupListeners(store.dispatch);
-export { useFetchCoordinateDataQuery } from './apis/coordinatesApi';
+export { useFetchCoordinateDataQuery } from "./apis/coordinatesApi";
 export {
 	useSubmitAlboDataMutation,
 	useFetchSimStatusQuery,
 	useListenToSimUpdatesQuery,
-} from './apis/alboApi';
+} from "./apis/alboApi";
 export {
 	useFetchTimeSeriesDataQuery,
 	useFetchTSDateRangeQuery,
-} from './apis/timeSeriesApi';
-export { useFetchColorBarsDataQuery } from './apis/colorBarsApi';
+} from "./apis/timeSeriesApi";
+export { useFetchColorBarsDataQuery } from "./apis/colorBarsApi";
 export {
 	useLoginMutation,
 	useRegisterMutation,
 	useLoginWithTokenMutation,
 	useFetchCsrfQuery,
 	useLogoutMutation,
-} from './apis/loginRegisterApi';
+} from "./apis/loginRegisterApi";
 
 export {
 	useGetSimulationListQuery,
@@ -189,10 +191,12 @@ export {
 	useDeleteSimulationMutation,
 	useEditSimulationMutation,
 	useRunSimulationMutation,
-} from './apis/simulationApi';
+} from "./apis/simulationApi";
 
-export { useFetchNewsDataQuery } from './apis/newsApi';
+export { useFetchNewsDataQuery } from "./apis/newsApi";
 export {
+	setShimmered,
+	setDisplaySimulationPanel,
 	setOpenItems,
 	setInterferePanelStyle,
 	setPanelLevel,
