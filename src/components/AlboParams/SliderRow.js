@@ -33,14 +33,8 @@ const SliderRow = ({ direction }) => {
 
 	const simulationData = {
 		model_data: {
-			param: [
-				{
-					lon: 33.0,
-					lat: 35.0,
-					pr: simSlider1Value / 100,
-					thisisatest: true,
-				},
-			],
+			envir: [],
+			pr: [1.0, 33.0, 35.0, 4000.0, 60.0, 100.0, 1.0, 0.0],
 		},
 
 		model_type: "model_albochik",

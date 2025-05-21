@@ -564,7 +564,7 @@ function PanelProviderV2({ children }) {
 			key: "outbreak_forecast",
 			parent: "secondary_menu_icon",
 		},
-
+		{ key: "simulation_graph_panel_outbreak", parent: "outbreak_forecast" },
 		{ key: "outbreak_forecast_panel", parent: "outbreak_forecast" },
 		{ key: "outbreak_projections_panel", parent: "outbreak_forecast" },
 
@@ -572,7 +572,7 @@ function PanelProviderV2({ children }) {
 			key: "impact_forecast",
 			parent: "secondary_menu_icon",
 		},
-
+		{ key: "simulation_graph_panel_impact", parent: "impact_forecast" },
 		{ key: "impact_forecast_panel", parent: "impact_forecast" },
 		{
 			key: "impact_projections_panel",
@@ -838,11 +838,11 @@ function PanelProviderV2({ children }) {
 				mixedKeys: [
 					{
 						key: "g1",
-						levels: ["fcast-ts", "ecmwf", "iouts"],
+						levels: ["fcast-ts", "ecmwf", "colegg"],
 					},
 					{
 						key: "g2",
-						levels: ["ts", "fcast-ts", "ecmwf", "iouts"],
+						levels: ["ts", "fcast-ts", "ecmwf", "colegg"],
 					},
 				],
 
@@ -876,7 +876,63 @@ function PanelProviderV2({ children }) {
 			},
 			content: (
 				<div className='text-area'>
-					<h1>Simulation Data </h1>
+					<h1>Activity Simulation Data </h1>
+					<div>
+						<p>Here we will display simulation graphics</p>{" "}
+					</div>
+				</div>
+			),
+		},
+		{
+			id: [0, 2, 1, 0],
+			key: "simulation_graph_panel_outbreak",
+			simulation: true,
+			chartParameters: {
+				chartType: "rechart",
+				years: "ecmwf",
+
+				mixedKeys: [
+					{
+						key: "g1",
+						levels: ["fcast-ts", "ecmwf", "pouts"],
+					},
+					{
+						key: "g2",
+						levels: ["ts", "fcast-ts", "ecmwf", "pouts"],
+					},
+				],
+
+				horizontalAxis: "date",
+				sliceInfo: {
+					g1: {
+						sliceLabels: {
+							slice0: "This year (sim)",
+							slice1: "Overlap (sim) ",
+							slice2: "Forecast (sim)",
+						},
+						sliceColors: {
+							slice0: "#1c2833",
+							slice1: "#af7ac5",
+							slice2: "#d98880",
+						},
+					},
+					g2: {
+						sliceLabels: {
+							slice0: "This year",
+							slice1: "Overlap",
+							slice2: "Forecast",
+						},
+						sliceColors: {
+							slice0: "#50C0AD",
+							slice1: "orange",
+							slice2: "#F15A48",
+						},
+					},
+				},
+			},
+			content: (
+				<div className='text-area'>
+					<h1>Outbreak Simulation Data </h1>
 					<div>
 						<p>Here we will display simulation graphics</p>{" "}
 					</div>
@@ -1144,7 +1200,63 @@ function PanelProviderV2({ children }) {
 			icon: impact,
 			hasPanels: true,
 		},
+		// simulation_graph_panel_impact
+		{
+			id: [0, 2, 1, 0],
+			key: "simulation_graph_panel_impact",
+			simulation: true,
+			chartParameters: {
+				chartType: "rechart",
+				years: "ecmwf",
 
+				mixedKeys: [
+					{
+						key: "g1",
+						levels: ["fcast-ts", "ecmwf", "iouts"],
+					},
+					{
+						key: "g2",
+						levels: ["ts", "fcast-ts", "ecmwf", "iouts"],
+					},
+				],
+
+				horizontalAxis: "date",
+				sliceInfo: {
+					g1: {
+						sliceLabels: {
+							slice0: "This year (sim)",
+							slice1: "Overlap (sim) ",
+							slice2: "Forecast (sim)",
+						},
+						sliceColors: {
+							slice0: "#1c2833",
+							slice1: "#af7ac5",
+							slice2: "#d98880",
+						},
+					},
+					g2: {
+						sliceLabels: {
+							slice0: "This year",
+							slice1: "Overlap",
+							slice2: "Forecast",
+						},
+						sliceColors: {
+							slice0: "#50C0AD",
+							slice1: "orange",
+							slice2: "#F15A48",
+						},
+					},
+				},
+			},
+			content: (
+				<div className='text-area'>
+					<h1>Impact Simulation Data </h1>
+					<div>
+						<p>Here we will display simulation graphics</p>{" "}
+					</div>
+				</div>
+			),
+		},
 		{
 			key: "impact_forecast_panel",
 			id: [0, 2, 3, 0],

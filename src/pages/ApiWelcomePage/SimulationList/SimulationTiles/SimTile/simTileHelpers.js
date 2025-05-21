@@ -43,6 +43,7 @@ class simTileHelpers {
 		const result = await fetchWithResults().unwrap();
 		setSimResult(result.results);
 		setDataSim(result.results);
+		console.log("RESULTS", result.results);
 		dispatch(setInvalidateSimData(false));
 		dispatch(setDataArrived({ direction: direction, value: true }));
 		dispatch(

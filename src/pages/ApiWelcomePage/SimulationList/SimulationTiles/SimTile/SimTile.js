@@ -34,7 +34,7 @@ function SimTile({ sim, direction, shimmerList }) {
 	const simulationList = useSelector((state) => state.simulation.simList);
 	const [displayIcon, setDisplayIcon] = useState(null);
 
-	const { setSimResult, setDataSim } = useAlboData();
+	const { setSimResult, setDataSim, setIsLoadingSim } = useAlboData();
 
 	const { simRecord, isAlboChik, displayViewIcon } = useSimTileFunctions(sim);
 
@@ -65,6 +65,7 @@ function SimTile({ sim, direction, shimmerList }) {
 			direction,
 			levelData,
 		);
+		setIsLoadingSim(false);
 	};
 
 	return (

@@ -66,14 +66,13 @@ function MenuItemV2({ item, onToggle, shouldShimmer, shimmerList, direction }) {
 			const timeout = setTimeout(() => {
 				setShimmerOn(false);
 				let key = item["key"];
-				console.log("SHIMMER OFF BY TIMER", key);
+
 				dispatch(
 					setShimmered({
 						direction,
 						value: { ...shimmered, [key]: true },
 					}),
 				);
-				console.log("SHIMMER OFF BY TIMER");
 			}, 3000);
 
 			return () => clearTimeout(timeout);

@@ -15,7 +15,6 @@ function useArrangeDataSim({
 	direction,
 }) {
 	const { simResult } = useAlboData();
-
 	const {
 		vectorName,
 		chartParameters,
