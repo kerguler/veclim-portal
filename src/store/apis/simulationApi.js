@@ -1,16 +1,28 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-
+function getCookie(name) {
+	return (
+		document.cookie
+			.split("; ")
+			.find((row) => row.startsWith(name + "="))
+			?.split("=")[1] || ""
+	);
+}
 const simulationApi = createApi({
 	reducerPath: "simulationApi",
 	baseQuery: fetchBaseQuery({
-		baseUrl: process.env.REACT_APP_LOCAL_DEV_URL,
+		baseUrl: process.env.REACT_APP_DEV_URL,
 		prepareHeaders: (headers, { getState }) => {
 			const csrf = localStorage.getItem("csrfToken");
+			const csrf1 = getCookie("csrftoken");
+			console.log("CSRF token from localStorage:", csrf);
+			console.log("CSRF token from cookies", csrf1);
 			headers.set("Content-Type", "application/json");
 			// headers.set("Origin", process.env.REACT_APP_SIM_URL);
 			if (csrf) {
 				headers.set("X-CSRFToken", csrf);
 				// 	// headers.set("Access-Control-Allow-Origin", "*");
+			} else {
+				console.log("CSRF token not found in localStorage");
 			}
 			return headers;
 		},

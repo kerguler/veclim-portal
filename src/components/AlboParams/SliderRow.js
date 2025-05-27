@@ -13,13 +13,16 @@ import {
 	setSimulationParameterSlider1 as setSimSlider1Value,
 } from "store";
 import { useCreateSimulationMutation } from "store";
+import { setMessenger } from "store";
+import { useSelector } from "react-redux";
+import useCsrf from "pages/LoginRegister/Services/useCsrf";
 const SliderRow = ({ direction }) => {
 	const [taskId, setTaskId] = useState(null); // Store Task ID
 	const [shouldCheck, setShouldCheck] = useState(true);
 	const { mapPagePosition, invalidateSimData, simSlider1Value, dispatch } =
 		useDirectorFun(direction);
 
-	const { setDataSim, setIsLoadingSim } = useAlboData();
+	const { setDataSim, setIsLoadingSim, setErrorSim } = useAlboData();
 
 	const [createSimulation /* { isLoading, isError, data }*/] =
 		useCreateSimulationMutation();
@@ -34,7 +37,7 @@ const SliderRow = ({ direction }) => {
 	const simulationData = {
 		model_data: {
 			envir: [],
-			pr: [1.0, 33.0, 35.0, 4000.0, 60.0, 100.0, 1.0, 0.0],
+			pr: [1.0, 33.0, 35.0, 4000.0, 60.0, 1000.0, 1.0, 0.0, -1.0],
 		},
 
 		model_type: "model_albochik",
@@ -49,13 +52,19 @@ const SliderRow = ({ direction }) => {
 		console.log("Sending  Request to Start Simulation...", simulationData);
 		const response = await createSimulation(simulationData);
 
-		setIsLoadingSim(true); // Update context state
-
 		dispatch(setInvalidateSimData(false));
-		if ("task_id" in response.data) {
+		if (response?.data && "task_id" in response.data) {
 			setTaskId(response.data.task_id);
 			localStorage.setItem("task_id", response.data.task_id);
-			// console.log(`Received Task ID: ${response.data.task_id}`);
+			console.log(`Received Task ID: ${response.data.task_id}`);
+			setIsLoadingSim(true); // Update context state
+		}
+
+		if ("error" in response) {
+			console.log("Error:", response.error);
+			setErrorSim(response.error);
+
+			// setIsLoadingSim(false); // Update context state
 		}
 	};
 

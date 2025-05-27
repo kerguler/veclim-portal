@@ -1,27 +1,27 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { getDateRange } from './utils';
-import { io } from 'socket.io-client';
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { getDateRange } from "./utils";
+import { io } from "socket.io-client";
 // const SOCKET_URL = "ws://localhost:8000/devapi/sim-runner/socket.io/";
-const SOCKET_URL = 'ws://localhost:8000/sim';
+const SOCKET_URL = "ws://localhost:8000/sim";
 let socket; // Singleton instance of WebSocket
 const alboApi = createApi({
-	reducerPath: 'alboInfo',
+	reducerPath: "alboInfo",
 	baseQuery: fetchBaseQuery({
-		// baseUrl: "https://veclim.com/devapi/sim-runner/",
-		baseUrl: 'http://localhost:8000/devapi/sim-runner/',
+		baseUrl: "https://veclim.com/devapi/sim-runner/",
+		// baseUrl: 'http://localhost:8000/devapi/sim-runner/',
 		prepareHeaders: (headers) => {
-			headers.set('Content-Type', 'application/json');
+			headers.set("Content-Type", "application/json");
 			return headers;
 		},
 	}),
-	tagTypes: ['AlboData'],
+	tagTypes: ["AlboData"],
 	endpoints(builder) {
 		return {
 			fetchSimStatus: builder.query({
 				query: (param) => {
 					return {
 						url: `sim_status/${param}`,
-						Method: 'GET',
+						Method: "GET",
 					};
 				},
 			}),
@@ -34,12 +34,12 @@ const alboApi = createApi({
 					};
 
 					return {
-						url: 'start_sim',
+						url: "start_sim",
 						body: simulationData,
-						method: 'POST',
+						method: "POST",
 					};
 				},
-				providesTags: ['AlboData'],
+				providesTags: ["AlboData"],
 			}),
 		};
 	},

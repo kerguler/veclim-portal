@@ -7,8 +7,10 @@ import { setSimList } from "store";
 import SimulationTiles from "./SimulationTiles/SimulationTiles";
 import { use } from "react";
 import { areArraysIdentical } from "../utils/simUtils";
+import useCsrf from "pages/LoginRegister/Services/useCsrf";
 function SimulationList({ direction }) {
 	const dispatch = useDispatch();
+	useCsrf(true); // Initialize CSRF token for API requests
 	const blinkers = useSelector((state) => state.dashboard.blinkers);
 	const simList = useSelector((state) => state.simulation.simList);
 	let id = null;

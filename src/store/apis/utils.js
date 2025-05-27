@@ -1,10 +1,10 @@
-import { useCallback, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { setUserPosition } from '../../store';
-import { useCookies } from 'react-cookie';
-import { setLocationRequested, setGlobalPosition } from '../../store';
+import { useCallback, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { setUserPosition } from "../../store";
+import { useCookies } from "react-cookie";
+import { setLocationRequested, setGlobalPosition } from "../../store";
 
-export function dateToString(today, sep = '') {
+export function dateToString(today, sep = "") {
 	let d_raw = today.getDate();
 	let m_raw = today.getMonth() + 1;
 	let y = today.getFullYear();
@@ -12,12 +12,12 @@ export function dateToString(today, sep = '') {
 	var d, m;
 
 	if (d_raw < 10) {
-		d = '0' + d_raw.toString();
+		d = "0" + d_raw.toString();
 	} else {
 		d = d_raw.toString();
 	}
 	if (m_raw < 10) {
-		m = '0' + m_raw.toString();
+		m = "0" + m_raw.toString();
 	} else {
 		m = m_raw.toString();
 	}
@@ -25,21 +25,21 @@ export function dateToString(today, sep = '') {
 	return y.toString() + sep + m.toString() + sep + d.toString();
 }
 
-export function getCurrentDate(sep = '') {
+export function getCurrentDate(sep = "") {
 	let today = new Date();
 	return dateToString(today, (sep = sep));
 }
 
-export function getDateRange(sep = ':') {
+export function getDateRange(sep = ":") {
 	let today = new Date();
 	let tomorrow = new Date();
 	today.setDate(today.getDate() - 7 * 30);
 	tomorrow.setDate(tomorrow.getDate() + 7 * 30);
-	return dateToString(today, '-') + sep + dateToString(tomorrow, '-');
+	return dateToString(today, "-") + sep + dateToString(tomorrow, "-");
 }
 
 export function useUserLocation() {
-	const [cookies] = useCookies(['cookieConsent']);
+	const [cookies] = useCookies(["cookieConsent"]);
 	const locationRequested = useSelector(
 		(state) => state.location.locationRequested,
 	);
@@ -72,8 +72,8 @@ export function useUserLocation() {
 	// });
 
 	useEffect(() => {
-		navigator.permissions.query({ name: 'geolocation' }).then((result) => {
-			if (result.state === 'denied' && locationRequested) {
+		navigator.permissions.query({ name: "geolocation" }).then((result) => {
+			if (result.state === "denied" && locationRequested) {
 				// window.confirm("Location Permission is required for this action");
 				dispatch(
 					setGlobalPosition({ lat: 35.1966527, lng: 33.3217152 }),

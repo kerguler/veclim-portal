@@ -35,6 +35,7 @@ function LoginComponent() {
 			dispatch(setRememberLogin(rememberLogin));
 		}
 	}, []);
+
 	const handleUsernameChange = (e) => {
 		dispatch(setUsername(e.target.value));
 	};
@@ -50,23 +51,24 @@ function LoginComponent() {
 		localStorage.setItem("password", password);
 	};
 
-	function getCookie(name) {
-		// Parse `document.cookie` (all cookies in a single string)
-		const cookies = document.cookie.split(";");
-		for (let c of cookies) {
-			let cookie = c.trim();
-			// Check if this cookie string begins with the name we want:
-			if (cookie.startsWith(name + "=")) {
-				return cookie.substring(name.length + 1);
-			}
-		}
-		return null;
-	}
+	// function getCookie(name) {
+	// 	// Parse `document.cookie` (all cookies in a single string)
+	// 	const cookies = document.cookie.split(";");
+	// 	console.log({ cookies });
+	// 	for (let c of cookies) {
+	// 		let cookie = c.trim();
+	// 		// Check if this cookie string begins with the name we want:
+	// 		if (cookie.startsWith(name + "=")) {
+	// 			return cookie.substring(name.length + 1);
+	// 		}
+	// 	}
+	// 	return null;
+	// }
+
 	const handleLogin = async (e) => {
 		e.preventDefault();
 		try {
 			const response = await loginUser(login, { username, password });
-
 			dispatch(
 				setApiRegisterResponse({
 					response: response,
@@ -78,9 +80,8 @@ function LoginComponent() {
 			);
 			console.log({ response });
 			localStorage.setItem("username", response.userName);
+
 			localStorage.setItem("id", response.userId);
-			localStorage.setItem("csrfToken", getCookie("csrftoken"));
-			console.log(getCookie("csrftoken"));
 			// navigate("/ApiWelcome");
 		} catch (err) {
 			console.error("Failed to login:", err);

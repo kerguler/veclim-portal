@@ -5,8 +5,9 @@ import SimDataMessenger from "./SimDataMessenger";
 import LoginComponent from "pages/LoginRegister/LoginComponent/LoginComponent";
 import { useSelector } from "react-redux";
 import SimulationList from "pages/ApiWelcomePage/SimulationList/SimulationList";
-
+import useCsrf from "pages/LoginRegister/Services/useCsrf";
 function AlboParams() {
+	// useCsrf(false); // Initialize CSRF token for API requests
 	let direction = "left";
 	const [showPanel, setShowPanel] = useState(false);
 	const userID = useSelector(

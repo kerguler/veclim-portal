@@ -80,7 +80,7 @@ function SimDataMessenger({ direction }) {
 					}
 				}
 			}
-			if (errorSim) {
+			if (errorSim && !invalidateSimData) {
 				setMessage(
 					`We have an error for lat:${mapPagePosition.lat.toFixed(
 						2,
@@ -101,12 +101,14 @@ function SimDataMessenger({ direction }) {
 		isLoadingSocket,
 		dataSocket,
 		errorSim,
+		invalidateSimData,
 	]);
 
 	// const StatusComponent = isLoadingSocket && (
 	// 	<p>Waiting for simulation updates...</p>
 	// );
 	// console.log({ dataSocket });
+
 	return (
 		<div>
 			<DisplayedContent mapPagePosition={mapPagePosition} />

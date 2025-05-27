@@ -1,7 +1,7 @@
-import { useDispatch } from 'react-redux';
-import { useEffect } from 'react';
-import { setCsrfToken } from 'store'; // Adjust this import path as necessary
-import { useFetchCsrfQuery } from 'store'; // Ensure this is correctly imported
+import { useDispatch } from "react-redux";
+import { useEffect } from "react";
+import { setCsrfToken } from "store"; // Adjust this import path as necessary
+import { useFetchCsrfQuery } from "store"; // Ensure this is correctly imported
 
 function useCsrf(checkToken) {
 	const dispatch = useDispatch();
@@ -14,7 +14,7 @@ function useCsrf(checkToken) {
 
 	useEffect(() => {
 		if (checkToken) {
-			const localToken = localStorage.getItem('csrfToken');
+			const localToken = localStorage.getItem("csrfToken");
 			if (localToken) {
 				dispatch(setCsrfToken(localToken));
 			}
@@ -24,8 +24,9 @@ function useCsrf(checkToken) {
 		// When a CSRF token is successfully fetched
 		else if (csrfData && !csrfError) {
 			const { csrfToken } = csrfData;
+			console.log("CSRF token fetched:", csrfToken);
 			// Update CSRF token in localStorage
-			localStorage.setItem('csrfToken', csrfToken);
+			localStorage.setItem("csrfToken", csrfToken);
 			// Dispatch action to update CSRF token in the global state
 			dispatch(setCsrfToken(csrfToken));
 		}

@@ -26,7 +26,11 @@
 		"no-unused-vars": 1,
 		// "prettier/prettier": ["error"],
 		// "no-undef": "error",
-		"indent": ["error", "tab"]
-		// "no-mixed-spaces-and-tabs": ["error", "smart-tabs"]
+		"no-empty": "off",
+		"indent": "off",
+		"no-mixed-spaces-and-tabs": "off",
+		"react/no-unescaped-entities": "off",
+		"react/no-children-prop": "off",
+		"no-self-assign": "off" // "no-mixed-spaces-and-tabs": ["error", "smart-tabs"]
 	}
 }
