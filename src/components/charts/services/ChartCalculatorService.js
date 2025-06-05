@@ -28,7 +28,9 @@ class ChartCalculatorService {
 					});
 
 					r.rawDataToPlot[key] = val;
-					if ("overlap" in r.data[levels[0]][levels[1]]) {
+					if ((levels[0] in r.data) && (levels[1] in r.data[levels[0]]) &&
+						!(typeof r.data[levels[0]][levels[1]] === 'undefined') && 
+						("overlap" in r.data[levels[0]][levels[1]])) {
 						r.rawDataToPlot.overlap = r.data[levels[0]][levels[1]].overlap;
 					}
 				}
