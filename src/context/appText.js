@@ -34,6 +34,7 @@ import IuBendaScripts from "../components/cookieConsent/IubendaScripts/IuBendaSc
 
 import imageSandFlyIcon from "../assets/images/front_sand_fly.webp";
 import imageClimateIcon from "../assets/images/front_climate.webp";
+import imageFCastIcon from "../assets/images/front_fcast.webp";
 
 import imageSandFlyMicro from "../assets/images/methods-sandfly-micro2.webp";
 import imageSandFlyCyprus from "../assets/images/methods-sandfly-Cyprus.webp";
@@ -109,40 +110,58 @@ function TextProvider({ children }) {
 				content: (
 					<>
 						<h4>
-							<Link
-								onClick={() => {
-									MapAdjustmentsService.handleToMapPageTransition(
-										dispatch,
-										vectorName,
-										mapVector
-									);
-									dispatch(setReadyToView(false));
-									dispatch(setDisplayedPanelID(0));
-								}}
-								to="/MapPage?session=papatasi"
-							>
-								<img src={imageSandFlyIcon} width="200px" height="200px"></img>
-							</Link>
-							<Link
-								onClick={() => {
-									MapAdjustmentsService.handleToMapPageTransition(
-										dispatch,
-										vectorName,
-										mapVector
-									);
-
-									dispatch(setReadyToView(false));
-									dispatch(setDisplayedPanelID(0));
-								}}
-								to="/MapPage?session=albopictus&tile=colegg:colegg_ssp585"
-							>
-								<img
-									alt="long-term"
-									src={imageClimateIcon}
-									width="200px"
-									height="200px"
-								></img>
-							</Link>
+						<Link
+							onClick={() => {
+								MapAdjustmentsService.handleToMapPageTransition(
+									dispatch,
+									vectorName,
+									mapVector
+								);
+								dispatch(setReadyToView(false));
+								dispatch(setDisplayedPanelID(0));
+							}}
+							to="/MapPage?session=albopictus&tile=colegg_dates:colegg_fcast"
+						>
+							<img
+								alt="mid-term"
+								src={imageFCastIcon}
+								width="200px"
+								height="200px"
+							></img>
+						</Link>
+						<Link
+							onClick={() => {
+								MapAdjustmentsService.handleToMapPageTransition(
+									dispatch,
+									vectorName,
+									mapVector
+								);
+								dispatch(setReadyToView(false));
+								dispatch(setDisplayedPanelID(0));
+							}}
+							to="/MapPage?session=albopictus&tile=colegg:colegg_ssp585"
+						>
+							<img
+								alt="long-term"
+								src={imageClimateIcon}
+								width="200px"
+								height="200px"
+							></img>
+						</Link>
+						<Link
+							onClick={() => {
+								MapAdjustmentsService.handleToMapPageTransition(
+									dispatch,
+									vectorName,
+									mapVector
+								);
+								dispatch(setReadyToView(false));
+								dispatch(setDisplayedPanelID(0));
+							}}
+							to="/MapPage?session=papatasi"
+						>
+							<img src={imageSandFlyIcon} width="200px" height="200px"></img>
+						</Link>
 						</h4>
 					</>
 				),
