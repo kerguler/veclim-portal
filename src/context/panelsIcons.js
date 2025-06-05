@@ -32,13 +32,15 @@ function PanelProvider({ children }) {
 
 	const tileIconRowHeadings = [
 		{ row: 1, label: "2010-2020" },
-		{ row: 2, label: "2090-2100 (SSP 2-4.5)" },
-		{ row: 3, label: "2090-2100 (SSP 5-8.5)" },
-		{ row: 4, label: "1980-1990" },
+		{ row: 2, label: "Mid-term predictions" },
+		{ row: 3, label: "2090-2100 (SSP 2-4.5)" },
+		{ row: 4, label: "2090-2100 (SSP 5-8.5)" },
+		{ row: 5, label: "1980-1990" },
 	];
 	const tileIcons = [
 		{
 			key: "colegg",
+			colkey: "colegg",
 			label: (
 				<>
 					2010-2020
@@ -64,6 +66,7 @@ function PanelProvider({ children }) {
 		},
 		{
 			key: "larva",
+			colkey: "larva",
 			label: (
 				<>
 					2010-2020
@@ -89,6 +92,7 @@ function PanelProvider({ children }) {
 		},
 		{
 			key: "presence",
+			colkey: "presence",
 			label: <>Vector presence</>,
 			icon: prpin,
 			tileLayer: {
@@ -134,6 +138,7 @@ function PanelProvider({ children }) {
 		},
 		{
 			key: "chikv_pouts",
+			colkey: "chikv_pouts",
 			label: (
 				<>
 					2010-2020
@@ -161,6 +166,7 @@ function PanelProvider({ children }) {
 		},
 		{
 			key: "chikv_iouts",
+			colkey: "chikv_iouts",
 			label: (
 				<>
 					2010-2020
@@ -186,7 +192,63 @@ function PanelProvider({ children }) {
 			),
 		},
 		{
+			key: "colegg_dates",
+			colkey: "colegg",
+			label: (
+				<>
+					March - June, 2025
+					<br />
+					Decadal average
+					<br />
+					Vector activity
+				</>
+			),
+			icon: adult,
+			tileLayer: {
+				tile: tileBase + "?v=colegg&z={z}&x={x}&y={y}&dates=2025-03-01:2025-06-01",
+				props: { attribution: "", noWrap: true },
+				displayIndex: 21,
+			},
+			description: (
+				<>
+					<p>
+						Average decadal mosquito activity in March - June, 2025 as predicted by the
+						model (assumes tiger mosquito presence).
+					</p>
+				</>
+			),
+		},
+		{
+			key: "colegg_fcast",
+			colkey: "colegg",
+			label: (
+				<>
+					March - June, 2025
+					<br />
+					Predicted
+					<br />
+					Vector activity
+				</>
+			),
+			icon: adult,
+			tileLayer: {
+				tile: tileBase + "?v=colegg_fcast&z={z}&x={x}&y={y}&dates=2025-03-01:2025-06-01",
+				props: { attribution: "", noWrap: true },
+				displayIndex: 22,
+			},
+			description: (
+				<>
+					<p>
+						Mosquito activity in March - June, 2025 
+						as predicted by the model (assumes tiger mosquito presence) 
+						using low-resolution ECMWF seasonal forecasts.
+					</p>
+				</>
+			),
+		},
+		{
 			key: "colegg_ssp245",
+			colkey: "colegg_ssp245",
 			label: (
 				<>
 					2090-2100 (SSP 2-4.5)
@@ -198,7 +260,7 @@ function PanelProvider({ children }) {
 			tileLayer: {
 				tile: tileBase + "?v=colegg_ssp245&z={z}&x={x}&y={y}",
 				props: { attribution: "", noWrap: true },
-				displayIndex: 22,
+				displayIndex: 32,
 			},
 			description: (
 				<>
@@ -213,6 +275,7 @@ function PanelProvider({ children }) {
 		},
 		{
 			key: "pouts_ssp245",
+			colkey: "pouts_ssp245",
 			label: (
 				<>
 					2090-2100 (SSP 2-4.5)
@@ -224,7 +287,7 @@ function PanelProvider({ children }) {
 			tileLayer: {
 				tile: tileBase + "?v=pouts_ssp245&z={z}&x={x}&y={y}",
 				props: { attribution: "", noWrap: true },
-				displayIndex: 23,
+				displayIndex: 33,
 			},
 			description: (
 				<>
@@ -240,6 +303,7 @@ function PanelProvider({ children }) {
 		},
 		{
 			key: "iouts_ssp245",
+			colkey: "iouts_ssp245",
 			label: (
 				<>
 					2090-2100 (SSP 2-4.5)
@@ -251,7 +315,7 @@ function PanelProvider({ children }) {
 			tileLayer: {
 				tile: tileBase + "?v=iouts_ssp245&z={z}&x={x}&y={y}",
 				props: { attribution: "", noWrap: true },
-				displayIndex: 24,
+				displayIndex: 34,
 			},
 			description: (
 				<>
@@ -267,6 +331,7 @@ function PanelProvider({ children }) {
 		},
 		{
 			key: "colegg_ssp585",
+			colkey: "colegg_ssp585",
 			label: (
 				<>
 					2090-2100 (SSP 5-8.5)
@@ -278,7 +343,7 @@ function PanelProvider({ children }) {
 			tileLayer: {
 				tile: tileBase + "?v=colegg_ssp585&z={z}&x={x}&y={y}",
 				props: { attribution: "", noWrap: true },
-				displayIndex: 32,
+				displayIndex: 42,
 			},
 			description: (
 				<>
@@ -293,6 +358,7 @@ function PanelProvider({ children }) {
 		},
 		{
 			key: "pouts_ssp585",
+			colkey: "pouts_ssp585",
 			label: (
 				<>
 					2090-2100 (SSP 5-8.5)
@@ -304,7 +370,7 @@ function PanelProvider({ children }) {
 			tileLayer: {
 				tile: tileBase + "?v=pouts_ssp585&z={z}&x={x}&y={y}",
 				props: { attribution: "", noWrap: true },
-				displayIndex: 33,
+				displayIndex: 43,
 			},
 			description: (
 				<>
@@ -320,6 +386,7 @@ function PanelProvider({ children }) {
 		},
 		{
 			key: "iouts_ssp585",
+			colkey: "iouts_ssp585",
 			label: (
 				<>
 					2090-2100 (SSP 5-8.5)
@@ -331,7 +398,7 @@ function PanelProvider({ children }) {
 			tileLayer: {
 				tile: tileBase + "?v=iouts_ssp585&z={z}&x={x}&y={y}",
 				props: { attribution: "", noWrap: true },
-				displayIndex: 34,
+				displayIndex: 44,
 			},
 			description: (
 				<>
@@ -347,6 +414,7 @@ function PanelProvider({ children }) {
 		},
 		{
 			key: "colegg_1980",
+			colkey: "colegg_1980",
 			label: (
 				<>
 					1980-1990
@@ -358,7 +426,7 @@ function PanelProvider({ children }) {
 			tileLayer: {
 				tile: tileBase + "?v=colegg_1980&z={z}&x={x}&y={y}",
 				props: { attribution: "", noWrap: true },
-				displayIndex: 42,
+				displayIndex: 52,
 			},
 			description: (
 				<>
@@ -372,6 +440,7 @@ function PanelProvider({ children }) {
 		},
 		{
 			key: "chikv_pouts_1980",
+			colkey: "chikv_pouts_1980",
 			label: (
 				<>
 					1980-1990
@@ -383,7 +452,7 @@ function PanelProvider({ children }) {
 			tileLayer: {
 				tile: tileBase + "?v=chikv_pouts_1980&z={z}&x={x}&y={y}",
 				props: { attribution: "", noWrap: true },
-				displayIndex: 43,
+				displayIndex: 53,
 			},
 			description: (
 				<>
@@ -399,6 +468,7 @@ function PanelProvider({ children }) {
 		},
 		{
 			key: "chikv_iouts_1980",
+			colkey: "chikv_iouts_1980",
 			label: (
 				<>
 					1980-1990
@@ -410,7 +480,7 @@ function PanelProvider({ children }) {
 			tileLayer: {
 				tile: tileBase + "?v=chikv_iouts_1980&z={z}&x={x}&y={y}",
 				props: { attribution: "", noWrap: true },
-				displayIndex: 44,
+				displayIndex: 54,
 			},
 			description: (
 				<>
@@ -429,6 +499,7 @@ function PanelProvider({ children }) {
 	const tileIconsSand = [
 		{
 			key: "papatasi_aprdec",
+			colkey: "papatasi_aprdec",
 			label: "April - December",
 			icon: adultsandfly1,
 			tileLayer: {
@@ -447,6 +518,7 @@ function PanelProvider({ children }) {
 		},
 		{
 			key: "papatasi_aprjun",
+			colkey: "papatasi_aprjun",
 			label: "April - June",
 			icon: adultsandfly2,
 			tileLayer: {
@@ -465,6 +537,7 @@ function PanelProvider({ children }) {
 		},
 		{
 			key: "papatasi_julsep",
+			colkey: "papatasi_julsep",
 			label: "July - September",
 			icon: adultsandfly3,
 			tileLayer: {
@@ -483,6 +556,7 @@ function PanelProvider({ children }) {
 		},
 		{
 			key: "papatasi_octdec",
+			colkey: "papatasi_octdec",
 			label: "October - December",
 			icon: adultsandfly4,
 			tileLayer: {
@@ -983,6 +1057,10 @@ function PanelProvider({ children }) {
 		},
 	];
 
+	const colorKeys = {};
+	tileIconsSand.forEach((tile) => {colorKeys[tile.key] = tile.colkey;});
+	tileIcons.forEach((tile) => {colorKeys[tile.key] = tile.colkey;});
+
 	const sharedValues = {
 		panelData: mapVector === "albopictus" ? panelData : panelDataSand, // panelDataSand,
 		tileIcons: mapVector === "albopictus" ? tileIcons : tileIconsSand, // tileIconsSand,
@@ -994,6 +1072,7 @@ function PanelProvider({ children }) {
 		tileIconsAlbo: tileIcons,
 		panelDataSand: panelDataSand,
 		panelDataAlbo: panelData,
+		colorKeys: colorKeys,
 	};
 
 	// const [sharedValues, setSharedValues] = useState({

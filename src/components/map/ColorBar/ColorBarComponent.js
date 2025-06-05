@@ -6,9 +6,12 @@ import {
 } from "store";
 
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
 import { useState } from "react";
 import { useRef } from "react";
+
+import PanelContext from "context/panelsIcons";
+
 function ColorBarComponent({ times }) {
 	const colorBarRef = useRef();
 	const panelOpen = useSelector(
@@ -18,6 +21,8 @@ function ColorBarComponent({ times }) {
 		(state) => state.fetcher.fetcherStates.map.leftMenu.displayedPanelID
 	);
 	const panelTop = useSelector((state) => state.panel.panelTop);
+
+	const { colorKeys } = useContext(PanelContext);
 
 	const { data, error, isFetching } = useFetchColorBarsDataQuery();
 	const selectedTiles = useSelector(
@@ -94,15 +99,15 @@ function ColorBarComponent({ times }) {
 	} else {
 		const extractedTile = selectedTiles.map((tile, index) => {
 			let acc;
-			if (tile in data) {
-				acc = { key: tile, ...data[tile] };
+			if (tile in colorKeys && colorKeys[tile] in data) {
+				// acc = { key: tile, ...data[tile] };
+				acc = { key: tile, ...data[colorKeys[tile]] };
 				return acc;
 			}
 		});
 		if (extractedTile.length === 0) return <div></div>;
-
-		colors = data[extractedTile[0].key].colors;
-		labels = data[extractedTile[0].key].labels;
+		colors = data[colorKeys[extractedTile[0].key]].colors;
+		labels = data[colorKeys[extractedTile[0].key]].labels;
 		let renderedDivs2, renderedLabels2;
 		let transColor = "#00000000";
 
@@ -134,8 +139,8 @@ function ColorBarComponent({ times }) {
 			);
 		});
 		if (extractedTile.length === 2) {
-			let colors2 = data[extractedTile[1].key].colors;
-			let labels2 = data[extractedTile[1].key].labels;
+			let colors2 = data[colorKeys[extractedTile[1].key]].colors;
+			let labels2 = data[colorKeys[extractedTile[1].key]].labels;
 			if (colors2.length !== 0) {
 				renderedDivs2 = colors2.map((color, index) => {
 					return (
