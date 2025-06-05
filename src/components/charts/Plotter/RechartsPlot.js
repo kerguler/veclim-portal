@@ -12,7 +12,6 @@ import {
 	Legend,
 	ResponsiveContainer,
 	Brush,
-	BrushY,
 } from "@kerguler/recharts";
 import { useRef } from "react";
 import { setBrushData } from "store";
@@ -24,7 +23,7 @@ import CustomLegend from "../chartComponents/CustomLegend/CustomLegend";
 import CustomTooltip from "../chartComponents/CustomTooltip/CustomTooltip";
 import useYsliderPositioning from "customHooks/useYsliderPositioning";
 import ChartCalculatorService from "../services/ChartCalculatorService";
-import { setBrushDatay } from "store";
+import { setBrushDataYL, setBrushDataYR } from "store";
 import { setBrushRange } from "store";
 function RechartsPlot({ plotMat }) {
 	const args = {
@@ -79,30 +78,41 @@ function RechartsPlot({ plotMat }) {
 	};
 	const scrlPars = {
 		minmaxId: { min: 0, max: 100 },
-		minmax: { min: 0, max: 0 },
+		minmaxL: { min: 0, max: -1 },
+		minmaxR: { min: 0, max: -1 },
 		scrollScl: 4.0,
-		brushDataY: { min: 0, max: 0 },
+		brushDataYL: { min: 0, max: -1 },
+		brushDataYR: { min: 0, max: -1 },
 	};
 	const scrlRef = useRef(scrlPars);
 	let s = scrlRef.current;
-	const brushDatay = useSelector((state) => state.panel.brushDatay);
+	const brushDataYL = useSelector((state) => state.panel.brushDataYL);
+	const brushDataYR = useSelector((state) => state.panel.brushDataYR);
 	useEffect(() => {
-		s.minmax = { min: 0, max: 0 };
+		s.minmaxL = { min: 0, max: -1 };
+		s.minmaxR = { min: 0, max: -1 };
 		plotMat &&
 			plotMat.forEach((d) => {
 				parameters.plottedKeys.forEach((k) => {
-					if (d[k] < s.minmax.min) s.minmax.min = d[k];
-					if (d[k] > s.minmax.max) s.minmax.max = d[k];
+					if ( ("orientation" in parameters) && (k in parameters.orientation) && (parameters.orientation[k] == "right")) {
+						if (d[k] < s.minmaxR.min) s.minmaxR.min = d[k];
+						if (d[k] > s.minmaxR.max) s.minmaxR.max = d[k];
+					} else {
+						if (d[k] < s.minmaxL.min) s.minmaxL.min = d[k];
+						if (d[k] > s.minmaxL.max) s.minmaxL.max = d[k];
+					}
 				});
 			});
-		s.brushDataY = { min: s.minmax.min, max: s.minmax.max };
-		dispatch(setBrushDatay(s.brushDataY));
+		s.brushDataYL = { min: s.minmaxL.min, max: s.minmaxL.max };
+		s.brushDataYR = { min: s.minmaxR.min, max: s.minmaxR.max };
+		dispatch(setBrushDataYL(s.brushDataYL));
+		dispatch(setBrushDataYR(s.brushDataYR));
 	}, [
 		plotMat,
 		parameters.plottedKeys,
 		dispatch,
-		s.minmax.min,
-		s.minmax.max,
+		s.minmaxL.min,
+		s.minmaxL.max,
 		s,
 	]);
 
@@ -119,6 +129,7 @@ function RechartsPlot({ plotMat }) {
 			<Line
 				id={uniqueKey}
 				key={uniqueKey}
+				yAxisId={ ("orientation" in parameters) && (key in parameters.orientation) && (parameters.orientation[key] == "right") ? "right": "left" }
 				type="monotone"
 				dataKey={key}
 				stroke={parameters.colors[index]}
@@ -130,10 +141,55 @@ function RechartsPlot({ plotMat }) {
 		);
 	});
 
+	let renderedAxes = [];
+	if (! ((brushDataYL.min == 0) && (brushDataYL.max == -1)) ) {
+		let col = parameters.colors[0];
+		if ( "orientation" in parameters ) {
+			for (let i=0; i<parameters.colors.length; i++) {
+				col = parameters.colors[i];
+				if ( !(parameters.plottedKeys[i] in parameters.orientation) || (parameters.orientation[parameters.plottedKeys[i]] == "left") ) {
+					break;
+				}
+			}
+		}
+		renderedAxes.push( (
+			<YAxis
+			yAxisId="left"
+			key="left-0"
+			domain={[brushDataYL.min, brushDataYL.max]}
+			allowDataOverflow={true}
+			tickFormatter={formatYAxisTick}
+			stroke={col}
+			/>
+		) );
+	}
+	if (! ((brushDataYR.min == 0) && (brushDataYR.max == -1)) ) {
+		let col = parameters.colors[0];
+		if ( "orientation" in parameters ) {
+			for (let i=0; i<parameters.colors.length; i++) {
+				col = parameters.colors[i];
+				if ( (parameters.plottedKeys[i] in parameters.orientation) && (parameters.orientation[parameters.plottedKeys[i]] == "right") ) {
+					break;
+				}
+			}
+		}
+		renderedAxes.push( (
+			<YAxis
+			yAxisId="right"
+			key="right-0"
+			domain={[brushDataYR.min, brushDataYR.max]}
+			allowDataOverflow={true}
+			tickFormatter={formatYAxisTick}
+			stroke={col}
+			orientation="right"
+			/>
+		) );
+	}
+
 	if (!plotMat || plotMat.length === 0) {
 		return <div>Loading data...</div>;
 	}
-	console.log({ brushData, xBrushRange, d });
+	// console.log({ brushData, xBrushRange, d });
 
 	return (
 		<ResponsiveContainer maxHeight={400} maxWidth={600}>
@@ -144,7 +200,7 @@ function RechartsPlot({ plotMat }) {
 				width={500}
 				height={400}
 				data={plotMat}
-				margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+				margin={{ top: 5, right: 0, left: 20, bottom: 5 }}
 			>
 				{renderedLines}
 				<CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
@@ -152,11 +208,7 @@ function RechartsPlot({ plotMat }) {
 					dataKey="date"
 					tick={<CustomXAxisTick brushData={brushData} argRef={argRef} />}
 				/>
-				<YAxis
-					domain={[brushDatay.min, brushDatay.max]}
-					allowDataOverflow={true}
-					tickFormatter={formatYAxisTick}
-				/>
+				{renderedAxes}
 				<Brush
 					key={"brushx"}
 					className="myBrush"
@@ -198,15 +250,6 @@ function RechartsPlot({ plotMat }) {
 						transform: `translate(${transform[0]}px, ${transform[1]}px)`,
 					}}
 				>
-					<BrushY
-						key={"brushy"}
-						className="myBrushY"
-						dataKey=""
-						height={150}
-						width={15}
-						data={plotMat}
-						onChange={handleBrushChangeY}
-					/>
 				</g>
 			</LineChart>
 		</ResponsiveContainer>

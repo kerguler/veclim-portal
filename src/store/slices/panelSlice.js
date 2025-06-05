@@ -11,13 +11,17 @@ const panelSlice = createSlice({
 		panelTop: 0,
 		panelInterfere: 0,
 		brushData: null,
-		brushDatay: { min: 0, max: 0 },
+		brushDataYL: { min: 0, max: 0 },
+		brushDataYR: { min: 0, max: 0 },
 		displayTileNames: { left: false, right: false, center: true },
 	},
 
 	reducers: {
-		setBrushDatay(state, action) {
-			state.brushDatay = action.payload;
+		setBrushDataYL(state, action) {
+			state.brushDataYL = action.payload;
+		},
+		setBrushDataYR(state, action) {
+			state.brushDataYR = action.payload;
 		},
 		setBrushRange(state, action) {
 			state.brushRange = { ...action.payload };
@@ -88,6 +92,8 @@ export const {
 	setPanelInterfere,
 	setPanelTop,
 	setBrushData,
-	setDisplayTileNames,setBrushDatay
+	setDisplayTileNames,
+	setBrushDataYL,
+	setBrushDataYR,
 } = panelSlice.actions;
 export const panelReducer = panelSlice.reducer;

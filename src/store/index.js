@@ -120,7 +120,8 @@ import {
 	setPanelTop,
 	setBrushData,
 	setDisplayTileNames,
-	setBrushDatay,
+	setBrushDataYL,
+	setBrushDataYR,
 } from "./slices/panelSlice";
 import { loginRegisterApi } from "./apis/loginRegisterApi";
 
@@ -246,7 +247,8 @@ export {
 	setTwinArray,
 	setTwinIndex,
 	setDisplayedIcons,
-	setBrushDatay,
+	setBrushDataYL,
+	setBrushDataYR,
 	setApiRegisterResponse,
 	setCsrfToken,
 	setDetails,

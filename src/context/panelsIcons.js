@@ -723,27 +723,27 @@ function PanelProvider({ children }) {
 				mixedKeys: [
 					{
 						key: "g1",
-						levels: ["fcast-ts", "nasa", "ssp245", "colegg"],
-					},
-					{
-						key: "g2",
-						levels: ["fcast-ts", "nasa", "ssp585", "colegg"],
-					},
-					{
-						key: "g3",
 						levels: ["sim-ts", "2010-2019", "colegg"],
 					},
 					{
-						key: "g4",
+						key: "g2",
 						levels: ["sim-ts", "1980-1989", "colegg"],
+					},
+					{
+						key: "g3",
+						levels: ["fcast-ts", "nasa", "ssp245", "colegg"],
+					},
+					{
+						key: "g4",
+						levels: ["fcast-ts", "nasa", "ssp585", "colegg"],
 					},
 				],
 				plottedKeys: ["g1", "g2", "g3", "g4"],
-				colors: ["orange", "#F15A48", "#1B3958", "#50C0AD"],
+				colors: ["#1B3958", "#50C0AD", "orange", "#F15A48"],
 				sliceColors: ["#50C0AD", "orange", "#F15A48"],
 				horizontalAxis: "date",
 				lineSlice: [],
-				labels: ["SSP2-4.5", "SSP5-8.5", "2010-2020", "1980-1990"],
+				labels: ["2010-2020", "1980-1990", "SSP2-4.5", "SSP5-8.5"],
 			},
 			icon: adult,
 			content: (
@@ -830,27 +830,27 @@ function PanelProvider({ children }) {
 				mixedKeys: [
 					{
 						key: "g1",
-						levels: ["fcast-ts", "nasa", "ssp245", "pouts"],
-					},
-					{
-						key: "g2",
-						levels: ["fcast-ts", "nasa", "ssp585", "pouts"],
-					},
-					{
-						key: "g3",
 						levels: ["sim-ts", "2010-2019", "pouts"],
 					},
 					{
-						key: "g4",
+						key: "g2",
 						levels: ["sim-ts", "1980-1989", "pouts"],
+					},
+					{
+						key: "g3",
+						levels: ["fcast-ts", "nasa", "ssp245", "pouts"],
+					},
+					{
+						key: "g4",
+						levels: ["fcast-ts", "nasa", "ssp585", "pouts"],
 					},
 				],
 				plottedKeys: ["g1", "g2", "g3", "g4"],
-				colors: ["orange", "#F15A48", "#1B3958", "#50C0AD"],
+				colors: ["#1B3958", "#50C0AD", "orange", "#F15A48"],
 				sliceColors: ["#50C0AD", "orange", "#F15A48"],
 				horizontalAxis: "date",
 				lineSlice: [],
-				labels: ["SSP2-4.5", "SSP5-8.5", "2010-2020", "1980-1990"],
+				labels: ["2010-2020", "1980-1990", "SSP2-4.5", "SSP5-8.5"],
 			},
 			icon: virus,
 			content: (
@@ -937,27 +937,27 @@ function PanelProvider({ children }) {
 				mixedKeys: [
 					{
 						key: "g1",
-						levels: ["fcast-ts", "nasa", "ssp245", "iouts"],
-					},
-					{
-						key: "g2",
-						levels: ["fcast-ts", "nasa", "ssp585", "iouts"],
-					},
-					{
-						key: "g3",
 						levels: ["sim-ts", "2010-2019", "iouts"],
 					},
 					{
-						key: "g4",
+						key: "g2",
 						levels: ["sim-ts", "1980-1989", "iouts"],
+					},
+					{
+						key: "g3",
+						levels: ["fcast-ts", "nasa", "ssp245", "iouts"],
+					},
+					{
+						key: "g4",
+						levels: ["fcast-ts", "nasa", "ssp585", "iouts"],
 					},
 				],
 				plottedKeys: ["g1", "g2", "g3", "g4"],
-				colors: ["orange", "#F15A48", "#1B3958", "#50C0AD"],
+				colors: ["#1B3958", "#50C0AD", "orange", "#F15A48"],
 				sliceColors: ["#50C0AD", "orange", "#F15A48"],
 				horizontalAxis: "date",
 				lineSlice: [],
-				labels: ["SSP2-4.5", "SSP5-8.5", "2010-2020", "1980-1990"],
+				labels: ["2010-2020", "1980-1990", "SSP2-4.5", "SSP5-8.5"],
 			},
 			icon: impact,
 			content: (
@@ -1015,6 +1015,7 @@ function PanelProvider({ children }) {
 				initialSetting: "sim-ts",
 				years: "2015",
 				plottedKeys: ["simL", "simH"],
+				orientation: {"simL": "right"},
 				colors: ["#F15A48", "#1B3958"],
 				horizontalAxis: "date",
 				labels: ["Secondary land type", "Primary land type"],

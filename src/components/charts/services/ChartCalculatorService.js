@@ -1,5 +1,5 @@
-import { setBrushRange, setBrushData } from "../../../store";
-import { setBrushDatay } from "../../../store";
+import { setBrushRange } from "../../../store";
+import { setBrushDataYL } from "../../../store";
 class ChartCalculatorService {
 	static handleMixedKeys(rawData, params) {
 		let r = rawData.current;
@@ -183,7 +183,7 @@ class ChartCalculatorService {
 	static handleBrushChangeY(range, scrlRef, dispatch) {
 		let s = scrlRef.current && scrlRef.current;
 		if (scrlRef.current) {
-			s.brushDataY = {
+			s.brushDataYL = {
 				min:
 					s.minmax.min +
 					(s.minmax.max - s.minmax.min) *
@@ -202,7 +202,7 @@ class ChartCalculatorService {
 						),
 			};
 			dispatch(
-				setBrushDatay({
+				setBrushDataYL({
 					min:
 						s.minmax.min +
 						(s.minmax.max - s.minmax.min) *
@@ -223,7 +223,7 @@ class ChartCalculatorService {
 			);
 		} else {
 			HTMLFormControlsCollection.log("no scrlRef");
-			// setBrushDataY({ min: range.startIndex, max: range.endIndex });
+			// setBrushDataYL({ min: range.startIndex, max: range.endIndex });
 		}
 	}
 }
