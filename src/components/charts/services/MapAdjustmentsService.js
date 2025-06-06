@@ -30,6 +30,11 @@ class MapAdjustmentsService {
 		"http://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.webp",
 		{ attribution: "", noWrap: true }
 	);
+	static dataLayer = L.tileLayer(
+		"https://veclim.com/api?v=vabun_v015&z={z}&x={x}&y={y}",
+		{ zIndex: 1000, attribution: "", noWrap: true }
+	);
+
 	static cyprusBounds = [
 		[34.25, 31.5],
 		[36, 35],

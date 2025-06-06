@@ -41,6 +41,7 @@ function useMap(mapParRef) {
 			zoomControl: false,
 		});
 		MapAdjustmentsService.baseLayer.addTo(p.map);
+		MapAdjustmentsService.dataLayer.addTo(p.map);
 
 		p.map.setView({ lat: p.center[0], lng: p.center[1] }, p.zoom);
 
