@@ -194,6 +194,7 @@ function PanelProvider({ children }) {
 		{
 			key: "colegg_dates",
 			colkey: "colegg",
+			linked: "colegg_fcast",
 			label: (
 				<>
 					March - June, 2025
@@ -221,6 +222,7 @@ function PanelProvider({ children }) {
 		{
 			key: "colegg_fcast",
 			colkey: "colegg",
+			hidden: true,
 			label: (
 				<>
 					March - June, 2025
@@ -235,6 +237,61 @@ function PanelProvider({ children }) {
 				tile: tileBase + "?v=colegg_fcast&z={z}&x={x}&y={y}&dates=2025-03-01:2025-06-01",
 				props: { attribution: "", noWrap: true },
 				displayIndex: 22,
+			},
+			description: (
+				<>
+					<p>
+						Mosquito activity in March - June, 2025 
+						as predicted by the model (assumes tiger mosquito presence) 
+						using low-resolution ECMWF seasonal forecasts.
+					</p>
+				</>
+			),
+		},
+		{
+			key: "chikv_iouts_dates",
+			colkey: "chikv_iouts",
+			label: (
+				<>
+					March - June, 2025
+					<br />
+					Decadal average
+					<br />
+					Vector activity
+				</>
+			),
+			icon: impact,
+			tileLayer: {
+				tile: tileBase + "?v=chikv_iouts&z={z}&x={x}&y={y}&dates=2025-03-01:2025-06-01",
+				props: { attribution: "", noWrap: true },
+				displayIndex: 23,
+			},
+			description: (
+				<>
+					<p>
+						Average decadal mosquito activity in March - June, 2025 as predicted by the
+						model (assumes tiger mosquito presence).
+					</p>
+				</>
+			),
+		},
+		{
+			key: "chikv_iouts_fcast",
+			colkey: "chikv_iouts",
+			label: (
+				<>
+					March - June, 2025
+					<br />
+					Predicted
+					<br />
+					Vector activity
+				</>
+			),
+			icon: impact,
+			tileLayer: {
+				tile: tileBase + "?v=chikv_iouts_fcast&z={z}&x={x}&y={y}&dates=2025-03-01:2025-06-01",
+				props: { attribution: "", noWrap: true },
+				displayIndex: 24,
 			},
 			description: (
 				<>
@@ -694,8 +751,9 @@ function PanelProvider({ children }) {
 					},
 				],
 				plottedKeys: ["g1", "g2", "g3"],
-				// orientation: {"g3": "right"},
-				colors: ["#1B3958", "#1B3958", "black"],
+				orientation: {"g3": "right"},
+				//lineStyle: {"g3": "points"},
+				colors: ["#1B3958", "#1B3958", "#1B3958"],
 				horizontalAxis: "date",
 				lineSlice: ["g1"],
 				labels: ["Activity forecast", "Decadal activity", "Observation"],

@@ -25,8 +25,8 @@ function TileSelector({ tileIcons }) {
 		const filteredArray = selectedTiles.filter((element) => element === item);
 		// if the icon is already selected it will be in the array
 		const exists = filteredArray.length > 0;
-		// if the icon is already selected and there is more than one icon selected
 		if (exists && selectedTiles.length !== 1) {
+			// if the icon is already selected and there is more than one icon selected
 			temp = selectedTiles.filter((element) => {
 				return element !== item;
 			});
@@ -46,6 +46,7 @@ function TileSelector({ tileIcons }) {
 		} else {
 			// if the icon is not in the array
 			setDisplayNoTileWarning(false);
+			//
 			if (selectedTiles.length === 2) {
 				dispatch(setSuperUser(true));
 				temp = [...selectedTiles];
@@ -70,6 +71,11 @@ function TileSelector({ tileIcons }) {
 				}
 			}
 		}
+
+		//dispatch(setSuperUser(true));
+		//temp = [item, item];
+		//setDisplayWarning(false);
+
 		dispatch(setSuperUser(temp.length === 2 ? true : false));
 		setTimeout(() => {
 			dispatch(setTileArray(temp));
@@ -94,7 +100,9 @@ function TileSelector({ tileIcons }) {
 
 	const RenderedContent = () => {
 		let description = <p>No tiles selected. Base map is on display.</p>;
-		let displayedIcons = tileIcons.map((item, index) => {
+		let displayedIcons = tileIcons.filter( (item, index) =>
+			!( ("hidden" in item) && item.hidden )
+		).map((item, index) => {
 			let internalClassName;
 			const filteredArray = selectedTiles.filter(
 				(element) => element === item.key

@@ -148,17 +148,38 @@ function RechartsPlot({ plotMat }) {
 	let renderedLines = s.pars.plottedKeys.map((key, index) => {
 		let uniqueKey = `${key}-${index}`;
 		keyRef.current.push(uniqueKey);
+		if ( ("lineStyle" in parameters) && 
+			 (key in parameters.lineStyle) && 
+			 (parameters.lineStyle[key] == "points") ) {
+				return (
+					<Line
+						id={uniqueKey}
+						key={uniqueKey}
+						yAxisId={ ("orientation" in parameters) && 
+								  (key in parameters.orientation) && 
+								  (parameters.orientation[key] == "right") ? "right": "left" }
+						type="monotone"
+						dataKey={key}
+						stroke="none"
+						dot={{ r: 4, fill: s.pars.colors[index] }}
+						activeDot={{ r: 6, fill: s.pars.colors[index] }}
+						>
+						{" "}
+					</Line>
+		) }
 		return (
 			<Line
 				id={uniqueKey}
 				key={uniqueKey}
-				yAxisId={ ("orientation" in parameters) && (key in parameters.orientation) && (parameters.orientation[key] == "right") ? "right": "left" }
+				yAxisId={ ("orientation" in parameters) && 
+						  (key in parameters.orientation) && 
+						  (parameters.orientation[key] == "right") ? "right": "left" }
 				type="monotone"
 				dataKey={key}
 				stroke={s.pars.colors[index]}
 				strokeWidth="1.5"
 				dot={false}
-			>
+				>
 				{" "}
 			</Line>
 		);
@@ -174,7 +195,7 @@ function RechartsPlot({ plotMat }) {
 					break;
 				}
 			}
-		}
+		}}
 		renderedAxes.push( (
 			<YAxis
 			yAxisId="left"
@@ -182,10 +203,10 @@ function RechartsPlot({ plotMat }) {
 			domain={[brushDataYL.min, brushDataYL.max]}
 			allowDataOverflow={true}
 			tickFormatter={formatYAxisTick}
-			stroke={col}
+			//stroke={col}
 			/>
 		) );
-	}
+	//}
 	if (! ((brushDataYR.min == 0) && (brushDataYR.max == -1)) ) {
 		let col = s.pars.colors[0];
 		if ( "orientation" in parameters ) {
@@ -195,7 +216,7 @@ function RechartsPlot({ plotMat }) {
 					break;
 				}
 			}
-		}
+		}}
 		renderedAxes.push( (
 			<YAxis
 			yAxisId="right"
@@ -203,11 +224,11 @@ function RechartsPlot({ plotMat }) {
 			domain={[brushDataYR.min, brushDataYR.max]}
 			allowDataOverflow={true}
 			tickFormatter={formatYAxisTick}
-			stroke={col}
+			//stroke={col}
 			orientation="right"
 			/>
 		) );
-	}
+	//}
 
 	if (!plotMat || plotMat.length === 0) {
 		return <div>Loading data...</div>;
