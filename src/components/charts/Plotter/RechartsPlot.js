@@ -25,6 +25,7 @@ import useYsliderPositioning from "customHooks/useYsliderPositioning";
 import ChartCalculatorService from "../services/ChartCalculatorService";
 import { setBrushDataYL, setBrushDataYR } from "store";
 import { setBrushRange } from "store";
+import { colors } from "material-ui/styles";
 function RechartsPlot({ plotMat }) {
 	const args = {
 		years: { firstYear: null, lastYear: null },
@@ -83,17 +84,31 @@ function RechartsPlot({ plotMat }) {
 		scrollScl: 4.0,
 		brushDataYL: { min: 0, max: -1 },
 		brushDataYR: { min: 0, max: -1 },
+		pars: {
+			plottedKeys: parameters.plottedKeys.map((k) => k),
+			labels: parameters.labels.map((k) => k),
+			colors: parameters.colors.map((k) => k)
+		},
 	};
 	const scrlRef = useRef(scrlPars);
 	let s = scrlRef.current;
 	const brushDataYL = useSelector((state) => state.panel.brushDataYL);
 	const brushDataYR = useSelector((state) => state.panel.brushDataYR);
 	useEffect(() => {
+		s.pars = {
+			plottedKeys: parameters.plottedKeys.map((k) => k),
+			labels: parameters.labels.map((k) => k),
+			colors: parameters.colors.map((k) => k)
+		};
 		s.minmaxL = { min: 0, max: -1 };
 		s.minmaxR = { min: 0, max: -1 };
-		plotMat &&
-			plotMat.forEach((d) => {
-				parameters.plottedKeys.forEach((k) => {
+		let s2 = {};
+		parameters.plottedKeys.forEach((k, i) => {
+			s2[i] = { min: 0, max: -1 };
+			plotMat &&
+				plotMat.forEach((d) => {
+					if (d[k] < s2[i].min) s2[i].min = d[k];
+					if (d[k] > s2[i].max) s2[i].max = d[k];
 					if ( ("orientation" in parameters) && (k in parameters.orientation) && (parameters.orientation[k] == "right")) {
 						if (d[k] < s.minmaxR.min) s.minmaxR.min = d[k];
 						if (d[k] > s.minmaxR.max) s.minmaxR.max = d[k];
@@ -102,7 +117,16 @@ function RechartsPlot({ plotMat }) {
 						if (d[k] > s.minmaxL.max) s.minmaxL.max = d[k];
 					}
 				});
-			});
+		});
+		//
+		for (let i in s2) {
+			if ( (s2[i].min == 0) && (s2[i].max == -1) ) {
+				s.pars.plottedKeys.splice(i,1);
+				s.pars.labels.splice(i,1);
+				s.pars.colors.splice(i,1);
+			}
+		}
+		//
 		s.brushDataYL = { min: s.minmaxL.min, max: s.minmaxL.max };
 		s.brushDataYR = { min: s.minmaxR.min, max: s.minmaxR.max };
 		dispatch(setBrushDataYL(s.brushDataYL));
@@ -115,14 +139,13 @@ function RechartsPlot({ plotMat }) {
 		s.minmaxL.max,
 		s,
 	]);
-
 	// const [brushDataY, setBrushDataY] = useState(s.brushDataY);
 	const handleBrushChangeY = (range) => {
 		ChartCalculatorService.handleBrushChangeY(range, scrlRef, dispatch);
 	};
 	const keyRef = useRef([]);
 
-	let renderedLines = parameters.plottedKeys.map((key, index) => {
+	let renderedLines = s.pars.plottedKeys.map((key, index) => {
 		let uniqueKey = `${key}-${index}`;
 		keyRef.current.push(uniqueKey);
 		return (
@@ -132,7 +155,7 @@ function RechartsPlot({ plotMat }) {
 				yAxisId={ ("orientation" in parameters) && (key in parameters.orientation) && (parameters.orientation[key] == "right") ? "right": "left" }
 				type="monotone"
 				dataKey={key}
-				stroke={parameters.colors[index]}
+				stroke={s.pars.colors[index]}
 				strokeWidth="1.5"
 				dot={false}
 			>
@@ -143,11 +166,11 @@ function RechartsPlot({ plotMat }) {
 
 	let renderedAxes = [];
 	if (! ((brushDataYL.min == 0) && (brushDataYL.max == -1)) ) {
-		let col = parameters.colors[0];
+		let col = s.pars.colors[0];
 		if ( "orientation" in parameters ) {
-			for (let i=0; i<parameters.colors.length; i++) {
-				col = parameters.colors[i];
-				if ( !(parameters.plottedKeys[i] in parameters.orientation) || (parameters.orientation[parameters.plottedKeys[i]] == "left") ) {
+			for (let i=0; i<s.pars.colors.length; i++) {
+				col = s.pars.colors[i];
+				if ( !(s.pars.plottedKeys[i] in parameters.orientation) || (parameters.orientation[s.pars.plottedKeys[i]] == "left") ) {
 					break;
 				}
 			}
@@ -164,11 +187,11 @@ function RechartsPlot({ plotMat }) {
 		) );
 	}
 	if (! ((brushDataYR.min == 0) && (brushDataYR.max == -1)) ) {
-		let col = parameters.colors[0];
+		let col = s.pars.colors[0];
 		if ( "orientation" in parameters ) {
-			for (let i=0; i<parameters.colors.length; i++) {
-				col = parameters.colors[i];
-				if ( (parameters.plottedKeys[i] in parameters.orientation) && (parameters.orientation[parameters.plottedKeys[i]] == "right") ) {
+			for (let i=0; i<s.pars.colors.length; i++) {
+				col = s.pars.colors[i];
+				if ( (s.pars.plottedKeys[i] in parameters.orientation) && (parameters.orientation[s.pars.plottedKeys[i]] == "right") ) {
 					break;
 				}
 			}
@@ -241,7 +264,7 @@ function RechartsPlot({ plotMat }) {
 					align="top"
 					margin={10}
 					content={
-						<CustomLegend key={"customLegend"} parameters={parameters} />
+						<CustomLegend key={"customLegend"} parameters={s.pars} />
 					}
 				/>
 				<g
