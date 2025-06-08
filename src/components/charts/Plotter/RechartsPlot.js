@@ -150,7 +150,7 @@ function RechartsPlot({ plotMat }) {
 		keyRef.current.push(uniqueKey);
 		if ( ("lineStyle" in parameters) && 
 			 (key in parameters.lineStyle) && 
-			 (parameters.lineStyle[key] == "points") ) {
+			 (parameters.lineStyle[key] == "dots") ) {
 				return (
 					<Line
 						id={uniqueKey}
@@ -158,11 +158,12 @@ function RechartsPlot({ plotMat }) {
 						yAxisId={ ("orientation" in parameters) && 
 								  (key in parameters.orientation) && 
 								  (parameters.orientation[key] == "right") ? "right": "left" }
-						type="monotone"
+						type="linear"
 						dataKey={key}
-						stroke="none"
-						dot={{ r: 4, fill: s.pars.colors[index] }}
-						activeDot={{ r: 6, fill: s.pars.colors[index] }}
+						stroke={s.pars.colors[index]}
+						strokeDasharray="5 5"
+						strokeWidth="2.5"
+						dot={false}
 						>
 						{" "}
 					</Line>
@@ -244,7 +245,7 @@ function RechartsPlot({ plotMat }) {
 				width={500}
 				height={400}
 				data={plotMat}
-				margin={{ top: 5, right: 0, left: 20, bottom: 5 }}
+				margin={{ top: 5, right: -25, left: 20, bottom: 5 }}
 			>
 				{renderedLines}
 				<CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
@@ -273,7 +274,7 @@ function RechartsPlot({ plotMat }) {
 				<Legend
 					key={"legend"}
 					wrapperStyle={{
-						top: "10px",
+						top: "-10px",
 						right: 0,
 						border: "1px solid black",
 						borderRadius: "0.5rem",
