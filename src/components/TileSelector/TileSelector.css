@@ -80,8 +80,19 @@
 	max-width: 30px;
 }
 
+.panel-content.icons-area.inactive.twin,
+.panel-content.icons-area.twin img {
+	background: linear-gradient(135deg, var(--primary-color1) 50%, var(--secondary-color1) 50%);
+}
+
+.panel-content.icons-area.active.twin,
+.panel-content.icons-area.active.twin img {
+	background: linear-gradient(135deg, var(--primary-color2) 50%, var(--tertiary-color2) 50%);
+}
+
 .panel-content.icons-area.inactive {
 	margin: 1rem;
+	background: unset;
 	background-color: var(--primary-color1);
 	border-radius: 1rem;
 	width: 50px;
@@ -90,15 +101,17 @@
 
 .panel-content.icons-area.active {
 	margin: 1rem;
+	background: unset;
 	background-color: var(--primary-color2);
 	border-radius: 1rem;
 	width: 50px;
 	height: 50px;
 }
 .panel-content.icons-area.active img {
+	background: unset;
 	background-color: var(--primary-color2);
 	border-radius: 1rem;
-	margin: 1rem;
+	/* margin: 1rem; */
 	width: 12.5vw;
 	max-width: 30px;
 }
@@ -175,6 +188,7 @@
 	}
 	.panel-content.icons-area.inactive {
 		margin: 0.25rem;
+		background: unset;
 		background-color: var(--primary-color1);
 		border-radius: 1rem;
 		width: 40px;
@@ -210,6 +224,7 @@
 	}
 
 	.panel-content .icons-area img {
+		background: unset;
 		background-color: var(--primary-color1);
 		border-radius: 1rem;
 		margin: 1rem;
@@ -218,6 +233,7 @@
 
 	.panel-content.icons-area {
 		margin: 1rem;
+		background: unset;
 		background-color: var(--primary-color1);
 		border-radius: 1rem;
 		width: 50px;
@@ -225,11 +241,13 @@
 
 	.panel-content .icons-area.active {
 		margin: 1rem;
+		background: unset;
 		background-color: var(--primary-color2);
 		border-radius: 1rem;
 		width: 50px;
 	}
 	.panel-content.icons-area.active img {
+		background: unset;
 		background-color: var(--primary-color2);
 		border-radius: 1rem;
 		margin: 1rem;

@@ -249,28 +249,92 @@ function PanelProvider({ children }) {
 			),
 		},
 		{
-			key: "chikv_iouts_dates",
-			colkey: "chikv_iouts",
+			key: "chikv_pouts_dates",
+			colkey: "chikv_pouts",
+			linked: "chikv_pouts_fcast",
 			label: (
 				<>
 					March - June, 2025
 					<br />
 					Decadal average
 					<br />
-					Vector activity
+					Outbreak risk
 				</>
 			),
-			icon: impact,
+			icon: virus,
 			tileLayer: {
-				tile: tileBase + "?v=chikv_iouts&z={z}&x={x}&y={y}&dates=2025-03-01:2025-06-01",
+				tile: tileBase + "?v=chikv_pouts&z={z}&x={x}&y={y}&dates=2025-03-01:2025-06-01",
 				props: { attribution: "", noWrap: true },
 				displayIndex: 23,
 			},
 			description: (
 				<>
 					<p>
-						Average decadal mosquito activity in March - June, 2025 as predicted by the
-						model (assumes tiger mosquito presence).
+						Average decadal outbreak risk in March - June, 2025 measured as the
+						likeliness of starting an outbreak out of 100 independent
+						importations in the first 60 days. The value shown represents a
+						potential derived from the model. We assume vector presence in each
+						grid cell.
+					</p>
+				</>
+			),
+		},
+		{
+			key: "chikv_pouts_fcast",
+			colkey: "chikv_pouts",
+			hidden: "true",
+			label: (
+				<>
+					March - June, 2025
+					<br />
+					Predicted
+					<br />
+					Outbreak risk
+				</>
+			),
+			icon: virus,
+			tileLayer: {
+				tile: tileBase + "?v=chikv_pouts_fcast&z={z}&x={x}&y={y}&dates=2025-03-01:2025-06-01",
+				props: { attribution: "", noWrap: true },
+				displayIndex: 24,
+			},
+			description: (
+				<>
+					<p>
+						Outbreak risk in March - June, 2025 measured as the
+						likeliness of starting an outbreak out of 100 independent
+						importations in the first 60 days 
+						using low-resolution ECMWF seasonal forecasts.
+					</p>
+				</>
+			),
+		},
+		{
+			key: "chikv_iouts_dates",
+			colkey: "chikv_iouts",
+			linked: "chikv_iouts_fcast",
+			label: (
+				<>
+					March - June, 2025
+					<br />
+					Decadal average
+					<br />
+					Importation impact
+				</>
+			),
+			icon: impact,
+			tileLayer: {
+				tile: tileBase + "?v=chikv_iouts&z={z}&x={x}&y={y}&dates=2025-03-01:2025-06-01",
+				props: { attribution: "", noWrap: true },
+				displayIndex: 25,
+			},
+			description: (
+				<>
+					<p>
+						Average decadal expected impact of an infectious
+						case imported in March - June, 2025, in a population of 4000 
+						susceptible individuals. The value shown represents a potential derived 
+						from the model. We assume vector presence in each grid cell.
 					</p>
 				</>
 			),
@@ -278,26 +342,28 @@ function PanelProvider({ children }) {
 		{
 			key: "chikv_iouts_fcast",
 			colkey: "chikv_iouts",
+			hidden: "true",
 			label: (
 				<>
 					March - June, 2025
 					<br />
 					Predicted
 					<br />
-					Vector activity
+					Importation impact
 				</>
 			),
 			icon: impact,
 			tileLayer: {
 				tile: tileBase + "?v=chikv_iouts_fcast&z={z}&x={x}&y={y}&dates=2025-03-01:2025-06-01",
 				props: { attribution: "", noWrap: true },
-				displayIndex: 24,
+				displayIndex: 26,
 			},
 			description: (
 				<>
 					<p>
-						Mosquito activity in March - June, 2025 
-						as predicted by the model (assumes tiger mosquito presence) 
+						Expected impact of an infectious
+						case imported in March - June, 2025, in a population of 4000 
+						susceptible individuals estimated 
 						using low-resolution ECMWF seasonal forecasts.
 					</p>
 				</>

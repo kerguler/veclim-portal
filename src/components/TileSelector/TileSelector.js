@@ -3,9 +3,8 @@ import { useContext, useEffect, useState } from "react";
 import { setDisplayTileNames, setSuperUser, setTileArray } from "store";
 import { useDispatch, useSelector } from "react-redux";
 import { useFetchColorBarsDataQuery } from "store";
-import { iconClasses } from "@mui/material";
-import Panel from "components/panel/Panel";
 import PanelContext from "context/panelsIcons";
+
 function TileSelector({ tileIcons }) {
 	const selectedTiles = useSelector(
 		(state) => state.fetcher.fetcherStates.tileArray
@@ -19,63 +18,41 @@ function TileSelector({ tileIcons }) {
 		e.preventDefault();
 	};
 
-	const handleIconClick = (item) => {
-		let temp;
-		// item is the icon that was clicked
-		const filteredArray = selectedTiles.filter((element) => element === item);
-		// if the icon is already selected it will be in the array
-		const exists = filteredArray.length > 0;
-		if (exists && selectedTiles.length !== 1) {
-			// if the icon is already selected and there is more than one icon selected
-			temp = selectedTiles.filter((element) => {
-				return element !== item;
-			});
-			// we remove it from the array of selected icons
-			setDisplayWarning(false);
-		} else if (exists && selectedTiles.length === 1) {
-			//this means there was only one icon selected and it was the one that was clicked
-			// we will remove it and show only the base layer
-			/*
-			 setDisplayNoTileWarning(true);
-			 setDisplayWarning(false);
-			 temp = [...selectedTiles];
-			 */
-			setDisplayNoTileWarning(false);
-			setDisplayWarning(false);
-			temp = [];
-		} else {
-			// if the icon is not in the array
-			setDisplayNoTileWarning(false);
-			//
-			if (selectedTiles.length === 2) {
-				dispatch(setSuperUser(true));
-				temp = [...selectedTiles];
-				setDisplayWarning(true);
-			} else {
-				dispatch(setSuperUser(false));
-				let existingTileDisplayIndex = selectedTiles.map((tileName) => {
-					return tileIcons.filter((tileIcon, index) => {
-						return tileIcon.key === tileName;
-					})[0].tileLayer.displayIndex;
-				});
-				let newTileDisplayIndex = selectedTiles.map((tileName) => {
-					return tileIcons.filter((tileIcon, index) => {
-						return tileIcon.key === item;
-					})[0].tileLayer.displayIndex;
-				});
+	const isItLinked = (item) => {
+		let linked = tileIcons.filter( elm =>
+			(elm.key === item) && ("linked" in elm) && (elm.linked !== elm.key)
+		).map( elm => elm.linked );
+		return (linked.length == 1) ? linked[0] : false;
+	};
 
-				if (newTileDisplayIndex % 10 > existingTileDisplayIndex % 10) {
-					temp = [...selectedTiles, item];
+	const handleIconClick = (item) => {
+		let temp = [...selectedTiles];
+		//
+		let linked = isItLinked(item);
+		//
+		if (temp.includes(item)) {
+			temp = temp.filter(elm => elm !== item);
+			if (temp.includes(linked)) {
+				temp = temp.filter(elm => elm !== linked);
+			}
+		} else {
+			if (linked) {
+				temp = [item, linked];
+			} else {
+				if (temp.length === 2) {
+					if (isItLinked(temp[0])) {
+						temp = [item];
+					} else {
+						temp = [temp[1], item];
+					}
 				} else {
-					temp = [item, ...selectedTiles];
+					temp.push(item);
 				}
 			}
 		}
-
-		//dispatch(setSuperUser(true));
-		//temp = [item, item];
-		//setDisplayWarning(false);
-
+		setDisplayWarning(false);
+		setDisplayNoTileWarning(false);
+	
 		dispatch(setSuperUser(temp.length === 2 ? true : false));
 		setTimeout(() => {
 			dispatch(setTileArray(temp));
@@ -87,15 +64,6 @@ function TileSelector({ tileIcons }) {
 				right: temp.length === 2,
 			})
 		);
-	};
-
-	const handleIconSwitch = (item) => {
-		let temp = [item];
-		setDisplayWarning(false);
-		dispatch(setSuperUser(false));
-		setTimeout(() => {
-			dispatch(setTileArray(temp));
-		}, 100);
 	};
 
 	const RenderedContent = () => {
@@ -114,6 +82,9 @@ function TileSelector({ tileIcons }) {
 			} else {
 				internalClassName = "panel-content icons-area inactive";
 			}
+			if ( ("linked" in item) && (item.linked !== item.key) ) {
+				internalClassName += " twin";
+			}
 			return (
 				<div
 					id={item.tileLayer.displayIndex}
@@ -130,8 +101,6 @@ function TileSelector({ tileIcons }) {
 				</div>
 			);
 		});
-		let tempRow = 0;
-		let tempCol = 0;
 
 		return (
 			<>
@@ -147,6 +116,7 @@ function TileSelector({ tileIcons }) {
 			setDisplayWarning(false);
 		}, 1000);
 	}, [displayNoTileWarning, displayWarning]);
+
 	return (
 		<div className="icons-area">
 			<h1>Map Tiles</h1>
@@ -234,7 +204,7 @@ const IconGrid = ({ icons }) => {
 		</div>
 	);
 };
-
+/*
 function IconRowLabels({ row }) {
 	return (
 		<div key={`label-${row}`} className="icon-row-label">
@@ -242,3 +212,4 @@ function IconRowLabels({ row }) {
 		</div>
 	);
 }
+*/
