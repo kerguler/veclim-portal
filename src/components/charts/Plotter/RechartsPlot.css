@@ -35,10 +35,6 @@
 .ybrush-wrap {
 	position: absolute;
 }
-.recharts-layer.recharts-brush.myBrushY {
-	transform: translate(0px, -8px);
-	position: absolute;
-}
 
 .recharts-layer.recharts-brush {
 	/* transform: translate(0, -2px); */
@@ -126,9 +122,6 @@
 	.recharts-layer.recharts-brush.myBrush > rect[fill="#fff"] {
 		fill: var(--primary-color2);
 		fill-opacity: 0.1;
-	}
-	.recharts-surface > .recharts-layer.recharts-brush.myBrushY {
-		transform: translate(360px, -8px);
 	}
 
 	.recharts-layer.recharts-brush {

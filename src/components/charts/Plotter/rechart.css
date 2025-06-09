@@ -25,14 +25,6 @@
 .recharts-curve.recharts-tooltip-cursor {
 	/* transform: translate(0px, 0); */
 }
-.recharts-layer.recharts-brush.myBrushY {
-	position: absolute;
-	transform: translate(0px, 0px);
-	z-index: 10000;
-}
-.brushY-wrapper {
-	transition: transform 0.1s ease-in-out;
-}
 
 .recharts-layer.recharts-brush {
 	/* transform: translate(0, -2px); */

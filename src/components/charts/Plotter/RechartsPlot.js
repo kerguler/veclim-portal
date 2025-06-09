@@ -139,10 +139,7 @@ function RechartsPlot({ plotMat }) {
 		s.minmaxL.max,
 		s,
 	]);
-	// const [brushDataY, setBrushDataY] = useState(s.brushDataY);
-	const handleBrushChangeY = (range) => {
-		ChartCalculatorService.handleBrushChangeY(range, scrlRef, dispatch);
-	};
+
 	const keyRef = useRef([]);
 
 	let renderedLines = s.pars.plottedKeys.map((key, index) => {
@@ -187,8 +184,8 @@ function RechartsPlot({ plotMat }) {
 	});
 
 	let renderedAxes = [];
+	let col = s.pars.colors[0];
 	if (! ((brushDataYL.min == 0) && (brushDataYL.max == -1)) ) {
-		let col = s.pars.colors[0];
 		if ( "orientation" in parameters ) {
 			for (let i=0; i<s.pars.colors.length; i++) {
 				col = s.pars.colors[i];
@@ -196,20 +193,22 @@ function RechartsPlot({ plotMat }) {
 					break;
 				}
 			}
-		}}
-		renderedAxes.push( (
+		}
+	}
+	renderedAxes.push( (
 			<YAxis
+			display={(brushDataYL.min == 0) && (brushDataYL.max == -1) ? "none" : "true"}
 			yAxisId="left"
 			key="left-0"
 			domain={[brushDataYL.min, brushDataYL.max]}
 			allowDataOverflow={true}
 			tickFormatter={formatYAxisTick}
-			//stroke={col}
+			stroke={col}
 			/>
-		) );
-	//}
+		) 
+	);
+	col = s.pars.colors[0];
 	if (! ((brushDataYR.min == 0) && (brushDataYR.max == -1)) ) {
-		let col = s.pars.colors[0];
 		if ( "orientation" in parameters ) {
 			for (let i=0; i<s.pars.colors.length; i++) {
 				col = s.pars.colors[i];
@@ -217,19 +216,21 @@ function RechartsPlot({ plotMat }) {
 					break;
 				}
 			}
-		}}
-		renderedAxes.push( (
+		}
+	}
+	renderedAxes.push( (
 			<YAxis
+			display={(brushDataYR.min == 0) && (brushDataYR.max == -1) ? "none" : "true"}
 			yAxisId="right"
 			key="right-0"
 			domain={[brushDataYR.min, brushDataYR.max]}
 			allowDataOverflow={true}
 			tickFormatter={formatYAxisTick}
-			//stroke={col}
+			stroke={col}
 			orientation="right"
 			/>
-		) );
-	//}
+		) 
+	);
 
 	if (!plotMat || plotMat.length === 0) {
 		return <div>Loading data...</div>;
@@ -289,13 +290,6 @@ function RechartsPlot({ plotMat }) {
 						<CustomLegend key={"customLegend"} parameters={s.pars} />
 					}
 				/>
-				<g
-					className="brushY-wrapper"
-					style={{
-						transform: `translate(${transform[0]}px, ${transform[1]}px)`,
-					}}
-				>
-				</g>
 			</LineChart>
 		</ResponsiveContainer>
 	);

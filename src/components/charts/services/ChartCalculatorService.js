@@ -182,51 +182,5 @@ class ChartCalculatorService {
 		}
 	};
 
-	static handleBrushChangeY(range, scrlRef, dispatch) {
-		let s = scrlRef.current && scrlRef.current;
-		if (scrlRef.current) {
-			s.brushDataYL = {
-				min:
-					s.minmax.min +
-					(s.minmax.max - s.minmax.min) *
-						Math.pow(
-							(s.minmaxId.max - range.endIndex) /
-								(s.minmaxId.max - s.minmaxId.min),
-							s.scrollScl
-						),
-				max:
-					s.minmax.min +
-					(s.minmax.max - s.minmax.min) *
-						Math.pow(
-							(s.minmaxId.max - range.startIndex) /
-								(s.minmaxId.max - s.minmaxId.min),
-							s.scrollScl
-						),
-			};
-			dispatch(
-				setBrushDataYL({
-					min:
-						s.minmax.min +
-						(s.minmax.max - s.minmax.min) *
-							Math.pow(
-								(s.minmaxId.max - range.endIndex) /
-									(s.minmaxId.max - s.minmaxId.min),
-								s.scrollScl
-							),
-					max:
-						s.minmax.min +
-						(s.minmax.max - s.minmax.min) *
-							Math.pow(
-								(s.minmaxId.max - range.startIndex) /
-									(s.minmaxId.max - s.minmaxId.min),
-								s.scrollScl
-							),
-				})
-			);
-		} else {
-			HTMLFormControlsCollection.log("no scrlRef");
-			// setBrushDataYL({ min: range.startIndex, max: range.endIndex });
-		}
-	}
 }
 export default ChartCalculatorService;
