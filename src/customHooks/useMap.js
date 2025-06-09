@@ -40,8 +40,9 @@ function useMap(mapParRef) {
 			maxBounds: p.maxBounds,
 			zoomControl: false,
 		});
-		MapAdjustmentsService.baseLayer.addTo(p.map);
+		MapAdjustmentsService.baseLayerOSM.addTo(p.map);
 		MapAdjustmentsService.dataLayer.addTo(p.map);
+		// MapAdjustmentsService.labelLayer.addTo(p.map);
 
 		p.map.setView({ lat: p.center[0], lng: p.center[1] }, p.zoom);
 

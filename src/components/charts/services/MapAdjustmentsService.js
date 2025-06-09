@@ -30,9 +30,17 @@ class MapAdjustmentsService {
 		"http://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.webp",
 		{ attribution: "", noWrap: true }
 	);
+	static baseLayerOSM = L.tileLayer(
+		"https://tile.openstreetmap.org/{z}/{x}/{y}.png", 
+		{ attribution: "", noWrap: true } //'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+	);
 	static dataLayer = L.tileLayer(
 		"https://veclim.com/api?v=vabun_v015&z={z}&x={x}&y={y}",
 		{ zIndex: 1000, attribution: "", noWrap: true }
+	);
+	static labelLayer = L.tileLayer(
+		"https://{s}.basemaps.cartocdn.com/rastertiles/voyager_only_labels/{z}/{x}/{y}{r}.webp", 
+		{ zIndex: 2000, attribution: "", noWrap: true} // '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
 	);
 
 	static cyprusBounds = [
@@ -367,6 +375,7 @@ class MapAdjustmentsService {
 		let p = mapParRef.current;
 		try {
 			tiles.forEach((tile, index) => {
+				tile.props['opacity'] = 0.5;
 				tileMat.push(L.tileLayer(tile.tile, tile.props));
 			});
 		} catch (e) {

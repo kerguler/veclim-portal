@@ -4,6 +4,7 @@ import { setDisplayTileNames, setSuperUser, setTileArray } from "store";
 import { useDispatch, useSelector } from "react-redux";
 import { useFetchColorBarsDataQuery } from "store";
 import PanelContext from "context/panelsIcons";
+import MoreText from "components/MoreText/MoreText";
 
 function TileSelector({ tileIcons }) {
 	const selectedTiles = useSelector(
@@ -78,7 +79,11 @@ function TileSelector({ tileIcons }) {
 			const exists = filteredArray.length > 0;
 			if (exists) {
 				internalClassName = "panel-content icons-area  active";
-				description = item.description;
+				description = (
+					<MoreText>
+						{item.description}
+					</MoreText>
+				);
 			} else {
 				internalClassName = "panel-content icons-area inactive";
 			}
