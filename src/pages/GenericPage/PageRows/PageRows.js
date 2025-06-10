@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react";
-import WrapText from "pages/GenericPage/PageRows/WrapText/WrapText";
-import "./pageRows.css";
+import { useEffect, useState } from 'react';
+import WrapText from 'pages/GenericPage/PageRows/WrapText/WrapText';
+import './pageRows.css';
 
-import RegularRow from "./RegularRow/RegularRow";
+import RegularRow from './RegularRow/RegularRow';
 function PageRows({
 	newsStyle,
 	caption,
@@ -45,9 +45,9 @@ function PageRows({
 			}
 		}
 
-		window.addEventListener("resize", handleResize);
+		window.addEventListener('resize', handleResize);
 		return () => {
-			window.removeEventListener("resize", handleResize);
+			window.removeEventListener('resize', handleResize);
 		};
 	}, [decisiveNewsStyle]);
 

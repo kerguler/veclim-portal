@@ -15,7 +15,7 @@
 }
 
 .modal-close-button {
-	background: url("https://cdn.iubenda.com/close.png") no-repeat scroll 0 0
+	background: url('https://cdn.iubenda.com/close.png') no-repeat scroll 0 0
 		transparent;
 	border: medium none;
 	display: block;

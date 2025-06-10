@@ -1,6 +1,6 @@
-import ImageWithCaptions from "../ImageWithCaptions/ImageWithCaptions";
-import "./regularRow.css";
-import classNames from "classnames";
+import ImageWithCaptions from '../ImageWithCaptions/ImageWithCaptions';
+import './regularRow.css';
+import classNames from 'classnames';
 function RegularRow({
 	rotateMe,
 	wide,
@@ -12,7 +12,7 @@ function RegularRow({
 	reverse,
 	wrap,
 }) {
-	const parentClassName = classNames("regular-row", reverse && "reverse");
+	const parentClassName = classNames('regular-row', reverse && 'reverse');
 	return (
 		<div className={parentClassName}>
 			<ImageWithCaptions
@@ -23,7 +23,7 @@ function RegularRow({
 				large={large}
 			/>
 
-			<div className="regular-row content">
+			<div className='regular-row content'>
 				{title}
 				{children}
 			</div>

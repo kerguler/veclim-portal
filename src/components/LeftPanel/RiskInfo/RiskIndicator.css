@@ -1,7 +1,7 @@
-@import url("styles/colors.css");
+@import url('styles/colors.css');
 
 .risk-indicator > p {
-	font-family: "Inter", sens-serif;
+	font-family: 'Inter', sens-serif;
 }
 
 .risk-indicator-container-wrap {
@@ -38,7 +38,7 @@
 .risk-indicator-container-nodata p {
 	padding: 1rem;
 	margin: 0rem 1rem;
-	font-family: "Inter", sens-serif;
+	font-family: 'Inter', sens-serif;
 }
 
 .risk-indicator-ipanel {
@@ -51,14 +51,14 @@
 .risk-indicator-ipanel h1 {
 	margin: 0;
 	font-size: 1.4rem;
-	font-family: "Inter-Bold", sens-serif;
+	font-family: 'Inter-Bold', sens-serif;
 	font-weight: bold;
 }
 .risk-indicator-ipanel h1:first-child {
 	padding-right: 24px;
 }
 .risk-indicator-ipanel strong {
-	font-family: "Inter-Bold", sens-serif;
+	font-family: 'Inter-Bold', sens-serif;
 	font-weight: bold;
 }
 .risk-indicator-ipanel p {
@@ -71,7 +71,7 @@
 .risk-indicator-ipanel li {
 	list-style: none;
 	padding: 0 0 0.5rem 1rem;
-	font-family: "Inter", sens-serif;
+	font-family: 'Inter', sens-serif;
 }
 
 .risk-indicator-mini {
@@ -126,7 +126,7 @@
 .risk-indicator-info {
 	width: 28px;
 	height: 28px;
-	background-image: url("assets/icons/info-i-32px.png");
+	background-image: url('assets/icons/info-i-32px.png');
 	background-size: 28px;
 	background-repeat: no-repeat;
 	margin-bottom: 1.6rem;
@@ -134,7 +134,7 @@
 
 .risk-indicator-acc {
 	width: 100%;
-	font-family: "Inter-Bold";
+	font-family: 'Inter-Bold';
 	font-weight: bold;
 	font-size: 1.6rem;
 	color: white;
@@ -182,7 +182,7 @@
 		background-color: var(--risk-container);
 	}
 	.risk-indicator-info {
-		background-image: url("assets/icons/info-i-blue-32px.png");
+		background-image: url('assets/icons/info-i-blue-32px.png');
 	}
 	.risk-indicator-ipanel {
 		background-color: var(--www-color-float-bg1);

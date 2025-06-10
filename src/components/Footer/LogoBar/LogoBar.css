@@ -1,10 +1,9 @@
 .footer-logo-div {
-    display: flex;
-    flex-wrap: nowrap;
-  }
-  
-  .footer a.logo img {
-    max-height: 35px;
-    margin: 0.5rem;
-  }
-  
+	display: flex;
+	flex-wrap: nowrap;
+}
+
+.footer a.logo img {
+	max-height: 35px;
+	margin: 0.5rem;
+}

@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState } from "react";
-import "./LanguageChanger.css";
+import { useEffect, useRef, useState } from 'react';
+import './LanguageChanger.css';
 
 function LanguageChanger() {
 	const divEl = useRef();
@@ -13,9 +13,9 @@ function LanguageChanger() {
 				setLanBar(false);
 			}
 		};
-		document.addEventListener("click", handler, true);
+		document.addEventListener('click', handler, true);
 		return () => {
-			document.removeEventListener("click", handler);
+			document.removeEventListener('click', handler);
 		};
 	}, [divEl]);
 	const [lanBar, setLanBar] = useState(false);
@@ -33,23 +33,26 @@ function LanguageChanger() {
 
 	const LanSelectBox = () => {
 		return (
-			<div ref={divEl} className="lan-select-box">
+			<div ref={divEl} className='lan-select-box'>
 				<option
-					value="en"
+					value='en'
 					onClick={handleChangeLanguage}
-					className="lan-select-box-item">
+					className='lan-select-box-item'
+				>
 					en
 				</option>
 				<option
-					value="gr"
+					value='gr'
 					onClick={handleChangeLanguage}
-					className="lan-select-box-item">
+					className='lan-select-box-item'
+				>
 					gr
 				</option>
 				<option
-					value="tr"
+					value='tr'
 					onClick={handleChangeLanguage}
-					className="lan-select-box-item">
+					className='lan-select-box-item'
+				>
 					tr
 				</option>
 			</div>
@@ -57,8 +60,8 @@ function LanguageChanger() {
 	};
 
 	return (
-		<div className="lan-wrapper">
-			<div className="lan-button disabled" onClick={handleClickLanguage}>
+		<div className='lan-wrapper'>
+			<div className='lan-button disabled' onClick={handleClickLanguage}>
 				EN
 			</div>
 			{lanBar && <LanSelectBox />}

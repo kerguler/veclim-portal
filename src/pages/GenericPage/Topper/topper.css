@@ -5,7 +5,7 @@
 	padding: 8rem 0.5rem;
 
 	width: 100%;
-	background: url("assets/images/dark_background.webp") top center/contain
+	background: url('assets/images/dark_background.webp') top center/contain
 		no-repeat;
 	background-size: 100% 100%;
 	flex-basis: 20rem;

@@ -1,10 +1,10 @@
 .db-panel.wrapper {
-    display:flex;
-    flex-direction: column;
+	display: flex;
+	flex-direction: column;
 	width: 100%;
 	flex-grow: 0;
 	margin: 2rem;
 	position: relative;
-    background-color: var(--www-color-float-bg1);
-    border-radius:10px;
+	background-color: var(--www-color-float-bg1);
+	border-radius: 10px;
 }

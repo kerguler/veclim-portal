@@ -1,6 +1,6 @@
-import "./wrapText.css";
-import classNames from "classnames";
-import ImageWithCaptions from "../ImageWithCaptions/ImageWithCaptions";
+import './wrapText.css';
+import classNames from 'classnames';
+import ImageWithCaptions from '../ImageWithCaptions/ImageWithCaptions';
 function WrapText({
 	title,
 	wide,
@@ -12,15 +12,15 @@ function WrapText({
 	large,
 }) {
 	const internalClassName = classNames(
-		wide && "wide",
-		reverse && "reverse",
-		rotateMe && "rotate",
-		large && "large",
-		"wrap"
+		wide && 'wide',
+		reverse && 'reverse',
+		rotateMe && 'rotate',
+		large && 'large',
+		'wrap',
 	);
 
-	const contentClassName = classNames(internalClassName, "content");
-	const imageClassName = classNames(internalClassName, "image ");
+	const contentClassName = classNames(internalClassName, 'content');
+	const imageClassName = classNames(internalClassName, 'image ');
 
 	const renderedImage = (
 		<ImageWithCaptions

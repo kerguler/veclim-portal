@@ -1,10 +1,10 @@
-import FloatPanel from "../components/FloatPanel";
-import Footer from "../components/Footer/Footer";
-import "pages/MobileLandingPage/MobileLandingPage.css";
+import FloatPanel from '../components/FloatPanel';
+import Footer from '../components/Footer/Footer';
+import 'pages/MobileLandingPage/MobileLandingPage.css';
 
-import PolicyPage from "../pages/PolicyPage";
-import MyNavbar from "../components/NavBar/DesktopNav/MyNavbar";
-import MobileNav from "components/NavBar/MobileNav/MobileNav";
+import PolicyPage from '../pages/PolicyPage';
+import MyNavbar from '../components/NavBar/DesktopNav/MyNavbar';
+import MobileNav from 'components/NavBar/MobileNav/MobileNav';
 function MobileLandingPagePolicy() {
 	// return (
 	// 	<>

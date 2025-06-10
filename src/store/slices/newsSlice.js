@@ -1,7 +1,7 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
 
 const newsSlice = createSlice({
-	name: "news",
+	name: 'news',
 	initialState: {
 		news: [],
 		preloadedImages: [],
@@ -53,6 +53,7 @@ export const {
 	setDisplayedArticleId,
 	setReadMore,
 	setRotateShow,
-	setDisplayReady,clearTimer
+	setDisplayReady,
+	clearTimer,
 } = newsSlice.actions;
 export const newsReducer = newsSlice.reducer;

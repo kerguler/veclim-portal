@@ -1,35 +1,71 @@
 import "./SimTile.css";
-import { ReactComponent as EditIcon } from "assets/icons/django/edit-icon.svg";
 import { ReactComponent as DeleteIcon } from "assets/icons/django/delete-icon.svg";
-import { ReactComponent as OkIcon } from "assets/icons/django/done-icon.svg";
+import { ReactComponent as ViewIcon } from "assets/icons/django/eye-icon.svg";
 import { useDeleteSimulationMutation, useEditSimulationMutation } from "store";
-import SimulationEditPanel from "../../SimulationEditPanel/SimulationEditPanel";
+import SimDate from "./SimDate";
 import { useEffect } from "react";
 import { setEditedSimulation } from "store";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setBlinkers } from "store";
-function SimTile({ sim }) {
+import "components/Tooltip/ToolTip.css";
+import { useGetSimulationListQuery } from "store";
+import StatusIndicator from "./StatusIndicator";
+import { setDataArrived } from "store";
+import simTileHelpers from "./simTileHelpers";
+import { useAlboData } from "context/AlboDataContext";
+import { setInvalidateSimData } from "store";
+import useSimTileFunctions from "./useSimTileFunctions";
+import { setDisplaySimulationPanel } from "store";
+import useDirectorFun from "customHooks/useDirectorFun";
+import { setShimmered } from "store";
+
+function SimTile({ sim, direction, shimmerList }) {
+	const {
+		data: dataToView,
+		isFetching: isSimFetching,
+		error: refetchError,
+		refetch: fetchWithResults,
+	} = useGetSimulationListQuery({ id: sim.id, return_results: true });
+
 	const dispatch = useDispatch();
-
 	const [deleteSimulation] = useDeleteSimulationMutation();
-	const handleDeleteSimulation = (id) => {
-		console.log("delete", id);
-		try {
-			const response = deleteSimulation({ id: id });
-			// console.log("DELETE RESPONSE", response);
-		} catch (err) {
-			console.log(err);
-		}
-	};
+
 	const simulationList = useSelector((state) => state.simulation.simList);
-
 	const [displayIcon, setDisplayIcon] = useState(null);
-	const handleEditSimulation = (id) => {
-		dispatch(setEditedSimulation(simulationList.find((sim) => sim.id === id)));
-		dispatch(setBlinkers({ displayEditPage: true }));
 
-		// console.log("edit", id);
+	const { setSimResult, setDataSim, setIsLoadingSim } = useAlboData();
+
+	const { simRecord, isAlboChik, displayViewIcon } = useSimTileFunctions(sim);
+
+	const handleDeleteSimulation = (id) => {
+		simTileHelpers.handleDeleteSimulation(deleteSimulation, id);
+	};
+
+	const handleDownload = () => {
+		simTileHelpers.handleDownload(fetchWithResults);
+	};
+	const levelData = useSelector(
+		(state) => state.fetcher.fetcherStates.menu.left.panelLevel,
+	);
+	useEffect(() => {
+		dispatch(
+			setDisplaySimulationPanel({ direction: direction, value: null }),
+		);
+	}, []);
+
+	const handleViewSimulationResults = async (id) => {
+		dispatch(setShimmered({ direction: direction, value: shimmerList }));
+
+		simTileHelpers.handleViewSimulationResults(
+			fetchWithResults,
+			setSimResult,
+			setDataSim,
+			dispatch,
+			direction,
+			levelData,
+		);
+		setIsLoadingSim(false);
 	};
 
 	return (
@@ -38,25 +74,46 @@ function SimTile({ sim }) {
 			onMouseEnter={() => setDisplayIcon(true)}
 			onMouseLeave={() => setDisplayIcon(false)}
 			key={sim.id}
-			className="sim-list-item    float-bg2"
+			className='sim-list-item float-bg2'
 		>
-			<div className="tile-entry full-width">
-				<h3>Title: </h3>
-				<p>{sim.title}</p>
+			<div className='tile-entry '>
+				<p>Id: </p>
+				<p>{sim.id}</p>
+				<SimDate sim={sim}></SimDate>
+				{displayIcon && isAlboChik && displayViewIcon && (
+					<div className='tooltip-element'>
+						<div className='tooltip'> view results</div>
+						<div
+							onClick={() => handleViewSimulationResults(sim.id)}
+						>
+							{" "}
+							<ViewIcon className='sim-icon icon-img' />
+						</div>
+					</div>
+				)}
+			</div>{" "}
+			<div className='icon-area '>
+				<StatusIndicator
+					status={simRecord?.status || sim.status}
+					setDownloadResult={handleDownload}
+				/>
+
+				{displayIcon && (
+					<div className='tooltip-element'>
+						<div className='tooltip'>delete</div>
+						<div onClick={() => handleDeleteSimulation(sim.id)}>
+							<DeleteIcon className='sim-icon icon-img' />
+						</div>
+					</div>
+				)}
 			</div>
-			{displayIcon && (
-				<div className="icon-area ">
-					{" "}
-					<div onClick={() => handleEditSimulation(sim.id)}>
-						<EditIcon className="sim-icon icon-img" />
-					</div>
-					<div onClick={() => handleDeleteSimulation(sim.id)}>
-						<DeleteIcon className="sim-icon icon-img" />
-					</div>
-				</div>
-			)}
 		</div>
 	);
 }
 
 export default SimTile;
+
+// const handleEditSimulation = (id) => {
+// 	dispatch(setEditedSimulation(simulationList.find((sim) => sim.id === id)));
+// 	dispatch(setBlinkers({ displayEditPage: true }));
+// };

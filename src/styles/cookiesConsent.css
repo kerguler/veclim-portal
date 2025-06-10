@@ -1,76 +1,76 @@
 .cookie-consent-background {
-  position: absolute;
-  inset: 0rem;
-  background-color: rgba(49, 47, 47, 0.8);
-  z-index: 5001;
+	position: absolute;
+	inset: 0rem;
+	background-color: rgba(49, 47, 47, 0.8);
+	z-index: 5001;
 }
 .cookie-consent-content {
-  display: flex;
-  flex-direction: column;
-  position: absolute;
-  bottom: 0;
-  padding: 1rem; 
+	display: flex;
+	flex-direction: column;
+	position: absolute;
+	bottom: 0;
+	padding: 1rem;
 
-  background-color: rgba(55, 53, 53, 0.73);
-  color: rgb(208, 185, 185);
-  z-index: 5002;
-  align-content: center;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
+	background-color: rgba(55, 53, 53, 0.73);
+	color: rgb(208, 185, 185);
+	z-index: 5002;
+	align-content: center;
+	align-items: center;
+	justify-content: space-between;
+	width: 100%;
 }
 .cookie-consent-content p {
-  font-size: 1.4rem;
-  text-align: justify;
-  line-height: 2.5rem;
+	font-size: 1.4rem;
+	text-align: justify;
+	line-height: 2.5rem;
 }
 .cookie-consent-content h1 {
-  font-size: 2rem;
-  text-align: center;
+	font-size: 2rem;
+	text-align: center;
 }
 .cookie-consent-content a {
-  font-size: 1.4rem;
-  margin: 0rem 1rem;
+	font-size: 1.4rem;
+	margin: 0rem 1rem;
 }
 .cookie-consent-button {
-  display: flex;
-  background-color: rgb(75, 74, 74);
-  border-radius: 0.5rem;
-  align-self: flex-end;
-  box-shadow: 1px 1px 3px 1px rgb(60, 60, 60);
-  height: 3rem;
-  width: 7rem;
-  align-items: center;
-  justify-content: center;
+	display: flex;
+	background-color: rgb(75, 74, 74);
+	border-radius: 0.5rem;
+	align-self: flex-end;
+	box-shadow: 1px 1px 3px 1px rgb(60, 60, 60);
+	height: 3rem;
+	width: 7rem;
+	align-items: center;
+	justify-content: center;
 }
 
 .cookie-consent-button:hover {
-  background-color: var(--primary-color2);
+	background-color: var(--primary-color2);
 }
 .cookie-consent-button p {
-  color: white;
+	color: white;
 }
 .iubenda-embed:not(.no-brand):not(.iubenda-nostyle).internal {
-  padding-left: 20px !important;
-  margin: 0rem 0.2rem !important;
+	padding-left: 20px !important;
+	margin: 0rem 0.2rem !important;
 }
 .iubenda-embed:not(.no-brand):not(.iubenda-nostyle).internal:hover {
-  box-shadow: 1px 1px 3px 1px black;
-  padding-left: 20px !important;
-  margin: 0rem 0.2rem !important;
+	box-shadow: 1px 1px 3px 1px black;
+	padding-left: 20px !important;
+	margin: 0rem 0.2rem !important;
 }
 @media (min-width: 500px) {
-  .modal-content {
-    display: flex;
-    flex-direction: column;
-    position: absolute;
-    bottom: 0;
-    padding: 1vw;
-    background-color: rgba(55, 53, 53, 0.73);
-    color: rgb(208, 185, 185);
-    z-index: 5002;
-    align-content: center;
-    align-items: center;
-    justify-content: space-between;
-  }
+	.modal-content {
+		display: flex;
+		flex-direction: column;
+		position: absolute;
+		bottom: 0;
+		padding: 1vw;
+		background-color: rgba(55, 53, 53, 0.73);
+		color: rgb(208, 185, 185);
+		z-index: 5002;
+		align-content: center;
+		align-items: center;
+		justify-content: space-between;
+	}
 }

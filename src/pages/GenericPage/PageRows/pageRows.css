@@ -65,10 +65,10 @@
 
 .contrib {
 	display: flex;
-    width: 100%;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: space-around;
+	width: 100%;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: space-around;
 	margin-bottom: 1rem;
 }
 .contrib .logos {
@@ -97,7 +97,7 @@
 }
 
 .content strong {
-	font-family: "Inter-Bold", sans-serif;
+	font-family: 'Inter-Bold', sans-serif;
 	font-weight: bold;
 }
 
@@ -177,7 +177,7 @@
 		line-height: 2.5vw;
 	}
 	.content strong {
-		font-family: "Inter-Bold", sans-serif;
+		font-family: 'Inter-Bold', sans-serif;
 		font-weight: bold;
 	}
 
@@ -248,7 +248,7 @@
 		line-height: 2.5rem;
 	}
 	.row-2.content strong {
-		font-family: "Inter-Bold", sans-serif;
+		font-family: 'Inter-Bold', sans-serif;
 		font-weight: bold;
 	}
 

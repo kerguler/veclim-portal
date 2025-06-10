@@ -1,10 +1,10 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from 'react-redux';
 import {
 	setIsDragging,
 	bottomPadMove,
 	topPadMove,
 	stopAllDrag,
-} from "../../../store";
+} from '../../../store';
 
 function BrushHandles({ pad }) {
 	const padPositions = useSelector((state) => state.slider.padPositions);
@@ -58,18 +58,18 @@ function BrushHandles({ pad }) {
 		};
 	}
 	let draggerStyle = {
-		position: "fixed",
+		position: 'fixed',
 		top: 0,
 		right: 0,
 		bottom: 0,
 		left: 0,
-		cursor: "ns-resize",
+		cursor: 'ns-resize',
 	};
 	return (
 		<>
 			<div
 				onTouchMoveCapture={(e) => startTouchDrag(e, pad)}
-				className={`y-brush-handle ${pad === 0 ? "bottom" : "top"}`}
+				className={`y-brush-handle ${pad === 0 ? 'bottom' : 'top'}`}
 				style={style}
 				onMouseDown={(e) => startDrag(e, pad)}
 				onTouchEnd={(e) => stopDrag(e)}
@@ -97,7 +97,6 @@ function BrushHandles({ pad }) {
 					style={draggerStyle}
 				></div>
 			)}
-			
 		</>
 	);
 }

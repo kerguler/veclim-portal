@@ -1,9 +1,9 @@
-import { useEffect, useRef, useState } from "react";
-import "./styles/chartSlider.css";
-import { useDispatch, useSelector } from "react-redux";
-import { setRefPoint } from "../../../store";
-import BrushHandles from "./BrushHandles";
-import SliderMiddle from "./SliderMiddle";
+import { useEffect, useRef, useState } from 'react';
+import './styles/chartSlider.css';
+import { useDispatch, useSelector } from 'react-redux';
+import { setRefPoint } from '../../../store';
+import BrushHandles from './BrushHandles';
+import SliderMiddle from './SliderMiddle';
 
 function ChartSliderInterior() {
 	const dispatch = useDispatch();
@@ -16,7 +16,7 @@ function ChartSliderInterior() {
 	});
 
 	return (
-		<div ref={botRef} className="chart-wrapper">
+		<div ref={botRef} className='chart-wrapper'>
 			<SliderMiddle></SliderMiddle>
 
 			<BrushHandles pad={0} />

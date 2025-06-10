@@ -1,4 +1,3 @@
-
 .legend-list {
 	list-style-type: none;
 	font-size: 0.9rem;
@@ -17,8 +16,6 @@
 	margin: 0;
 }
 @media (min-width: 500px) {
-
-
 	.legend-list {
 		list-style-type: none;
 		font-size: unset;

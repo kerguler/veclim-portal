@@ -9,9 +9,9 @@ function calculatePlotMat(data, chartType) {
 	let counter = 0;
 	const formatDate = (date) => {
 		var year = date.getFullYear();
-		var month = (date.getMonth() + 1).toString().padStart(2, "0"); // Month is zero-based, so add 1
-		var day = date.getDate().toString().padStart(2, "0");
-		return year + "-" + month + "-" + day;
+		var month = (date.getMonth() + 1).toString().padStart(2, '0'); // Month is zero-based, so add 1
+		var day = date.getDate().toString().padStart(2, '0');
+		return year + '-' + month + '-' + day;
 	};
 
 	while (currentDate <= date1) {
@@ -39,9 +39,9 @@ function calculatePlotMat(data, chartType) {
 	// 			}),
 	// 		});
 	// 	});
-	// } else 
-	if (chartType === "rechart") {
-		dataB = data["meteo-ts"]["2010-2019"];
+	// } else
+	if (chartType === 'rechart') {
+		dataB = data['meteo-ts']['2010-2019'];
 
 		const dateStart = dateArray[Math.floor(dateArray.length / 3)];
 		const dateEnd = dateArray[Math.floor((dateArray.length * 2) / 3)];
@@ -92,8 +92,8 @@ function calculatePlotMat(data, chartType) {
 				dateEnd,
 			};
 		});
-	} else if (chartType === "rechart-risk") {
-		dataB = data["fcast-ts"]["2010-2019"];
+	} else if (chartType === 'rechart-risk') {
+		dataB = data['fcast-ts']['2010-2019'];
 
 		const dateStart = dataB.ecmwf.overlap[0];
 		const dateEnd = dataB.ecmwf.overlap[1];
@@ -142,7 +142,7 @@ function calculatePlotMat(data, chartType) {
 			};
 		});
 	} else {
-		console.log("unrecognized chart type");
+		console.log('unrecognized chart type');
 	}
 	return { dataB, plotMat };
 }

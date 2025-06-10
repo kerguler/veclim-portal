@@ -1,5 +1,5 @@
-import ReactDOM from "react-dom";
-import "./genericModal.css";
+import ReactDOM from 'react-dom';
+import './genericModal.css';
 // import { AiOutlineCloseCircle } from "react-icons/ai/";
 // import { IconContext } from "react-icons/lib";
 function GenericModal({ onClose, title, content, accept, decline }) {
@@ -9,28 +9,34 @@ function GenericModal({ onClose, title, content, accept, decline }) {
 
 	return ReactDOM.createPortal(
 		<div>
-			<div onClick={handleDismiss} className="modal-background-generic"></div>
+			<div
+				onClick={handleDismiss}
+				className='modal-background-generic'
+			></div>
 
-			<div className="modal-content-wrapper">
-				<div className="modal-close-button" onClick={handleDismiss}></div>
-				<div className="modal-content-generic">
-					{" "}
+			<div className='modal-content-wrapper'>
+				<div
+					className='modal-close-button'
+					onClick={handleDismiss}
+				></div>
+				<div className='modal-content-generic'>
+					{' '}
 					{title}
 					{content}
 				</div>
-				<div className="modal-action-bar">
+				<div className='modal-action-bar'>
 					{accept && (
 						<div
-							className="modal-button-generic accept"
+							className='modal-button-generic accept'
 							onClick={handleDismiss}
 						>
-							{" "}
+							{' '}
 							<p>Consent</p>
 						</div>
 					)}
 					{decline && (
 						<div
-							className="modal-button-generic decline"
+							className='modal-button-generic decline'
 							onClick={handleDismiss}
 						>
 							<p>Consent</p>
@@ -39,7 +45,7 @@ function GenericModal({ onClose, title, content, accept, decline }) {
 				</div>
 			</div>
 		</div>,
-		document.querySelector(".modal-container")
+		document.querySelector('.modal-container'),
 	);
 }
 

@@ -1,34 +1,39 @@
-import caps from "assets/capitals.json";
-import SearchBar from "./SearchBar/SearchBar";
-import "./LiveSearchCaps.css";
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import caps from 'assets/capitals.json';
+import SearchBar from './SearchBar/SearchBar';
+import './LiveSearchCaps.css';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import {
 	setUserPosition,
 	setGlobalPosition,
 	setShowInstructions,
 	setLocationRequested,
-} from "store";
-import { setShowSearchBar } from "store";
-import { useUserLocation } from "store/apis/utils";
+} from 'store';
+import { setShowSearchBar } from 'store';
+import { useUserLocation } from 'store/apis/utils';
+import PackageMapServices from 'components/map/mapPackage/PackageMapServices';
 
-function LiveSearchCaps({ showInstructions }) {
+function LiveSearchCaps({ showInstructions, border }) {
 	const dispatch = useDispatch();
 	useUserLocation();
 	const [showList, setShowList] = useState(false);
 	const [selectedTerm, setSelectedTerm] = useState(null);
 	const [myRenderedList, setMyRenderedList] = useState([]);
-	const searchBarState = useSelector((state) => state.searchBar.showSearchBar);
-	const userLocationData = useSelector((state) => state.location.userPosition);
+	const searchBarState = useSelector(
+		(state) => state.searchBar.showSearchBar,
+	);
+	const userLocationData = useSelector(
+		(state) => state.location.userPosition,
+	);
 
 	const currentLocationName = useSelector(
-		(state) => state.location.locationName
+		(state) => state.location.locationName,
 	);
 
 	useEffect(() => {
 		const myRenderedList = caps.filter((cap) => {
 			return cap.CapitalName.toLowerCase().includes(
-				currentLocationName.toLowerCase()
+				currentLocationName.toLowerCase(),
 			);
 		});
 		setMyRenderedList(myRenderedList);
@@ -43,16 +48,18 @@ function LiveSearchCaps({ showInstructions }) {
 		if (!submittedLocation || submittedLocation.length === 0) {
 			dispatch(setUserPosition(userLocationData));
 		} else {
-			if (submittedLocation[0].CountryName === "YourCountry") {
-				navigator.permissions.query({ name: "geolocation" }).then((result) => {
-					if (result.state === "granted") {
-						dispatch(setShowInstructions(false));
-						dispatch(setLocationRequested(true));
-					} else {
-						dispatch(setShowInstructions(true));
-						dispatch(setLocationRequested(true));
-					}
-				});
+			if (submittedLocation[0].CountryName === 'YourCountry') {
+				navigator.permissions
+					.query({ name: 'geolocation' })
+					.then((result) => {
+						if (result.state === 'granted') {
+							dispatch(setShowInstructions(false));
+							dispatch(setLocationRequested(true));
+						} else {
+							dispatch(setShowInstructions(true));
+							dispatch(setLocationRequested(true));
+						}
+					});
 			} else {
 				let pos = {
 					lat: parseFloat(submittedLocation[0].CapitalLatitude),
@@ -75,7 +82,7 @@ function LiveSearchCaps({ showInstructions }) {
 				value={item.CapitalName}
 				key={item.CountryName}
 				onClick={() => handleListClick(item)}
-				className="city-list-item"
+				className='city-list-item'
 			>
 				{item.CapitalName}
 			</div>
@@ -84,10 +91,10 @@ function LiveSearchCaps({ showInstructions }) {
 	const handleShowList = (value) => {
 		setShowList(value);
 	};
-	// TODO: ON MOUSE LEAVE BURADA OLMALI BIR TANESI
+	let capBorder = border ? 'border' : '';
 	return (
-		<div className="search-bar-master-container">
-			<div className="search-bar-container">
+		<div className={`search-bar-master-container `}>
+			<div className={`search-bar-container ${capBorder} `}>
 				<SearchBar
 					selectedTerm={selectedTerm}
 					onSubmit={handleSearchTermSubmit}
@@ -95,7 +102,7 @@ function LiveSearchCaps({ showInstructions }) {
 				></SearchBar>
 			</div>
 
-			{showList && <div className="city-list">{content}</div>}
+			{showList && <div className='city-list'>{content}</div>}
 		</div>
 	);
 }

@@ -5,24 +5,24 @@
 	width: 10rem;
 	align-items: center;
 	justify-content: center;
-    color: white !important;
+	color: white !important;
 
 	border: 1px solid var(--primary-color1) !important;
 	border-radius: 2rem !important;
-    background-color: var(--primary-color1) !important; 
+	background-color: var(--primary-color1) !important;
 }
-.decline{
+.decline {
 	height: 3rem;
 	width: 10rem;
 	border: 1px solid var(--primary-color1) !important;
 	border-radius: 2rem !important;
 	color: var(--primary-color1) !important;
-    background-color: transparent !important; 
+	background-color: transparent !important;
 }
-.button-consent:hover{
-    background-color: var(--secondary-color1)  !important;
+.button-consent:hover {
+	background-color: var(--secondary-color1) !important;
 }
-.decline:hover{
+.decline:hover {
 	border-color: var(--primary-color2) !important;
-    color: var(--primary-color2) !important;
+	color: var(--primary-color2) !important;
 }

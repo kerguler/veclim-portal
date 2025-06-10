@@ -8,7 +8,7 @@
 	animation: appear 0.2s ease-in-out;
 }
 .leaflet-container {
-	font-family: "Helvetica Neue", Arial, Helvetica, sans-serif;
+	font-family: 'Helvetica Neue', Arial, Helvetica, sans-serif;
 	font-size: 12px;
 	font-size: 0.75rem;
 	line-height: 1.5;
@@ -65,7 +65,7 @@
 }
 
 .leaflet-pane > svg path.leaflet-interactive {
-	pointer-events: auto;
+	pointer-events: visiblePainted;
 }
 .leaflet-pane {
 	z-index: 401;
@@ -75,15 +75,18 @@
 .leaflet-image-layer.leaflet-interactive,
 .leaflet-pane > svg path.leaflet-interactive,
 svg.leaflet-image-layer.leaflet-interactive path {
-	pointer-events: visiblePainted;
-	pointer-events: auto;
+	pointer-events: visibleFill;
+	/* pointer-events: auto; */
 }
 
+.leaflet-pane .leaflet-overlay-pane svg {
+	pointer-events: unset !important;
+}
 .leaflet-marker-icon.leaflet-interactive,
 .leaflet-image-layer.leaflet-interactive,
 .leaflet-pane > svg path.leaflet-interactive,
 svg.leaflet-image-layer.mymap-indicator.leaflet-interactive path {
-	pointer-events: none;
+	/* pointer-events: none; */
 }
 
 #map {

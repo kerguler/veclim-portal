@@ -1,12 +1,12 @@
-import { useEffect } from "react";
+import { useEffect } from 'react';
 
-import { useDispatch, useSelector } from "react-redux";
-import { changeSearchTermLocation } from "store";
-function SearchBar({ showTheList, selectedTerm, onSubmit }) {
+import { useDispatch, useSelector } from 'react-redux';
+import { changeSearchTermLocation } from 'store';
+function SearchBar({ showTheList, selectedTerm, onSubmit, border }) {
 	const dispatch = useDispatch();
 	const locationName = useSelector((state) => state.location.locationName);
 	useEffect(() => {
-		selectedTerm && dispatch(changeSearchTermLocation(""));
+		selectedTerm && dispatch(changeSearchTermLocation(''));
 		showTheList(false);
 	}, [selectedTerm]);
 
@@ -19,7 +19,7 @@ function SearchBar({ showTheList, selectedTerm, onSubmit }) {
 	const handleSubmit = (event) => {
 		event.preventDefault();
 		onSubmit(locationName);
-		dispatch(changeSearchTermLocation(""));
+		dispatch(changeSearchTermLocation(''));
 		showTheList(false);
 	};
 
@@ -29,11 +29,11 @@ function SearchBar({ showTheList, selectedTerm, onSubmit }) {
 	};
 
 	return (
-		<div className="form-container">
+		<div className={`form-container `}>
 			<form onSubmit={handleSubmit}>
 				<input
-					placeholder="Search"
-					type="text"
+					placeholder='Search'
+					type='text'
 					onClick={handleInputClick}
 					value={locationName}
 					onChange={handleChange}

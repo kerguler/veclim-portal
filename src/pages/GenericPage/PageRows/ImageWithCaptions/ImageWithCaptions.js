@@ -1,5 +1,5 @@
-import "./imageWithCaptions.css";
-import classNames from "classnames";
+import './imageWithCaptions.css';
+import classNames from 'classnames';
 function ImageWithCaptions({
 	rotateMe,
 	wide,
@@ -9,21 +9,23 @@ function ImageWithCaptions({
 	caption,
 }) {
 	const internalClassName = classNames(
-		"image-with-caption",
-		rotateMe && "rotate",
-		wide && "wide",
-		wrap && "wrap",
-		large && "large"
+		'image-with-caption',
+		rotateMe && 'rotate',
+		wide && 'wide',
+		wrap && 'wrap',
+		large && 'large',
 	);
 	const internalCaptionClassName = classNames(
-		"image-with-caption caption",
-		wide && "wide",
-		wrap && "wrap"
+		'image-with-caption caption',
+		wide && 'wide',
+		wrap && 'wrap',
 	);
 	return (
 		<div className={internalClassName}>
-			{imagePath && <img alt="map" src={imagePath} />}
-			{caption && <div className={internalCaptionClassName}>{caption}</div>}
+			{imagePath && <img alt='map' src={imagePath} />}
+			{caption && (
+				<div className={internalCaptionClassName}>{caption}</div>
+			)}
 		</div>
 	);
 }

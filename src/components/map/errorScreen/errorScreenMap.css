@@ -9,8 +9,6 @@
 	/* height: 20px; */
 }
 
-
-
 .error-inner-div {
 	display: flex;
 	flex-direction: column;
@@ -18,7 +16,7 @@
 	align-items: center;
 }
 
-.error-inner-div h3{
+.error-inner-div h3 {
 	text-align: center;
 	font-size: 2.4rem;
 	line-height: 3.5rem;

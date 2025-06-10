@@ -1,17 +1,19 @@
-import { useEffect } from "react";
-import L from "leaflet";
+import { useEffect } from 'react';
+import L from 'leaflet';
 
-import { useDispatch, useSelector } from "react-redux";
-import MapAdjustmentsService from "../components/charts/services/MapAdjustmentsService";
-import useMapResize from "./useMapResize";
-import { setCurrentMapCenter, setCurrentMapBounds } from "store";
-import { current } from "@reduxjs/toolkit";
-import useFetcherVariables from "./useFetcherVariables";
+import { useDispatch, useSelector } from 'react-redux';
+import PackageMapServices from 'components/map/mapPackage/PackageMapServices';
+import useMapResize from './useMapResize';
+import { setCurrentMapCenter, setCurrentMapBounds } from 'store';
+import { current } from '@reduxjs/toolkit';
+import useFetcherVariables from './useFetcherVariables';
 function useMap(mapParRef) {
 	useMapResize();
 	const dispatch = useDispatch();
 
-	const pageTransition = useSelector((state) => state.location.pageTransition);
+	const pageTransition = useSelector(
+		(state) => state.location.pageTransition,
+	);
 	let m = mapParRef.current;
 
 	const {
@@ -26,22 +28,22 @@ function useMap(mapParRef) {
 
 	useEffect(() => {
 		let p = mapParRef.current;
-		MapAdjustmentsService.mapBounds(
+		PackageMapServices.mapBounds(
 			mapParRef,
 			vectorName,
 			pageTransition,
 			switchMap,
 			currentMapCenter,
 			currentMapZoom,
-			dispatch
+			dispatch,
 		);
-		p.map = L.map("map1", {
+		p.map = L.map('map1', {
 			maxBoundsViscosity: 0,
 			maxBounds: p.maxBounds,
 			zoomControl: false,
 		});
-		MapAdjustmentsService.baseLayerOSM.addTo(p.map);
-		MapAdjustmentsService.dataLayer.addTo(p.map);
+		PackageMapServices.baseLayerOSM.addTo(p.map);
+		PackageMapServices.dataLayer.addTo(p.map);
 		// MapAdjustmentsService.labelLayer.addTo(p.map);
 
 		p.map.setView({ lat: p.center[0], lng: p.center[1] }, p.zoom);
@@ -64,7 +66,6 @@ function useMap(mapParRef) {
 		switchMap,
 		directInit,
 		mapParRef,
-		
 	]);
 }
 

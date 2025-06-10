@@ -24,6 +24,7 @@ function useCsrf(checkToken) {
 		// When a CSRF token is successfully fetched
 		else if (csrfData && !csrfError) {
 			const { csrfToken } = csrfData;
+			console.log("CSRF token fetched:", csrfToken);
 			// Update CSRF token in localStorage
 			localStorage.setItem("csrfToken", csrfToken);
 			// Dispatch action to update CSRF token in the global state

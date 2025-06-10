@@ -1,6 +1,6 @@
-import { useDispatch, useSelector } from "react-redux";
-import "./InfoPanel.css";
-import { setBlinkers } from "store";
+import { useDispatch, useSelector } from 'react-redux';
+import './InfoPanel.css';
+import { setBlinkers } from 'store';
 function InfoPanel() {
 	const dispatch = useDispatch();
 	const blinkers = useSelector((state) => state.dashboard.blinkers);
@@ -15,23 +15,21 @@ function InfoPanel() {
 		dispatch(setBlinkers(localBlinkers));
 	};
 
-
 	return (
-		<div className="info-panel br-10">
-			<div onClick={() => justifyBlinkers("displaySimList")}>
+		<div className='info-panel br-10'>
+			<div onClick={() => justifyBlinkers('displaySimList')}>
 				<h3>Simulations</h3>
 			</div>
-			<div onClick={() => justifyBlinkers("displayVEClimModelList")}>
+			<div onClick={() => justifyBlinkers('displayVEClimModelList')}>
 				<h3>VEClim Models</h3>
 			</div>
 
-			<div onClick={() => justifyBlinkers("displayAddSimulation")}>
-				<h3>Add a Simulation</h3>{" "}
+			<div onClick={() => justifyBlinkers('displayAddSimulation')}>
+				<h3>Add a Simulation</h3>{' '}
 			</div>
-			<div onClick={() => justifyBlinkers("displayAddVEClimModel")}>
-				<h3>Add a VEClim Model</h3>{" "}
+			<div onClick={() => justifyBlinkers('displayAddVEClimModel')}>
+				<h3>Add a VEClim Model</h3>{' '}
 			</div>
-
 		</div>
 	);
 }

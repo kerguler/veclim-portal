@@ -27,19 +27,21 @@ export function dateToString(today, sep = "") {
 
 export function getCurrentDate(sep = "") {
 	let today = new Date();
-	return dateToString(today, sep=sep)
+	return dateToString(today, (sep = sep));
 }
 
 export function getDateRange(sep = ":") {
-	let today = new Date(new Date().getFullYear(), 0, 1);
-	let tomorrow = new Date(new Date().getFullYear(), 11, 31);
-	return dateToString(today,"-")+sep+dateToString(tomorrow,"-");
+	let today = new Date();
+	let tomorrow = new Date();
+	today.setDate(today.getDate() - 7 * 30);
+	tomorrow.setDate(tomorrow.getDate() + 7 * 30);
+	return dateToString(today, "-") + sep + dateToString(tomorrow, "-");
 }
 
 export function useUserLocation() {
 	const [cookies] = useCookies(["cookieConsent"]);
 	const locationRequested = useSelector(
-		(state) => state.location.locationRequested
+		(state) => state.location.locationRequested,
 	);
 	const dispatch = useDispatch();
 
@@ -47,10 +49,11 @@ export function useUserLocation() {
 		(position) => {
 			const { latitude, longitude } = position.coords;
 			const updatedPosition = { lat: latitude, lng: longitude };
+
 			// dispatch(setUserPosition(updatedPosition));
 			dispatch(setGlobalPosition(updatedPosition));
 		},
-		[dispatch]
+		[dispatch],
 	);
 
 	const handleLocationError = (error) => {
@@ -61,7 +64,7 @@ export function useUserLocation() {
 	const handleRequestLocation = useCallback(() => {
 		navigator.geolocation.getCurrentPosition(
 			handleLocationFound,
-			handleLocationError
+			handleLocationError,
 		);
 	}, [handleLocationFound]);
 	// useEffect(() => {
@@ -72,7 +75,9 @@ export function useUserLocation() {
 		navigator.permissions.query({ name: "geolocation" }).then((result) => {
 			if (result.state === "denied" && locationRequested) {
 				// window.confirm("Location Permission is required for this action");
-				dispatch(setGlobalPosition({ lat: 35.1966527, lng: 33.3217152 }));
+				dispatch(
+					setGlobalPosition({ lat: 35.1966527, lng: 33.3217152 }),
+				);
 				dispatch(setUserPosition({ lat: 35.1966527, lng: 33.3217152 }));
 				dispatch(setLocationRequested(false));
 			}

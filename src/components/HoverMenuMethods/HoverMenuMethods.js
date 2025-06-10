@@ -1,8 +1,8 @@
-import React, { useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
-import "./hoverMenuMethods.css";
-import { useDispatch } from "react-redux";
-import useWindowSize from "customHooks/useWindowSize";
+import React, { useEffect, useRef, useState } from 'react';
+import { Link } from 'react-router-dom';
+import './hoverMenuMethods.css';
+import { useDispatch } from 'react-redux';
+import useWindowSize from 'customHooks/useWindowSize';
 const HoverMenuMethods = ({ mainDivRef, onClose }) => {
 	const webApp = useWindowSize();
 
@@ -35,29 +35,32 @@ const HoverMenuMethods = ({ mainDivRef, onClose }) => {
 				setIsMenuOpen(false);
 			}
 		};
-		window.addEventListener("click", handleClickOnDoc, true);
+		window.addEventListener('click', handleClickOnDoc, true);
 		return () => {
-			window.removeEventListener("click", handleClickOnDoc);
+			window.removeEventListener('click', handleClickOnDoc);
 		};
 	});
 
 	return (
 		<div
 			ref={menuRef}
-			className="hover-menu-wrapper"
+			className='hover-menu-wrapper'
 			//  onClick={handleMenuOpen}
 		>
-			<div onClick={handleMenuOpen} style={{ cursor: "pointer" }}>
-				{" "}
+			<div onClick={handleMenuOpen} style={{ cursor: 'pointer' }}>
+				{' '}
 				METHODS
 			</div>
 			{isMenuOpen && (
-				<div className="hover-menu">
-					<Link onClick={handleLinkClickAlbo} to="/Methods/TigerMosquito">
+				<div className='hover-menu'>
+					<Link
+						onClick={handleLinkClickAlbo}
+						to='/Methods/TigerMosquito'
+					>
 						Tiger Mosquito
 					</Link>
 
-					<Link onClick={handleLinkClickSand} to="/Methods/SandFly">
+					<Link onClick={handleLinkClickSand} to='/Methods/SandFly'>
 						Sand&nbsp;Fly
 					</Link>
 				</div>

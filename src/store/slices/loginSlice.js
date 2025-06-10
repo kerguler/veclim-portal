@@ -6,7 +6,7 @@ const loginSlice = createSlice({
 		username: "",
 		password: "",
 		rememberLogin: false,
-		csrfToken: '',
+		csrfToken: "",
 		details: {
 			firstName: "",
 			lastName: "",
@@ -19,7 +19,7 @@ const loginSlice = createSlice({
 			response: null,
 			status: "",
 			message: "",
-			token: "",
+			// token: '',
 			userName: "",
 			userId: null,
 		},

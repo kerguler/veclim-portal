@@ -24,9 +24,8 @@
 .sim-button.save {
 	background-color: var(--primary-color1);
 }
-.sim-button.parse{
-    background-color: var(--risk-item-2);
-
+.sim-button.parse {
+	background-color: var(--risk-item-2);
 }
 .button-area {
 	display: flex;
@@ -61,4 +60,3 @@
 	overflow-y: scroll;
 	z-index: 12;
 }
-
