@@ -191,6 +191,7 @@ export {
 	useDeleteSimulationMutation,
 	useEditSimulationMutation,
 	useRunSimulationMutation,
+	useLazyGetSimulationListQuery,
 } from "./apis/simulationApi";
 
 export { useFetchNewsDataQuery } from "./apis/newsApi";

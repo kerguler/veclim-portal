@@ -14,15 +14,11 @@ const simulationApi = createApi({
 		prepareHeaders: (headers, { getState }) => {
 			const csrf = localStorage.getItem("csrfToken");
 			const csrf1 = getCookie("csrftoken");
-			console.log("CSRF token from localStorage:", csrf);
-			console.log("CSRF token from cookies", csrf1);
 			headers.set("Content-Type", "application/json");
 			// headers.set("Origin", process.env.REACT_APP_SIM_URL);
 			if (csrf) {
 				headers.set("X-CSRFToken", csrf);
 				// 	// headers.set("Access-Control-Allow-Origin", "*");
-			} else {
-				console.log("CSRF token not found in localStorage");
 			}
 			return headers;
 		},
@@ -106,5 +102,6 @@ export const {
 	useDeleteSimulationMutation,
 	useEditSimulationMutation,
 	useRunSimulationMutation,
+	useLazyGetSimulationListQuery,
 } = simulationApi;
 export { simulationApi };

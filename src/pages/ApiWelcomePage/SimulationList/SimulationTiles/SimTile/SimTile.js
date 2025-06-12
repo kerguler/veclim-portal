@@ -9,7 +9,7 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setBlinkers } from "store";
 import "components/Tooltip/ToolTip.css";
-import { useGetSimulationListQuery } from "store";
+import { useLazyGetSimulationListQuery } from "store";
 import StatusIndicator from "./StatusIndicator";
 import { setDataArrived } from "store";
 import simTileHelpers from "./simTileHelpers";
@@ -21,13 +21,20 @@ import useDirectorFun from "customHooks/useDirectorFun";
 import { setShimmered } from "store";
 
 function SimTile({ sim, direction, shimmerList }) {
-	const {
-		data: dataToView,
-		isFetching: isSimFetching,
-		error: refetchError,
-		refetch: fetchWithResults,
-	} = useGetSimulationListQuery({ id: sim.id, return_results: true });
-
+	const [returnResults, setReturnResults] = useState(false);
+	// const {
+	// 	data: dataToView,
+	// 	isFetching: isSimFetching,
+	// 	error: refetchError,
+	// 	refetch: fetchWithResults,
+	// } = useGetSimulationListQuery({
+	// 	id: sim.id,
+	// 	return_results: true,
+	// });
+	const [
+		triggerFetch,
+		{ data: dataToView, isFetching: isSimFetching, error: refetchError },
+	] = useLazyGetSimulationListQuery();
 	const dispatch = useDispatch();
 	const [deleteSimulation] = useDeleteSimulationMutation();
 
@@ -42,8 +49,13 @@ function SimTile({ sim, direction, shimmerList }) {
 		simTileHelpers.handleDeleteSimulation(deleteSimulation, id);
 	};
 
-	const handleDownload = () => {
-		simTileHelpers.handleDownload(fetchWithResults);
+	const handleDownload = async (id) => {
+		const { resultAction } = await triggerFetch({
+			id,
+			return_results: true,
+		}).unwrap;
+
+		simTileHelpers.handleDownload(resultAction);
 	};
 	const levelData = useSelector(
 		(state) => state.fetcher.fetcherStates.menu.left.panelLevel,
@@ -55,17 +67,38 @@ function SimTile({ sim, direction, shimmerList }) {
 	}, []);
 
 	const handleViewSimulationResults = async (id) => {
-		dispatch(setShimmered({ direction: direction, value: shimmerList }));
+		dispatch(setShimmered({ direction, value: shimmerList }));
+		try {
+			const { results } = await triggerFetch({
+				id,
+				return_results: true,
+			}).unwrap();
+			simTileHelpers.handleViewSimulationResults(
+				results, // or re-adapt to how your helper expects the fetch function
+				setSimResult,
+				setDataSim,
+				dispatch,
+				direction,
+				levelData,
+				setReturnResults,
+			);
 
-		simTileHelpers.handleViewSimulationResults(
-			fetchWithResults,
-			setSimResult,
-			setDataSim,
-			dispatch,
-			direction,
-			levelData,
-		);
-		setIsLoadingSim(false);
+			setSimResult(results);
+			setDataSim(results);
+			console.log("RESULTS", results);
+			dispatch(setInvalidateSimData(false));
+			dispatch(setDataArrived({ direction, value: true }));
+			dispatch(
+				setDisplaySimulationPanel({
+					direction,
+					value: "activity_forecast",
+				}),
+			);
+		} catch (err) {
+			console.error("Failed to load simulation results:", err);
+		} finally {
+			setIsLoadingSim(false);
+		}
 	};
 
 	return (
@@ -95,7 +128,7 @@ function SimTile({ sim, direction, shimmerList }) {
 			<div className='icon-area '>
 				<StatusIndicator
 					status={simRecord?.status || sim.status}
-					setDownloadResult={handleDownload}
+					setDownloadResult={() => handleDownload(sim.id)}
 				/>
 
 				{displayIcon && (

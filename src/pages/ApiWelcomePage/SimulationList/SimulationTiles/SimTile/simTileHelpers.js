@@ -6,10 +6,8 @@ import { setDataArrived } from "store";
 import { setInvalidateSimData } from "store";
 
 class simTileHelpers {
-	static handleDownload = async (fetchWithResults) => {
+	static handleDownload = (result) => {
 		try {
-			const result = await fetchWithResults().unwrap();
-
 			const fileContent = JSON.stringify(result, null, 2);
 			const blob = new Blob([fileContent], { type: "text/plain" });
 			const url = URL.createObjectURL(blob);
@@ -34,13 +32,13 @@ class simTileHelpers {
 	};
 
 	static handleViewSimulationResults = async (
-		fetchWithResults,
+		results,
 		setSimResult,
 		setDataSim,
 		dispatch,
 		direction,
 	) => {
-		const result = await fetchWithResults().unwrap();
+		const result = results;
 		setSimResult(result.results);
 		setDataSim(result.results);
 		console.log("RESULTS", result.results);
