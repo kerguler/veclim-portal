@@ -20,6 +20,7 @@ import { setTileArray } from "store";
 import MapAdjustmentsService from "components/charts/services/MapAdjustmentsService";
 import { setReadyToView } from "store";
 import { setDirectMap } from "store";
+import { setOpenItems } from "store";
 const useQuery = () => {
 	return new URLSearchParams(useLocation().search);
 };
@@ -36,7 +37,7 @@ const useFetcherStates = () => {
 		(state) => state.fetcher.fetcherStates.vectorName
 	);
 	const directMap = useSelector(
-		(state) => state.fetcher.fetcherStates.directMap
+		(state) => state.fetcher.fetcherStates.menu.left.directMap
 	);
 	const query = useQuery();
 	const tile = query.get("tile");
@@ -63,7 +64,10 @@ const useFetcherStates = () => {
 		} else {
 			defaultAlboBehaviour();
 		}
-		dispatch(setDisplayedPanelID(0));
+		// dispatch(setDisplayedPanelID(0));
+
+console.log("did we get here")
+		// dispatch(setOpenItems({direction:"left", value:{menu_icon:true}}))
 	}, [session, dispatch, vectorNames]);
 
 	useEffect(() => {
@@ -76,6 +80,7 @@ const useFetcherStates = () => {
 					id: panel.id,
 				}))
 			);
+			
 		} else if (mapVector === "papatasi") {
 			setTiles(tileIconsSand.map((tile) => tile.key));
 			setPanels(
@@ -94,26 +99,34 @@ const useFetcherStates = () => {
 				FetcherService.handleTiles(dispatch, tile, tiles, session);
 				FetcherService.handlePanels(dispatch, ts, decade, panels, lon, lat);
 			} catch (e) {
-				dispatch(setDisplayedPanelID(0));
+				// dispatch(setDisplayedPanelID(0));
+				dispatch(setOpenItems({direction:"left", value:{menu_icon:true}}))
+
 				dispatch(
-					setDirectInitError({
+					setDirectInitError({direction:"left",value:{
 						isError: true,
 						message: { heading: e.heading, explanation: e.explanation },
 						type: e.type,
-					})
+					}})
 				);
 			}
 			//setting ready to view... are we going to handle directMap.display===-2 situation?
 			dispatch(setReadyToView(true));
 		}
 	}, [tile, tiles, panels, ts, lon, lat, dispatch, session, decade]);
-
+const {panelData}=useContext(PanelContext)
 	useEffect(() => {
+		let desiredPanel=null
 		if (directMap.display !== -2 && directMap.display !== null) {
-			dispatch(setDisplayedPanelID(directMap.display));
+			// dispatch(setDisplayedPanelID(directMap.display));
+			desiredPanel = panelData.filter(
+				(panel) => panel.id === directMap.display
+			)[0];
+			console.log("desiredPanel", desiredPanel)
+			dispatch(setOpenItems({direction:"left", value:{[desiredPanel.key]:true}}))
 			dispatch(setDirectInit(true));
 		} else {
-			setDirectInit(false);
+			setDirectInit({direction:"left", value:false});
 		}
 	}, [directMap.display, dispatch]);
 };

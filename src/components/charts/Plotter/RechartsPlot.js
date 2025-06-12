@@ -26,6 +26,7 @@ import ChartCalculatorService from "../services/ChartCalculatorService";
 import { setBrushDataYL, setBrushDataYR } from "store";
 import { setBrushRange } from "store";
 import { colors } from "material-ui/styles";
+
 function RechartsPlot({ plotMat }) {
 	const args = {
 		years: { firstYear: null, lastYear: null },
@@ -41,25 +42,25 @@ function RechartsPlot({ plotMat }) {
 	});
 	const argRef = useRef(args);
 	const dispatch = useDispatch();
-	const xBrushRange = useSelector((state) => state.panel.brushRange);
-	const parameters = useSelector((state) => state.panel.chartParameters);
-	const brushData = useSelector((state) => state.panel.brushData);
+	const xBrushRange = useSelector((state) => state.fetcher.fetcherStates.menu.left.chart.brush.brushRange);
+	const parameters = useSelector((state) => state.fetcher.fetcherStates.menu.left.chart.chartParameters);
+	const brushData = useSelector((state) => state.fetcher.fetcherStates.menu.left.chart.brush.brushData);
 	const vectorName = useSelector(
 		(state) => state.fetcher.fetcherStates.vectorName
 	);
 	useEffect(() => {
-		dispatch(setBrushData(plotMat));
+		dispatch(setBrushData({direction:"left",value:plotMat}));
 	}, [plotMat, dispatch, vectorName]);
 
 	useEffect(() => {
-		dispatch(setBrushRange({ startIndex: 0, endIndex: plotMat.length - 1 }));
+		dispatch(setBrushRange({direction:"left",value:{ startIndex: 0, endIndex: plotMat.length - 1 }}));
 	}, [vectorName, dispatch]);
 	const [transform, setTransform] = useState([0, 0]);
 	const formatYAxisTick = (value) => {
 		if (typeof value === "number") {
 			return value.toFixed(2);
 		}
-		return value; // If not a number, return it as is
+		return value; // If not a number, return it 
 	};
 
 	let d = dateRef.current && dateRef.current;
@@ -75,7 +76,7 @@ function RechartsPlot({ plotMat }) {
 	useYsliderPositioning(setTransform);
 
 	const handleBrushChange = (range) => {
-		ChartCalculatorService.handleBrushChange(range, dispatch, plotMat);
+		ChartCalculatorService.handleBrushChange(range, dispatch, plotMat,setBrushRange,"left");
 	};
 	const scrlPars = {
 		minmaxId: { min: 0, max: 100 },
@@ -185,7 +186,7 @@ function RechartsPlot({ plotMat }) {
 
 	let renderedAxes = [];
 	let col = s.pars.colors[0];
-	if (! ((brushDataYL.min == 0) && (brushDataYL.max == -1)) ) {
+	if (! ((brushDataYL.min == 0) && (brushDataYL.max === -1)) ) {
 		if ( "orientation" in parameters ) {
 			for (let i=0; i<s.pars.colors.length; i++) {
 				col = s.pars.colors[i];
@@ -197,7 +198,7 @@ function RechartsPlot({ plotMat }) {
 	}
 	renderedAxes.push( (
 			<YAxis
-			display={(brushDataYL.min == 0) && (brushDataYL.max == -1) ? "none" : "true"}
+			display={(brushDataYL.min === 0) && (brushDataYL.max === -1) ? "none" : "true"}
 			yAxisId="left"
 			key="left-0"
 			domain={[brushDataYL.min, brushDataYL.max]}
@@ -208,7 +209,7 @@ function RechartsPlot({ plotMat }) {
 		) 
 	);
 	col = s.pars.colors[0];
-	if (! ((brushDataYR.min == 0) && (brushDataYR.max == -1)) ) {
+	if (! ((brushDataYR.min === 0) && (brushDataYR.max === -1)) ) {
 		if ( "orientation" in parameters ) {
 			for (let i=0; i<s.pars.colors.length; i++) {
 				col = s.pars.colors[i];
@@ -220,7 +221,7 @@ function RechartsPlot({ plotMat }) {
 	}
 	renderedAxes.push( (
 			<YAxis
-			display={(brushDataYR.min == 0) && (brushDataYR.max == -1) ? "none" : "true"}
+			display={(brushDataYR.min === 0) && (brushDataYR.max === -1) ? "none" : "true"}
 			yAxisId="right"
 			key="right-0"
 			domain={[brushDataYR.min, brushDataYR.max]}

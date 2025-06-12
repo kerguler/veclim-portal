@@ -15,6 +15,7 @@ import ErrorBoundary from "components/errorBoundary/ErrorBoundary";
 import useFetcherStates from "customHooks/useFetcherStates";
 import GenericMapComponent from "components/map/MapComponent/GenericMapComponent";
 import { PanelProvider } from "context/panelsIcons";
+import MapMenuPicker from "components/mapMenuV2/MapMenuPicker";
 function GenericMapPage() {
 	useFetcherStates();
 
@@ -35,7 +36,8 @@ function GenericMapPage() {
 					)}
 					<MapLogo />
 					<div className="map-wrapper">
-						<MapLeftMenu></MapLeftMenu>
+						{/* <MapLeftMenu></MapLeftMenu> */}
+						<MapMenuPicker direction="left"/>
 						<ErrorBoundary>
 							<GenericMapComponent />
 						</ErrorBoundary>

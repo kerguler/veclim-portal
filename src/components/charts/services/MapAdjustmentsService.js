@@ -108,14 +108,14 @@ class MapAdjustmentsService {
 		}
 
 		dispatch(setDisplayedPanelID(0));
-		dispatch(setPanelOpen(false));
+		dispatch(setPanelOpen({direction:"left",value:false}));
 	}
 
 	static handleMapClick(e, mapParRef, vectorName, dispatch) {
 		this.clickMap(e, mapParRef, vectorName, dispatch);
 		// TODO: MAY NEED TO REMOVE
 	
-		dispatch(setPanelInterfere(-1));
+		dispatch(setPanelInterfere({direction:"left",value:-1}));
 	}
 	static clickMap = (e, mapParRef, vectorName, dispatch) => {
 		let p = mapParRef.current;
@@ -151,8 +151,8 @@ class MapAdjustmentsService {
 			p.rectMarker && p.map.removeLayer(p.rectMarker);
 		}
 
-		dispatch(setPanelOpen(true));
-		dispatch(setMapMenuOpen(true));
+		dispatch(setPanelOpen({direction:"left", value:true}));
+		dispatch(setMapMenuOpen({direction:"left",value:true}));
 	};
 
 	static highlightMarkerFunc = (

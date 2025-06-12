@@ -10,6 +10,8 @@ import prpin from "assets/icons/map-page-right-menu/png/027-pin-32px.png";
 import virus from "assets/icons/map-page-right-menu/png/013-coronavirus-32px.png";
 import impact from "assets/icons/map-page-right-menu/png/015-heart rate-32px.png";
 import model from "assets/icons/map-page-right-menu/png/019-refresh-32px.png";
+import menuIcon from "assets/icons/map-page-right-menu/png/019-refresh-32px.png";
+import settingsIcon from "assets/icons/map-page-right-menu/png/019-refresh-32px.png";
 
 import info from "assets/icons/map-page-right-menu/png/008-files-32px.png";
 import { createContext } from "react";
@@ -697,15 +699,146 @@ function PanelProvider({ children }) {
 			),
 		},
 	];
+	const menuStructure = [
+		{
+			key: "menu_icon",
+			parent: null,
+		},
+
+		{ key: "location_info", parent: "menu_icon" },
+		{ key: "location_info_panel", parent: "location_info" },
+		{
+			key: "seasonal_profile",
+			parent: "menu_icon",
+		},
+		{
+			key: "seasonal_profile_panel",
+			parent: "seasonal_profile",
+		},
+
+		{
+			key: "graphics_menu_icon",
+			parent: "menu_icon",
+		},
+		{
+			key: "secondary_menu_icon",
+			parent: "graphics_menu_icon",
+		},
+
+		{ key: "larva_forecast", parent: "secondary_menu_icon" },
+		{
+			key: "larva_forecast_panel",
+			parent: "larva_forecast",
+		},
+
+		{
+			key: "activity_forecast",
+			parent: "secondary_menu_icon",
+		},
+
+		{ key: "activity_forecast_panel", parent: "activity_forecast" },
+		{ key: "activity_projections_panel", parent: "activity_forecast" },
+
+		{
+			key: "outbreak_forecast",
+			parent: "secondary_menu_icon",
+		},
+		{ key: "outbreak_forecast_panel", parent: "outbreak_forecast" },
+		{ key: "outbreak_projections_panel", parent: "outbreak_forecast" },
+
+		{
+			key: "impact_forecast",
+			parent: "secondary_menu_icon",
+		},
+		{ key: "impact_forecast_panel", parent: "impact_forecast" },
+		{
+			key: "impact_projections_panel",
+			parent: "impact_forecast",
+		},
+
+		{
+			key: "tile_selector",
+			parent: "menu_icon",
+		},
+		{ key: "tile_selector_panel", parent: "tile_selector" },
+
+		{
+			key: "vector_selector",
+			parent: "menu_icon",
+		},
+		{ key: "vector_selector_panel", parent: "vector_selector" },
+
+		
+	];
+	const parPickerRowHeadings = tileIconRowHeadings;
+	const parPickerTileIcons = tileIcons;
 
 	const panelData = [
 		{
-			id: 0,
+			key: "menu_icon",
+			parent: [],
+			icon: menuIcon,
+			hasPanels: false,
+			panelList: [],
+			hasSubMenus: true,
+			subMenuOpenDirection: "down",
+			subMenuIndex: 0,
+		},
+		{
+			key: "secondary_menu_icon",
+			icon: menuIcon,
+			rotate: 90,
+			hasSubMenus: true,
+			subMenuOpenDirection: "down",
+			initialOpen: true,
+			selfClose: true,
+		},
+		{
+			id: [2, 1],
+			parent: [1, 1],
+			icon: info,
 			key: "location_info",
+			hasPanels: true,
+		},
+		{
+			id: [2, 2],
+			parent: [1, 1],
+
+			icon: seasonal,
+			key: "seasonal_profile",
+			hasPanels: true,
+		},
+		{
+			key: "graphics_menu_icon",
+			id: [2, 3],
+			parent: [1, 1],
+			hasSubMenus: true,
+			subMenuOpenDirection: "right",
+			submenuIndex: 1,
+			icon: settingsIcon,
+		},
+		{
+			id: [2, 4],
+			parent: [1, 1],
+			key: "larva_forecast",
+			icon: larva,
+			hasPanels: true,
+		},
+
+		{
+			id: [2, 4],
+			// parent: [2, 3],
+			icon: adult,
+			key: "activity_forecast",
+			hasPanels: true,
+		},
+		{
+			id: 0,
+			key: "location_info_panel",
 			decade: "",
 			icon: info,
 			chartParameters: {},
-
+	positionDependent: true,
 			content: (
 				<div className="text-area">
 					<h1>Location Information</h1>
@@ -717,12 +850,43 @@ function PanelProvider({ children }) {
 		},
 		{
 			id: 1,
-			key: "seasonal_profile",
+			key: "seasonal_profile_panel",
 			icon: seasonal,
 			chartParameters: {
 				chartType: "rechart",
 				initialSetting: "meteo-ts",
 				years: "2010-2019",
+						mixedKeys: [
+					{
+						key: "g1",
+						levels: ["meteo-ts", "2010-2019", "atemp"],
+					},
+					{
+						key: "g2",
+						levels: ["meteo-ts", "2010-2019", "rehum"],
+					},
+					{
+						key: "g3",
+						levels: ["meteo-ts", "2010-2019", "precp"],
+					},
+				],	sliceInfo: {
+					g1: {
+						sliceLabels: {
+							slice0: "Temperature (°C)",
+						},
+						sliceColors: {
+							slice0: "#F15A48",
+						},
+					},
+					g2: {
+						sliceLabels: { slice0: "Rel. humidity (%)" },
+						sliceColors: { slice0: "#50C0AD" },
+					},
+					g3: {
+						sliceLabels: { slice0: "Precipitation (mm)" },
+						sliceColors: { slice0: "#1B3958" },
+					},
+				},
 				plottedKeys: ["atemp", "rehum", "precp"],
 				colors: ["#F15A48", "#50C0AD", "#1B3958"],
 				horizontalAxis: "date",
@@ -752,7 +916,7 @@ function PanelProvider({ children }) {
 		},
 		{
 			id: 2,
-			key: "larva_forecast",
+			key: "larva_forecast_panel",
 			chartParameters: {
 				chartType: "rechart",
 				initialSetting: "fcast-ts",
@@ -792,7 +956,7 @@ function PanelProvider({ children }) {
 		},
 		{
 			id: 3,
-			key: "activity_forecast",
+			key: "activity_forecast_panel",
 
 			chartParameters: {
 				twins: [{ id: 4, display: false }],
@@ -800,8 +964,8 @@ function PanelProvider({ children }) {
 				chartType: "rechart",
 				initialSetting: "fcast-ts",
 				years: "ecmwf",
-				// xbrushStart: -6,
-				// xbrushEnd: 3,
+				xbrushStart: -6,
+				xbrushEnd: 3,
 				mixedKeys: [
 					{
 						key: "g1",
@@ -816,6 +980,7 @@ function PanelProvider({ children }) {
 						levels: ["surv-ts", "vabun", "v015"],
 					},
 				],
+			
 				plottedKeys: ["g1", "g2", "g3"],
 				orientation: {"g3": "right"},
 				lineStyle: {"g3": "dots"},
@@ -842,31 +1007,31 @@ function PanelProvider({ children }) {
 		{
 			id: 4,
 			decade: "2090-2100",
-			key: "activity_forecast",
+			key: "activity_projections_panel",
 			chartParameters: {
 				chartType: "rechart",
 				initialSetting: "fcast-ts",
 				years: "2090-2100",
 				// xbrushStart: -6,
 				// xbrushEnd: 3,
-				mixedKeys: [
-					{
-						key: "g1",
-						levels: ["sim-ts", "2010-2019", "colegg"],
-					},
-					{
-						key: "g2",
-						levels: ["sim-ts", "1980-1989", "colegg"],
-					},
-					{
-						key: "g3",
-						levels: ["fcast-ts", "nasa", "ssp245", "colegg"],
-					},
-					{
-						key: "g4",
-						levels: ["fcast-ts", "nasa", "ssp585", "colegg"],
-					},
-				],
+				// mixedKeys: [
+				// 	{
+				// 		key: "g1",
+				// 		levels: ["sim-ts", "2010-2019", "colegg"],
+				// 	},
+				// 	{
+				// 		key: "g2",
+				// 		levels: ["sim-ts", "1980-1989", "colegg"],
+				// 	},
+				// 	{
+				// 		key: "g3",
+				// 		levels: ["fcast-ts", "nasa", "ssp245", "colegg"],
+				// 	},
+				// 	{
+				// 		key: "g4",
+				// 		levels: ["fcast-ts", "nasa", "ssp585", "colegg"],
+				// 	},
+				// ],
 				plottedKeys: ["g1", "g2", "g3", "g4"],
 				colors: ["#1B3958", "#50C0AD", "orange", "#F15A48"],
 				sliceColors: ["#50C0AD", "orange", "#F15A48"],
@@ -889,9 +1054,15 @@ function PanelProvider({ children }) {
 				</div>
 			),
 		},
+			{
+			id: [0, 2, 2],
+			key: "outbreak_forecast",
+			icon: virus,
+			hasPanels: true,
+		},
 		{
 			id: 5,
-			key: "outbreak_forecast",
+			key: "outbreak_forecast_panel",
 			chartParameters: {
 				twins: [{ id: 5.5, display: false }],
 
@@ -949,7 +1120,7 @@ function PanelProvider({ children }) {
 		{
 			id: 5.5,
 			decade: "2090-2100",
-			key: "outbreak_forecast",
+			key: "outbreak_projections_panel",
 			chartParameters: {
 				chartType: "rechart",
 				initialSetting: "fcast-ts",
@@ -995,10 +1166,15 @@ function PanelProvider({ children }) {
 					</div>
 				</div>
 			),
+		},	{
+			id: [0, 2, 3],
+			key: "impact_forecast",
+			icon: impact,
+			hasPanels: true,
 		},
 		{
 			id: 6,
-			key: "impact_forecast",
+			key: "impact_forecast_panel",
 
 			chartParameters: {
 				twins: [{ id: 6.5, display: false }],
@@ -1056,7 +1232,7 @@ function PanelProvider({ children }) {
 		{
 			id: 6.5,
 			decade: "2090-2100",
-			key: "impact_forecast",
+			key: "impact_projections_panel",
 			chartParameters: {
 				chartType: "rechart",
 				initialSetting: "fcast-ts",
@@ -1102,24 +1278,56 @@ function PanelProvider({ children }) {
 					</div>
 				</div>
 			),
+		},	{
+			id: [2, 4],
+			key: "tile_selector",
+			icon: suser,
+			hasPanels: true,
 		},
 		{
 			id: 7,
-			key: "tile_selector",
+			key: "tile_selector_panel",
 			chartParameters: {},
 
 			icon: suser,
 			content: <TileSelector tileIcons={tileIcons}></TileSelector>,
+		},{
+			id: [0, 4],
+			key: "vector_selector",
+			icon: model,
+			hasPanels: true,
 		},
 		{
 			id: 8,
-			key: "vector_selector",
+			key: "vector_selector_panel",
 			chartParameters: {},
 
 			icon: model,
 			content: <ChangeMapPanel></ChangeMapPanel>,
 		},
 	];
+
+
+
+	const menuStructureSand = [
+		{
+			key: "menu_icon",
+			parent: null,
+		},
+		{ key: "location_info", parent: "menu_icon" },
+		{ key: "location_info_panel", parent: "location_info" },
+		{ key: "sandfly_population", parent: "menu_icon" },
+		{ key: "sandfly_population_panel", parent: "sandfly_population" },
+		{ key: "sandfly_tile_selector", parent: "menu_icon" },
+		{ key: "sandfly_tile_selector_panel", parent: "sandfly_tile_selector" },
+		{ key: "sandfly_vector_selector", parent: "menu_icon" },
+		{
+			key: "sandfly_vector_selector_panel",
+			parent: "sandfly_vector_selector",
+		},
+	];
+
+
 	const panelDataSand = [
 		{
 			id: 0,
@@ -1186,7 +1394,23 @@ function PanelProvider({ children }) {
 			content: <ChangeMapPanel></ChangeMapPanel>,
 		},
 	];
+	const [tree, setTree] = useState([]);
+	useEffect(() => {
+		function buildNestedMenu(data, parentKey = null) {
+			return data
+				.filter((item) => item.parent === parentKey)
+				.map((item) => ({
+					...item,
+					children: buildNestedMenu(data, item.key),
+				}));
+		}
 
+		let nested =
+			mapVector === "albopictus"
+				? buildNestedMenu(menuStructure)
+				: buildNestedMenu(menuStructureSand);
+		setTree(nested);
+	}, [mapVector]);
 	const colorKeys = {};
 	tileIconsSand.forEach((tile) => {colorKeys[tile.key] = tile.colkey;});
 	tileIcons.forEach((tile) => {colorKeys[tile.key] = tile.colkey;});
@@ -1198,11 +1422,16 @@ function PanelProvider({ children }) {
 			mapVector === "albopictus"
 				? tileIconRowHeadings
 				: tileIconRowHeadingsSand,
+		parPickerTileIcons: parPickerTileIcons,
+		parPickerRowHeadings: parPickerRowHeadings,
 		tileIconsSand: tileIconsSand,
 		tileIconsAlbo: tileIcons,
 		panelDataSand: panelDataSand,
 		panelDataAlbo: panelData,
 		colorKeys: colorKeys,
+		tree: tree,
+		menuStructure: mapVector === "albopictus" ? menuStructure : menuStructureSand,
+		simulationPanels:[]
 	};
 
 	// const [sharedValues, setSharedValues] = useState({

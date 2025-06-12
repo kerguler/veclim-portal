@@ -18,16 +18,16 @@ import {
 	newsReducer,
 	setTimer,clearTimer
 } from "./slices/newsSlice";
-import {
-	fetcherReducer,
-	setFetcherStates,
-	setAvailableTiles,
+import {setOpenItems,setPanelLevel,setGraphType,setShimmer,setShimmered,setDisplaySimulationPanel,
+	fetcherReducer,setPlotReady,setInterferePanelStyle,
+	setFetcherStates,setDataArrived,setMessenger,setSimSlider1Enabled,
+	setAvailableTiles,setAlboRequestPlot,
 	setCurrentMapBounds,
-	setCurrentMaxBounds,
+	setCurrentMaxBounds,setPanelInterfere,
 	setDirectInit,
 	setDirectInitError,
 	setDirectMap,
-	setDisplayedPanelID,
+	setDisplayedPanelID,setBrushData,setBrushRange,
 	setLeftMapLoaded,
 	setCurrentMapCenter,
 	setMapLoaded,
@@ -39,8 +39,8 @@ import {
 	setRightMapLoaded,
 	setSwitchMap,
 	setTileArray,
-	setVectorName,
-	setReadyToView,
+	setVectorName,appendToColorsChartParameters,appendToLabelsChartParameters,appendToPlottedKeysChartParameters,spliceChartParametersForSlices,
+	setReadyToView,setChartParameters
 } from "./slices/fetcherSlice";
 import { languageReducer, changeLanguage } from "./slices/languageSlice";
 import {
@@ -110,15 +110,9 @@ import {
 } from "./slices/sliderSlice";
 import {
 	panelReducer,
-	setBrushRange,
-	setChartParameters,
-	appendToPlottedKeysChartParameters,
-	appendToLabelsChartParameters,
-	appendToColorsChartParameters,
-	spliceChartParametersForSlices,
-	setPanelInterfere,
+	// setChartParameters,
+	
 	setPanelTop,
-	setBrushData,
 	setDisplayTileNames,
 	setBrushDataYL,
 	setBrushDataYR,
@@ -193,8 +187,8 @@ export {
 } from "./apis/simulationApi";
 
 export { useFetchNewsDataQuery } from "./apis/newsApi";
-export {
-	setDisplayReady,
+export {setOpenItems,setPanelLevel,setGraphType,setPlotReady,setShimmer,setShimmered,setInterferePanelStyle,
+	setDisplayReady,setDisplaySimulationPanel,
 	setDisplayedArticleId,
 	setReadMore,
 	setRotateShow,
@@ -287,5 +281,5 @@ export {
 	setTileArray,
 	setVectorName,
 	setReadyToView,
-	setTimer,clearTimer
+	setTimer,clearTimer,setDataArrived,setMessenger,setSimSlider1Enabled,setAlboRequestPlot
 };

@@ -18,6 +18,7 @@ import { Suspense, lazy } from "react";
 import PanelMap from "pages/ApiWelcomePage/PanelMap/PanelMap";
 import { PanelProvider } from "context/panelsIcons";
 import { TextProvider } from "context/appText";
+import { AlboDataProvider } from "context/AlboDataContext";
 const GenericMapPage = lazy(() => import("pages/GenericMapPage"));
 
 function App() {
@@ -73,10 +74,10 @@ function App() {
 						<Route path="/404" element={<NoPage />} />
 						<Route
 							path="/MapPage"
-							element={
+							element={<AlboDataProvider>
 								<PanelProvider>
 									<GenericMapPage />
-								</PanelProvider>
+								</PanelProvider></AlboDataProvider>
 							}
 						/>
 						{/* <Route path="/login" element={<LoginPage />} />

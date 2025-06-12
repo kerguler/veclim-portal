@@ -23,7 +23,7 @@ function UnifiedRechartPlotter({ dateArray }) {
 	);
 	const dispatch = useDispatch();
 	const params = useSelector((state) => {
-		return state.panel.chartParameters;
+		return state.fetcher.fetcherStates.menu.left.chart.chartParameters;
 	});
 
 	const { data, error, isFetching } = useFetchTimeSeriesDataQuery({
@@ -51,13 +51,13 @@ function UnifiedRechartPlotter({ dateArray }) {
 		}
 	}, [vectorName, dispatch, position]);
 	useEffect(() => {
-		if (params.lineSlice.length > 0 && !params.plottedKeys.includes("slice1")) {
-			dispatch(appendToPlottedKeysChartParameters("slice1"));
-			dispatch(appendToPlottedKeysChartParameters("slice2"));
-			dispatch(appendToPlottedKeysChartParameters("slice3"));
-			dispatch(appendToLabelsChartParameters(params.sliceLabels));
-			dispatch(appendToColorsChartParameters(params.sliceColors));
-			dispatch(spliceChartParametersForSlices(0));
+		if (params.lineSlice?.length > 0 && !params.plottedKeys.includes("slice1")) {
+			dispatch(appendToPlottedKeysChartParameters({direction:"left", value:"slice1"}));
+			dispatch(appendToPlottedKeysChartParameters({direction:"left", value:"slice2"}));
+			dispatch(appendToPlottedKeysChartParameters({direction:"left", value:"slice3"}));
+			dispatch(appendToLabelsChartParameters({direction:"left", value:params.sliceLabels}));
+			dispatch(appendToColorsChartParameters({direction:"left", value:params.sliceColors}));
+			dispatch(spliceChartParametersForSlices({direction:"left", value:0}));
 		}
 	});
 	const errorMessage = position.lat && (
@@ -88,7 +88,6 @@ function UnifiedRechartPlotter({ dateArray }) {
 			return errorMessage;
 		}
 		r.data = data;
-
 		ChartCalculatorService.createDateArray(rawData, params);
 		ChartCalculatorService.handleMixedKeys(rawData, params);
 		ChartCalculatorService.handleSlices(params, rawData);

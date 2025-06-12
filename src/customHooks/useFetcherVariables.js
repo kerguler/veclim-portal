@@ -28,13 +28,13 @@ function useFetcherVariables() {
 		(state) => state.fetcher.fetcherStates.map.mapPagePosition
 	);
 	const directMap = useSelector(
-		(state) => state.fetcher.fetcherStates.directMap
+		(state) => state.fetcher.fetcherStates.menu.left.directMap
 	);
 	const tileArray = useSelector(
 		(state) => state.fetcher.fetcherStates.tileArray
 	);
 	const directInit = useSelector(
-		(state) => state.fetcher.fetcherStates.directInit
+		(state) => state.fetcher.fetcherStates.menu.left.directInit
 	);
 
 	return {

@@ -13,8 +13,9 @@ import "./Switcher/Switcher.css";
 const RenderedPanel = ({ panel, panelChart, panelClassName }) => {
 	const dispatch = useDispatch();
 	const panelOpen = useSelector(
-		(state) => state.fetcher.fetcherStates.map.leftMenu.panelOpen
+		(state) => state.fetcher.fetcherStates.menu.left.panelOpen
 	);
+	// console.log("pan)
 	const panelRef = useRef(null);
 	useEffect(() => {
 		const handleResize = () => {
@@ -67,9 +68,9 @@ const RenderedPanelChart = () => {
 	});
 	const switcherRefLeft = useRef();
 	const switcherRefRight = useRef();
-	const switcher = useSelector((state) => state.graphSwitch.switcher);
-	const twinIndex = useSelector((state) => state.graphSwitch.twinIndex);
-	const twinArray = useSelector((state) => state.graphSwitch.twinArray);
+	const switcher = useSelector((state) => state.graphSwitch.left.switcher);
+	const twinIndex = useSelector((state) => state.graphSwitch.left.twinIndex);
+	const twinArray = useSelector((state) => state.graphSwitch.left.twinArray);
 	useEffect(() => {
 		if (switcher) {
 			if (twinIndex === 0) {
@@ -86,14 +87,14 @@ const RenderedPanelChart = () => {
 		if (twinIndex === 0) {
 			return;
 		}
-		dispatch(setTwinIndex(twinIndex - 1));
+		dispatch(setTwinIndex({direction:"left",value:twinIndex - 1}));
 	};
 	const handleNext = (params) => {
 		if (twinIndex === twinArray - 1) {
 			return;
 		}
 
-		dispatch(setTwinIndex(twinIndex + 1));
+		dispatch(setTwinIndex({direction:"left",value:twinIndex + 1}));
 	};
 	let pointerRight, pointerLeft;
 

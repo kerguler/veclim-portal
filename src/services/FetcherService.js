@@ -1,5 +1,6 @@
 import MapAdjustmentsService from "components/charts/services/MapAdjustmentsService";
 import { setTileArray } from "store";
+import { setOpenItems } from "store";
 import { setPanelOpen } from "store";
 import { setMapMenuOpen } from "store";
 import { setDirectMap } from "store";
@@ -118,8 +119,8 @@ class FetcherService {
 				})
 			);
 
-			dispatch(setPanelOpen(false));
-			dispatch(setMapMenuOpen(true));
+			dispatch(setPanelOpen({direction:"left",value:false}));
+			dispatch(setMapMenuOpen({direction:"left",value:true}));
 
 			// throw error;
 		} else {
@@ -144,6 +145,7 @@ class FetcherService {
 							display: panelWithDecade[0].id,
 						})
 					);
+					dispatch(setOpenItems({ direction: "left", value: { [panelWithDecade[0].key]: true } }));
 				} else {
 					if (decade === null || decade === "") {
 						dispatch(
@@ -153,6 +155,7 @@ class FetcherService {
 								display: panelsFound[0].id,
 							})
 						);
+						dispatch(setOpenItems({ direction: "left", value: { [panelsFound[0].key]: true } }));
 						return;
 					}
 					const heading = `No panel with name ${ts} and decade ${decade} was found`;
