@@ -49,7 +49,8 @@ function GenericMapComponent({ fitworld }) {
 		prevClickPointRef: null,
 		minZoom: 1,
 	};
-
+const tileOpacity=useSelector(
+		(state) => state.fetcher.fetcherStates.map.optionsPanel.tileOpacity)
 	const mapParRef = useRef(mapParameters);
 	let p = mapParRef.current;
 	const { tileIcons } = useContext(PanelContext);
@@ -142,7 +143,7 @@ function GenericMapComponent({ fitworld }) {
 			tiles.current,
 			mapParRef,
 			tileArray,
-			dispatch
+			dispatch,tileOpacity
 		);
 		MapAdjustmentsService.handleDoubleMap(
 			mapParRef,
@@ -184,7 +185,7 @@ function GenericMapComponent({ fitworld }) {
 		p,
 		directMap.display,
 		directInit,
-		fitworld,
+		fitworld,p.map,tileOpacity
 	]);
 
 	return (

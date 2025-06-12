@@ -23,7 +23,11 @@ function useMap(mapParRef) {
 		directMap,
 		directInit,
 	} = useFetcherVariables();
-
+const mapOptions=useSelector(
+			(state) => state.fetcher.fetcherStates.map.optionsPanel
+	);	
+	const {showVectorAbundance,tileOpacity,showMapLabels}=mapOptions;
+	console.log({tileArray})
 	useEffect(() => {
 		let p = mapParRef.current;
 		MapAdjustmentsService.mapBounds(
@@ -40,9 +44,33 @@ function useMap(mapParRef) {
 			maxBounds: p.maxBounds,
 			zoomControl: false,
 		});
-		MapAdjustmentsService.baseLayerOSM.addTo(p.map);
-		MapAdjustmentsService.dataLayer.addTo(p.map);
-		// MapAdjustmentsService.labelLayer.addTo(p.map);
+		const baseLayerOSM=MapAdjustmentsService.baseLayerOSM
+		const dataLayer=MapAdjustmentsService.dataLayer;
+		const labelLayer= MapAdjustmentsService.labelLayer
+		baseLayerOSM.addTo(p.map);
+		// labelLayer.addTo(p.map);
+		if (showVectorAbundance) {
+			if (!p.map.hasLayer(dataLayer)){
+			dataLayer.addTo(p.map);
+
+			}
+		}
+		else {
+			if (p.map.hasLayer(dataLayer)) {
+				p.map.removeLayer(dataLayer);
+			}
+		}
+		if (showMapLabels) {
+			if (!p.map.hasLayer(labelLayer)) {
+				labelLayer.addTo(p.map);
+			}
+		} else {
+			if (p.map.hasLayer(labelLayer)) {
+				p.map.removeLayer(labelLayer);
+			}
+		}
+
+		
 
 		p.map.setView({ lat: p.center[0], lng: p.center[1] }, p.zoom);
 
@@ -63,7 +91,7 @@ function useMap(mapParRef) {
 		m.bounds,
 		switchMap,
 		directInit,
-		mapParRef,
+		mapParRef,showVectorAbundance,showMapLabels
 		
 	]);
 }

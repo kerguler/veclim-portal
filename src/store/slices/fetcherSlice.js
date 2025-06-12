@@ -12,6 +12,10 @@ const fetcherSlice = createSlice({
 			map: {
 				currentMapCenter: [35.1966527, 33.3217152],
 				currentMapZoom: 1,
+				optionsPanel:{
+					showVectorAbundance: true,
+					tileOpacity: 0.5,
+					showMapLabels: true},
 				mapLoaded: false,
 				leftMapLoaded: false,
 				rightMapLoaded: false,
@@ -35,7 +39,19 @@ const fetcherSlice = createSlice({
 		fetcherError: null,
 		fetcherLoading: false,
 	},
+
+		
+
 	reducers: {
+		setShowVectorAbundance(state, action) {
+			state.fetcherStates.map.optionsPanel.showVectorAbundance = action.payload;
+		},
+		setTileOpacity(state, action) {
+			state.fetcherStates.map.optionsPanel.tileOpacity = action.payload;
+		},
+		setShowMapLabels(state, action) {
+			state.fetcherStates.map.optionsPanel.showMapLabels = action.payload;
+		},
 		setReadyToView(state, action) {
 			state.fetcherStates.readyToView = action.payload;
 		},
@@ -112,7 +128,7 @@ const fetcherSlice = createSlice({
 });
 
 export const {
-	setVectorName,
+	setVectorName,setShowVectorAbundance,setTileOpacity,setShowMapLabels,
 	setFetcherStates,
 	setAvailableTiles,
 	setBrushRange,

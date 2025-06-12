@@ -19,7 +19,7 @@ import {
 	setTimer,clearTimer
 } from "./slices/newsSlice";
 import {
-	fetcherReducer,
+	fetcherReducer,setShowVectorAbundance,setTileOpacity,setShowMapLabels,
 	setFetcherStates,
 	setAvailableTiles,
 	setCurrentMapBounds,
@@ -193,7 +193,7 @@ export {
 } from "./apis/simulationApi";
 
 export { useFetchNewsDataQuery } from "./apis/newsApi";
-export {
+export {setShowVectorAbundance,setTileOpacity,setShowMapLabels,
 	setDisplayReady,
 	setDisplayedArticleId,
 	setReadMore,

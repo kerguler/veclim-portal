@@ -370,12 +370,12 @@ class MapAdjustmentsService {
 		};
 	}
 
-	static addTiles(tiles, mapParRef, tileArray, dispatch) {
+	static addTiles(tiles, mapParRef, tileArray, dispatch,tileOpacity) {
 		let tileMat = [];
 		let p = mapParRef.current;
 		try {
 			tiles.forEach((tile, index) => {
-				tile.props['opacity'] = 0.5;
+				tile.props['opacity'] =tileOpacity;
 				tileMat.push(L.tileLayer(tile.tile, tile.props));
 			});
 		} catch (e) {

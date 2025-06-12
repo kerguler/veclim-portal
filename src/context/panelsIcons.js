@@ -10,7 +10,8 @@ import prpin from "assets/icons/map-page-right-menu/png/027-pin-32px.png";
 import virus from "assets/icons/map-page-right-menu/png/013-coronavirus-32px.png";
 import impact from "assets/icons/map-page-right-menu/png/015-heart rate-32px.png";
 import model from "assets/icons/map-page-right-menu/png/019-refresh-32px.png";
-
+import OptionsPanel from "components/optionsPanel/OptionsPanel";
+import optionsIcon from "assets/icons/map-page-right-menu/svg/options.svg";
 import info from "assets/icons/map-page-right-menu/png/008-files-32px.png";
 import { createContext } from "react";
 import { ChartIndicators } from "../components/ChartIndicators/CharterIndicators";
@@ -1119,6 +1120,12 @@ function PanelProvider({ children }) {
 			icon: model,
 			content: <ChangeMapPanel></ChangeMapPanel>,
 		},
+		{id:9,
+			key:"options_panel",
+			chartParameters: {},
+			icon: optionsIcon,
+			content: <OptionsPanel></OptionsPanel>,
+		}
 	];
 	const panelDataSand = [
 		{

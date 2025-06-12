@@ -79,11 +79,7 @@ function ChangeMapPanel() {
 		<div className="text-area">
 			<h1>Model Repository</h1>
 			<div className="map-descriptions-wrapper">{listVectors}</div>
-			<h1>Map Options</h1>
-			<div className="map-descriptions-wrapper">
-				Show VectAbundance
-				Show Labels
-			</div>
+			
 		</div>
 	);
 }
