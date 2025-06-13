@@ -134,6 +134,33 @@ function PanelProvider({ children }) {
 						</a>{" "}
 						datasets.
 					</p>
+					<p>
+						We display average seasonal dynamics from{" "}
+						<a
+							href="https://doi.org/10.5281/zenodo.11486198"
+							target="_blank"
+							rel="noreferrer"
+						>
+							VectAbundance
+						</a>
+						,{" "}
+						<a
+							href="https://www.gbif.org/dataset/03269e13-84ae-430f-990e-f11069413e36"
+							target="_blank"
+							rel="noreferrer"
+						>
+							AIMsurv
+						</a>
+						, and{" "}
+						<a
+							href="https://vectorbase.org/vectorbase/app/"
+							target="_blank"
+							rel="noreferrer"
+						>
+							VectorBase
+						</a>{" "}
+						surveillance datasets.
+					</p>
 				</>
 			),
 		},

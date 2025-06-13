@@ -78,7 +78,7 @@
 .color-bar.left .color-bar-wrapper {
 	display: flex;
 	align-content: flex-start;
-	align-items: flex-end;
+	align-items: center;
 }
 .color-bar.left .color-bar-texts {
 	align-items: flex-end;

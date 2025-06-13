@@ -95,6 +95,40 @@ function ChartIndicators() {
 		);
 	}
 
+	var londat = ""
+	if (
+		"surv-ts" in data &&
+		Object.values(data["surv-ts"]).some(val => Array.isArray(val) && val.length > 0)
+	) {
+		let trans = {
+			'vabun': {'label': "VectAbundance", 'href': "https://doi.org/10.5281/zenodo.11486198"},
+			'aimsurv': {'label': "AIMSurv", 'href': "https://www.gbif.org/dataset/03269e13-84ae-430f-990e-f11069413e36"},
+			'vbase': {'label': "VectorBase", 'href': "https://vectorbase.org/vectorbase/app/"},
+		}
+		londat = (
+			<>
+			<div className="chart-indicators-vector">
+				<p>
+					Long-term observations of the <strong>tiger mosquito</strong> from the area
+				</p>
+				<ul>
+					{
+						Object.entries(data["surv-ts"]).filter(([key, val]) => (Array.isArray(val)) && (val.length > 0)).map(([key, val], i) => {
+							return (
+								<li key={i}>
+									<a target="_blank" rel="noreferrer" href={trans[key]['href']}>
+										{trans[key]['label']}
+									</a>
+								</li>
+							);
+						})
+					}
+				</ul>
+			</div>
+			</>
+		);
+	}
+
 	const indicators = (
 		<>
 			<div className="chart-indicators">
@@ -172,6 +206,7 @@ function ChartIndicators() {
 					<div>{fdate}</div>
 				</div>
 				<div className="chart-indicators-vector">{mosquito}</div>
+				{londat}
 			</div>
 		</>
 	);

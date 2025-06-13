@@ -34,7 +34,7 @@ function TileSelector({ tileIcons }) {
 		if (temp.includes(item)) {
 			temp = temp.filter(elm => elm !== item);
 			if (temp.includes(linked)) {
-				temp = temp.filter(elm => elm !== linked);
+				temp = temp(elm => elm !== linked);
 			}
 		} else {
 			if (linked) {

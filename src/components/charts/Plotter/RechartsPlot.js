@@ -88,7 +88,7 @@ function RechartsPlot({ plotMat }) {
 			plottedKeys: parameters.plottedKeys.map((k) => k),
 			labels: parameters.labels.map((k) => k),
 			colors: parameters.colors.map((k) => k),
-			sliceLabels: parameters.sliceLabels.map((k) => k),
+			sliceLabels: "sliceLabels" in parameters ? parameters.sliceLabels.map((k) => k) : null,
 		},
 	};
 	const scrlRef = useRef(scrlPars);
@@ -278,6 +278,7 @@ function RechartsPlot({ plotMat }) {
 					wrapperStyle={{
 						top: "-10px",
 						right: 0,
+						left: "20px",
 						border: "1px solid black",
 						borderRadius: "0.5rem",
 						background: "white",
