@@ -128,7 +128,10 @@ const fetcherSlice = createSlice({
 });
 
 export const {
-	setVectorName,setShowVectorAbundance,setTileOpacity,setShowMapLabels,
+	setVectorName,
+	setShowVectorAbundance,
+	setTileOpacity,
+	setShowMapLabels,
 	setFetcherStates,
 	setAvailableTiles,
 	setBrushRange,

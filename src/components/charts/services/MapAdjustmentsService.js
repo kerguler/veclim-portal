@@ -375,7 +375,7 @@ class MapAdjustmentsService {
 		let p = mapParRef.current;
 		try {
 			tiles.forEach((tile, index) => {
-				tile.props['opacity'] =tileOpacity;
+				tile.props['opacity'] = tileOpacity;
 				tileMat.push(L.tileLayer(tile.tile, tile.props));
 			});
 		} catch (e) {

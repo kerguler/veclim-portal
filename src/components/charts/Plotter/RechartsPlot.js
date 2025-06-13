@@ -87,7 +87,8 @@ function RechartsPlot({ plotMat }) {
 		pars: {
 			plottedKeys: parameters.plottedKeys.map((k) => k),
 			labels: parameters.labels.map((k) => k),
-			colors: parameters.colors.map((k) => k)
+			colors: parameters.colors.map((k) => k),
+			sliceLabels: parameters.sliceLabels.map((k) => k),
 		},
 	};
 	const scrlRef = useRef(scrlPars);
@@ -95,13 +96,8 @@ function RechartsPlot({ plotMat }) {
 	const brushDataYL = useSelector((state) => state.panel.brushDataYL);
 	const brushDataYR = useSelector((state) => state.panel.brushDataYR);
 	useEffect(() => {
-		s.pars = {
-			plottedKeys: parameters.plottedKeys.map((k) => k),
-			labels: parameters.labels.map((k) => k),
-			colors: parameters.colors.map((k) => k)
-		};
-		s.minmaxL = { min: 0, max: -1 };
-		s.minmaxR = { min: 0, max: -1 };
+		let minmaxL = { min: 0, max: -1 };
+		let minmaxR = { min: 0, max: -1 };
 		let s2 = {};
 		parameters.plottedKeys.forEach((k, i) => {
 			s2[i] = { min: 0, max: -1 };
@@ -110,23 +106,28 @@ function RechartsPlot({ plotMat }) {
 					if (d[k] < s2[i].min) s2[i].min = d[k];
 					if (d[k] > s2[i].max) s2[i].max = d[k];
 					if ( ("orientation" in parameters) && (k in parameters.orientation) && (parameters.orientation[k] == "right")) {
-						if (d[k] < s.minmaxR.min) s.minmaxR.min = d[k];
-						if (d[k] > s.minmaxR.max) s.minmaxR.max = d[k];
+						if (d[k] < minmaxR.min) minmaxR.min = d[k];
+						if (d[k] > minmaxR.max) minmaxR.max = d[k];
 					} else {
-						if (d[k] < s.minmaxL.min) s.minmaxL.min = d[k];
-						if (d[k] > s.minmaxL.max) s.minmaxL.max = d[k];
+						if (d[k] < minmaxL.min) minmaxL.min = d[k];
+						if (d[k] > minmaxL.max) minmaxL.max = d[k];
 					}
 				});
 		});
 		//
+		s.pars.plottedKeys = [];
+		s.pars.labels = [];
+		s.pars.colors = [];
 		for (let i in s2) {
-			if ( (s2[i].min == 0) && (s2[i].max == -1) ) {
-				s.pars.plottedKeys.splice(i,1);
-				s.pars.labels.splice(i,1);
-				s.pars.colors.splice(i,1);
-			}
+			if ( (s2[i].min == 0) && (s2[i].max == -1) )
+				continue;
+			s.pars.plottedKeys.push(parameters.plottedKeys[i]);
+			s.pars.labels.push(parameters.labels[i]);
+			s.pars.colors.push(parameters.colors[i]);
 		}
 		//
+		s.minmaxL = { min: minmaxL.min, max: minmaxL.max };
+		s.minmaxR = { min: minmaxR.min, max: minmaxR.max };
 		s.brushDataYL = { min: s.minmaxL.min, max: s.minmaxL.max };
 		s.brushDataYR = { min: s.minmaxR.min, max: s.minmaxR.max };
 		dispatch(setBrushDataYL(s.brushDataYL));
@@ -270,7 +271,7 @@ function RechartsPlot({ plotMat }) {
 
 				<Tooltip
 					contentStyle={{ margin: "20px" }}
-					content={<CustomTooltip parameters={parameters} />}
+					content={<CustomTooltip parameters={s.pars} />}
 				/>
 				<Legend
 					key={"legend"}
