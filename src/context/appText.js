@@ -44,6 +44,7 @@ import imageSandFlyPhoto from "../assets/images/methods-sandfly-photo2.webp";
 import imageSandFlyTime from "../assets/images/methods-sandfly-ts.webp";
 import MapAdjustmentsService from "components/charts/services/MapAdjustmentsService";
 import { Link } from "react-router-dom";
+import XLink from "components/xlink";
 import { useDispatch, useSelector } from "react-redux";
 // import ChangesComponent from "../components/ChangesComponent";
 import { useLocation } from "react-router-dom";
@@ -764,6 +765,43 @@ function TextProvider({ children }) {
 								5-8.5) together with the simulated average daily vector
 								activity.
 							</strong>
+						</p>
+					</>
+				),
+			},
+			{
+				rowno: 14,
+				title: <h5>Surveillance datasets</h5>,
+				wide: true,
+				reverse: true,
+				newsStyle: true,
+				content: (
+					<>
+						{" "}
+						<p>
+							As of June 2025, VEClim now displays seasonal averages of observed vector population dynamics on the {" "}
+							<Link
+								onClick={() => {
+								MapAdjustmentsService.handleToMapPageTransition(
+									dispatch,
+									vectorName,
+									mapVector
+								);
+								dispatch(setReadyToView(false));
+								dispatch(setDisplayedPanelID(0));
+								}}
+								to="/MapPage?session=albopictus&tile=presence"
+							>
+							MapPage
+							</Link>. These profiles are derived from three key surveillance datasets:
+							</p>
+							<ul>
+								<li><XLink href="https://doi.org/10.5281/zenodo.11486198">VectAbundance (2010-2022)</XLink></li>
+								<li><XLink href="https://www.gbif.org/dataset/03269e13-84ae-430f-990e-f11069413e36">AIMsurv (2020)</XLink></li>
+								<li><XLink href="https://vectorbase.org/vectorbase/app/">VectorBase (2010-2024)</XLink></li>
+							</ul>
+							<p>
+							We present weekly averages smoothed using a two-week sliding window to highlight typical seasonal trends. For access to raw data or further inspection, please consult the original data sources.
 						</p>
 					</>
 				),

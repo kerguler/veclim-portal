@@ -30,6 +30,9 @@ function PanelProvider({ children }) {
 
 	const tileBase = process.env.REACT_APP_BASE_URL;
 
+	const fcastDateRange = "2025-07-01:2025-10-01";
+	const fcastDateLabel = "July - September, 2025";
+
 	const tileIconRowHeadings = [
 		{ row: 1, label: "2010-2020" },
 		{ row: 2, label: "Mid-term predictions" },
@@ -224,7 +227,7 @@ function PanelProvider({ children }) {
 			linked: "colegg_fcast",
 			label: (
 				<>
-					July - September, 2025
+					{fcastDateLabel}
 					<br />
 					Decadal average
 					<br />
@@ -233,14 +236,14 @@ function PanelProvider({ children }) {
 			),
 			icon: adult,
 			tileLayer: {
-				tile: tileBase + "?v=colegg&z={z}&x={x}&y={y}&dates=2025-07-01:2025-10-01",
+				tile: tileBase + "?v=colegg&z={z}&x={x}&y={y}&dates=" + fcastDateRange,
 				props: { attribution: "", noWrap: true },
 				displayIndex: 21,
 			},
 			description: (
 				<>
 					<p>
-						Average decadal mosquito activity in July - September, 2025 as predicted by the
+						Average decadal mosquito activity in {fcastDateLabel} as predicted by the
 						model (assumes tiger mosquito presence).
 					</p>
 				</>
@@ -252,7 +255,7 @@ function PanelProvider({ children }) {
 			hidden: true,
 			label: (
 				<>
-					July - September, 2025
+					{fcastDateLabel}
 					<br />
 					Predicted
 					<br />
@@ -261,14 +264,14 @@ function PanelProvider({ children }) {
 			),
 			icon: adult,
 			tileLayer: {
-				tile: tileBase + "?v=colegg_fcast&z={z}&x={x}&y={y}&dates=2025-07-01:2025-10-01",
+				tile: tileBase + "?v=colegg_fcast&z={z}&x={x}&y={y}&dates=" + fcastDateRange,
 				props: { attribution: "", noWrap: true },
 				displayIndex: 22,
 			},
 			description: (
 				<>
 					<p>
-						Mosquito activity in July - September, 2025 
+						Mosquito activity in {fcastDateLabel} 
 						as predicted by the model (assumes tiger mosquito presence) 
 						using low-resolution ECMWF seasonal forecasts.
 					</p>
@@ -281,7 +284,7 @@ function PanelProvider({ children }) {
 			linked: "chikv_pouts_fcast",
 			label: (
 				<>
-					July - September, 2025
+					{fcastDateLabel}
 					<br />
 					Decadal average
 					<br />
@@ -290,14 +293,14 @@ function PanelProvider({ children }) {
 			),
 			icon: virus,
 			tileLayer: {
-				tile: tileBase + "?v=chikv_pouts&z={z}&x={x}&y={y}&dates=2025-07-01:2025-10-01",
+				tile: tileBase + "?v=chikv_pouts&z={z}&x={x}&y={y}&dates=" + fcastDateRange,
 				props: { attribution: "", noWrap: true },
 				displayIndex: 23,
 			},
 			description: (
 				<>
 					<p>
-						Average decadal outbreak risk in July - September, 2025 measured as the
+						Average decadal outbreak risk in {fcastDateLabel} measured as the
 						likeliness of starting an outbreak out of 100 independent
 						importations in the first 60 days. The value shown represents a
 						potential derived from the model. We assume vector presence in each
@@ -312,7 +315,7 @@ function PanelProvider({ children }) {
 			hidden: "true",
 			label: (
 				<>
-					July - September, 2025
+					{fcastDateLabel}
 					<br />
 					Predicted
 					<br />
@@ -321,14 +324,14 @@ function PanelProvider({ children }) {
 			),
 			icon: virus,
 			tileLayer: {
-				tile: tileBase + "?v=chikv_pouts_fcast&z={z}&x={x}&y={y}&dates=2025-07-01:2025-10-01",
+				tile: tileBase + "?v=chikv_pouts_fcast&z={z}&x={x}&y={y}&dates=" + fcastDateRange,
 				props: { attribution: "", noWrap: true },
 				displayIndex: 24,
 			},
 			description: (
 				<>
 					<p>
-						Outbreak risk in July - September, 2025 measured as the
+						Outbreak risk in {fcastDateLabel} measured as the
 						likeliness of starting an outbreak out of 100 independent
 						importations in the first 60 days 
 						using low-resolution ECMWF seasonal forecasts.
@@ -342,7 +345,7 @@ function PanelProvider({ children }) {
 			linked: "chikv_iouts_fcast",
 			label: (
 				<>
-					July - September, 2025
+					{fcastDateLabel}
 					<br />
 					Decadal average
 					<br />
@@ -351,7 +354,7 @@ function PanelProvider({ children }) {
 			),
 			icon: impact,
 			tileLayer: {
-				tile: tileBase + "?v=chikv_iouts&z={z}&x={x}&y={y}&dates=2025-07-01:2025-10-01",
+				tile: tileBase + "?v=chikv_iouts&z={z}&x={x}&y={y}&dates=" + fcastDateRange,
 				props: { attribution: "", noWrap: true },
 				displayIndex: 25,
 			},
@@ -359,7 +362,7 @@ function PanelProvider({ children }) {
 				<>
 					<p>
 						Average decadal expected impact of an infectious
-						case imported in July - September, 2025, in a population of 4000 
+						case imported in {fcastDateLabel}, in a population of 4000 
 						susceptible individuals. The value shown represents a potential derived 
 						from the model. We assume vector presence in each grid cell.
 					</p>
@@ -372,7 +375,7 @@ function PanelProvider({ children }) {
 			hidden: "true",
 			label: (
 				<>
-					July - September, 2025
+					{fcastDateLabel}
 					<br />
 					Predicted
 					<br />
@@ -381,7 +384,7 @@ function PanelProvider({ children }) {
 			),
 			icon: impact,
 			tileLayer: {
-				tile: tileBase + "?v=chikv_iouts_fcast&z={z}&x={x}&y={y}&dates=2025-07-01:2025-10-01",
+				tile: tileBase + "?v=chikv_iouts_fcast&z={z}&x={x}&y={y}&dates=" + fcastDateRange,
 				props: { attribution: "", noWrap: true },
 				displayIndex: 26,
 			},
@@ -389,7 +392,7 @@ function PanelProvider({ children }) {
 				<>
 					<p>
 						Expected impact of an infectious
-						case imported in July - September, 2025, in a population of 4000 
+						case imported in {fcastDateLabel}, in a population of 4000 
 						susceptible individuals estimated 
 						using low-resolution ECMWF seasonal forecasts.
 					</p>
