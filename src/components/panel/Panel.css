@@ -40,6 +40,8 @@
 	align-self: center;
 	box-shadow: 0px 2px 2px 3px rgba(19, 16, 16, 0.3);
 	position: relative;
+	max-height: 90vh;
+	overflow-y: scroll;
 }
 .panel-inner-box h1 {
 	color: var(--secondary-color1);
@@ -92,6 +94,8 @@
 		flex-wrap: wrap;
 		align-content: center;
 		flex-direction: unset;
+		max-height: 90vh;
+		overflow-y: scroll;
 	}
 	.panel-content {
 		margin-top: 0.5rem;
@@ -131,7 +135,8 @@
 		color: var(--secondary-color1);
 		width: 400px;
 		height: fit-content;
-		max-height: unset;
+		max-height: 90vh;
+		overflow-y: scroll;
 	}
 	.panel-inner-box h1 {
 		color: var(--secondary-color1);
