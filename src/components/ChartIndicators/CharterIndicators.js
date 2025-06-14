@@ -35,12 +35,19 @@ function ChartIndicators() {
 		var todate = new Date(data.date.date1);
 		fdate = (
 			<>
-				<p>
-					{dateToString(fromdate, "-")} <span className="note">from</span>
-				</p>
-				<p>
-					{dateToString(todate, "-")} <span className="note">to</span>
-				</p>
+				<div className="chart-indicators-row">
+					<p>
+						<strong>Forecast range</strong>
+					</p>
+					<div>
+						<p>
+							{dateToString(fromdate, "-")} <span className="note">from</span>
+						</p>
+						<p>
+							{dateToString(todate, "-")} <span className="note">to</span>
+						</p>
+					</div>
+				</div>
 			</>
 		);
 	}
@@ -71,6 +78,7 @@ function ChartIndicators() {
 	) {
 		mosquito = (
 			<>
+				<div className="chart-indicators-vector">
 				<p>
 					Reports of the <strong>tiger mosquito</strong>
 				</p>
@@ -85,13 +93,16 @@ function ChartIndicators() {
 						);
 					})}
 				</ul>
+				</div>
 			</>
 		);
 	} else if ("presence" in data) {
 		mosquito = (
+			<div className="chart-indicators-vector">
 			<p>
 				<strong>No</strong> reports of the tiger mosquito
 			</p>
+			</div>
 		);
 	}
 
@@ -199,13 +210,8 @@ function ChartIndicators() {
 						</p>
 					</div>
 				</div>
-				<div className="chart-indicators-row">
-					<p>
-						<strong>Forecast range</strong>
-					</p>
-					<div>{fdate}</div>
-				</div>
-				<div className="chart-indicators-vector">{mosquito}</div>
+				{fdate}
+				{mosquito}
 				{londat}
 			</div>
 		</>

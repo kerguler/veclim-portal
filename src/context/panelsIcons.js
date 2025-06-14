@@ -11,7 +11,6 @@ import virus from "assets/icons/map-page-right-menu/png/013-coronavirus-32px.png
 import impact from "assets/icons/map-page-right-menu/png/015-heart rate-32px.png";
 import model from "assets/icons/map-page-right-menu/png/019-refresh-32px.png";
 import OptionsPanel from "components/optionsPanel/OptionsPanel";
-import optionsIcon from "assets/icons/map-page-right-menu/svg/options.svg";
 import info from "assets/icons/map-page-right-menu/png/008-files-32px.png";
 import { createContext } from "react";
 import { ChartIndicators } from "../components/ChartIndicators/CharterIndicators";
@@ -225,7 +224,7 @@ function PanelProvider({ children }) {
 			linked: "colegg_fcast",
 			label: (
 				<>
-					March - June, 2025
+					July - September, 2025
 					<br />
 					Decadal average
 					<br />
@@ -234,14 +233,14 @@ function PanelProvider({ children }) {
 			),
 			icon: adult,
 			tileLayer: {
-				tile: tileBase + "?v=colegg&z={z}&x={x}&y={y}&dates=2025-03-01:2025-06-01",
+				tile: tileBase + "?v=colegg&z={z}&x={x}&y={y}&dates=2025-07-01:2025-10-01",
 				props: { attribution: "", noWrap: true },
 				displayIndex: 21,
 			},
 			description: (
 				<>
 					<p>
-						Average decadal mosquito activity in March - June, 2025 as predicted by the
+						Average decadal mosquito activity in July - September, 2025 as predicted by the
 						model (assumes tiger mosquito presence).
 					</p>
 				</>
@@ -253,7 +252,7 @@ function PanelProvider({ children }) {
 			hidden: true,
 			label: (
 				<>
-					March - June, 2025
+					July - September, 2025
 					<br />
 					Predicted
 					<br />
@@ -262,14 +261,14 @@ function PanelProvider({ children }) {
 			),
 			icon: adult,
 			tileLayer: {
-				tile: tileBase + "?v=colegg_fcast&z={z}&x={x}&y={y}&dates=2025-03-01:2025-06-01",
+				tile: tileBase + "?v=colegg_fcast&z={z}&x={x}&y={y}&dates=2025-07-01:2025-10-01",
 				props: { attribution: "", noWrap: true },
 				displayIndex: 22,
 			},
 			description: (
 				<>
 					<p>
-						Mosquito activity in March - June, 2025 
+						Mosquito activity in July - September, 2025 
 						as predicted by the model (assumes tiger mosquito presence) 
 						using low-resolution ECMWF seasonal forecasts.
 					</p>
@@ -282,7 +281,7 @@ function PanelProvider({ children }) {
 			linked: "chikv_pouts_fcast",
 			label: (
 				<>
-					March - June, 2025
+					July - September, 2025
 					<br />
 					Decadal average
 					<br />
@@ -291,14 +290,14 @@ function PanelProvider({ children }) {
 			),
 			icon: virus,
 			tileLayer: {
-				tile: tileBase + "?v=chikv_pouts&z={z}&x={x}&y={y}&dates=2025-03-01:2025-06-01",
+				tile: tileBase + "?v=chikv_pouts&z={z}&x={x}&y={y}&dates=2025-07-01:2025-10-01",
 				props: { attribution: "", noWrap: true },
 				displayIndex: 23,
 			},
 			description: (
 				<>
 					<p>
-						Average decadal outbreak risk in March - June, 2025 measured as the
+						Average decadal outbreak risk in July - September, 2025 measured as the
 						likeliness of starting an outbreak out of 100 independent
 						importations in the first 60 days. The value shown represents a
 						potential derived from the model. We assume vector presence in each
@@ -313,7 +312,7 @@ function PanelProvider({ children }) {
 			hidden: "true",
 			label: (
 				<>
-					March - June, 2025
+					July - September, 2025
 					<br />
 					Predicted
 					<br />
@@ -322,14 +321,14 @@ function PanelProvider({ children }) {
 			),
 			icon: virus,
 			tileLayer: {
-				tile: tileBase + "?v=chikv_pouts_fcast&z={z}&x={x}&y={y}&dates=2025-03-01:2025-06-01",
+				tile: tileBase + "?v=chikv_pouts_fcast&z={z}&x={x}&y={y}&dates=2025-07-01:2025-10-01",
 				props: { attribution: "", noWrap: true },
 				displayIndex: 24,
 			},
 			description: (
 				<>
 					<p>
-						Outbreak risk in March - June, 2025 measured as the
+						Outbreak risk in July - September, 2025 measured as the
 						likeliness of starting an outbreak out of 100 independent
 						importations in the first 60 days 
 						using low-resolution ECMWF seasonal forecasts.
@@ -343,7 +342,7 @@ function PanelProvider({ children }) {
 			linked: "chikv_iouts_fcast",
 			label: (
 				<>
-					March - June, 2025
+					July - September, 2025
 					<br />
 					Decadal average
 					<br />
@@ -352,7 +351,7 @@ function PanelProvider({ children }) {
 			),
 			icon: impact,
 			tileLayer: {
-				tile: tileBase + "?v=chikv_iouts&z={z}&x={x}&y={y}&dates=2025-03-01:2025-06-01",
+				tile: tileBase + "?v=chikv_iouts&z={z}&x={x}&y={y}&dates=2025-07-01:2025-10-01",
 				props: { attribution: "", noWrap: true },
 				displayIndex: 25,
 			},
@@ -360,7 +359,7 @@ function PanelProvider({ children }) {
 				<>
 					<p>
 						Average decadal expected impact of an infectious
-						case imported in March - June, 2025, in a population of 4000 
+						case imported in July - September, 2025, in a population of 4000 
 						susceptible individuals. The value shown represents a potential derived 
 						from the model. We assume vector presence in each grid cell.
 					</p>
@@ -373,7 +372,7 @@ function PanelProvider({ children }) {
 			hidden: "true",
 			label: (
 				<>
-					March - June, 2025
+					July - September, 2025
 					<br />
 					Predicted
 					<br />
@@ -382,7 +381,7 @@ function PanelProvider({ children }) {
 			),
 			icon: impact,
 			tileLayer: {
-				tile: tileBase + "?v=chikv_iouts_fcast&z={z}&x={x}&y={y}&dates=2025-03-01:2025-06-01",
+				tile: tileBase + "?v=chikv_iouts_fcast&z={z}&x={x}&y={y}&dates=2025-07-01:2025-10-01",
 				props: { attribution: "", noWrap: true },
 				displayIndex: 26,
 			},
@@ -390,7 +389,7 @@ function PanelProvider({ children }) {
 				<>
 					<p>
 						Expected impact of an infectious
-						case imported in March - June, 2025, in a population of 4000 
+						case imported in July - September, 2025, in a population of 4000 
 						susceptible individuals estimated 
 						using low-resolution ECMWF seasonal forecasts.
 					</p>
