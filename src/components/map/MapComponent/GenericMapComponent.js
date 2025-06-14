@@ -48,10 +48,13 @@ function GenericMapComponent({ fitworld }) {
 		iconMarker: null,
 		prevClickPointRef: null,
 		minZoom: 1,
+		sideBySideMap: null,
 	};
-const tileOpacity = useSelector(
-		(state) => state.fetcher.fetcherStates.map.optionsPanel.tileOpacity)
-	const mapParRef = useRef(mapParameters);
+const optionsPanel = useSelector(
+		(state) => state.fetcher.fetcherStates.map.optionsPanel)
+	
+const { tileOpacity, showVectorAbundance,showMapLabels } = optionsPanel;	
+		const mapParRef = useRef(mapParameters);
 	let p = mapParRef.current;
 	const { tileIcons } = useContext(PanelContext);
 	const tiles = useRef(null);
@@ -76,6 +79,7 @@ const tileOpacity = useSelector(
 
 
 	useEffect(() => {
+		let p=mapParRef.current;
 		if (
 			mapPagePosition &&
 			directMap.display !== -2 &&
@@ -146,6 +150,10 @@ const tileOpacity = useSelector(
 			dispatch,
 			tileOpacity
 		);
+		if (p.sideBySideMap) {
+  p.sideBySideMap.remove();
+  p.sideBySideMap = null;
+}
 		MapAdjustmentsService.handleDoubleMap(
 			mapParRef,
 			tileArray,
@@ -162,6 +170,10 @@ const tileOpacity = useSelector(
 		p.map.on("resize", handleResize);
 		p.map.on("move", handleMove);
 		return () => {
+			  if (p.sideBySideMap) {
+    p.sideBySideMap.remove();
+    p.sideBySideMap = null;
+  }
 			TileLoaderService.removeTileStyles(tileMat);
 			tileMat.forEach((tile) => {
 				p.map.removeLayer(tile);
@@ -187,8 +199,8 @@ const tileOpacity = useSelector(
 		directMap.display,
 		directInit,
 		fitworld,
-		p.map,
-		tileOpacity
+p.map,
+		tileOpacity,showMapLabels,showVectorAbundance
 	]);
 
 	return (

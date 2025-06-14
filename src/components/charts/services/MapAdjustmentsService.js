@@ -342,10 +342,10 @@ class MapAdjustmentsService {
 		let sideBySideMap = null;
 		let tempCenter = p.map.getCenter();
 		p.center = [tempCenter.lat, tempCenter.lng];
-		const handleDividerMove = (e) => {
-			dispatch(setDividerPosition(e.x));
-		};
-		const debouncedHandleDividerMove = this.debounce(handleDividerMove, 10);
+		// const handleDividerMove = (e) => {
+		// 	dispatch(setDividerPosition(e.x));
+		// };
+		// const debouncedHandleDividerMove = this.debounce(handleDividerMove, 10);
 		p.zoom = p.map.getZoom();
 		if (tileArray.length === 0) {
 			dispatch(setMapLoaded(false));
@@ -358,15 +358,15 @@ class MapAdjustmentsService {
 			p.map.createPane("right");
 			dispatch(setLeftMapLoaded(false));
 			dispatch(setRightMapLoaded(false));
-			sideBySideMap = L.control
-				.sideBySide([tileMat[0]], [tileMat[1]], {})
+			p.sideBySideMap = L.control
+				.sideBySide([tileMat[0]], [tileMat[1]])
 
-				.on("dividermove", debouncedHandleDividerMove)
+				// .on("dividermove", debouncedHandleDividerMove)
 				.addTo(p.map);
 		}
 
 		return () => {
-			sideBySideMap && sideBySideMap.off("dividermove", handleDividerMove);
+			// sideBySideMap && sideBySideMap.off("dividermove", debouncedHandleDividerMove);
 		};
 	}
 

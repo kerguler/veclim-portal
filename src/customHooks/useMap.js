@@ -98,7 +98,7 @@ const mapOptions=useSelector(
 		m.bounds,
 		switchMap,
 		directInit,
-		mapParRef,showVectorAbundance,showMapLabels
+		showVectorAbundance,showMapLabels,tileOpacity
 		
 	]);
 }
