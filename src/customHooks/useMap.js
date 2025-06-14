@@ -44,10 +44,11 @@ const mapOptions=useSelector(
 			maxBounds: p.maxBounds,
 			zoomControl: false,
 		});
+		const baseLayer=MapAdjustmentsService.baseLayer
 		const baseLayerOSM=MapAdjustmentsService.baseLayerOSM
 		const dataLayer=MapAdjustmentsService.dataLayer;
 		const labelLayer= MapAdjustmentsService.labelLayer
-		baseLayerOSM.addTo(p.map);
+		baseLayer.addTo(p.map);
 		// labelLayer.addTo(p.map);
 		if (showVectorAbundance) {
 			if (!p.map.hasLayer(dataLayer)){
@@ -61,12 +62,18 @@ const mapOptions=useSelector(
 			}
 		}
 		if (showMapLabels) {
-			if (!p.map.hasLayer(labelLayer)) {
-				labelLayer.addTo(p.map);
+			if (!p.map.hasLayer(baseLayerOSM)) {
+				baseLayerOSM.addTo(p.map);
+			}
+			if (p.map.hasLayer(baseLayer)) {
+				p.map.removeLayer(baseLayer);
 			}
 		} else {
-			if (p.map.hasLayer(labelLayer)) {
-				p.map.removeLayer(labelLayer);
+			if (!p.map.hasLayer(baseLayer)) {
+				baseLayer.addTo(p.map);
+			}
+			if (p.map.hasLayer(baseLayerOSM)) {
+				p.map.removeLayer(baseLayerOSM);
 			}
 		}
 

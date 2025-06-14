@@ -1154,13 +1154,10 @@ function PanelProvider({ children }) {
 			chartParameters: {},
 
 			icon: model,
-			content: <ChangeMapPanel></ChangeMapPanel>,
-		},
-		{id:9,
-			key:"options_panel",
-			chartParameters: {},
-			icon: optionsIcon,
-			content: <OptionsPanel></OptionsPanel>,
+			content: (<>
+			<ChangeMapPanel></ChangeMapPanel>
+			<OptionsPanel></OptionsPanel>
+			</>),
 		}
 	];
 	const panelDataSand = [
@@ -1226,7 +1223,10 @@ function PanelProvider({ children }) {
 			chartParameters: {},
 			key:"sandfly_vector_selector",
 			icon: model,
-			content: <ChangeMapPanel></ChangeMapPanel>,
+			content: (<>
+			<ChangeMapPanel></ChangeMapPanel>
+			<OptionsPanel></OptionsPanel>
+			</>),
 		},
 	];
 

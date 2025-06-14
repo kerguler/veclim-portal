@@ -13,9 +13,9 @@ const fetcherSlice = createSlice({
 				currentMapCenter: [35.1966527, 33.3217152],
 				currentMapZoom: 1,
 				optionsPanel:{
-					showVectorAbundance: true,
-					tileOpacity: 0.5,
-					showMapLabels: true},
+					showVectorAbundance: false,
+					tileOpacity: 1.0,
+					showMapLabels: false},
 				mapLoaded: false,
 				leftMapLoaded: false,
 				rightMapLoaded: false,
