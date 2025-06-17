@@ -871,7 +871,7 @@ function PanelProvider({ children }) {
 					<div>
 						<p>
 							Daily number of eggs laid by the Asian tiger mosquito as a proxy
-							to biting activity.
+							for biting activity.
 						</p>
 					</div>
 				</div>
