@@ -519,9 +519,9 @@ function TextProvider({ children }) {
 							<strong>
 								On the way to the forecast, we have what we call proxies, not
 								quite like the real thing, but as good as one can hope for. The
-								number of bites you scratch on your ankles can be a proxy to
+								number of bites you scratch on your ankles can be a proxy for
 								outbreak risk, and the number of vectors caught in specialised
-								traps can be a proxy to the number of bites. We can predict the
+								traps can be a proxy for the number of bites. We can predict the
 								number of vectors or the number of bites, and validate this
 								prediction by simply counting - by making observations.
 							</strong>
@@ -568,7 +568,7 @@ function TextProvider({ children }) {
 				caption: (
 					<p>
 						The number of eggs laid per trap per adult female mosquito as a
-						proxy to biting activity.
+						proxy for biting activity.
 					</p>
 				),
 				wide: true,
