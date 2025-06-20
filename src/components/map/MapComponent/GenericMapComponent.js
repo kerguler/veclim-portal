@@ -4,7 +4,9 @@ import { useDispatch } from "react-redux";
 import "./mapComponent.css";
 import MapCircularProgressBar from "../MapCircularProgessBar/MapCircularProgressBar";
 import { useRef } from "react";
-import ColorBarComponent from "../ColorBar/ColorBarComponent";
+// import ColorBarComponent from "../ColorBar/ColorBarComponent";
+// import TileNameDisplay from "../tileNameDisplay/TileNameDisplay";
+import ColorBarLabelComponent from "../ColorBarLabel/ColorBarLabelComponent";
 import { useContext } from "react";
 import PanelContext from "context/panelsIcons";
 import TileLoaderService from "customHooks/TileLoaderService";
@@ -16,9 +18,6 @@ import useMapCoordinateUpdate from "customHooks/useMapCoordinateUpdate";
 import ErrorScreenMap from "../errorScreen/ErrorScreenMap";
 import { setCurrentMapZoom } from "store";
 import { setCurrentMapCenter } from "store";
-import TileNameDisplay from "../tileNameDisplay/TileNameDisplay";
-import { setDirectMap } from "store";
-import { setDisplayedPanelID } from "store";
 import useFetcherVariables from "customHooks/useFetcherVariables";
 
 function GenericMapComponent({ fitworld }) {
@@ -208,13 +207,15 @@ p.map,
 			{" "}
 			{errorMessage && <ErrorScreenMap error={errorMessage} />}
 			<MapCircularProgressBar />
-			<ColorBarComponent times={tileArray.length}></ColorBarComponent>
-			<TileNameDisplay></TileNameDisplay>
+			<ColorBarLabelComponent times={tileArray.length}></ColorBarLabelComponent>
 			<div className="map" id="map1">
 				<div id="coordinates"></div>
 			</div>
 		</>
 	);
+// + <ColorBarLabelComponent times={tileArray.length}></ColorBarLabelComponent>
+// - <ColorBarComponent times={tileArray.length}></ColorBarComponent>
+// - <TileNameDisplay></TileNameDisplay>
 }
 
 export default GenericMapComponent;
