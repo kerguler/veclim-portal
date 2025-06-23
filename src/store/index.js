@@ -21,6 +21,7 @@ import {
 	clearTimer,
 } from "./slices/newsSlice";
 import {
+	setYaxisInfo,
 	setShimmered,
 	setDisplaySimulationPanel,
 	setDisplayTileNames,
@@ -44,6 +45,8 @@ import {
 	setBrushRange,
 	setBrushData,
 	setBrushDatay,
+	setBrushDatayLeft,
+	setBrushDatayRight,
 	setChartDates,
 	setCurrentMapBounds,
 	setCurrentMapCenter,
@@ -292,4 +295,7 @@ export {
 	setUser,
 	setTimer,
 	clearTimer,
+	setBrushDatayLeft,
+	setBrushDatayRight,
+	setYaxisInfo,
 };

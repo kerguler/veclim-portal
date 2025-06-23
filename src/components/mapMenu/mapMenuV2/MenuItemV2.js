@@ -44,7 +44,6 @@ function MenuItemV2({ item, onToggle, shouldShimmer, shimmerList, direction }) {
 	const menuChildren = item.children.filter(
 		(child) => !child.key.endsWith("_panel"),
 	);
-	console.log({ menuChildren });
 	const [level, setLevel] = useState(0);
 
 	useEffect(() => {

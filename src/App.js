@@ -6,7 +6,8 @@ import "styles/Theme1.css";
 import "styles/App.css";
 import CookieHandler from "./components/cookieConsent/CookieHandler";
 import { useUserLocation } from "./store/apis/utils";
-
+import Panel from "components/panel/Panel";
+import { PanelProviderV2 } from "context/panelsIconsV2";
 const GenericPage = lazy(() => import("pages/GenericPage/GenericPage"));
 const NoPage = lazy(() => import("pages/NoPage"));
 const MapPackageLandingV2 = lazy(() => import("pages/MapPackageLandingV2"));
@@ -32,7 +33,11 @@ function App() {
 						<Route path='/404' element={<NoPage />} />
 						<Route
 							path='/MapPage'
-							element={<MapPackageLandingV2 />}
+							element={
+								<PanelProviderV2>
+									<MapPackageLandingV2 />
+								</PanelProviderV2>
+							}
 						/>
 					</Routes>
 				</Suspense>

@@ -80,7 +80,11 @@ const fetcherSlice = createSlice({
 						dataArrived: false,
 						brush: {
 							brushRange: { startIndex: null, endIndex: null },
-							brushDatay: { min: 0, max: 0 },
+							brushDatay: {
+								left: { min: 0, max: 0 },
+								right: { min: 0, max: 0 },
+							},
+							yaxisInfo: {},
 							brushData: { min: 0, max: 0 },
 						},
 						sliders: { slider1: { enabled: true, value: 50 } },
@@ -97,6 +101,19 @@ const fetcherSlice = createSlice({
 	},
 
 	reducers: {
+		setYaxisInfo(state, action) {
+			const { direction, value } = action.payload;
+			state.fetcherStates.menu[direction].chart.brush.yaxisInfo = value;
+		},
+		setBrushDatayLeft(state, action) {
+			state.fetcherStates.menu.left.chart.brush.brushDatay.left =
+				action.payload;
+		},
+		setBrushDatayRight(state, action) {
+			state.fetcherStates.menu.left.chart.brush.brushDatay.right =
+				action.payload;
+		},
+
 		setShimmered(state, action) {
 			const { direction, value } = action.payload;
 			state.fetcherStates.menu[direction].shimmered = value;
@@ -159,7 +176,8 @@ const fetcherSlice = createSlice({
 		},
 		setPanelInterfere(state, action) {
 			const { direction, value } = action.payload;
-			state.fetcherStates.menu[direction].panel.panelInterfere = value;
+			state.fetcherStates.menu[direction || "left"].panel.panelInterfere =
+				value;
 		},
 		setBrushRange(state, action) {
 			const { direction, value } = action.payload;
@@ -196,14 +214,14 @@ const fetcherSlice = createSlice({
 
 		setDataArrived(state, action) {
 			const { direction, value } = action.payload;
-
-			state.fetcherStates.menu[direction].chart.dataArrived = value;
+			state.fetcherStates.menu[direction || "left"].chart.dataArrived =
+				value;
 		},
 
 		setMessenger(state, action) {
 			const { direction, value } = action.payload;
-
-			state.fetcherStates.menu[direction].chart.messenger = value;
+			state.fetcherStates.menu[direction || "left"].chart.messenger =
+				value;
 		},
 
 		setInvalidateTsData(state, action) {
@@ -332,6 +350,7 @@ const fetcherSlice = createSlice({
 
 export const {
 	setShimmered,
+	setYaxisInfo,
 	setDisplaySimulationPanel,
 	setPanelTop,
 	setDisplayTileNames,
@@ -383,5 +402,7 @@ export const {
 	setVectorName,
 	setAvailableTiles,
 	setPlotReady,
+	setBrushDatayLeft,
+	setBrushDatayRight,
 } = fetcherSlice.actions;
 export const fetcherReducer = fetcherSlice.reducer;

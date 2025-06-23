@@ -1,17 +1,17 @@
-import useDirectorFun from 'customHooks/useDirectorFun';
-import { useFetchTimeSeriesDataQuery } from 'store';
-import { useEffect, useRef } from 'react';
-import ChartCalculatorService from 'components/charts/services/ChartCalculatorService';
-import { useDispatch } from 'react-redux';
-import RechartsPlot from '../RechartsPlot';
-import useSetDefaultCoordinates from '../customPlotterHooks/useSetDefaultCoordinates';
-import ErrorComponent from '../errorComponent/ErrorComponent';
-import ErrorBoundary from 'components/errorBoundary/ErrorBoundary';
-import ChartLoadingSkeleton from 'components/skeleton/Skeleton';
-import { useSelector } from 'react-redux';
-import { setPlotReady } from 'store';
-import { setBrushRange } from 'store';
-import { setMessenger } from 'store';
+import useDirectorFun from "customHooks/useDirectorFun";
+import { useFetchTimeSeriesDataQuery } from "store";
+import { useEffect, useRef } from "react";
+import ChartCalculatorService from "components/charts/services/ChartCalculatorService";
+import { useDispatch } from "react-redux";
+import RechartsPlot from "../RechartsPlot";
+import useSetDefaultCoordinates from "../customPlotterHooks/useSetDefaultCoordinates";
+import ErrorComponent from "../errorComponent/ErrorComponent";
+import ErrorBoundary from "components/errorBoundary/ErrorBoundary";
+import ChartLoadingSkeleton from "components/skeleton/Skeleton";
+import { useSelector } from "react-redux";
+import { setPlotReady } from "store";
+import { setBrushRange } from "store";
+import { setMessenger } from "store";
 function TsRequestV2({ direction }) {
 	const dispatch = useDispatch();
 
@@ -36,11 +36,10 @@ function TsRequestV2({ direction }) {
 	} = useDirectorFun(direction);
 
 	const { data, error, isFetching } = useFetchTimeSeriesDataQuery({
-		position: JSON.stringify(mapPagePosition),
+		position: mapPagePosition,
 		vectorName,
 		dateArray,
 	});
-
 	useEffect(() => {
 		plotReady && dispatch(setPlotReady({ direction, value: false }));
 	}, [vectorName, dispatch, setPlotReady]);
@@ -69,7 +68,7 @@ function TsRequestV2({ direction }) {
 						direction,
 					);
 				if (isError) {
-					console.log('shouldnt have come here');
+					console.log("shouldnt have come here");
 					dispatch(
 						setMessenger({
 							direction,
@@ -107,7 +106,7 @@ function TsRequestV2({ direction }) {
 					}),
 				);
 			} else {
-				console.log('no data or no chartparameters');
+				console.log("no data or no chartparameters");
 				dispatch(setPlotReady({ direction, value: false }));
 				mapPagePosition.lat &&
 					dispatch(
@@ -116,13 +115,13 @@ function TsRequestV2({ direction }) {
 							value: {
 								...messenger,
 								message:
-									'Data is not available yet. Please click on the Map',
+									"Data is not available yet. Please click on the Map",
 							},
 						}),
 					);
 			}
 		} catch (err) {
-			console.log('in catch block', err);
+			console.log("in catch block", err);
 			dispatch(
 				setMessenger({
 					direction,
@@ -151,7 +150,7 @@ function TsRequestV2({ direction }) {
 				direction,
 				value: {
 					...messenger,
-					message: 'chart parameters are not available',
+					message: "chart parameters are not available",
 				},
 			}),
 		);
@@ -167,13 +166,12 @@ function TsRequestV2({ direction }) {
 	if (messenger.message) {
 		return <ErrorComponent text={messenger.message}></ErrorComponent>;
 	}
-
 	if (r.dataToPlot) {
 		return (
 			plotReady && (
 				<ErrorBoundary>
 					<RechartsPlot
-						direction='left'
+						direction={direction}
 						plotMat={r.dataToPlot}
 					></RechartsPlot>
 				</ErrorBoundary>

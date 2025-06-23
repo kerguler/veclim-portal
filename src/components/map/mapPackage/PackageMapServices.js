@@ -27,11 +27,24 @@ import { setInvalidateSimData } from "store";
 import { setDataArrived } from "store";
 import { setOpenItems } from "store";
 import { zIndex } from "material-ui/styles";
+import { setPlotReady } from "store";
 
 class PackageMapServices {
 	static baseLayer = L.tileLayer(
 		"http://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.webp",
 		{ attribution: "", noWrap: true },
+	);
+	static baseLayerOSM = L.tileLayer(
+		"https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+		{ attribution: "", noWrap: true }, //'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+	);
+	static dataLayer = L.tileLayer(
+		"https://veclim.com/api?v=vabun_v015&z={z}&x={x}&y={y}",
+		{ zIndex: 1000, attribution: "", noWrap: true },
+	);
+	static labelLayer = L.tileLayer(
+		"https://{s}.basemaps.cartocdn.com/rastertiles/voyager_only_labels/{z}/{x}/{y}{r}.webp",
+		{ zIndex: 2000, attribution: "", noWrap: true }, // '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
 	);
 	static cyprusBounds = [
 		[34.25, 31.5],
@@ -42,8 +55,8 @@ class PackageMapServices {
 		[-90, -180],
 		[90, 180],
 	];
-	static defaultWorldCenter = [0, 0];
-	static defaultCypCenter = [35.1, 33.33];
+	static defaultWorldCenter = { lat: 0, lng: 0 };
+	static defaultCypCenter = { lat: 35.1, lng: 33.33 };
 	static icon1 = L.icon({
 		iconUrl: markerLogo,
 		iconSize: [30, 30],
@@ -113,7 +126,6 @@ class PackageMapServices {
 		vectorName,
 		dispatch,
 		directMap,
-		directMapRight,
 		mapPagePosition,
 		direction,
 	) {
@@ -135,10 +147,7 @@ class PackageMapServices {
 		} else {
 			dispatch(setPanelInterfere({ direction, value: -1 }));
 		}
-		if (directMapRight) {
-			if (directMapRight.display === -2)
-				dispatch(setPanelInterfere({ direction, value: null }));
-		} else {
+		if (directMap) {
 			dispatch(setPanelInterfere({ direction, value: null }));
 		}
 	}
@@ -163,6 +172,7 @@ class PackageMapServices {
 		dispatch(
 			setMapPagePosition({ lat: newPosition.lat, lng: newPosition.lng }),
 		);
+		dispatch(setPlotReady({ direction: "left", value: false }));
 		p.highlightMarker && p.map.removeLayer(p.highlightMarker);
 		p.iconMarker && p.map.removeLayer(p.iconMarker);
 		p.rectMarker && p.map.removeLayer(p.rectMarker);

@@ -1,33 +1,29 @@
-import './ColorBarComponent.css';
-import { setDisplayTileNames, useFetchColorBarsDataQuery } from 'store';
+import "./ColorBarComponent.css";
+import { setDisplayTileNames, useFetchColorBarsDataQuery } from "store";
 
-import { useDispatch, useSelector } from 'react-redux';
-import { useEffect } from 'react';
-import { useState } from 'react';
-import { useRef } from 'react';
+import { useDispatch, useSelector } from "react-redux";
+import { useContext, useEffect } from "react";
+import { useState } from "react";
+import { useRef } from "react";
+import useDirectorFun from "customHooks/useDirectorFun";
+import useColorBarResize from "./useColorBarResize";
+import PanelContextV2 from "context/panelsIconsV2";
 function ColorBarComponent({ times }) {
-	const panelOpenLeft = useSelector(
-		(state) => state.fetcher.fetcherStates.menu.left.panelOpen,
-	);
-
-	const panelTop = useSelector(
-		(state) => state.fetcher.fetcherStates.menu['left'].panel.panelTop,
-	);
-
-	const { data, error, isFetching } = useFetchColorBarsDataQuery();
-	const selectedTiles = useSelector(
+	const { panelOpen, panelTop } = useDirectorFun("left");
+	const tileArray = useSelector(
 		(state) => state.fetcher.fetcherStates.tileArray,
 	);
+	const { tileIcons } = useContext(PanelContextV2);
+	const { data, error, isFetching } = useFetchColorBarsDataQuery();
 
 	const leftBarRef = useRef(),
 		rightBarRef = useRef();
 
-	const [style, setStyle] = useState([]);
 	const dispatch = useDispatch();
 	const [extractedTile, setExtractedTile] = useState([]);
 
 	const handleDisplayTiles = (e, direction) => {
-		if (direction === 'left') {
+		if (direction === "left") {
 			dispatch(
 				setDisplayTileNames({
 					center: false,
@@ -35,7 +31,7 @@ function ColorBarComponent({ times }) {
 					right: false,
 				}),
 			);
-		} else if (direction === 'right') {
+		} else if (direction === "right") {
 			dispatch(
 				setDisplayTileNames({
 					center: false,
@@ -53,68 +49,24 @@ function ColorBarComponent({ times }) {
 			);
 		}
 	};
+	const style = useColorBarResize(
+		leftBarRef,
+		rightBarRef,
+		panelOpen,
+		panelTop,
+		times,
+	);
+
 	useEffect(() => {
-		const handleResize = () => {
-			let leftHeight, rightHeight;
-			if (leftBarRef.current) {
-				const { height } = leftBarRef.current.getBoundingClientRect();
-				leftHeight = height;
-			}
-
-			if (rightBarRef.current) {
-				const { height } = rightBarRef.current.getBoundingClientRect();
-				rightHeight = height;
-			}
-
-			if (window.innerWidth <= 499) {
-				if (panelOpenLeft) {
-					setStyle([
-						{
-							top: `${panelTop - leftHeight - 20}px`,
-							bottom: 'unset',
-						},
-						{
-							top: `${panelTop - rightHeight - 20}px`,
-							bottom: 'unset',
-						},
-					]);
-				} else {
-					setStyle([
-						{ bottom: '5%', top: 'unset' },
-						{ bottom: '5%', top: 'unset' },
-					]);
-				}
-			} else {
-				setStyle([
-					{ bottom: '1%', top: 'unset' },
-					{ bottom: '1%', top: 'unset' },
-				]);
-			}
-		};
-		handleResize();
-		window.addEventListener('resize', handleResize);
-
-		return () => {
-			window.removeEventListener('resize', handleResize);
-		};
-	}, [panelOpenLeft, panelTop, times]);
-	useEffect(() => {
-		if (!data) {
-			return;
-		}
-		if (!selectedTiles) return;
-
-		const extractedTile1 =
-			selectedTiles &&
-			selectedTiles.map((tile, index) => {
-				let acc;
-				if (tile in data) {
-					acc = { key: tile, ...data[tile] };
-					return acc;
-				}
+		if (data) {
+			const extractedTile1 = tileArray?.map((tile) => {
+				const found = tileIcons.find((icon) => icon.key === tile);
+				return found?.colkey;
 			});
-		setExtractedTile(extractedTile1);
-	}, [data, selectedTiles]);
+
+			setExtractedTile(extractedTile1);
+		}
+	}, [data, tileArray, isFetching, error]);
 
 	let colors, labels;
 	if (isFetching) {
@@ -123,13 +75,13 @@ function ColorBarComponent({ times }) {
 		return <div></div>;
 	} else {
 		if (!extractedTile || extractedTile.length === 0) return <div></div>;
-		if (selectedTiles.length === 0) return <div></div>;
+		if (tileArray.length === 0) return <div></div>;
 		if (!data) return <div></div>;
 
-		colors = data[extractedTile[0].key].colors;
-		labels = data[extractedTile[0].key].labels;
+		colors = data[extractedTile[0]].colors;
+		labels = data[extractedTile[0]].labels;
 		let renderedDivs2, renderedLabels2;
-		let transColor = '#00000000';
+		let transColor = "#00000000";
 
 		const renderedDivs = colors.map((color, index) => {
 			return (
@@ -139,7 +91,7 @@ function ColorBarComponent({ times }) {
 					style={{
 						backgroundColor: `${
 							colors[colors.length - index - 1] === transColor
-								? '#FFFFFF'
+								? "#FFFFFF"
 								: colors[colors.length - index - 1]
 						}`,
 					}}
@@ -154,8 +106,8 @@ function ColorBarComponent({ times }) {
 			);
 		});
 		if (extractedTile.length === 2) {
-			let colors2 = data[extractedTile[1].key].colors;
-			let labels2 = data[extractedTile[1].key].labels;
+			let colors2 = data[extractedTile[1]].colors;
+			let labels2 = data[extractedTile[1]].labels;
 			if (colors2.length !== 0) {
 				renderedDivs2 = colors2.map((color, index) => {
 					return (
@@ -166,7 +118,7 @@ function ColorBarComponent({ times }) {
 								backgroundColor: `${
 									colors2[colors2.length - index - 1] ===
 									transColor
-										? '#FFFFFF'
+										? "#FFFFFF"
 										: colors2[colors2.length - index - 1]
 								}`,
 							}}
@@ -193,7 +145,7 @@ function ColorBarComponent({ times }) {
 					onMouseOver={(e) =>
 						handleDisplayTiles(
 							e,
-							selectedTiles.length === 2 ? 'left' : 'center',
+							tileArray.length === 2 ? "left" : "center",
 						)
 					}
 					ref={leftBarRef}
@@ -207,7 +159,7 @@ function ColorBarComponent({ times }) {
 				</div>
 				{times === 2 && (
 					<div
-						onMouseOver={(e) => handleDisplayTiles(e, 'right')}
+						onMouseOver={(e) => handleDisplayTiles(e, "right")}
 						ref={rightBarRef}
 						className='color-bar right'
 						style={style[1]}

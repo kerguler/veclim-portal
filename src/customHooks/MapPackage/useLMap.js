@@ -1,12 +1,12 @@
-import { useEffect } from 'react';
-import L from 'leaflet';
+import { useEffect } from "react";
+import L from "leaflet";
 
-import { useDispatch, useSelector } from 'react-redux';
-import PackageMapServices from 'components/map/mapPackage/PackageMapServices';
-import useLMapResize from './useLMapResize';
-import { setCurrentMapCenter, setCurrentMapBounds } from 'store';
-import { current } from '@reduxjs/toolkit';
-import useFetcherVariables from 'customHooks/useFetcherVariables';
+import { useDispatch, useSelector } from "react-redux";
+import PackageMapServices from "components/map/mapPackage/PackageMapServices";
+import useLMapResize from "./useLMapResize";
+import { setCurrentMapCenter, setCurrentMapBounds } from "store";
+import { current } from "@reduxjs/toolkit";
+import useFetcherVariables from "customHooks/useFetcherVariables";
 function useLMap(mapParRef) {
 	useLMapResize();
 	const dispatch = useDispatch();
@@ -25,13 +25,15 @@ function useLMap(mapParRef) {
 	} = useFetcherVariables();
 
 	useEffect(() => {
-		p.map = L.map('map1', {
+		p.map = L.map("map1", {
 			maxBoundsViscosity: 0,
 			maxBounds: p.maxBounds,
 			zoomControl: false,
 		});
 
-		PackageMapServices.baseLayer.addTo(p.map);
+		PackageMapServices.baseLayerOSM.addTo(p.map);
+		PackageMapServices.dataLayer.addTo(p.map);
+
 		return () => {
 			p.map && p.map.remove();
 		};

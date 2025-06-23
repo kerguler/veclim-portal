@@ -1,5 +1,5 @@
-import './CustomLegend.css';
-import useDirectorFun from 'customHooks/useDirectorFun';
+import "./CustomLegend.css";
+import useDirectorFun from "customHooks/useDirectorFun";
 const CustomLegend = ({ payload, keys, direction }) => {
 	const { chartParameters } = useDirectorFun(direction);
 	const payload1 = Array.from(
@@ -27,7 +27,7 @@ const CustomLegend = ({ payload, keys, direction }) => {
 				<div className='horizontal-legend'>
 					{payload1.map((entry, index) => {
 						if (
-							entry.dataKey.split('.')[0] in
+							entry.dataKey.split(".")[0] in
 							chartParameters.sliceInfo
 						) {
 							return (
@@ -35,14 +35,13 @@ const CustomLegend = ({ payload, keys, direction }) => {
 									<span
 										style={{
 											color: entry.color,
-											paddingRight: '2px',
+											paddingRight: "2px",
 										}}
 									>
 										●
 									</span>
-									<span style={{ paddingRight: '8px' }}>
-										{' '}
-										{preparedKeys[index]}{' '}
+									<span style={{ paddingRight: "5px" }}>
+										{preparedKeys[index]}
 									</span>
 								</li>
 							);
@@ -58,7 +57,7 @@ const CustomLegend = ({ payload, keys, direction }) => {
 				{payload1.map((entry, index) => (
 					<li key={index}>
 						<span
-							style={{ color: entry.color, paddingRight: '8px' }}
+							style={{ color: entry.color, paddingRight: "8px" }}
 						>
 							●
 						</span>

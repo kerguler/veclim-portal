@@ -1,9 +1,9 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { getDateRange } from './utils';
-import { useSelector } from 'react-redux';
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { getDateRange } from "./utils";
+import { useSelector } from "react-redux";
 
 const timeSeriesApi = createApi({
-	reducerPath: 'timeSeriesInfo',
+	reducerPath: "timeSeriesInfo",
 	baseQuery: fetchBaseQuery({
 		baseUrl: process.env.REACT_APP_BASE_URL,
 		fetchFn: async (input, init) => {
@@ -13,7 +13,7 @@ const timeSeriesApi = createApi({
 			// console.log("Raw Response Text:", rawText);
 
 			// Replace all instances of NaN with null in the raw text
-			const sanitizedText = rawText.replace(/NaN/g, 'null');
+			const sanitizedText = rawText.replace(/NaN/g, "null");
 
 			//  console.log("Sanitized Response Text:", sanitizedText);
 
@@ -26,59 +26,133 @@ const timeSeriesApi = createApi({
 					headers: response.headers,
 				});
 			} catch (error) {
-				console.error('Error parsing sanitized JSON:', error);
+				console.error("Error parsing sanitized JSON:", error);
 				return {
 					error: {
 						status: response.status,
 						statusText: response.statusText,
-						message: 'Failed to parse sanitized response JSON.',
+						message: "Failed to parse sanitized response JSON.",
 					},
 				};
 			}
 		},
+		// fetchFn: async (input, init) => {
+		// 	const response = await fetch(input, init);
+		// 	const rawText = await response.text();
+
+		// 	const sanitizedText = rawText.replace(/NaN/g, "null");
+
+		// 	try {
+		// 		const parsedJson = JSON.parse(sanitizedText);
+		// 		return { data: parsedJson }; // ✅ RTK Query will now populate `data`
+		// 	} catch (error) {
+		// 		console.error("Error parsing sanitized JSON:", error);
+		// 		return {
+		// 			error: {
+		// 				status: response.status,
+		// 				statusText: response.statusText,
+		// 				message: "Failed to parse sanitized response JSON.",
+		// 			},
+		// 		};
+		// 	}
+		// },
 	}),
 
-	tagTypes: ['TimeSeries'],
+	tagTypes: ["TimeSeries"],
 	endpoints(builder) {
 		return {
 			fetchTimeSeriesData: builder.query({
 				query: (data) => {
 					let location;
-					location = JSON.parse(data.position);
-
+					location = data.position;
+					console.log("fetchTimeSeriesData", data.position);
 					// const dateRange = `${"2024-01-01:2025-12-31"}`;
-					const dateRange = getDateRange(':');
+					const dateRange = getDateRange(":");
 					const vectorName = data.vectorName;
-					let param;
-					if (vectorName === 'albopictus') {
-						param = {
-							vec: 'albopictus',
-							lon: location.lng,
-							lat: location.lat,
-							dates: dateRange,
-							opr: 'ts',
-						};
-					} else {
-						param = {
-							vec: 'papatasi',
-							lon: location.lng,
-							lat: location.lat,
-							dates: `${'2015-03-31:2015-12-31'}`,
-							opr: 'ts',
-						};
-					}
+					let param = {
+						vec:
+							vectorName === "albopictus"
+								? "albopictus"
+								: "papatasi",
+						lon: location.lng,
+						lat: location.lat,
+						dates:
+							vectorName === "albopictus"
+								? dateRange
+								: "2015-03-31:2015-12-31",
+						opr: "ts",
+					};
+					// if (vectorName === "albopictus") {
+					// 	param = {
+					// 		vec: "albopictus",
+					// 		lon: location.lng,
+					// 		lat: location.lat,
+					// 		dates: dateRange,
+					// 		opr: "ts",
+					// 	};
+					// } else {
+					// 	param = {
+					// 		vec: "papatasi",
+					// 		lon: location.lng,
+					// 		lat: location.lat,
+					// 		dates: `${"2015-03-31:2015-12-31"}`,
+					// 		opr: "ts",
+					// 	};
+					// }
 
 					return {
-						url: '',
+						url: "",
 						params: param,
-						method: 'GET',
+						method: "GET",
 					};
 				},
+				// transformResponse: (rawResponse) => {
+				// 	// Handle null or undefined
+				// 	if (!rawResponse) {
+				// 		console.warn("Empty or null response from server.");
+				// 		return { error: "empty_response" };
+				// 	}
+
+				// 	try {
+				// 		// Sanitize `NaN` if needed
+				// 		const raw = JSON.stringify(rawResponse);
+				// 		const sanitized = raw.replace(/NaN/g, "null");
+				// 		const parsed = JSON.parse(sanitized);
+
+				// 		// Optional: check required fields (e.g. `chart`)
+				// 		if (
+				// 			!parsed ||
+				// 			typeof parsed !== "object" ||
+				// 			!parsed.chart
+				// 		) {
+				// 			console.warn(
+				// 				"Parsed response missing expected structure:",
+				// 				parsed,
+				// 			);
+				// 			return { error: "missing_chart_data" };
+				// 		}
+
+				// 		return parsed;
+				// 	} catch (e) {
+				// 		console.error("Error parsing sanitized response:", e);
+				// 		return { error: "parse_error" };
+				// 	}
+				// },
 
 				// invalidatesTags: ["AlboData"],
 			}),
 		};
 	},
+	// async onQueryStarted(arg, { queryFulfilled, dispatch }) {
+	// 	try {
+	// 		await queryFulfilled;
+	// 	} catch (err) {
+	// 		console.warn("Initial fetch failed. Will retry in 2s.");
+	// 		setTimeout(() => {
+	// 			dispatch(timeSeriesApi.util.invalidateTags(["TimeSeries"]));
+	// 		}, 2000);
+	// 	}
+	// },
 });
 
 export const { useFetchTimeSeriesDataQuery, useFetchTSDateRangeQuery } =

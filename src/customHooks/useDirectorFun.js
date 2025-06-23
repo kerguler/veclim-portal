@@ -1,11 +1,16 @@
-import { useSelector } from 'react-redux';
-import { useContext } from 'react';
+import { useSelector } from "react-redux";
+import { useContext } from "react";
 
-import { useDispatch } from 'react-redux';
-import PanelContextV2 from 'context/panelsIconsV2';
-import { setOpenItems } from 'store';
+import { useDispatch } from "react-redux";
+import PanelContextV2 from "context/panelsIconsV2";
+import { setOpenItems } from "store";
+import { use } from "react";
 
 function useDirectorFun(direction) {
+	const yaxisInfo = useSelector(
+		(state) =>
+			state.fetcher.fetcherStates.menu[direction].chart.brush.yaxisInfo,
+	);
 	const shimmerIcons = useSelector(
 		(state) => state.fetcher.fetcherStates.menu[direction].chart.shimmer,
 	);
@@ -86,6 +91,9 @@ function useDirectorFun(direction) {
 		simulationPanels,
 		tree,
 	} = useContext(PanelContextV2);
+	const tileArray = useSelector(
+		(state) => state.fetcher.fetcherStates.tileArray,
+	);
 	const panelDataDir = directorFun(direction, panelData, parPickerPanelData);
 
 	const { tileIcons, parPickerTileIcons } = useContext(PanelContextV2);
@@ -112,7 +120,18 @@ function useDirectorFun(direction) {
 	const panelOpen = useSelector(
 		(state) => state.fetcher.fetcherStates.menu[direction].panelOpen,
 	);
-
+	const currentMapBounds = useSelector(
+		(state) => state.fetcher.fetcherStates.map.currentMapBounds,
+	);
+	const currentMaxBounds = useSelector(
+		(state) => state.fetcher.fetcherStates.map.currentMaxBounds,
+	);
+	const currentMapZoom = useSelector(
+		(state) => state.fetcher.fetcherStates.map.currentMapZoom,
+	);
+	const currentMapCenter = useSelector(
+		(state) => state.fetcher.fetcherStates.map.currentMapCenter,
+	);
 	const panelInterfere = useSelector(
 		(state) =>
 			state.fetcher.fetcherStates.menu[direction].panel.panelInterfere,
@@ -156,6 +175,10 @@ function useDirectorFun(direction) {
 	);
 
 	return {
+		currentMapBounds,
+		currentMapCenter,
+		currentMapZoom,
+		currentMaxBounds,
 		tree,
 		simSlider1Enabled,
 		shimmerIcons,
@@ -193,10 +216,11 @@ function useDirectorFun(direction) {
 		mapMenuOpen,
 		dispatch,
 		openItems,
+		yaxisInfo,
 	};
 }
 function directorFun(direction, dataleft, dataright) {
-	if (direction === 'right') {
+	if (direction === "right") {
 		return dataright;
 	} else {
 		return dataleft;

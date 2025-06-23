@@ -1,6 +1,6 @@
-import { useDispatch, useSelector } from 'react-redux';
-import { useState } from 'react';
-import { useEffect } from 'react';
+import { useDispatch, useSelector } from "react-redux";
+import { useState } from "react";
+import { useEffect } from "react";
 import {
 	LineChart,
 	Line,
@@ -12,26 +12,31 @@ import {
 	ResponsiveContainer,
 	Brush,
 	BrushY,
-} from '@kerguler/recharts';
-import { useRef } from 'react';
-import './RechartsPlot.css';
-import './rechart.css';
-
-import CustomXAxisTick from '../chartComponents/CustomXAxisTick/CustomXAxisTick';
-import CustomLegend from '../chartComponents/CustomLegend/CustomLegend';
-import CustomTooltip from '../chartComponents/CustomTooltip/CustomTooltip';
-import useYsliderPositioning from 'customHooks/useYsliderPositioning';
-import ChartCalculatorService from '../services/ChartCalculatorService';
-import useDirectorFun from 'customHooks/useDirectorFun';
-import { setBrushDatay } from 'store';
-import { setBrushRange } from 'store';
-import { setBrushData } from 'store';
+} from "@kerguler/recharts";
+import { useRef } from "react";
+import "./RechartsPlot.css";
+import "./rechart.css";
+import CustomXAxisTick from "../chartComponents/CustomXAxisTick/CustomXAxisTick";
+import CustomLegend from "../chartComponents/CustomLegend/CustomLegend";
+import CustomTooltip from "../chartComponents/CustomTooltip/CustomTooltip";
+import useYsliderPositioning from "customHooks/useYsliderPositioning";
+import ChartCalculatorService from "../services/ChartCalculatorService";
+import useDirectorFun from "customHooks/useDirectorFun";
+import { setBrushDatay } from "store";
+import { setBrushRange } from "store";
+import useAdjustAxes from "./useAdjustAxes";
+import useSetBrushInfo from "./useSetBrushInfo";
+import { useMemo } from "react";
+import handleAxisAdjustments from "./handleAxisAdjustments";
 function RechartsPlot({ direction, plotMat }) {
 	const args = {
 		years: { firstYear: null, lastYear: null },
 		date: null,
 		keys: null,
 	};
+
+	const s3Ref = useRef({});
+	let s3 = s3Ref.current;
 	const dateRef = useRef({
 		currentDate: null,
 		dStart: null,
@@ -46,82 +51,65 @@ function RechartsPlot({ direction, plotMat }) {
 	const {
 		brushData,
 		vectorName,
-
 		brushDatay,
 		brushRange,
 		plotReady,
 		mapVector,
 		chartParameters,
+		yaxisInfo,
+		openItems,
 	} = useDirectorFun(direction);
 
-	useEffect(() => {
-		if (plotReady && plotMat && plotMat.length > 0) {
-			const { date, ...restObj } = plotMat[0];
-
-			argRef.current.keys = plotReady && Object.keys(restObj);
-		}
-	}, [plotMat, plotReady, vectorName]);
-
-	useEffect(() => {
-		if (plotMat) {
-			plotMat && dispatch(setBrushData({ direction, value: plotMat }));
-			dispatch(
-				setBrushRange({
-					direction,
-					value: { startIndex: 0, endIndex: plotMat.length - 1 },
-				}),
-			);
-		} else {
-			dispatch(
-				setBrushData({
-					direction,
-					value: { direction, value: { startIndex: 0, endIndex: 0 } },
-				}),
-			);
-		}
-	}, [dispatch, plotMat, brushData, setBrushRange, setBrushData]);
-
-	const [transform, setTransform] = useState([0, 0]);
-
-	useYsliderPositioning(setTransform);
-	const scrlPars = {
-		minmaxId: { min: 0, max: 100 },
-		minmax: { min: 0, max: 0 },
-		scrollScl: 4.0,
-		brushDataY: { min: 0, max: 0 },
-	};
-	const scrlRef = useRef(scrlPars);
-	let s = scrlRef.current;
-
 	let d = dateRef.current && dateRef.current;
-	const keyRef = useRef([]);
+	const brushDataYL = brushDatay.left;
+	const brushDataYR = brushDatay.right;
 
-	const formatYAxisTick = (value) => {
-		if (typeof value === 'number') {
-			return value.toFixed(2);
+	// const { date, ...restObj } = plotMat[0];
+	// const keys = Object.keys(restObj);
+	// argRef.current.keys = keys;
+	// console.log("argRef.current.keys", keys);
+	const argKeys = useMemo(() => {
+		if (plotMat && plotMat.length > 0) {
+			const { date, ...restObj } = plotMat[0];
+			return Object.keys(restObj);
 		}
-		return value; // If not a number, return it as is
-	};
+		return [];
+	}, [plotMat]);
 	useEffect(() => {
-		if (direction === 'left') {
-			plotMat &&
-				ChartCalculatorService.decideBrushRangeAlbo(
-					chartParameters,
-					plotMat,
-					dispatch,
-					d,
-					brushRange,
-				);
-		} else {
-			plotMat &&
-				ChartCalculatorService.decideBrushRangeAlbo(
-					chartParameters,
-					plotMat,
-					dispatch,
-					d,
-					brushRange,
-				);
+		if (argKeys.length > 0) {
+			argRef.current.keys = argKeys;
+			// Optionally: fire some side effect here
 		}
+	}, [argKeys]);
+	argKeys.forEach((key) => {
+		s3 = { ...s3, [key]: { min: Infinity, max: -Infinity } };
+	});
+
+	useMemo(() => {
+		handleAxisAdjustments(
+			plotMat,
+			chartParameters,
+			vectorName,
+			argKeys,
+			s3Ref,
+			dispatch,
+		);
+	}, [plotMat, chartParameters, vectorName, argKeys, s3Ref, dispatch]);
+
+	// useAdjustAxes(plotMat, chartParameters, vectorName, argKeys);
+	useSetBrushInfo(plotMat, direction);
+
+	let sliceLabel = [];
+
+	useEffect(() => {
+		plotMat &&
+			ChartCalculatorService.decideBrushRangeAlbo(
+				chartParameters,
+				plotMat,
+				dispatch,
+				d,
+				brushRange,
+			);
 	}, [plotMat, vectorName]);
 	const handleBrushChange = (range) => {
 		ChartCalculatorService.handleBrushChange(
@@ -132,91 +120,28 @@ function RechartsPlot({ direction, plotMat }) {
 			direction,
 		);
 	};
-
-	useEffect(() => {
-		s.minmax = { min: 0, max: 0 };
-		plotMat &&
-			plotMat.length > 0 &&
-			plotMat.forEach((d) => {
-				argRef.current.keys.forEach((k) => {
-					if (d[k] < s.minmax.min) s.minmax.min = d[k];
-					if (d[k] > s.minmax.max) s.minmax.max = d[k];
-				});
-			});
-		s.brushDataY = { min: s.minmax.min, max: s.minmax.max };
-		plotMat && dispatch(setBrushDatay({ direction, value: s.brushDataY }));
-	}, [
-		plotMat,
-		dispatch,
-		s,
-		s.minmax.min,
-		s.minmax.max,
-		vectorName,
-		setBrushDatay,
-	]);
-
-	const handleBrushChangeY = (range) => {
-		ChartCalculatorService.handleBrushChangeY(
-			range,
-			scrlRef,
-			dispatch,
-			setBrushDatay,
-			direction,
-		);
-	};
-
-	const renderedLines =
-		plotMat &&
-		Object.keys(chartParameters).length > 0 &&
-		plotMat[0] &&
-		Object.keys(plotMat[0]).length > 1 &&
-		Object.keys(plotMat[0]).map((key, index) => {
-			if (key === 'date') return null;
-			let uniqueKey = `${key}-${index}`;
-			keyRef.current.push(uniqueKey);
-			// deterimine color of the line
-			let primaryKey = null;
-			let secondaryKey = null;
-			let color;
-			if (key.split('.').length > 1) {
-				primaryKey = key.split('.')[0];
-				secondaryKey = key.split('.')[1];
-
-				if (primaryKey in chartParameters.sliceInfo) {
-					if (
-						secondaryKey in
-						chartParameters.sliceInfo[primaryKey].sliceColors
-					) {
-						color =
-							chartParameters.sliceInfo[primaryKey].sliceColors[
-								secondaryKey
-							] || 'black';
-					}
-				}
-			} else {
-				primaryKey = key;
-				color =
-					chartParameters.sliceInfo[primaryKey].sliceColors['slice0'];
-			}
-
-			return (
-				<Line
-					id={uniqueKey}
-					key={`${uniqueKey}${direction}`}
-					type='monotone'
-					dataKey={key}
-					stroke={color}
-					strokeWidth='1.5'
-					dot={false}
-				>
-					{' '}
-				</Line>
-			);
-		});
-
 	if (!plotMat || plotMat.length === 0) {
 		return <div>Loading data...</div>;
 	}
+
+	const formatYAxisTick = (value) => {
+		if (typeof value === "number") {
+			return value.toFixed(2);
+		}
+		return value; // If not a number, return it as is
+	};
+	const renderedAxes = buildAxes(
+		plotMat,
+		chartParameters,
+		brushDatay,
+		yaxisInfo,
+	);
+	const renderedLines = buildLines(
+		chartParameters,
+		plotMat,
+		direction,
+		yaxisInfo,
+	);
 	return (
 		<ResponsiveContainer
 			key={`${direction}`}
@@ -230,7 +155,8 @@ function RechartsPlot({ direction, plotMat }) {
 				width={500}
 				height={400}
 				data={plotMat}
-				margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+				//  margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+				margin={{ top: 30 }}
 			>
 				{renderedLines}
 				<CartesianGrid stroke='#ccc' strokeDasharray='5 5' />
@@ -246,12 +172,8 @@ function RechartsPlot({ direction, plotMat }) {
 						/>
 					}
 				/>
-				<YAxis
-					key={`yaxis${direction}`}
-					domain={[brushDatay.min, brushDatay.max]}
-					allowDataOverflow={true}
-					tickFormatter={formatYAxisTick}
-				/>
+
+				{renderedAxes}
 				<Brush
 					key={`brushx${direction}`}
 					className='myBrush'
@@ -265,7 +187,7 @@ function RechartsPlot({ direction, plotMat }) {
 					//  endIndex={brushRange.endIndex}
 				/>
 				<Tooltip
-					contentStyle={{ margin: '20px' }}
+					contentStyle={{ margin: "20px" }}
 					content={
 						<CustomTooltip
 							keys={argRef.current.keys}
@@ -274,14 +196,14 @@ function RechartsPlot({ direction, plotMat }) {
 					}
 				/>
 				<Legend
-					key={'legend'}
+					key={"legend"}
 					wrapperStyle={{
-						top: '10px',
+						top: "10px",
 						right: 0,
-						border: '1px solid black',
-						borderRadius: '0.5rem',
-						background: 'white',
-						padding: '0rem',
+						border: "1px solid black",
+						borderRadius: "0.5rem",
+						background: "white",
+						padding: "0rem",
 					}}
 					className='myLegend'
 					layout='box'
@@ -290,30 +212,141 @@ function RechartsPlot({ direction, plotMat }) {
 					content={
 						<CustomLegend
 							keys={argRef.current.keys}
-							key={'customLegend'}
+							key={"customLegend"}
 							direction={direction}
 						/>
 					}
 				/>
-				<g
-					className='brushY-wrapper'
-					style={{
-						transform: `translate(${transform[0]}px, ${transform[1]}px)`,
-					}}
-				>
-					<BrushY
-						key={`brushy${direction}`}
-						className='myBrushY'
-						dataKey=''
-						height={150}
-						width={15}
-						data={plotMat}
-						onChange={handleBrushChangeY}
-					/>
-				</g>
 			</LineChart>
 		</ResponsiveContainer>
 	);
 }
 
 export default RechartsPlot;
+
+function buildAxes(plotMat, chartParameters, brushDatay, yaxisInfo) {
+	const brushDataYL = brushDatay.left;
+	const brushDataYR = brushDatay.right;
+	const formatYAxisTick = (value) => {
+		if (typeof value === "number") {
+			return value.toFixed(2);
+		}
+		return value; // If not a number, return it as is
+	};
+
+	let renderedAxes = [];
+	let leftCount = 0;
+	let rightCount = 0;
+	console.log("yaxisInfo", yaxisInfo);
+	renderedAxes = Object.keys(yaxisInfo).map((key) => {
+		if (yaxisInfo[key].orientation === "right" && rightCount === 0) {
+			rightCount++;
+			return (
+				<YAxis
+					display={
+						yaxisInfo[key].min === Infinity &&
+						yaxisInfo[key].max === -Infinity
+							? "none"
+							: "true"
+					}
+					yAxisId='right'
+					key='right-0'
+					domain={[brushDataYR.min, brushDataYR.max]}
+					allowDataOverflow={true}
+					tickFormatter={formatYAxisTick}
+					stroke={
+						chartParameters.sliceInfo[key.split(".")[0]]
+							?.sliceColors?.slice0 || "black"
+					}
+					orientation='right'
+				/>
+			);
+		} else if (yaxisInfo[key].orientation === "left" && leftCount === 0) {
+			leftCount++;
+			return (
+				<YAxis
+					display={
+						yaxisInfo[key].min === Infinity &&
+						yaxisInfo[key].max === -Infinity
+							? "none"
+							: "true"
+					}
+					yAxisId='left'
+					key='left-0'
+					domain={[brushDataYL.min, brushDataYL.max]}
+					allowDataOverflow={true}
+					tickFormatter={formatYAxisTick}
+					stroke={"black"}
+				/>
+			);
+		}
+	});
+
+	return renderedAxes;
+}
+
+function buildLines(chartParameters, plotMat, direction, yaxisInfo) {
+	return (
+		plotMat &&
+		Object.keys(chartParameters).length > 0 &&
+		plotMat[0] &&
+		Object.keys(plotMat[0]).length > 1 &&
+		Object.keys(plotMat[0]).map((key, index) => {
+			if (key === "date") return null;
+			let uniqueKey = `${key}-${index}`;
+			// deterimine color of the line
+			let primaryKey = null;
+			let secondaryKey = null;
+			let color;
+			if (key.split(".").length > 1) {
+				primaryKey = key.split(".")[0];
+				secondaryKey = key.split(".")[1];
+
+				if (primaryKey in chartParameters.sliceInfo) {
+					if (
+						secondaryKey in
+						chartParameters.sliceInfo[primaryKey].sliceColors
+					) {
+						color =
+							chartParameters.sliceInfo[primaryKey].sliceColors[
+								secondaryKey
+							] || "black";
+					}
+				}
+			} else {
+				primaryKey = key;
+				color =
+					chartParameters.sliceInfo[primaryKey].sliceColors["slice0"];
+			}
+			let dotted =
+				"lineStyle" in chartParameters &&
+				primaryKey in chartParameters.lineStyle &&
+				chartParameters.lineStyle[primaryKey] === "dots";
+			// console.log({ yaxisInfo, chartParameters, key });
+			if (
+				yaxisInfo[key].min === Infinity &&
+				yaxisInfo[key].max === -Infinity
+			) {
+				return null;
+			}
+			let yDirection = yaxisInfo[key].orientation || "left";
+
+			console.log("yDirection", yDirection);
+			return (
+				<Line
+					id={uniqueKey}
+					key={`${uniqueKey}${direction}`}
+					yAxisId={yDirection}
+					type={dotted ? "linear" : "monotone"}
+					dataKey={key}
+					stroke={color}
+					strokeWidth={dotted ? "2.5" : "1.5"}
+					strokeDasharray={dotted ? "5 5" : "0"}
+					dot={false}
+				>
+					{" "}
+				</Line>
+			);
+		})
+	);
+}

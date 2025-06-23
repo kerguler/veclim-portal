@@ -1,36 +1,28 @@
-import useDirectorFun from 'customHooks/useDirectorFun';
-import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import PackageMapServices from 'components/map/mapPackage/PackageMapServices';
+import useDirectorFun from "customHooks/useDirectorFun";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import PackageMapServices from "components/map/mapPackage/PackageMapServices";
+import { setMapPagePosition } from "store";
 function useSetDefaultCoordinates(direction) {
 	const dispatch = useDispatch();
-	const { mapPagePosition, vectorName, setMapPagePositionDir } =
-		useDirectorFun(direction);
+	const { mapPagePosition, vectorName } = useDirectorFun(direction);
 	useEffect(() => {
-		if (direction === 'left') {
+		if (direction === "left") {
 			if (!mapPagePosition.lat) {
-				if (vectorName === 'albopictus') {
+				if (vectorName === "albopictus") {
 					dispatch(
-						setMapPagePositionDir(
+						setMapPagePosition(
 							PackageMapServices.defaultWorldCenter,
 						),
 					);
 				} else {
 					dispatch(
-						setMapPagePositionDir(
-							PackageMapServices.defaultCypCenter,
-						),
+						setMapPagePosition(PackageMapServices.defaultCypCenter),
 					);
 				}
 			}
 		}
-	}, [
-		vectorName,
-		dispatch,
-		mapPagePosition,
-		direction,
-		setMapPagePositionDir,
-	]);
+	}, [vectorName, dispatch, mapPagePosition, direction, setMapPagePosition]);
 }
 
 export default useSetDefaultCoordinates;

@@ -17,10 +17,11 @@ import {
 } from "store";
 
 import {} from "store";
+import useDirectorFun from "./useDirectorFun";
 function useMapStarter(startConditions) {
 	const dispatch = useDispatch();
 	const { readyToView, vectorName, mapVector, switchMap, tileArray } =
-		useFetcherVariables();
+		useDirectorFun("left");
 
 	useEffect(() => {
 		if (startConditions) {
