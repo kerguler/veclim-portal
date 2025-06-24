@@ -9,7 +9,7 @@
 .description-row {
 	display: flex;
 	flex-direction: row;
-	justify-content: space-between;
+	justify-content: left;
 	align-items: center;
 	margin-bottom: 10px;
 }
