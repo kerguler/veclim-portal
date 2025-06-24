@@ -10,7 +10,7 @@ import prpin from "assets/icons/map-page-right-menu/png/027-pin-32px.png";
 import virus from "assets/icons/map-page-right-menu/png/013-coronavirus-32px.png";
 import impact from "assets/icons/map-page-right-menu/png/015-heart rate-32px.png";
 import model from "assets/icons/map-page-right-menu/png/019-refresh-32px.png";
-import settingsIcon from "assets/icons/icons8-settings-50.png";
+import settingsIcon from "assets/icons/map-page-right-menu/svg/plot-icon.svg";
 import info from "assets/icons/map-page-right-menu/png/008-files-32px.png";
 import { createContext } from "react";
 import { ChartIndicators } from "../components/ChartIndicators/CharterIndicators";
@@ -1238,8 +1238,8 @@ function PanelProviderV2({ children }) {
 		// },
 		// { key: "simulation_adjustment_panel", parent: "simulation_adjustment" },
 
-		{ key: "settings_adjustment", parent: "menu_icon" },
-		{ key: "settings_adjustment_panel", parent: "settings_adjustment" },
+		// { key: "settings_adjustment", parent: "menu_icon" },
+		// { key: "settings_adjustment_panel", parent: "settings_adjustment" },
 	];
 	const menuStructureSand = [
 		{
