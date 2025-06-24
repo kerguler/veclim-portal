@@ -36,7 +36,11 @@ function MapPackageComponent({ fitworld }) {
 	const userPosition = useSelector(
 		(state) => state.fetcher.fetcherStates.map.userPosition,
 	);
+	const optionsPanel = useSelector(
+		(state) => state.fetcher.fetcherStates.map.optionsPanel,
+	);
 
+	const { tileOpacity, showVectorAbundance, showMapLabels } = optionsPanel;
 	const mapParameters = {
 		map: null,
 		center: currentMapCenter,

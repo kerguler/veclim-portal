@@ -18,7 +18,7 @@ import TileSelector from "../components/TileSelector/TileSelector";
 import suser from "../assets/icons/map-page-right-menu/png/007-arrows-32px.png";
 import { useSelector } from "react-redux";
 import menuIcon from "assets/icons/map-page-right-menu/png/menu-32px.png";
-
+import OptionsPanel from "components/optionsPanel/OptionsPanel";
 import ChangeMapPanel from "../components/vectorSelection/ChangeMapPanel/ChangeMapPanel";
 import { useEffect } from "react";
 import { useState } from "react";
@@ -2732,7 +2732,12 @@ function PanelProviderV2({ children }) {
 			chartParameters: {},
 
 			icon: model,
-			content: <ChangeMapPanel></ChangeMapPanel>,
+			content: (
+				<>
+					<ChangeMapPanel></ChangeMapPanel>
+					<OptionsPanel></OptionsPanel>
+				</>
+			),
 		},
 		{
 			id: [0, 6],

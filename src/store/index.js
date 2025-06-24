@@ -77,6 +77,9 @@ import {
 	appendToLabelsChartParameters,
 	appendToPlottedKeysChartParameters,
 	spliceChartParametersForSlices,
+	setShowMapLabels,
+	setShowVectorAbundance,
+	setTileOpacity,
 } from "./slices/fetcherSlice";
 import { languageReducer, changeLanguage } from "./slices/languageSlice";
 import {
@@ -298,4 +301,7 @@ export {
 	setBrushDatayLeft,
 	setBrushDatayRight,
 	setYaxisInfo,
+	setShowMapLabels,
+	setShowVectorAbundance,
+	setTileOpacity,
 };

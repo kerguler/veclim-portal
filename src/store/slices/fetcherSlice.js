@@ -23,7 +23,11 @@ const fetcherSlice = createSlice({
 				mapLoaded: false,
 				leftMapLoaded: false,
 				rightMapLoaded: false,
-
+				optionsPanel: {
+					showVectorAbundance: false,
+					tileOpacity: 1.0,
+					showMapLabels: false,
+				},
 				switchMap: true,
 				currentMapBounds: PackageMapServices.worldBounds,
 				currentMaxBounds: PackageMapServices.worldBounds,
@@ -101,6 +105,16 @@ const fetcherSlice = createSlice({
 	},
 
 	reducers: {
+		setShowVectorAbundance(state, action) {
+			state.fetcherStates.map.optionsPanel.showVectorAbundance =
+				action.payload;
+		},
+		setTileOpacity(state, action) {
+			state.fetcherStates.map.optionsPanel.tileOpacity = action.payload;
+		},
+		setShowMapLabels(state, action) {
+			state.fetcherStates.map.optionsPanel.showMapLabels = action.payload;
+		},
 		setYaxisInfo(state, action) {
 			const { direction, value } = action.payload;
 			state.fetcherStates.menu[direction].chart.brush.yaxisInfo = value;
@@ -404,5 +418,8 @@ export const {
 	setPlotReady,
 	setBrushDatayLeft,
 	setBrushDatayRight,
+	setShowMapLabels,
+	setShowVectorAbundance,
+	setTileOpacity,
 } = fetcherSlice.actions;
 export const fetcherReducer = fetcherSlice.reducer;

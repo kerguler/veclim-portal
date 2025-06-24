@@ -33,7 +33,7 @@ class PackageMapServices {
 	static baseLayer = L.tileLayer(
 		"http://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.webp",
 		{ attribution: "", noWrap: true },
-	);
+	); // '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>';
 	static baseLayerOSM = L.tileLayer(
 		"https://tile.openstreetmap.org/{z}/{x}/{y}.png",
 		{ attribution: "", noWrap: true }, //'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -467,7 +467,13 @@ class PackageMapServices {
 		}
 	}
 
-	static addTiles(mapParRef, tileArray, tilesFromContext, dispatch) {
+	static addTiles(
+		mapParRef,
+		tileArray,
+		tilesFromContext,
+		dispatch,
+		tileOpacity,
+	) {
 		let tileMat = [];
 		let p = mapParRef.current;
 		if (tileArray.length === 0) return [];
@@ -478,11 +484,12 @@ class PackageMapServices {
 			try {
 				selectedTile &&
 					tileMat.push(
-						L.tileLayer(
-							selectedTile.tileLayer.tile,
-							selectedTile.tileLayer.props,
-						),
+						L.tileLayer(selectedTile.tileLayer.tile, {
+							...selectedTile.tileLayer.props,
+							opacity: tileOpacity || 1,
+						}),
 					);
+				console.log({ p });
 			} catch (e) {
 				<ErrorScreenMap error={e}></ErrorScreenMap>;
 			}
