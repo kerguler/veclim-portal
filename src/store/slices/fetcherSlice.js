@@ -18,7 +18,7 @@ const fetcherSlice = createSlice({
 			map: {
 				displayTileNames: { left: false, right: false, center: true },
 
-				currentMapCenter: [35.1966527, 33.3217152],
+				currentMapCenter: { lat: 35.1966527, lng: 33.3217152 },
 				currentMapZoom: 2,
 				mapLoaded: false,
 				leftMapLoaded: false,

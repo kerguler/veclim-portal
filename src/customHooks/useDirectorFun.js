@@ -11,6 +11,9 @@ function useDirectorFun(direction) {
 		(state) =>
 			state.fetcher.fetcherStates.menu[direction].chart.brush.yaxisInfo,
 	);
+	const optionsPanel = useSelector(
+		(state) => state.fetcher.fetcherStates.map.optionsPanel,
+	);
 	const shimmerIcons = useSelector(
 		(state) => state.fetcher.fetcherStates.menu[direction].chart.shimmer,
 	);
@@ -173,8 +176,11 @@ function useDirectorFun(direction) {
 	const panelLevelLeft = useSelector(
 		(state) => state.fetcher.fetcherStates.menu.left.panelLevel,
 	);
-
+	const userPosition = useSelector(
+		(state) => state.fetcher.fetcherStates.map.userPosition,
+	);
 	return {
+		userPosition,
 		currentMapBounds,
 		currentMapCenter,
 		currentMapZoom,
@@ -217,6 +223,8 @@ function useDirectorFun(direction) {
 		dispatch,
 		openItems,
 		yaxisInfo,
+		optionsPanel,
+		tileArray,
 	};
 }
 function directorFun(direction, dataleft, dataright) {

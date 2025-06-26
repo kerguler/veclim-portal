@@ -1,14 +1,14 @@
-import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import {
 	setCurrentMapCenter,
 	setCurrentMapZoom,
 	setDirectInitError,
-} from 'store';
+} from "store";
 
-import PackageMapServices from 'components/map/mapPackage/PackageMapServices';
-import { useAlboData } from 'context/AlboDataContext';
-import useDirectorFun from 'customHooks/useDirectorFun';
+import PackageMapServices from "components/map/mapPackage/PackageMapServices";
+import { useAlboData } from "context/AlboDataContext";
+import useDirectorFun from "customHooks/useDirectorFun";
 function useMapBasicEvents(mapParRef, fitworld) {
 	const dispatch = useDispatch();
 	const directInitErrorLeft = useSelector(
@@ -18,7 +18,7 @@ function useMapBasicEvents(mapParRef, fitworld) {
 		(state) => state.fetcher.fetcherStates.vectorName,
 	);
 
-	const { mapPagePositionLeft: mapPagePosition } = useDirectorFun('left');
+	const { mapPagePositionLeft: mapPagePosition } = useDirectorFun("left");
 	const { setDataSim } = useAlboData();
 	let p = mapParRef.current;
 	useEffect(() => {
@@ -32,7 +32,7 @@ function useMapBasicEvents(mapParRef, fitworld) {
 				null,
 				null,
 				mapPagePosition,
-				'left',
+				"left",
 			);
 		};
 
@@ -42,7 +42,7 @@ function useMapBasicEvents(mapParRef, fitworld) {
 			p.zoom = tempZ;
 			p.center = [tempC.lat, tempC.lng];
 			dispatch(setCurrentMapZoom(tempZ));
-			dispatch(setCurrentMapCenter([tempC.lat, tempC.lng]));
+			dispatch(setCurrentMapCenter({ lat: tempC.lat, lng: tempC.lng }));
 		};
 		const handleMouseOut = () => {
 			PackageMapServices.mouseOut(mapParRef);
@@ -53,7 +53,7 @@ function useMapBasicEvents(mapParRef, fitworld) {
 			} catch (error) {
 				dispatch(
 					setDirectInitError({
-						direction: 'left',
+						direction: "left",
 						value: {
 							...directInitErrorLeft,
 							message: error.message,
@@ -63,16 +63,16 @@ function useMapBasicEvents(mapParRef, fitworld) {
 			}
 		};
 
-		p.map.on('click', handleMapClick);
-		p.map.on('mouseout', handleMouseOut);
-		p.map.on('resize', handleResize);
-		p.map.on('move', handleMove);
+		p.map.on("click", handleMapClick);
+		p.map.on("mouseout", handleMouseOut);
+		p.map.on("resize", handleResize);
+		p.map.on("move", handleMove);
 		return () => {
-			p.map.off('click', handleMapClick);
-			p.map.off('mouseout', handleMouseOut);
-			p.map.off('resize', handleResize);
-			p.map.off('move', handleMove);
-			p.map.off('mouseout', PackageMapServices.mouseOut, true);
+			p.map.off("click", handleMapClick);
+			p.map.off("mouseout", handleMouseOut);
+			p.map.off("resize", handleResize);
+			p.map.off("move", handleMove);
+			p.map.off("mouseout", PackageMapServices.mouseOut, true);
 		};
 	}, [dispatch, mapParRef, p, vectorName, mapPagePosition]);
 

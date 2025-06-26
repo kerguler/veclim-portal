@@ -64,7 +64,7 @@ function useLMap(mapParRef) {
 			}
 		}
 
-		p.map.setView({ lat: p.center[0], lng: p.center[1] }, p.zoom);
+		p.map.setView({ lat: p.center.lat, lng: p.center.lng }, p.zoom);
 
 		let bounds = p.map ? p.map.getBounds() : null;
 		const boundsArray = [
@@ -78,8 +78,13 @@ function useLMap(mapParRef) {
 	}, [p, showVectorAbundance, showMapLabels]);
 
 	useEffect(() => {
+		console.log(
+			"useLMap useEffect is running",
+			vectorName,
+			currentMapCenter,
+		);
 		p.map.setView(
-			{ lat: currentMapCenter[0], lng: currentMapCenter[1] },
+			{ lat: currentMapCenter.lat, lng: currentMapCenter.lng },
 			currentMapZoom,
 		);
 

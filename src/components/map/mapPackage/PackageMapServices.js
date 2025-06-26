@@ -301,7 +301,7 @@ class PackageMapServices {
 		if (!e.latlng) return;
 		p.zoom = p.map.getZoom();
 		let tempCenter = p.map.getCenter();
-		p.center = [tempCenter.lat, tempCenter.lng];
+		p.center = { lat: tempCenter.lat, lng: tempCenter.lng };
 
 		const { lat, lng } = e.latlng;
 		p.highlightMarker && p.map.removeLayer(p.highlightMarker);
@@ -442,7 +442,7 @@ class PackageMapServices {
 		let p = mapParRef.current;
 		let sideBySideMap = p.sideBySide;
 		let tempCenter = p.map.getCenter();
-		p.center = [tempCenter.lat, tempCenter.lng];
+		p.center = { lat: tempCenter.lat, lng: tempCenter.lng };
 
 		p.zoom = p.map.getZoom();
 		if (tileArray.length === 0) {
@@ -502,16 +502,6 @@ class PackageMapServices {
 		return tileMat;
 	}
 
-	// static chooseTileIcons(tileArray, tilesFromContext) {
-	// 	if (tileArray.length === 0) return [];
-	// 	const tiles = tileArray.flatMap((tile, index) => {
-	// 		let selectedTile = tilesFromContext.find(
-	// 			(tileIcon) => tileIcon.key === tile
-	// 		);
-	// 		return selectedTile.tileLayer;
-	// 	});
-	// 	return tiles;
-	// }
 	static _removeMarker({ mapParRef, marker1 }) {
 		let p = mapParRef && mapParRef.current;
 		marker1 && p.map.removeLayer(marker1);
@@ -529,7 +519,10 @@ class PackageMapServices {
 		let p = mapParRef.current;
 		if (p) {
 			p.zoom = p.map.getZoom();
-			p.center = [p.map.getCenter().lat, p.map.getCenter().lng];
+			p.center = {
+				lat: p.map.getCenter().lat,
+				lng: p.map.getCenter().lng,
+			};
 
 			if (p.prevClickPointRef) {
 				p.iconMarker && p.map.removeLayer(p.iconMarker);

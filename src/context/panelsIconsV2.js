@@ -1089,6 +1089,8 @@ function PanelProviderV2({ children }) {
 	const tileIconsSand = [
 		{
 			key: "papatasi_aprdec",
+			colkey: "papatasi_aprdec",
+
 			label: "April - December",
 			icon: adultsandfly1,
 			tileLayer: {
@@ -1108,6 +1110,8 @@ function PanelProviderV2({ children }) {
 		{
 			key: "papatasi_aprjun",
 			label: "April - June",
+			colkey: "papatasi_aprjun",
+
 			icon: adultsandfly2,
 			tileLayer: {
 				tile: tileBase + "?v=papatasi_aprjun&z={z}&x={x}&y={y}",
@@ -1125,6 +1129,8 @@ function PanelProviderV2({ children }) {
 		},
 		{
 			key: "papatasi_julsep",
+			colkey: "papatasi_julsep",
+
 			label: "July - September",
 			icon: adultsandfly3,
 			tileLayer: {
@@ -1145,6 +1151,8 @@ function PanelProviderV2({ children }) {
 			key: "papatasi_octdec",
 			label: "October - December",
 			icon: adultsandfly4,
+			colkey: "papatasi_octdec",
+
 			tileLayer: {
 				tile: tileBase + "?v=papatasi_octdec&z={z}&x={x}&y={y}",
 				props: { attribution: "", noWrap: true },
@@ -3799,7 +3807,6 @@ function PanelProviderV2({ children }) {
 		{
 			key: "sandfly_population_panel",
 			chartParameters: {
-				chartType: "rechart",
 				years: "2015",
 				mixedKeys: [
 					{
@@ -3822,6 +3829,12 @@ function PanelProviderV2({ children }) {
 					},
 				},
 				horizontalAxis: "date",
+				chartType: "rechart",
+				initialSetting: "sim-ts",
+				plottedKeys: ["simL", "simH"],
+				orientation: { simL: "right" },
+				colors: ["#F15A48", "#1B3958"],
+				labels: ["Secondary land type", "Primary land type"],
 				lineSlice: [],
 			},
 

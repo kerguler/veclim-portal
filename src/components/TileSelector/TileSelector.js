@@ -1,11 +1,13 @@
-import './TileSelector.css';
-import { useContext, useEffect, useState } from 'react';
-import { setDisplayTileNames, setSuperUser, setTileArray } from 'store';
-import { useDispatch, useSelector } from 'react-redux';
-import { useFetchColorBarsDataQuery } from 'store';
-import { iconClasses } from '@mui/material';
-import Panel from 'components/panel/Panel';
-import PanelContext from 'context/panelsIconsV2';
+import "./TileSelector.css";
+import { useContext, useEffect, useState } from "react";
+import { setDisplayTileNames, setSuperUser, setTileArray } from "store";
+import { useDispatch, useSelector } from "react-redux";
+import { useFetchColorBarsDataQuery } from "store";
+import { iconClasses } from "@mui/material";
+import Panel from "components/panel/Panel";
+import PanelContext from "context/panelsIconsV2";
+import MoreText from "components/MoreText/MoreText";
+
 function TileSelector({ tileIcons }) {
 	const selectedTiles = useSelector(
 		(state) => state.fetcher.fetcherStates.tileArray,
@@ -19,59 +21,111 @@ function TileSelector({ tileIcons }) {
 		e.preventDefault();
 	};
 
-	const handleIconClick = (item) => {
-		let temp;
-		// item is the icon that was clicked
-		const filteredArray = selectedTiles.filter(
-			(element) => element === item,
-		);
-		// if the icon is already selected it will be in the array
-		const exists = filteredArray.length > 0;
-		// if the icon is already selected and there is more than one icon selected
-		if (exists && selectedTiles.length !== 1) {
-			temp = selectedTiles.filter((element) => {
-				return element !== item;
-			});
-			// we remove it from the array of selected icons
-			setDisplayWarning(false);
-		} else if (exists && selectedTiles.length === 1) {
-			//this means there was only one icon selected and it was the one that was clicked
-			// we will remove it and show only the base layer
-			/*
-			 setDisplayNoTileWarning(true);
-			 setDisplayWarning(false);
-			 temp = [...selectedTiles];
-			 */
-			setDisplayNoTileWarning(false);
-			setDisplayWarning(false);
-			temp = [];
-		} else {
-			// if the icon is not in the array
-			setDisplayNoTileWarning(false);
-			if (selectedTiles.length === 2) {
-				dispatch(setSuperUser(true));
-				temp = [...selectedTiles];
-				setDisplayWarning(true);
-			} else {
-				dispatch(setSuperUser(false));
-				let existingTileDisplayIndex = selectedTiles.map((tileName) => {
-					return tileIcons.filter((tileIcon, index) => {
-						return tileIcon.key === tileName;
-					})[0].tileLayer.displayIndex;
-				});
-				let newTileDisplayIndex = selectedTiles.map((tileName) => {
-					return tileIcons.filter((tileIcon, index) => {
-						return tileIcon.key === item;
-					})[0].tileLayer.displayIndex;
-				});
+	const isItLinked = (item) => {
+		let linked = tileIcons
+			.filter(
+				(elm) =>
+					elm.key === item &&
+					"linked" in elm &&
+					elm.linked !== elm.key,
+			)
+			.map((elm) => elm.linked);
+		return linked.length == 1 ? linked[0] : false;
+	};
+	// const handleIconClick = (item) => {
+	// 	let temp;
+	// 	// item is the icon that was clicked
+	// 	const filteredArray = selectedTiles.filter(
+	// 		(element) => element === item,
+	// 	);
+	// 	// if the icon is already selected it will be in the array
+	// 	const exists = filteredArray.length > 0;
+	// 	// if the icon is already selected and there is more than one icon selected
+	// 	if (exists && selectedTiles.length !== 1) {
+	// 		temp = selectedTiles.filter((element) => {
+	// 			return element !== item;
+	// 		});
+	// 		// we remove it from the array of selected icons
+	// 		setDisplayWarning(false);
+	// 	} else if (exists && selectedTiles.length === 1) {
+	// 		//this means there was only one icon selected and it was the one that was clicked
+	// 		// we will remove it and show only the base layer
+	// 		/*
+	// 		 setDisplayNoTileWarning(true);
+	// 		 setDisplayWarning(false);
+	// 		 temp = [...selectedTiles];
+	// 		 */
+	// 		setDisplayNoTileWarning(false);
+	// 		setDisplayWarning(false);
+	// 		temp = [];
+	// 	} else {
+	// 		// if the icon is not in the array
+	// 		setDisplayNoTileWarning(false);
+	// 		if (selectedTiles.length === 2) {
+	// 			dispatch(setSuperUser(true));
+	// 			temp = [...selectedTiles];
+	// 			setDisplayWarning(true);
+	// 		} else {
+	// 			dispatch(setSuperUser(false));
+	// 			let existingTileDisplayIndex = selectedTiles.map((tileName) => {
+	// 				return tileIcons.filter((tileIcon, index) => {
+	// 					return tileIcon.key === tileName;
+	// 				})[0].tileLayer.displayIndex;
+	// 			});
+	// 			let newTileDisplayIndex = selectedTiles.map((tileName) => {
+	// 				return tileIcons.filter((tileIcon, index) => {
+	// 					return tileIcon.key === item;
+	// 				})[0].tileLayer.displayIndex;
+	// 			});
 
-				if (newTileDisplayIndex % 10 > existingTileDisplayIndex % 10) {
-					temp = [...selectedTiles, item];
+	// 			if (newTileDisplayIndex % 10 > existingTileDisplayIndex % 10) {
+	// 				temp = [...selectedTiles, item];
+	// 			} else {
+	// 				temp = [item, ...selectedTiles];
+	// 			}
+	// 		}
+	// 	}
+	// 	dispatch(setSuperUser(temp.length === 2 ? true : false));
+	// 	setTimeout(() => {
+	// 		dispatch(setTileArray(temp));
+	// 	}, 100);
+	// 	dispatch(
+	// 		setDisplayTileNames({
+	// 			center: temp.length === 1,
+	// 			left: temp.length === 2,
+	// 			right: temp.length === 2,
+	// 		}),
+	// 	);
+	// };
+
+	const handleIconClick = (item) => {
+		let temp = [...selectedTiles];
+		//
+		let linked = isItLinked(item);
+		//
+		if (temp.includes(item)) {
+			temp = temp.filter((elm) => elm !== item);
+			if (temp.includes(linked)) {
+				temp = temp((elm) => elm !== linked);
+			}
+		} else {
+			if (linked) {
+				temp = [item, linked];
+			} else {
+				if (temp.length === 2) {
+					if (isItLinked(temp[0])) {
+						temp = [item];
+					} else {
+						temp = [temp[1], item];
+					}
 				} else {
-					temp = [item, ...selectedTiles];
+					temp.push(item);
 				}
 			}
 		}
+		setDisplayWarning(false);
+		setDisplayNoTileWarning(false);
+
 		dispatch(setSuperUser(temp.length === 2 ? true : false));
 		setTimeout(() => {
 			dispatch(setTileArray(temp));
@@ -85,51 +139,54 @@ function TileSelector({ tileIcons }) {
 		);
 	};
 
-	const handleIconSwitch = (item) => {
-		let temp = [item];
-		setDisplayWarning(false);
-		dispatch(setSuperUser(false));
-		setTimeout(() => {
-			dispatch(setTileArray(temp));
-		}, 100);
-	};
+	// const handleIconSwitch = (item) => {
+	// 	let temp = [item];
+	// 	setDisplayWarning(false);
+	// 	dispatch(setSuperUser(false));
+	// 	setTimeout(() => {
+	// 		dispatch(setTileArray(temp));
+	// 	}, 100);
+	// };
 
 	const RenderedContent = () => {
 		let description = <p>No tiles selected. Base map is on display.</p>;
-		let displayedIcons = tileIcons.map((item, index) => {
-			let internalClassName;
-			const filteredArray = selectedTiles.filter(
-				(element) => element === item.key,
-			);
-			const exists = filteredArray.length > 0;
-			if (exists) {
-				internalClassName = 'panel-content icons-area  active';
-				description = item.description;
-			} else {
-				internalClassName = 'panel-content icons-area inactive';
-			}
-			return (
-				<div
-					id={item.tileLayer.displayIndex}
-					key={item.key}
-					className={internalClassName}
-					onClick={() => {
-						handleIconClick(item.key);
-					}}
-					onContextMenu={(e) => {
-						handleContextMenu(e, item.key);
-					}}
-				>
-					<img
+		let displayedIcons = tileIcons
+			.filter((item, index) => !("hidden" in item && item.hidden))
+			.map((item, index) => {
+				let internalClassName;
+				const filteredArray = selectedTiles.filter(
+					(element) => element === item.key,
+				);
+				const exists = filteredArray.length > 0;
+				if (exists) {
+					internalClassName = "panel-content icons-area  active";
+					description = <MoreText>{item.description}</MoreText>;
+				} else {
+					internalClassName = "panel-content icons-area inactive";
+				}
+				if ("linked" in item && item.linked !== item.key) {
+					internalClassName += " twin";
+				}
+				return (
+					<div
+						id={item.tileLayer.displayIndex}
 						key={item.key}
-						alt='mapped-tile-icon'
-						src={item.icon}
-					></img>
-				</div>
-			);
-		});
-		let tempRow = 0;
-		let tempCol = 0;
+						className={internalClassName}
+						onClick={() => {
+							handleIconClick(item.key);
+						}}
+						onContextMenu={(e) => {
+							handleContextMenu(e, item.key);
+						}}
+					>
+						<img
+							key={item.key}
+							alt='mapped-tile-icon'
+							src={item.icon}
+						></img>
+					</div>
+				);
+			});
 
 		return (
 			<>
@@ -145,20 +202,21 @@ function TileSelector({ tileIcons }) {
 			setDisplayWarning(false);
 		}, 1000);
 	}, [displayNoTileWarning, displayWarning]);
+
 	return (
 		<div className='icons-area'>
 			<h1>Map Tiles</h1>
 			<RenderedContent />
 			{displayWarning && (
 				<div className='icons-area warning'>
-					{' '}
-					you can select a maximum of 2 tiles{' '}
+					{" "}
+					you can select a maximum of 2 tiles{" "}
 				</div>
 			)}
 			{displayNoTileWarning && (
 				<div className='icons-area warning'>
-					{' '}
-					you have to have 1 tile{' '}
+					{" "}
+					you have to have 1 tile{" "}
 				</div>
 			)}
 			{/* <div className="tile-select-button"> <p>Submit</p></div> */}
@@ -216,9 +274,9 @@ const IconGrid = ({ icons }) => {
 							className='icon-row'
 							style={{
 								gridTemplateColumns:
-									'repeat(' +
+									"repeat(" +
 									rowIcons.length +
-									', minmax(50px, 1fr))',
+									", minmax(50px, 1fr))",
 							}}
 						>
 							{rowIcons
@@ -248,11 +306,12 @@ const IconGrid = ({ icons }) => {
 		</div>
 	);
 };
-
+/*
 function IconRowLabels({ row }) {
 	return (
-		<div key={`label-${row}`} className='icon-row-label'>
+		<div key={`label-${row}`} className="icon-row-label">
 			2010-2020
 		</div>
 	);
 }
+*/

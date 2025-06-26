@@ -22,7 +22,6 @@ import useDirectorFun from "customHooks/useDirectorFun";
 function MapPackageComponent({ fitworld }) {
 	const dispatch = useDispatch();
 	const {
-		tileArray,
 		currentMapBounds,
 		currentMaxBounds,
 		currentMapZoom,
@@ -32,14 +31,12 @@ function MapPackageComponent({ fitworld }) {
 		currentMapCenter,
 		directMap,
 		switchMap,
+		optionsPanel,
+		userPosition,
 	} = useDirectorFun("left");
-	const userPosition = useSelector(
-		(state) => state.fetcher.fetcherStates.map.userPosition,
+	const tileArray = useSelector(
+		(state) => state.fetcher.fetcherStates.tileArray,
 	);
-	const optionsPanel = useSelector(
-		(state) => state.fetcher.fetcherStates.map.optionsPanel,
-	);
-
 	const { tileOpacity, showVectorAbundance, showMapLabels } = optionsPanel;
 	const mapParameters = {
 		map: null,
@@ -67,7 +64,6 @@ function MapPackageComponent({ fitworld }) {
 	useZoomActions(mapParRef);
 	useMapBasicEvents(mapParRef, fitworld);
 	useLMapResize(mapParRef);
-
 	useEffect(() => {
 		if (
 			(mapPagePosition &&

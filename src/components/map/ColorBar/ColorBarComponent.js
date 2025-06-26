@@ -8,11 +8,16 @@ import { useRef } from "react";
 import useDirectorFun from "customHooks/useDirectorFun";
 import useColorBarResize from "./useColorBarResize";
 import PanelContextV2 from "context/panelsIconsV2";
+import { map } from "leaflet";
 function ColorBarComponent({ times }) {
 	const { panelOpen, panelTop } = useDirectorFun("left");
 	const tileArray = useSelector(
 		(state) => state.fetcher.fetcherStates.tileArray,
 	);
+	const mapVector = useSelector(
+		(state) => state.fetcher.fetcherStates.mapVector,
+	);
+
 	const { tileIcons } = useContext(PanelContextV2);
 	const { data, error, isFetching } = useFetchColorBarsDataQuery();
 
@@ -56,17 +61,22 @@ function ColorBarComponent({ times }) {
 		panelTop,
 		times,
 	);
-
 	useEffect(() => {
+		console.log("style", tileArray);
+
 		if (data) {
 			const extractedTile1 = tileArray?.map((tile) => {
+				console.log("tile", tile);
+				console.log("tileIcons", tileIcons);
+				console.log("tileArray", tileArray);
 				const found = tileIcons.find((icon) => icon.key === tile);
 				return found?.colkey;
 			});
+			console.log("extractedTile", extractedTile1);
 
 			setExtractedTile(extractedTile1);
 		}
-	}, [data, tileArray, isFetching, error]);
+	}, [data, tileArray, mapVector, isFetching, error]);
 
 	let colors, labels;
 	if (isFetching) {
@@ -77,7 +87,6 @@ function ColorBarComponent({ times }) {
 		if (!extractedTile || extractedTile.length === 0) return <div></div>;
 		if (tileArray.length === 0) return <div></div>;
 		if (!data) return <div></div>;
-
 		colors = data[extractedTile[0]].colors;
 		labels = data[extractedTile[0]].labels;
 		let renderedDivs2, renderedLabels2;

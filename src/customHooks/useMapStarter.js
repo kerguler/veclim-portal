@@ -29,7 +29,7 @@ function useMapStarter(startConditions) {
 		} else {
 			if (mapVector === "papatasi") {
 				console.log("papatasi is being dispatched");
-				if (!tileArray.includes("papatasi")) {
+				if (!tileArray?.includes("papatasi_aprdec")) {
 					dispatch(setTileArray(["papatasi_aprdec"]));
 				}
 				dispatch(
@@ -38,13 +38,14 @@ function useMapStarter(startConditions) {
 				dispatch(setCurrentMaxBounds(PackageMapServices.cyprusBounds));
 				dispatch(
 					setMapPagePosition({
-						lat: PackageMapServices.defaultCypCenter[0],
-						lng: PackageMapServices.defaultCypCenter[1],
+						lat: PackageMapServices.defaultCypCenter.lat,
+						lng: PackageMapServices.defaultCypCenter.lng,
 					}),
 				);
 				dispatch(setCurrentMapZoom(8));
 				dispatch(setReadyToView(true));
 				dispatch(setVectorName("papatasi"));
+				dispatch(setMapVector("papatasi"));
 			} else {
 				dispatch(setReadyToView(true));
 			}

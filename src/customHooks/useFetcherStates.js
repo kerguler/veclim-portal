@@ -72,14 +72,14 @@ const useFetcherStates = () => {
 			dispatch(
 				setMapPagePosition(
 					PackageMapServices[
-						mapVector === "albopictus" ||
-						vectorName === "albopictus"
+						mapVector === "albopictus"
 							? "defaultWorldCenter"
 							: "defaultCypCenter"
 					],
 				),
 			);
 		}
+
 		if (menuStructure.filter((item) => item.key === panel).length > 0) {
 			dispatch(setDisplaySimulationPanel({ direction, value: panel }));
 		}
