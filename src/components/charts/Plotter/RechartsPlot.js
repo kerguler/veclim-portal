@@ -103,6 +103,7 @@ function RechartsPlot({ plotMat }) {
 			s2[i] = { min: 0, max: -1 };
 			plotMat &&
 				plotMat.forEach((d) => {
+					if (d[k] === null) return;
 					if (d[k] < s2[i].min) s2[i].min = d[k];
 					if (d[k] > s2[i].max) s2[i].max = d[k];
 					if ( ("orientation" in parameters) && (k in parameters.orientation) && (parameters.orientation[k] == "right")) {
@@ -162,6 +163,7 @@ function RechartsPlot({ plotMat }) {
 						strokeDasharray="5 5"
 						strokeWidth="2.5"
 						dot={false}
+						connectNulls={false}
 						>
 						{" "}
 					</Line>
@@ -178,6 +180,7 @@ function RechartsPlot({ plotMat }) {
 				stroke={s.pars.colors[index]}
 				strokeWidth="1.5"
 				dot={false}
+				connectNulls={false}
 				>
 				{" "}
 			</Line>
