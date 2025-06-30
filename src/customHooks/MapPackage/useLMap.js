@@ -78,11 +78,6 @@ function useLMap(mapParRef) {
 	}, [p, showVectorAbundance, showMapLabels]);
 
 	useEffect(() => {
-		console.log(
-			"useLMap useEffect is running",
-			vectorName,
-			currentMapCenter,
-		);
 		p.map.setView(
 			{ lat: currentMapCenter.lat, lng: currentMapCenter.lng },
 			currentMapZoom,

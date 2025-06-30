@@ -1,6 +1,7 @@
 import PackageMapServices from "components/map/mapPackage/PackageMapServices";
 import { setTileArray } from "store";
 import { setMapMenuOpen } from "store";
+import { setMapPagePosition } from "store";
 import { setDirectMap } from "store";
 import { setPanelOpen } from "store";
 import { setPanelOpenLeft } from "store";
@@ -8,7 +9,8 @@ import { setMapMenuOpenLeft } from "store";
 import { setDirectMapLeft } from "store";
 
 class FetcherService {
-	static handleTiles(dispatch, tile, vectorDependentTiles, sessionState) {
+	static handleTiles(dispatch, tile, tileIcons) {
+		let vectorDependentTiles = tileIcons.map((tile) => tile.key);
 		if (vectorDependentTiles.length === 0) {
 			return;
 		}
@@ -17,18 +19,14 @@ class FetcherService {
 		const error = new Error(heading);
 		error.type = "TileError";
 		if (tile === null || tile === "") {
-			let explanation =
+			error.explanation =
 				"available tiles are:" +
 				`${vectorDependentTiles.map((tile) => {
 					return tile + "\n";
 				})}`;
-			error.heading = heading;
-			error.explanation = explanation;
-			localTileArray = vectorDependentTiles[0];
-			if (vectorDependentTiles.includes(localTileArray)) {
-				dispatch(setTileArray([vectorDependentTiles[0]]));
-				return;
-			}
+
+			dispatch(setTileArray([vectorDependentTiles[0]]));
+			return;
 		} else {
 			localTileArray = tile.split(":");
 			if (localTileArray.length === 1) {
@@ -69,7 +67,8 @@ class FetcherService {
 
 				if (!m[0] && m[1]) {
 					dispatch(setTileArray([localTileArray[1]]));
-					const heading = `two tiles were entered but only the second tile was found  ${localTileArray[0]}`;
+					console.log("only second tile found", localTileArray[1]);
+					const heading = `two tiles were entered but only the second tile was found  ${localTileArray[1]}`;
 					const explanation = `available tiles are: ${vectorDependentTiles.map(
 						(tile) => {
 							return tile + "\n";
@@ -77,9 +76,12 @@ class FetcherService {
 					)}`;
 					error.heading = heading;
 					error.explanation = explanation;
+
 					throw error;
 				}
 				if (!m[0] && !m[1]) {
+					dispatch(setTileArray([vectorDependentTiles[0]]));
+
 					const heading = `two tiles were entered but none was found `;
 					const explanation = `available tiles are: ${vectorDependentTiles.map(
 						(tile) => {
@@ -93,7 +95,9 @@ class FetcherService {
 			}
 		}
 	}
-	static handlePanels(dispatch, ts, decade, panels, lon, lat) {
+	static handlePanels(dispatch, panel, panelData, lon, lat) {
+		let panels = panelData.filter((item) => item.key.endsWith("_panel"));
+		console.log("panels", panels);
 		if (panels.length === 0) {
 			return;
 		}
@@ -105,100 +109,13 @@ class FetcherService {
 		} else if (-90 <= lat && lat <= 90 && -180 <= lon && lat <= lon) {
 			longi = lon;
 			lati = lat;
+			dispatch(setMapPagePosition({ lat: lati, lng: longi }));
 		} else {
 			longi = PackageMapServices.defaultCypCenter[1];
 			lati = PackageMapServices.defaultCypCenter[0];
 		}
 		const error = new Error(heading);
 		error.type = "PanelError";
-
-		if (ts === null || ts === "") {
-			dispatch(
-				setDirectMap({
-					direction: "left",
-					value: {
-						lon: null,
-						lat: null,
-						display: -2,
-					},
-				}),
-			);
-
-			dispatch(setPanelOpen({ direction: "left", value: false }));
-			dispatch(setMapMenuOpen({ direction: "left", value: true }));
-
-			// throw error;
-		} else {
-			const panelsFound = panels.filter((panel) => panel.key === ts);
-			if (panelsFound.length === 0) {
-				dispatch(
-					setDirectMap({
-						direction: "left",
-						value: {
-							lon: null,
-							lat: null,
-							display: -2,
-						},
-					}),
-				);
-			} else {
-				let panelWithDecade = panels.filter(
-					(p) => p.key === ts && p.decade === decade,
-				);
-				if (panelWithDecade.length !== 0) {
-					dispatch(
-						setDirectMap({
-							direction: "left",
-							value: {
-								lon: parseFloat(longi),
-								lat: parseFloat(lati),
-								display: panelWithDecade[0].id,
-							},
-						}),
-					);
-				} else {
-					if (decade === null || decade === "") {
-						dispatch(
-							setDirectMap({
-								direction: "left",
-								value: {
-									lon: parseFloat(longi),
-									lat: parseFloat(lati),
-									display: panelsFound[0].id,
-								},
-							}),
-						);
-						return;
-					}
-					const heading = `No panel with name ${ts} and decade ${decade} was found`;
-					const explanation = "";
-					error.heading = heading;
-					error.explanation = explanation;
-					dispatch(
-						setDirectMap({
-							direction: "left",
-							value: {
-								lon: null,
-								lat: null,
-								display: -2,
-							},
-						}),
-					);
-					throw error;
-				}
-			}
-		}
-	}
-	static standardPanelDecisions(session, tile, ts, lat, lon) {
-		// this fucntion is going to determine what to set depending on the the direct init conditions/
-		// we will centralize the panel decisions,
-		//1)  which panels to open and when
-		// 2) how to handle  the user interaction
-		// 3) possible when should the map be marked as ready top view.
-		// the inputs will be :
-		// 1) the user clicks
-		// 2) get url terms
-		// 3) fetcher states
 	}
 }
 

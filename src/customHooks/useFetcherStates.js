@@ -4,20 +4,14 @@ import { useDispatch, useSelector } from "react-redux";
 import PanelContextV2 from "context/panelsIconsV2";
 import "../styles/MapPage.css";
 import FetcherService from "services/FetcherService";
-
 import { setMapVector } from "store";
 import { setVectorName } from "store";
-import { useState } from "react";
-import { setDisplayedPanelID } from "store";
 import { setDirectInitError } from "store";
-import { setDirectInit } from "store";
 import { setReadyToView } from "store";
-import { setOpenItems } from "store";
-import { setTileArray } from "store";
 import { setMapPagePosition } from "store";
 import PackageMapServices from "components/map/mapPackage/PackageMapServices";
 import { setDisplaySimulationPanel } from "store";
-import { setInvalidateTsData } from "store";
+import useDirectorFun from "./useDirectorFun";
 const useQuery = () => {
 	return new URLSearchParams(useLocation().search);
 };
@@ -31,18 +25,8 @@ const useFetcherStates = () => {
 		menuStructure,
 	} = useContext(PanelContextV2);
 	const vectorNames = useSelector((state) => state.vector.vectorNames);
-	const mapVector = useSelector(
-		(state) => state.fetcher.fetcherStates.mapVector,
-	);
-	const directMap = useSelector(
-		(state) => state.fetcher.fetcherStates.menu["left"].directMap,
-	);
-	const vectorName = useSelector(
-		(state) => state.fetcher.fetcherStates.vectorName,
-	);
-	const mapPagePosition = useSelector(
-		(state) => state.fetcher.fetcherStates.map.mapPagePosition,
-	);
+	const { mapVector, vectorName, mapPagePosition } =
+		useDirectorFun(direction);
 
 	const query = useQuery();
 	const tile = query.get("tile");
@@ -51,82 +35,22 @@ const useFetcherStates = () => {
 	const lon = query.get("lon");
 	const lat = query.get("lat");
 	const session = query.get("session");
-	const [tiles, setTiles] = useState([]);
-	const [panels, setPanels] = useState([]);
 
 	useEffect(() => {
 		const defaultAlboBehaviour = () => {
 			dispatch(setMapVector("albopictus"));
 			dispatch(setVectorName("albopictus"));
 		};
+
 		if (session) {
 			if (vectorNames.includes(session)) {
 				dispatch(setMapVector(session));
 				dispatch(setVectorName(session));
-			}
-		}
-	}, [session, dispatch, vectorNames]);
-
-	useEffect(() => {
-		if (mapPagePosition === null || mapPagePosition === undefined) {
-			dispatch(
-				setMapPagePosition(
-					PackageMapServices[
-						mapVector === "albopictus"
-							? "defaultWorldCenter"
-							: "defaultCypCenter"
-					],
-				),
-			);
-		}
-
-		if (menuStructure.filter((item) => item.key === panel).length > 0) {
-			dispatch(setDisplaySimulationPanel({ direction, value: panel }));
-		}
-	}, [
-		lon,
-		lat,
-		mapVector,
-		menuStructure,
-		direction,
-		mapPagePosition.lat,
-		dispatch,
-		panel,
-	]);
-
-	useEffect(() => {
-		let availableTiles = tileIcons.map((tile) => tile.key);
-
-		if (tile) {
-			let tileArray_1 = tile.split(":");
-			dispatch(setTileArray(tileArray_1));
-			if (mapVector === "papatasi" || vectorName === "papatasi") {
-				dispatch(
-					setMapPagePosition(PackageMapServices.defaultCypCenter),
-				);
-			}
-		}
-	}, [mapVector, dispatch, tile, tileIcons]);
-
-	useEffect(() => {
-		if (panels.length > 0 && tiles.length > 0) {
-			try {
-				FetcherService.handleTiles(dispatch, tile, tiles, session);
-				FetcherService.handlePanels(
-					dispatch,
-					panel,
-					decade,
-					panels,
-					lon,
-					lat,
-				);
-			} catch (e) {
-				dispatch(
-					setDisplayedPanelID({
-						direction,
-						value: 0,
-					}),
-				);
+			} else {
+				const e = new Error("No Session Found");
+				e.type = "SessionError";
+				e.heading = `Session ${session} Not Found`;
+				e.explanation = `Available sessions are: ${vectorNames.join(", ")}`;
 				dispatch(
 					setDirectInitError({
 						direction,
@@ -140,27 +64,85 @@ const useFetcherStates = () => {
 						},
 					}),
 				);
+				// TODO: INVOKE ERROR MESSAGE ABOUT INVALID SESSION
 			}
-			//setting ready to view... are we going to handle directMap.display===-2 situation?
-			dispatch(setReadyToView(true));
 		}
-	}, [tile, tiles, panels, panel, lon, lat, dispatch, session, decade]);
+	}, [session, dispatch, vectorNames]);
 
 	useEffect(() => {
-		if (directMap.display !== -2 && directMap.display !== null) {
+		console.log({ m: mapPagePosition });
+
+		if (mapPagePosition.lat === null || mapPagePosition.lat === undefined) {
+			if (lon && lat) {
+				console.log({ mapPagePosition });
+
+				dispatch(
+					setMapPagePosition({
+						lat: parseFloat(lat),
+						lng: parseFloat(lon),
+					}),
+				);
+			} else {
+				dispatch(
+					setMapPagePosition(PackageMapServices["defaultCypCenter"]),
+				);
+			}
+		}
+		console.log("panel", panel);
+		if (menuStructure.filter((item) => item.key === panel).length > 0) {
+			dispatch(setDisplaySimulationPanel({ direction, value: panel }));
+		}
+	}, [
+		lon,
+		lat,
+		mapVector,
+		mapPagePosition,
+		menuStructure,
+		direction,
+		dispatch,
+		panel,
+	]);
+
+	// useEffect(() => {
+	// 	if (mapVector === "papatasi" || vectorName === "papatasi") {
+	// 		if ((!lon, !lat || isNaN(lon) || isNaN(lat))) {
+	// 			dispatch(
+	// 				setMapPagePosition(PackageMapServices.defaultCypCenter),
+	// 			);
+	// 		}
+	// 	}
+	// }, [mapVector, dispatch, tile, tileIcons]);
+
+	useEffect(() => {
+		try {
+			FetcherService.handleTiles(dispatch, tile, tileIcons, session);
+			FetcherService.handlePanels(
+				dispatch,
+				panel,
+
+				panelData,
+				lon,
+				lat,
+			);
+		} catch (e) {
 			dispatch(
-				setDisplayedPanelID({
+				setDirectInitError({
 					direction,
-					value: directMap.display,
+					value: {
+						isError: true,
+						message: {
+							heading: e.heading,
+							explanation: e.explanation,
+						},
+						type: e.type,
+					},
 				}),
 			);
-			dispatch(setDirectInit({ direction, value: true }));
-		} else {
-			setDirectInit(false);
 		}
-	}, [directMap.display, dispatch]);
+		//setting ready to view... are we going to handle directMap.display===-2 situation?
+		dispatch(setReadyToView(true));
+	}, [tile, panel, lon, lat, dispatch, mapPagePosition, session, decade]);
 };
-
 export default useFetcherStates;
 
 // // src/components/DataFetcher.js

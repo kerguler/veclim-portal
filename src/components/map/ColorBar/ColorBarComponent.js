@@ -62,18 +62,11 @@ function ColorBarComponent({ times }) {
 		times,
 	);
 	useEffect(() => {
-		console.log("style", tileArray);
-
 		if (data) {
 			const extractedTile1 = tileArray?.map((tile) => {
-				console.log("tile", tile);
-				console.log("tileIcons", tileIcons);
-				console.log("tileArray", tileArray);
 				const found = tileIcons.find((icon) => icon.key === tile);
 				return found?.colkey;
 			});
-			console.log("extractedTile", extractedTile1);
-
 			setExtractedTile(extractedTile1);
 		}
 	}, [data, tileArray, mapVector, isFetching, error]);
