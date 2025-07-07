@@ -1,8 +1,8 @@
-import "./ChartIndicators.css";
-import { useSelector } from "react-redux";
-import { useFetchTimeSeriesDataQuery } from "store";
-import ChartLoadingSkeleton from "../skeleton/Skeleton";
-import { dateToString } from "store/apis/utils";
+import './ChartIndicators.css';
+import { useDispatch, useSelector } from 'react-redux';
+import { useFetchTimeSeriesDataQuery } from 'store';
+import ChartLoadingSkeleton from '../skeleton/Skeleton';
+import { dateToString } from 'store/apis/utils';
 function ChartIndicators() {
 	const position = useSelector((state) => {
 		return state.fetcher.fetcherStates.map.mapPagePosition;
@@ -15,10 +15,12 @@ function ChartIndicators() {
 		vectorName: vectorName,
 	});
 
+	const dispatch = useDispatch();
+
 	if (isFetching) {
 		return (
 			<>
-				<div className="chart-indicators">
+				<div className='chart-indicators'>
 					<ChartLoadingSkeleton times={6} noBorder />
 				</div>
 			</>
@@ -28,128 +30,101 @@ function ChartIndicators() {
 	if (data === undefined) {
 		return null;
 	}
+	var fdate = '';
 
-	var fdate = "";
-	if (data.date && "fcast-ts" in data) {
-		var fromdate = new Date(data.date.date0)
-		var todate = new Date(data.date.date1);
+	// if (data) {
+	// 	dispatch(setIsTsDataSet(true));
+	// }
+
+	if (data && 'fcast-ts' in data) {
+		// dispatch(
+		// 	setChartDatesLeft({ first: data.date.date0, last: data.date.date1 })
+		// );
+		// dispatch(
+		// 	setChartDatesRight({ first: data.date.date0, last: data.date.date1 })
+		// );
+		var todate = new Date(data.date.date0);
+		todate.setDate(todate.getDate() + data['fcast-ts'].ecmwf.colegg.length);
 		fdate = (
 			<>
-				<div className="chart-indicators-row">
-					<p>
-						<strong>Forecast range</strong>
-					</p>
-					<div>
-						<p>
-							{dateToString(fromdate, "-")} <span className="note">from</span>
-						</p>
-						<p>
-							{dateToString(todate, "-")} <span className="note">to</span>
-						</p>
-					</div>
-				</div>
+				<p>
+					{data['fcast-ts'].ecmwf.overlap[0]}{' '}
+					<span className='note'>from</span>
+				</p>
+				<p>
+					{dateToString(todate, '-')} <span className='note'>to</span>
+				</p>
 			</>
 		);
 	}
 
-	var coord = "";
-	if (data.location) {
+	var coord = '';
+	if (data) {
 		coord = (
 			<>
 				<p>
-					{data.location.lat.toFixed(2)} <span className="note">latitude</span>
+					{data.location.lat.toFixed(2)}{' '}
+					<span className='note'>latitude</span>
 				</p>
 				<p>
 					{(data.location.lon > 180
 						? data.location.lon - 360.0
 						: data.location.lon
-					).toFixed(2)}{" "}
-					<span className="note">longitude</span>
+					).toFixed(2)}{' '}
+					<span className='note'>longitude</span>
 				</p>
 			</>
 		);
 	}
 
-	var mosquito = "";
-	if (
-		"presence" in data &&
-		"albopictus" in data.presence &&
-		data.presence.albopictus[0]
-	) {
-		mosquito = (
-			<>
-				<div className="chart-indicators-vector">
-				<p>
-					Reports of the <strong>tiger mosquito</strong>
-				</p>
-				<ul>
-					{data.presence.albopictus.map((elm, i) => {
-						return (
-							<li key={i}>
-								<a target="_blank" rel="noreferrer" href={elm.citation.url}>
-									{elm.dataset}
-								</a>
-							</li>
-						);
-					})}
-				</ul>
-				</div>
-			</>
-		);
-	} else if ("presence" in data) {
-		mosquito = (
-			<div className="chart-indicators-vector">
-			<p>
-				<strong>No</strong> reports of the tiger mosquito
-			</p>
-			</div>
-		);
-	}
-
-	var londat = ""
-	if (
-		"surv-ts" in data &&
-		Object.values(data["surv-ts"]).some(val => Array.isArray(val) && val.length > 0)
-	) {
-		let trans = {
-			'vabun': {'label': "VectAbundance", 'href': "https://doi.org/10.5281/zenodo.11486198"},
-			'aimsurv': {'label': "AIMSurv", 'href': "https://www.gbif.org/dataset/03269e13-84ae-430f-990e-f11069413e36"},
-			'vbase': {'label': "VectorBase", 'href': "https://vectorbase.org/vectorbase/app/"},
-		}
-		londat = (
-			<>
-			<div className="chart-indicators-vector">
-				<p>
-					Long-term observations of the <strong>tiger mosquito</strong> from the area
-				</p>
-				<ul>
-					{
-						Object.entries(data["surv-ts"]).filter(([key, val]) => (Array.isArray(val)) && (val.length > 0)).map(([key, val], i) => {
+	var mosquito = '';
+	if (data) {
+		if (
+			'presence' in data &&
+			'albopictus' in data.presence &&
+			data.presence.albopictus[0]
+		) {
+			mosquito = (
+				<>
+					<p>
+						Reports of the <strong>tiger mosquito</strong>
+					</p>
+					<ul>
+						{data.presence.albopictus.map((elm, i) => {
 							return (
 								<li key={i}>
-									<a target="_blank" rel="noreferrer" href={trans[key]['href']}>
-										{trans[key]['label']}
+									<a
+										target='_blank'
+										rel='noreferrer'
+										href={elm.citation.url}
+									>
+										{elm.dataset}
 									</a>
 								</li>
 							);
-						})
-					}
-				</ul>
-			</div>
-			</>
-		);
+						})}
+					</ul>
+				</>
+			);
+		} else if ('presence' in data) {
+			mosquito = (
+				<p>
+					<strong>No</strong> reports of the tiger mosquito
+				</p>
+			);
+		}
 	}
 
 	const indicators = (
 		<>
-			<div className="chart-indicators">
-				<div className="chart-indicators-row">
+			<div className='chart-indicators'>
+				<div className='chart-indicators-row'>
 					<p>
 						<strong>Coordinates</strong>
 					</p>
 					<div>{coord}</div>
 				</div>
-				<div className="chart-indicators-row">
+				<div className='chart-indicators-row'>
 					<p>
 						<strong>Resolution</strong>
 					</p>
@@ -157,76 +132,80 @@ function ChartIndicators() {
 						<p>0.25° x 0.25°</p>
 					</div>
 				</div>
-				<div className="chart-indicators-row">
+				<div className='chart-indicators-row'>
 					<p>
 						<strong>Model</strong>
 					</p>
 					<div>
 						<p>
 							<a
-								target="_blank"
-								rel="noreferrer"
-								href="https://pypi.org/project/albopictus/"
+								target='_blank'
+								rel='noreferrer'
+								href='https://pypi.org/project/albopictus/'
 							>
 								Vector08c + CHIKV
 							</a>
 						</p>
 					</div>
 				</div>
-				<div className="chart-indicators-row">
+				<div className='chart-indicators-row'>
 					<p>
 						<strong>Covariates</strong>
 					</p>
 					<div>
 						<p>
 							<a
-								target="_blank"
-								rel="noreferrer"
-								href="https://cds.climate.copernicus.eu/cdsapp#!/dataset/reanalysis-era5-single-levels"
+								target='_blank'
+								rel='noreferrer'
+								href='https://cds.climate.copernicus.eu/cdsapp#!/dataset/reanalysis-era5-single-levels'
 							>
 								ERA5
-							</a>{" "}
-							<span className="note">historical</span>
+							</a>{' '}
+							<span className='note'>historical</span>
 						</p>
 						<p>
 							<a
-								target="_blank"
-								rel="noreferrer"
-								href="https://cds.climate.copernicus.eu/cdsapp#!/dataset/seasonal-original-single-levels"
+								target='_blank'
+								rel='noreferrer'
+								href='https://cds.climate.copernicus.eu/cdsapp#!/dataset/seasonal-original-single-levels'
 							>
 								ECMWF-SEAS5
-							</a>{" "}
-							<span className="note">forecast</span>
+							</a>{' '}
+							<span className='note'>forecast</span>
 						</p>
 						<p>
 							<a
-								target="_blank"
-								rel="noreferrer"
-								href="https://www.nccs.nasa.gov/services/data-collections/land-based-products/nex-gddp-cmip6"
+								target='_blank'
+								rel='noreferrer'
+								href='https://www.nccs.nasa.gov/services/data-collections/land-based-products/nex-gddp-cmip6'
 							>
 								NEX-GDDP-CMIP6
-							</a>{" "}
-							<span className="note">future</span>
+							</a>{' '}
+							<span className='note'>future</span>
 						</p>
 					</div>
 				</div>
-				{fdate}
-				{mosquito}
-				{londat}
+				<div className='chart-indicators-row'>
+					<p>
+						<strong>Forecast range</strong>
+					</p>
+					<div>{fdate}</div>
+				</div>
+				<div className='chart-indicators-vector'>{mosquito}</div>
 			</div>
 		</>
 	);
 
 	const indicatorsSand = (
 		<>
-			<div className="chart-indicators">
-				<div className="chart-indicators-row">
+			<div className='chart-indicators'>
+				<div className='chart-indicators-row'>
 					<p>
 						<strong>Coordinates</strong>
 					</p>
 					<div>{coord}</div>
 				</div>
-				<div className="chart-indicators-row">
+				<div className='chart-indicators-row'>
 					<p>
 						<strong>Resolution</strong>
 					</p>
@@ -234,36 +213,36 @@ function ChartIndicators() {
 						<p>0.0215° x 0.0215°</p>
 					</div>
 				</div>
-				<div className="chart-indicators-row">
+				<div className='chart-indicators-row'>
 					<p>
 						<strong>Model</strong>
 					</p>
 					<div>
 						<p>
 							<a
-								target="_blank"
-								rel="noreferrer"
-								href="https://pypi.org/project/albopictus/"
+								target='_blank'
+								rel='noreferrer'
+								href='https://pypi.org/project/albopictus/'
 							>
 								Sand
 							</a>
 						</p>
 					</div>
 				</div>
-				<div className="chart-indicators-row">
+				<div className='chart-indicators-row'>
 					<p>
 						<strong>Covariates</strong>
 					</p>
 					<div>
 						<p>
 							<a
-								target="_blank"
-								rel="noreferrer"
-								href="https://doi.org/10.5281/zenodo.8413232"
+								target='_blank'
+								rel='noreferrer'
+								href='https://doi.org/10.5281/zenodo.8413232'
 							>
 								WRF-ARW
-							</a>{" "}
-							<span className="note">2015</span>
+							</a>{' '}
+							<span className='note'>2015</span>
 						</p>
 					</div>
 				</div>
@@ -271,7 +250,7 @@ function ChartIndicators() {
 		</>
 	);
 
-	return vectorName === "albopictus" ? indicators : indicatorsSand; // indicatorsSand;
+	return vectorName === 'albopictus' ? indicators : indicatorsSand; // indicatorsSand;
 }
 
 export { ChartIndicators };

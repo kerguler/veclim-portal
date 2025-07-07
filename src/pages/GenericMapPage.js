@@ -12,7 +12,7 @@ import PanelContext from "context/panelsIcons";
 
 import { useSelector } from "react-redux";
 import ErrorBoundary from "components/errorBoundary/ErrorBoundary";
-import useFetcherStates from "customHooks/useFetcherStates";
+import useFetcherStates from "customHooks/fethcerStates/useFetcherStates";
 import GenericMapComponent from "components/map/MapComponent/GenericMapComponent";
 import { PanelProvider } from "context/panelsIcons";
 function GenericMapPage() {

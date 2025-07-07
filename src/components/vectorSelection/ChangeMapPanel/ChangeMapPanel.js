@@ -10,13 +10,13 @@ import {
 	setDisplayedPanelID,
 	setPanelOpen,
 	setPageTransition,
-} from "../../../store";
+} from "store";
 import tileIconMoz from "assets/icons/map-page-right-menu/png/adult-32px.png";
 import tileIconFly from "assets/icons/map-page-right-menu/png/mosquito-3-32px.png";
 import useWindowSize from "customHooks/useWindowSize";
-import MapAdjustmentsService from "../../charts/services/MapAdjustmentsService";
 import { Link } from "react-router-dom";
 import "./ChangeMapPanel.css";
+import PackageMapServices from "components/map/mapPackage/PackageMapServices";
 function ChangeMapPanel() {
 	const dispatch = useDispatch();
 	const vectorName = useSelector(
@@ -43,7 +43,7 @@ function ChangeMapPanel() {
 		),
 	};
 	const handleChangeTile = (desiredVector) => {
-		MapAdjustmentsService.handleMapSwitch(dispatch, vectorName, desiredVector);
+		PackageMapServices.handleMapSwitch(dispatch, vectorName, desiredVector);
 		dispatch(setPageTransition(false));
 	};
 

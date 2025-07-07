@@ -6,9 +6,8 @@ import { Link } from "react-router-dom";
 import "styles/IconMenu.css";
 import { useDispatch, useSelector } from "react-redux";
 import useOutsideClickClose from "customHooks/useOutsideClickClose";
-import MapAdjustmentsService from "components/charts/services/MapAdjustmentsService";
 import BurgerMenu from "./BurgerMenu/BurgerMenu";
-import useRenderCount from "customHooks/useRenderCount";
+import PackageMapServices from "components/map/mapPackage/PackageMapServices";
 function MobileNav() {
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
 	const mainDivRef = useRef();
@@ -27,7 +26,7 @@ function MobileNav() {
 	}
 
 	const handleMapBounds = () => {
-		MapAdjustmentsService.handleToMapPageTransition(
+		PackageMapServices.handleToMapPageTransition(
 			dispatch,
 			vectorName,
 			mapVector

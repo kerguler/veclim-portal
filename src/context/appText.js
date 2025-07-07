@@ -42,13 +42,13 @@ import imageSandFlySEM from "../assets/images/methods-sandfly-SEM2.webp";
 import imageSandFlyLeish from "../assets/images/methods-sandfly-leish.webp";
 import imageSandFlyPhoto from "../assets/images/methods-sandfly-photo2.webp";
 import imageSandFlyTime from "../assets/images/methods-sandfly-ts.webp";
-import MapAdjustmentsService from "components/charts/services/MapAdjustmentsService";
 import { Link } from "react-router-dom";
 import XLink from "components/xlink";
 import { useDispatch, useSelector } from "react-redux";
 // import ChangesComponent from "../components/ChangesComponent";
 import { useLocation } from "react-router-dom";
 import { setDisplayedPanelID, setReadyToView } from "store";
+import PackageMapServices from "components/map/mapPackage/PackageMapServices";
 const TextContext = createContext();
 
 function TextProvider({ children }) {
@@ -113,13 +113,13 @@ function TextProvider({ children }) {
 						<h4>
 						<Link
 							onClick={() => {
-								MapAdjustmentsService.handleToMapPageTransition(
+								PackageMapServices.handleToMapPageTransition(
 									dispatch,
 									vectorName,
 									mapVector
 								);
 								dispatch(setReadyToView(false));
-								dispatch(setDisplayedPanelID(0));
+								// dispatch(setDisplayedPanelID(0));
 							}}
 							to="/MapPage?session=albopictus&tile=colegg_dates:colegg_fcast"
 						>
@@ -132,13 +132,13 @@ function TextProvider({ children }) {
 						</Link>
 						<Link
 							onClick={() => {
-								MapAdjustmentsService.handleToMapPageTransition(
+								PackageMapServices.handleToMapPageTransition(
 									dispatch,
 									vectorName,
 									mapVector
 								);
 								dispatch(setReadyToView(false));
-								dispatch(setDisplayedPanelID(0));
+								// dispatch(setDisplayedPanelID(0));
 							}}
 							to="/MapPage?session=albopictus&tile=colegg:colegg_ssp585"
 						>
@@ -151,13 +151,12 @@ function TextProvider({ children }) {
 						</Link>
 						<Link
 							onClick={() => {
-								MapAdjustmentsService.handleToMapPageTransition(
+								PackageMapServices.handleToMapPageTransition(
 									dispatch,
 									vectorName,
 									mapVector
 								);
 								dispatch(setReadyToView(false));
-								dispatch(setDisplayedPanelID(0));
 							}}
 							to="/MapPage?session=papatasi"
 						>
@@ -782,13 +781,12 @@ function TextProvider({ children }) {
 							As of June 2025, VEClim now displays seasonal averages of observed vector population dynamics on the {" "}
 							<Link
 								onClick={() => {
-								MapAdjustmentsService.handleToMapPageTransition(
+								PackageMapServices.handleToMapPageTransition(
 									dispatch,
 									vectorName,
 									mapVector
 								);
 								dispatch(setReadyToView(false));
-								dispatch(setDisplayedPanelID(0));
 								}}
 								to="/MapPage?session=albopictus&tile=presence"
 							>

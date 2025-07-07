@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import PackageMapServices from "components/map/mapPackage/PackageMapServices";
 
 const fetcherSlice = createSlice({
 	name: "fetcher",
@@ -9,42 +10,40 @@ const fetcherSlice = createSlice({
 			vectorName: "albopictus",
 			tileArray: ["colegg"],
 			availableTiles: [],
+			data: {},
+			isTsDataSet: false,
+			invalidateSimData: false,
+			invalidateTsData: false,
+			graphType: null,
 			map: {
-				currentMapCenter: [35.1966527, 33.3217152],
-				currentMapZoom: 1,
-				optionsPanel:{
-					showVectorAbundance: false,
-					tileOpacity: 1.0,
-					showMapLabels: false},
+				displayTileNames: { left: false, right: false, center: true },
+
+				currentMapCenter: { lat: 35.1966527, lng: 33.3217152 },
+				currentMapZoom: 2,
 				mapLoaded: false,
 				leftMapLoaded: false,
 				rightMapLoaded: false,
-				leftMenu: {
-					panelOpen: false,
-					mapMenuOpen: false,
-					displayedPanelID: 0,
+				optionsPanel: {
+					showVectorAbundance: false,
+					tileOpacity: 1.0,
+					showMapLabels: false,
 				},
 				switchMap: true,
-				currentMapBounds: [],
-				currentMaxBounds: [],
+				currentMapBounds: PackageMapServices.worldBounds,
+				currentMaxBounds: PackageMapServices.worldBounds,
 				userPosition: { lat: null, lng: null },
 				globalPosition: { lat: null, lng: null },
-				mapPagePosition: { lat: 35.1966527, lng: 33.3217152 },
+				mapPagePosition: { lat: null, lng: null },
 			},
-			brushRange: { startIndex: null, endIndex: null },
-			directMap: { lon: null, lat: null, display: -2 },
-			directInit: false,
-			directInitError: { isError: false, message: "", type: "" },
 		},
 		fetcherError: null,
 		fetcherLoading: false,
 	},
 
-		
-
 	reducers: {
 		setShowVectorAbundance(state, action) {
-			state.fetcherStates.map.optionsPanel.showVectorAbundance = action.payload;
+			state.fetcherStates.map.optionsPanel.showVectorAbundance =
+				action.payload;
 		},
 		setTileOpacity(state, action) {
 			state.fetcherStates.map.optionsPanel.tileOpacity = action.payload;
@@ -52,6 +51,31 @@ const fetcherSlice = createSlice({
 		setShowMapLabels(state, action) {
 			state.fetcherStates.map.optionsPanel.showMapLabels = action.payload;
 		},
+
+		setDisplayTileNames(state, action) {
+			state.fetcherStates.map.displayTileNames = action.payload;
+		},
+
+		setGraphType(state, action) {
+			state.fetcherStates.graphType = action.payload;
+		},
+
+		setInvalidateTsData(state, action) {
+			state.fetcherStates.invalidateTsData = action.payload;
+		},
+		setInvalidateSimData(state, action) {
+			state.fetcherStates.invalidateSimData = action.payload;
+		},
+		setIsTsDataSet(state, action) {
+			state.fetcherStates.isTsDataSet = action.payload;
+		},
+		setTsData(state, action) {
+			state.fetcherStates.data = action.payload;
+		},
+		setMapPagePosition(state, action) {
+			state.fetcherStates.map.mapPagePosition = action.payload;
+		},
+
 		setReadyToView(state, action) {
 			state.fetcherStates.readyToView = action.payload;
 		},
@@ -98,62 +122,44 @@ const fetcherSlice = createSlice({
 			state.fetcherStates.map.userPosition = action.payload;
 		},
 		setGlobalPosition(state, action) {
-			state.fetcherStates.map.globalPosition = action.payload;
+			if (action && action.payload) {
+				state.fetcherStates.map.globalPosition = action.payload;
+			} else {
+				state.fetcherStates.map.globalPosition = state.userPosition;
+			}
 		},
-		setMapPagePosition(state, action) {
-			state.fetcherStates.map.mapPagePosition = action.payload;
-		},
-		setBrushRange(state, action) {
-			state.fetcherStates.brushRange = action.payload;
-		},
-		setDirectMap(state, action) {
-			state.fetcherStates.directMap = action.payload;
-		},
-		setDirectInit(state, action) {
-			state.fetcherStates.directInit = action.payload;
-		},
-		setDirectInitError(state, action) {
-			state.fetcherStates.directInitError = action.payload;
-		},
-		setPanelOpen(state, action) {
-			state.fetcherStates.map.leftMenu.panelOpen = action.payload;
-		},
-		setMapMenuOpen(state, action) {
-			state.fetcherStates.map.leftMenu.mapMenuOpen = action.payload;
-		},
-		setDisplayedPanelID(state, action) {
-			state.fetcherStates.map.leftMenu.displayedPanelID = action.payload;
-		},
+		// setMapPagePosition(state, action) {
+		// 	state.fetcherStates.map.mapPagePosition = action.payload;
+		// },
 	},
 });
 
 export const {
-	setVectorName,
 	setShowVectorAbundance,
-	setTileOpacity,
-	setShowMapLabels,
-	setFetcherStates,
 	setAvailableTiles,
-	setBrushRange,
 	setCurrentMapBounds,
-	setCurrentMaxBounds,
-	setDirectInit,
-	setDirectInitError,
-	setDirectMap,
-	setDisplayedPanelID,
-	setGlobalPosition,
-	setLeftMapLoaded,
 	setCurrentMapCenter,
-	setMapLoaded,
-	setMapMenuOpen,
-	setMapPagePosition,
 	setCurrentMapZoom,
+	setCurrentMaxBounds,
+	setDisplayTileNames,
+	setFetcherStates,
+	setGlobalPosition,
+	setGraphType,
+	setInvalidateSimData,
+	setInvalidateTsData,
+	setIsTsDataSet,
+	setLeftMapLoaded,
+	setMapLoaded,
+	setMapPagePosition,
 	setMapVector,
-	setPanelOpen,
-	setTileArray,
-	setRightMapLoaded,
-	setSwitchMap,
-	setUserPosition,
 	setReadyToView,
+	setRightMapLoaded,
+	setShowMapLabels,
+	setSwitchMap,
+	setTileArray,
+	setTileOpacity,
+	setTsData,
+	setUserPosition,
+	setVectorName,
 } = fetcherSlice.actions;
 export const fetcherReducer = fetcherSlice.reducer;

@@ -22,7 +22,7 @@ import { useEffect } from "react";
 import { useState } from "react";
 import MapAdjustmentsService from "components/charts/services/MapAdjustmentsService";
 import ErrorBoundary from "components/errorBoundary/ErrorBoundary";
-import useFetcherStates from "customHooks/useFetcherStates";
+import useFetcherStates from "customHooks/fethcerStates/useFetcherStates";
 import GenericMapComponent from "components/map/MapComponent/GenericMapComponent";
 function MapPageSandFly() {
 	const [mapready, setMapReady] = useState(true);

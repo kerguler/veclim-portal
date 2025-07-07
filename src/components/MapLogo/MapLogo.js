@@ -12,7 +12,7 @@ function MapLogo() {
 		(state) => state.fetcher.fetcherStates.vectorName
 	);
 	const handleMainPageTransition = () => {
-		 dispatch(setDisplayedPanelID(null));
+		 
 		// dispatch(setMapVector(vectorName));
 	};
 

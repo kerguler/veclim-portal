@@ -1,8 +1,8 @@
 import { useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setUserPosition } from "../../store";
+import { setUserPosition } from "store";
 import { useCookies } from "react-cookie";
-import { setLocationRequested, setGlobalPosition } from "../../store";
+import { setLocationRequested, setGlobalPosition} from "store";
 
 export function dateToString(today, sep = "") {
 	let d_raw = today.getDate();

@@ -6,7 +6,6 @@ import {
 	setMapPagePosition,
 	setPanelInterfere,
 	setPanelOpen,
-	setMapMenuOpen,
 	setSwitchMap,
 	setMapLoaded,
 	setLeftMapLoaded,
@@ -17,32 +16,36 @@ import {
 	setTileArray,
 	setDisplayedPanelID,
 	setCurrentMapBounds,
-	setPageTransition,
 	setMapVector,
-	setDividerPosition,
 } from "store";
 import TileLoaderService from "../../../customHooks/TileLoaderService";
 import ErrorScreenMap from "components/map/errorScreen/ErrorScreenMap";
-import { setDirectMap } from "store";
+import { setCurrentMaxBounds } from "store";
+import { setDisplayReady } from "store";
+import { setIsTsDataSet } from "store";
+import { setInvalidateSimData } from "store";
+import { setDataArrived } from "store";
+import { setOpenItems } from "store";
+import { zIndex } from "material-ui/styles";
+import { setPlotReady } from "store";
 
-class MapAdjustmentsService {
+class PackageMapServices {
 	static baseLayer = L.tileLayer(
 		"http://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.webp",
-		{ attribution: "", noWrap: true }
-	);
+		{ attribution: "", noWrap: true },
+	); // '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>';
 	static baseLayerOSM = L.tileLayer(
-		"https://tile.openstreetmap.org/{z}/{x}/{y}.png", 
-		{ attribution: "", noWrap: true } //'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+		"https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+		{ attribution: "", noWrap: true }, //'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 	);
 	static dataLayer = L.tileLayer(
 		"https://veclim.com/api?v=vabun_v015&z={z}&x={x}&y={y}",
-		{ zIndex: 1000, attribution: "", noWrap: true }
+		{ zIndex: 1000, attribution: "", noWrap: true },
 	);
 	static labelLayer = L.tileLayer(
-		"https://{s}.basemaps.cartocdn.com/rastertiles/voyager_only_labels/{z}/{x}/{y}{r}.webp", 
-		{ zIndex: 2000, attribution: "", noWrap: true} // '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+		"https://{s}.basemaps.cartocdn.com/rastertiles/voyager_only_labels/{z}/{x}/{y}{r}.webp",
+		{ zIndex: 2000, attribution: "", noWrap: true }, // '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
 	);
-
 	static cyprusBounds = [
 		[34.25, 31.5],
 		[36, 35],
@@ -52,8 +55,8 @@ class MapAdjustmentsService {
 		[-90, -180],
 		[90, 180],
 	];
-	static defaultWorldCenter = [0, 0];
-	static defaultCypCenter = [35.1, 33.33];
+	static defaultWorldCenter = { lat: 0, lng: 0 };
+	static defaultCypCenter = { lat: 35.1, lng: 33.33 };
 	static icon1 = L.icon({
 		iconUrl: markerLogo,
 		iconSize: [30, 30],
@@ -73,86 +76,158 @@ class MapAdjustmentsService {
 
 		p.map.setMinZoom(tempMin);
 		p.minZoom = tempMin;
+		dispatch(setCurrentMapZoom(p.zoom));
+
 		// p.map.setView([p.center[0], p.center[1]], p.zoom);
 	}
 
 	static handleToMapPageTransition(dispatch, vectorName, mapVector) {
-		if (mapVector === "albopictus" && vectorName === "albopictus") {
-			dispatch(setCurrentMapBounds(MapAdjustmentsService.worldBounds));
+		if (mapVector === "albopictus") {
+			dispatch(setCurrentMapBounds(PackageMapServices.worldBounds));
 			// dispatch(setDirectMap({ lon: null, lat: null, display: -2 }));
-			// bravo dunyanin en iy IF STATEMENTINI YAZDIN CICIM
-		} else if (mapVector === "papatasi" && vectorName === "papatasi") {
-			dispatch(setCurrentMapBounds(MapAdjustmentsService.cyprusBounds));
+		} else if (mapVector === "papatasi") {
+			dispatch(setCurrentMapBounds(PackageMapServices.cyprusBounds));
 			// dispatch(setDirectMap({ lon: null, lat: null, display: -2 }));
 		} else {
 			dispatch(setVectorName(mapVector));
-			//  dispatch(setMapVector(vectorName));
+			dispatch(setMapVector(mapVector));
 		}
 		// dispatch(setPageTransition(true));
 	}
 	static handleMapSwitch(dispatch, vectorName, desiredVector) {
-		if (desiredVector === vectorName) return;
-
-		dispatch(setSwitchMap(true));
-		if (vectorName === "albopictus") {
+		if (desiredVector === vectorName) {
+			return;
+		}
+		dispatch(setSwitchMap(false));
+		if (desiredVector === "papatasi") {
 			dispatch(setVectorName("papatasi"));
 			dispatch(setMapVector("papatasi"));
 			dispatch(setTileArray(["papatasi_aprdec"]));
 			dispatch(setCurrentMapCenter(this.defaultCypCenter));
+			dispatch(setCurrentMapBounds(this.cyprusBounds));
+			dispatch(setCurrentMaxBounds(this.cyprusBounds));
 			dispatch(setCurrentMapZoom(8));
+			dispatch(setDisplayReady(false));
 		} else {
 			dispatch(setVectorName("albopictus"));
 			dispatch(setMapVector("albopictus"));
 			dispatch(setTileArray(["colegg"]));
 			dispatch(setCurrentMapCenter(this.defaultCypCenter));
+			dispatch(setDisplayReady(false));
 		}
 
-		dispatch(setDisplayedPanelID(0));
-		dispatch(setPanelOpen(false));
+		dispatch(setOpenItems({}));
+		dispatch(setPanelOpen({ direction: "left", value: false }));
 	}
 
-	static handleMapClick(e, mapParRef, vectorName, dispatch) {
-		this.clickMap(e, mapParRef, vectorName, dispatch);
-		// TODO: MAY NEED TO REMOVE
-	
-		dispatch(setPanelInterfere(-1));
+	static handleMapClick(
+		e,
+		mapParRef,
+		vectorName,
+		dispatch,
+		directMap,
+		mapPagePosition,
+		direction,
+	) {
+		dispatch(setInvalidateSimData(true));
+		dispatch(setDataArrived({ direction: direction, value: false }));
+
+		this.clickMap(
+			e,
+			mapParRef,
+			vectorName,
+			dispatch,
+			mapPagePosition,
+			direction,
+		);
+
+		if (directMap) {
+			if (directMap.display === -2)
+				dispatch(setPanelInterfere({ direction, value: -1 }));
+		} else {
+			dispatch(setPanelInterfere({ direction, value: -1 }));
+		}
+		if (directMap) {
+			dispatch(setPanelInterfere({ direction, value: null }));
+		}
 	}
-	static clickMap = (e, mapParRef, vectorName, dispatch) => {
+	static clickMap = (
+		e,
+		mapParRef,
+		vectorName,
+		dispatch,
+		mapPagePosition,
+		direction,
+	) => {
 		let p = mapParRef.current;
 		const switchZoom = 4;
 		let newPosition = this.roundPosition(
 			vectorName,
 			e.latlng.lat,
-			e.latlng.lng
+			e.latlng.lng,
 		);
+
 		newPosition = { ...newPosition, res: [0.125, 0.125] };
 		p.prevClickPointRef = newPosition;
 		dispatch(
-			setMapPagePosition({ lat: newPosition.lat, lng: newPosition.lng })
+			setMapPagePosition({ lat: newPosition.lat, lng: newPosition.lng }),
 		);
+		dispatch(setPlotReady({ direction: "left", value: false }));
 		p.highlightMarker && p.map.removeLayer(p.highlightMarker);
 		p.iconMarker && p.map.removeLayer(p.iconMarker);
 		p.rectMarker && p.map.removeLayer(p.rectMarker);
-		p.rectMarker = this.highlightMarkerFunc(
-			newPosition.lat,
-			newPosition.lng,
-			mapParRef,
-			"",
-			"green",
-			vectorName
-		);
-
 		const { res, ...newPosition1 } = newPosition;
-		p.iconMarker = L.marker(newPosition1, { icon: this.icon1 }).addTo(p.map);
+
+		p.iconMarker = L.marker(newPosition1, { icon: this.icon1 }).addTo(
+			p.map,
+		);
+		p.iconMarker.on("click", (markerEvent) => {
+			if (markerEvent.originalEvent) {
+				markerEvent.originalEvent.preventDefault();
+				markerEvent.originalEvent.stopPropagation();
+			}
+			markerEvent.originalEvent.stopPropagation();
+			console.log("marker clicked");
+			p.prevClickPointRef = null;
+			// Remove this marker from the map
+			p.iconMarker.remove();
+			p.map.removeLayer(p.iconMarker);
+			dispatch(setMapPagePosition({ lat: null, lng: null }));
+			dispatch(setInvalidateSimData(true));
+			dispatch(setDataArrived({ direction: direction, value: false }));
+
+			p.iconMarker = null;
+		});
+
+		if (
+			mapPagePosition &&
+			newPosition.lat === mapPagePosition.lat &&
+			newPosition.lng === mapPagePosition.lng
+		) {
+			p.rectMarker && p.map.removeLayer(p.rectMarker);
+			p.iconMarker && p.map.removeLayer(p.iconMarker);
+			p.iconMarker = null;
+			p.rectMarker = null;
+			dispatch(setMapPagePosition({ lat: null, lng: null }));
+			dispatch(setInvalidateSimData(true));
+			dispatch(setDataArrived({ direction, value: false }));
+		} else {
+			p.rectMarker = this.highlightMarkerFunc(
+				newPosition.lat,
+				newPosition.lng,
+				mapParRef,
+				"",
+				"green",
+				vectorName,
+				dispatch,
+			).addTo(p.map);
+		}
 
 		if (p.map.getZoom() > switchZoom) {
 			p.iconMarker && p.map.removeLayer(p.iconMarker);
 		} else {
 			p.rectMarker && p.map.removeLayer(p.rectMarker);
 		}
-
-		dispatch(setPanelOpen(true));
-		dispatch(setMapMenuOpen(true));
 	};
 
 	static highlightMarkerFunc = (
@@ -161,12 +236,14 @@ class MapAdjustmentsService {
 		mapParRef,
 		className,
 		color,
-		vectorName
+		vectorName,
+		dispatch,
 	) => {
 		let p = mapParRef && mapParRef.current;
 		let newMarker;
 		if (p.map) {
 			const newPosition = this.roundPosition(vectorName, lat, lng);
+
 			newMarker = L.rectangle(
 				[
 					[
@@ -178,9 +255,16 @@ class MapAdjustmentsService {
 						newPosition.lng + newPosition.res[0],
 					],
 				],
-				{ className: className, color: color }
-			).addTo(p.map);
-			// p.highlightMarker = newMarker;
+				{
+					className: className,
+					color: color,
+					interactive: true,
+					fill: true,
+					fillOpacity: 0.3,
+					pane: "markerPane",
+				},
+			);
+			newMarker.addTo(p.map);
 		}
 		return newMarker;
 	};
@@ -195,8 +279,10 @@ class MapAdjustmentsService {
 			};
 		}
 		function roundPositionSand(lat, lng) {
-			let roundedLat = 0.009 + Math.round((lat - 0.009) / 0.0215) * 0.0215;
-			let roundedLng = 0.0033 + Math.round((lng - 0.0033) / 0.0215) * 0.0215;
+			let roundedLat =
+				0.009 + Math.round((lat - 0.009) / 0.0215) * 0.0215;
+			let roundedLng =
+				0.0033 + Math.round((lng - 0.0033) / 0.0215) * 0.0215;
 			return {
 				lat: roundedLat,
 				lng: roundedLng,
@@ -215,7 +301,7 @@ class MapAdjustmentsService {
 		if (!e.latlng) return;
 		p.zoom = p.map.getZoom();
 		let tempCenter = p.map.getCenter();
-		p.center = [tempCenter.lat, tempCenter.lng];
+		p.center = { lat: tempCenter.lat, lng: tempCenter.lng };
 
 		const { lat, lng } = e.latlng;
 		p.highlightMarker && p.map.removeLayer(p.highlightMarker);
@@ -226,18 +312,18 @@ class MapAdjustmentsService {
 			mapParRef,
 			"marker-green",
 			"blue",
-			vectorName
+			vectorName,
 		);
 		let elm = document.getElementById("coordinates");
 		elm.innerHTML = `lat<br/>${newPosition.lat.toFixed(
-			2
+			2,
 		)}<br/>${newPosition.lng.toFixed(2)}<br/>lon`;
 		elm.style.display = "flex";
 	}
 	static calculateBounds(value) {
 		return L.latLngBounds(
 			L.latLng(value[0][0], value[0][1]),
-			L.latLng(value[1][0], value[1][1])
+			L.latLng(value[1][0], value[1][1]),
 		);
 	}
 
@@ -248,9 +334,15 @@ class MapAdjustmentsService {
 		switchMap,
 		currentMapCenter,
 		currentMapZoom,
-		dispatch
+		dispatch,
 	) {
 		let p = mapParRef.current;
+
+		let bounds = p.map ? p.map.getBounds() : null;
+		const boundsArray = [
+			[bounds._southWest.lat, bounds._southWest.lng], // South West corner
+			[bounds._northEast.lat, bounds._northEast.lng], // North East corner
+		];
 		if (vectorName === "albopictus" && !switchMap) {
 			p.maxBounds = this.calculateBounds(this.worldBounds);
 			p.center = p.center ? p.center : this.defaultWorldCenter;
@@ -268,12 +360,19 @@ class MapAdjustmentsService {
 		if (pageTransition) {
 			p.center = currentMapCenter;
 			p.zoom = currentMapZoom;
-		} else {
 		}
+		bounds && dispatch(setCurrentMapBounds(boundsArray));
 
+		const boundsArray1 = [
+			[p.maxBounds._southWest.lat, p.maxBounds._southWest.lng], // South West corner
+			[p.maxBounds._northEast.lat, p.maxBounds._northEast.lng], // North East corner
+		];
+
+		dispatch(setCurrentMaxBounds(boundsArray1));
 		dispatch(setCurrentMapZoom(p.zoom));
 		dispatch(setCurrentMapCenter(p.center));
 		dispatch(setSwitchMap(false));
+		// this.markerHandler(mapParRef, 4, vectorName, dispatch);
 	}
 	static setMinZoom(mapParRef, vectorName) {
 		let p = mapParRef.current;
@@ -288,14 +387,15 @@ class MapAdjustmentsService {
 			p.map.setZoom(newMinZoom);
 		}
 		p.map.setMinZoom(newMinZoom);
+
 		p.minZoom = newMinZoom;
 		return newMinZoom;
 	}
 	static calculateZoomForBounds(mapParRef, bounds) {
 		// Get the size of the map container
+
 		if (bounds) {
 			let p = mapParRef.current;
-			var size = p.map.getSize();
 			var zoom = p.map.getZoom();
 			var nw = p.map.project(bounds.getNorthWest(), zoom);
 			var se = p.map.project(bounds.getSouthEast(), zoom);
@@ -308,7 +408,8 @@ class MapAdjustmentsService {
 			var scaleY = window.innerHeight / boundsSize;
 
 			// Calculate the zoom adjustment based on the scaling factor
-			var zoomAdjustment = Math.log(Math.min(scaleX, scaleY)) / Math.log(2);
+			var zoomAdjustment =
+				Math.log(Math.min(scaleX, scaleY)) / Math.log(2);
 			// Adjust the current zoom level
 			var newZoom = zoom + zoomAdjustment;
 
@@ -337,50 +438,62 @@ class MapAdjustmentsService {
 		};
 	}
 
-	static handleDoubleMap(mapParRef, tileArray, tileMat, dispatch) {
+	static handleDoubleMap(mapParRef, tileMat, tileArray, dispatch) {
 		let p = mapParRef.current;
-		let sideBySideMap = null;
+		let sideBySideMap = p.sideBySide;
 		let tempCenter = p.map.getCenter();
-		p.center = [tempCenter.lat, tempCenter.lng];
-		// const handleDividerMove = (e) => {
-		// 	dispatch(setDividerPosition(e.x));
-		// };
-		// const debouncedHandleDividerMove = this.debounce(handleDividerMove, 10);
+		p.center = { lat: tempCenter.lat, lng: tempCenter.lng };
+
 		p.zoom = p.map.getZoom();
 		if (tileArray.length === 0) {
 			dispatch(setMapLoaded(false));
 			sideBySideMap && sideBySideMap.remove();
+			tileMat = [];
 		} else if (tileArray.length === 1) {
 			dispatch(setMapLoaded(false));
-			sideBySideMap && sideBySideMap.remove();
+			if (sideBySideMap) {
+				sideBySideMap.remove();
+			}
 		} else {
 			p.map.createPane("left");
 			p.map.createPane("right");
 			dispatch(setLeftMapLoaded(false));
 			dispatch(setRightMapLoaded(false));
-			p.sideBySideMap = L.control
-				.sideBySide([tileMat[0]], [tileMat[1]])
+			sideBySideMap && sideBySideMap.remove();
+			p.sideBySide = L.control
+				.sideBySide([tileMat[0]], [tileMat[1]], {})
 
-				// .on("dividermove", debouncedHandleDividerMove)
 				.addTo(p.map);
 		}
-
-		return () => {
-			// sideBySideMap && sideBySideMap.off("dividermove", debouncedHandleDividerMove);
-		};
 	}
 
-	static addTiles(tiles, mapParRef, tileArray, dispatch,tileOpacity) {
+	static addTiles(
+		mapParRef,
+		tileArray,
+		tilesFromContext,
+		dispatch,
+		tileOpacity,
+	) {
 		let tileMat = [];
 		let p = mapParRef.current;
-		try {
-			tiles.forEach((tile, index) => {
-				tile.props['opacity'] = tileOpacity;
-				tileMat.push(L.tileLayer(tile.tile, tile.props));
-			});
-		} catch (e) {
-			<ErrorScreenMap error={e}></ErrorScreenMap>;
-		}
+		if (tileArray.length === 0) return [];
+		tileArray.forEach((tile, index) => {
+			let selectedTile = tilesFromContext.find(
+				(tileIcon) => tileIcon.key === tile,
+			);
+			try {
+				selectedTile &&
+					tileMat.push(
+						L.tileLayer(selectedTile.tileLayer.tile, {
+							...selectedTile.tileLayer.props,
+							opacity: tileOpacity || 1,
+						}),
+					);
+			} catch (e) {
+				<ErrorScreenMap error={e}></ErrorScreenMap>;
+			}
+		});
+
 		TileLoaderService.handleTileStyles(tileMat, dispatch, tileArray);
 		tileMat.forEach((tile, index) => {
 			tile.addTo(p.map);
@@ -388,16 +501,6 @@ class MapAdjustmentsService {
 		return tileMat;
 	}
 
-	static chooseTileIcons(tileArray, tileIconsUsed) {
-		if (tileArray.length === 0) return [];
-		const tiles = tileArray.map((tile, index) => {
-			let selectedTile = tileIconsUsed.find(
-				(tileIcon) => tileIcon.key === tile
-			);
-			return selectedTile ? selectedTile.tileLayer : null;
-		});
-		return tiles;
-	}
 	static _removeMarker({ mapParRef, marker1 }) {
 		let p = mapParRef && mapParRef.current;
 		marker1 && p.map.removeLayer(marker1);
@@ -405,11 +508,21 @@ class MapAdjustmentsService {
 	}
 	// marker1 = null;
 
-	static markerHandler = (mapParRef, switchZoom, vectorName, dispatch) => {
+	static markerHandler = (
+		mapParRef,
+		switchZoom,
+		vectorName,
+		dispatch,
+		mapPagePosition,
+	) => {
 		let p = mapParRef.current;
 		if (p) {
 			p.zoom = p.map.getZoom();
-			p.center = [p.map.getCenter().lat, p.map.getCenter().lng];
+			p.center = {
+				lat: p.map.getCenter().lat,
+				lng: p.map.getCenter().lng,
+			};
+
 			if (p.prevClickPointRef) {
 				p.iconMarker && p.map.removeLayer(p.iconMarker);
 				p.rectMarker && p.map.removeLayer(p.rectMarker);
@@ -417,26 +530,31 @@ class MapAdjustmentsService {
 				let newPosition = p.prevClickPointRef;
 				if (p.map.getZoom() > switchZoom) {
 					p.iconMarker && p.map.removeLayer(p.iconMarker);
-					p.rectMarker = this.highlightMarkerFunc(
-						newPosition.lat,
-						newPosition.lng,
-						mapParRef,
-						"",
-						"green",
-						vectorName
-					);
+					p.rectMarker =
+						p.rectMarker &&
+						this.highlightMarkerFunc(
+							newPosition.lat,
+							newPosition.lng,
+							mapParRef,
+							"",
+							"green",
+							vectorName,
+						);
 				} else {
 					p.rectMarker && p.map.removeLayer(p.rectMarker);
-					p.iconMarker = L.marker(newPosition, { icon: this.icon1 }).addTo(
-						p.map
-					);
+					p.iconMarker =
+						p.rectMarker &&
+						L.marker(newPosition, { icon: this.icon1 }).addTo(
+							p.map,
+						);
 				}
 			} else {
+				p.prevClickPointRef = null;
 				return;
 			}
-			dispatch(setCurrentMapCenter(p.center));
-			dispatch(setCurrentMapZoom(p.zoom));
 		}
+		dispatch(setCurrentMapCenter(p.center));
+		dispatch(setCurrentMapZoom(p.zoom));
 	};
 }
-export default MapAdjustmentsService;
+export default PackageMapServices;

@@ -1,17 +1,17 @@
-import React, { useEffect } from "react";
-import L from "leaflet";
-import "./MyMap.css";
+import React, { useEffect } from 'react';
+import L from 'leaflet';
+import './MyMap.css';
 // import "leaflet/dist/leaflet.css";
-import { lazy } from "react";
-import { useSelector } from "react-redux";
-import { Suspense } from "react";
-import MapAdjustmentsService from "components/charts/services/MapAdjustmentsService";
-import { useRef } from "react";
-import SearchLocationIcon from "components/LeftPanel/MapWithDate/MyMap/SearchLocationIcon/SearchLocationIcon";
+import { lazy } from 'react';
+import { useSelector } from 'react-redux';
+import { Suspense } from 'react';
+import PackageMapServices from 'components/map/mapPackage/PackageMapServices';
+import { useRef } from 'react';
+import SearchLocationIcon from 'components/LeftPanel/MapWithDate/MyMap/SearchLocationIcon/SearchLocationIcon';
 
 function MyMap({ maxZoom }) {
 	const position = useSelector((state) => {
-		return state.location.globalPosition;
+		return state.fetcher.fetcherStates.map.globalPosition;
 	});
 	const params = {
 		map: null,
@@ -28,7 +28,7 @@ function MyMap({ maxZoom }) {
 	useEffect(() => {
 		let p = mapParRef.current;
 		p.map = L.map(
-			"map",
+			'map',
 			{
 				scrollWheelZoom: false,
 				zoomControl: false,
@@ -40,7 +40,7 @@ function MyMap({ maxZoom }) {
 				keyboard: false,
 				dragging: false,
 			},
-			[maxZoom]
+			[maxZoom],
 		);
 
 		if ((position.lat === 0) & (position.lng === 0)) {
@@ -49,18 +49,18 @@ function MyMap({ maxZoom }) {
 		} else {
 			p.map.setView(position, maxZoom);
 
-			MapAdjustmentsService.highlightMarkerFunc(
+			PackageMapServices.highlightMarkerFunc(
 				position.lat,
 				position.lng,
 				mapParRef,
-				"red",
-				"red",
-				"albopictus"
+				'red',
+				'red',
+				'albopictus',
 			);
 		}
 		L.tileLayer(
-			"http://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.webp",
-			{ attribution: "", noWrap: true }
+			'http://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.webp',
+			{ attribution: '', noWrap: true },
 		).addTo(p.map);
 
 		return () => {
@@ -69,9 +69,8 @@ function MyMap({ maxZoom }) {
 	}, [position, maxZoom]);
 
 	return (
-		<div className="map-container-wrapper">
-			
-			<div id="map"></div>
+		<div className='map-container-wrapper'>
+			<div id='map'></div>
 			<SearchLocationIcon />
 		</div>
 	);
