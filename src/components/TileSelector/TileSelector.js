@@ -148,54 +148,6 @@ function TileSelector({ tileIcons }) {
 	// 	}, 100);
 	// };
 
-	const RenderedContent = () => {
-		let description = <p>No tiles selected. Base map is on display.</p>;
-		let displayedIcons = tileIcons
-			.filter((item, index) => !("hidden" in item && item.hidden))
-			.map((item, index) => {
-				let internalClassName;
-				const filteredArray = selectedTiles.filter(
-					(element) => element === item.key,
-				);
-				const exists = filteredArray.length > 0;
-				if (exists) {
-					internalClassName = "panel-content icons-area  active";
-					description = <MoreText>{item.description}</MoreText>;
-				} else {
-					internalClassName = "panel-content icons-area inactive";
-				}
-				if ("linked" in item && item.linked !== item.key) {
-					internalClassName += " twin";
-				}
-				return (
-					<div
-						id={item.tileLayer.displayIndex}
-						key={item.key}
-						className={internalClassName}
-						onClick={() => {
-							handleIconClick(item.key);
-						}}
-						onContextMenu={(e) => {
-							handleContextMenu(e, item.key);
-						}}
-					>
-						<img
-							key={item.key}
-							alt='mapped-tile-icon'
-							src={item.icon}
-						></img>
-					</div>
-				);
-			});
-
-		return (
-			<>
-				<IconGrid icons={displayedIcons} />
-				<div className='tile-select-description'>{description}</div>
-			</>
-		);
-	};
-
 	useEffect(() => {
 		setTimeout(() => {
 			setDisplayNoTileWarning(false);
@@ -206,7 +158,7 @@ function TileSelector({ tileIcons }) {
 	return (
 		<div className='icons-area'>
 			<h1>Map Tiles</h1>
-			<RenderedContent />
+			<RenderedContent tileIcons={tileIcons} selectedTiles={selectedTiles}  handleIconClick={handleIconClick} />
 			{displayWarning && (
 				<div className='icons-area warning'>
 					{" "}
@@ -315,3 +267,51 @@ function IconRowLabels({ row }) {
 	);
 }
 */
+
+	const RenderedContent = ({tileIcons,selectedTiles,handleIconClick}) => {
+		let description = <p>No tiles selected. Base map is on display.</p>;
+		let displayedIcons = tileIcons
+			.filter((item, index) => !("hidden" in item && item.hidden))
+			.map((item, index) => {
+				let internalClassName;
+				const filteredArray = selectedTiles.filter(
+					(element) => element === item.key,
+				);
+				const exists = filteredArray.length > 0;
+				if (exists) {
+					internalClassName = "panel-content icons-area  active";
+					description = <MoreText>{item.description}</MoreText>;
+				} else {
+					internalClassName = "panel-content icons-area inactive";
+				}
+				if ("linked" in item && item.linked !== item.key) {
+					internalClassName += " twin";
+				}
+				return (
+					<div
+						id={item.tileLayer.displayIndex}
+						key={item.key}
+						className={internalClassName}
+						onClick={() => {
+							handleIconClick(item.key);
+						}}
+						onContextMenu={(e) => {
+							handleContextMenu(e, item.key);
+						}}
+					>
+						<img
+							key={item.key}
+							alt='mapped-tile-icon'
+							src={item.icon}
+						></img>
+					</div>
+				);
+			});
+
+		return (
+			<>
+				<IconGrid icons={displayedIcons} />
+				<div className='tile-select-description'>{description}</div>
+			</>
+		);
+	};

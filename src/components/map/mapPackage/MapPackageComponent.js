@@ -78,7 +78,7 @@ function MapPackageComponent({ fitworld }) {
       PackageMapServices.handleMapClick(
         e,
         mapParRef,
-        vectorName,
+        mapVector,
         dispatch,
         directMap,
 
@@ -88,7 +88,7 @@ function MapPackageComponent({ fitworld }) {
     }
 
     return () => {};
-  }, [directMap, dispatch, vectorName, tileArray, mapPagePosition, switchMap]);
+  }, [directMap, dispatch, mapVector, tileArray, mapPagePosition, switchMap]);
   // useEffect(() => {
   // 	let e = {
   // 		latlng: {

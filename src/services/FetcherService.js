@@ -17,7 +17,6 @@ class FetcherService {
     const error = new Error(heading);
     error.type = 'TileError';
     if (tile === null || tile === '') {
-      console.log('no tile was entered', vectorDependentTiles);
       error.explanation =
         'available tiles are:' +
         `${vectorDependentTiles.map((tile) => {
@@ -26,7 +25,6 @@ class FetcherService {
       dispatch(setTileArray([vectorDependentTiles[0]]));
       return;
     } else {
-      console.log('tile was entered', tile);
       localTileArray = tile.split(':');
       if (localTileArray.length === 1) {
         if (vectorDependentTiles.includes(localTileArray[0])) {

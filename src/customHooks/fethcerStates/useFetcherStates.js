@@ -80,14 +80,10 @@ const useFetcherStates = () => {
   }, [panel, menuStructure, direction, dispatch]);
 
   useEffect(() => {
-    console.log('session', session, 'tileIcons', tileIcons);
-
     if (
       session === 'albopictus' &&
       tileIcons.filter((item) => item.key === 'colegg').length === 0
     ) {
-      console.log('no albo tile found');
-
       dispatch(setReadyToView(false));
       return;
     }
@@ -95,7 +91,6 @@ const useFetcherStates = () => {
       session === 'papatasi' &&
       tileIcons.filter((item) => item.key === 'papatasi_aprdec').length === 0
     ) {
-      console.log('no papatasi tile found');
       dispatch(setReadyToView(false));
 
       return;
@@ -105,7 +100,6 @@ const useFetcherStates = () => {
 
       FetcherService.handlePanels(dispatch, panel, panelData, lon, lat);
     } catch (e) {
-      console.log('this is where we set the error', { mapVector, tileArray, mapPagePosition });
       dispatch(
         setDirectInitError({
           direction,
@@ -125,7 +119,5 @@ const useFetcherStates = () => {
 
     //setting ready to view... are we going to handle directMap.display===-2 situation?
   }, [tile, session, panel, lon, lat, dispatch, decade, tileIcons.length, panelData, direction]);
-
-  console.log({ mapVector, session, mapPagePosition, tileArray });
 };
 export default useFetcherStates;
