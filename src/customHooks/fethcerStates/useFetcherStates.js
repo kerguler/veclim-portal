@@ -96,6 +96,7 @@ const useFetcherStates = () => {
       return;
     }
     try {
+      console.log('useFetcherStates rerendered');
       FetcherService.handleTiles(dispatch, tile, tileIcons);
 
       FetcherService.handlePanels(dispatch, panel, panelData, lon, lat);
@@ -118,6 +119,6 @@ const useFetcherStates = () => {
     dispatch(setReadyToView(true));
 
     //setting ready to view... are we going to handle directMap.display===-2 situation?
-  }, [tile, session, panel, lon, lat, dispatch, decade, tileIcons.length, panelData, direction]);
+  }, [tile, session, panel, lon, lat, dispatch, decade, tileIcons.length, panelData.length]);
 };
 export default useFetcherStates;

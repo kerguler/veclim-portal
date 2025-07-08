@@ -6,6 +6,10 @@ import PanelContextV2 from 'context/panelsIconsV2';
 import { setOpenItems } from 'store';
 
 function useDirectorFun(direction) {
+  const displaySimulationPanel = useSelector(
+    (state) => state.mapMenu['left'].displaySimulationPanel
+  );
+  
   const yaxisInfo = useSelector((state) => state.mapMenu[direction].chart.brush.yaxisInfo);
   const optionsPanel = useSelector((state) => state.fetcher.fetcherStates.map.optionsPanel);
   const shimmerIcons = useSelector((state) => state.mapMenu[direction].chart.shimmer);
@@ -134,6 +138,7 @@ function useDirectorFun(direction) {
     directInit,
     directInitError,
     mapVector,
+    panelData,
     panelDataDir,
     mapMenuOpen,
     dispatch,
@@ -141,6 +146,7 @@ function useDirectorFun(direction) {
     yaxisInfo,
     optionsPanel,
     tileArray,
+    displaySimulationPanel,
   };
 }
 function directorFun(direction, dataleft, dataright) {

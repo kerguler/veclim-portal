@@ -28,6 +28,7 @@ import { setDataArrived } from 'store';
 import { setOpenItems } from 'store';
 import { zIndex } from 'material-ui/styles';
 import { setPlotReady } from 'store';
+import { setInvalidateTsData } from 'store';
 
 class PackageMapServices {
   static baseLayer = L.tileLayer(
@@ -120,7 +121,8 @@ class PackageMapServices {
       dispatch(setCurrentMapZoom(8));
       dispatch(setDisplayReady(false));
     }
-
+    dispatch(setInvalidateSimData(false));
+    dispatch(setPanelInterfere({ direction: 'left', value: 0 }));
     dispatch(setOpenItems({}));
   }
 
@@ -130,14 +132,16 @@ class PackageMapServices {
 
     this.clickMap(e, mapParRef, vectorName, dispatch, mapPagePosition, direction);
 
-    if (directMap) {
-      if (directMap.display === -2) dispatch(setPanelInterfere({ direction, value: -1 }));
-    } else {
-      dispatch(setPanelInterfere({ direction, value: -1 }));
-    }
-    if (directMap) {
-      dispatch(setPanelInterfere({ direction, value: null }));
-    }
+    // if (directMap) {
+    //   if (directMap.display === -2) dispatch(setPanelInterfere({ direction, value: -1 }));
+    // } else {
+    //   dispatch(setPanelInterfere({ direction, value: -1 }));
+    // }
+    // if (directMap) {
+    //   dispatch(setPanelInterfere({ direction, value: null }));
+    // }
+    
+    dispatch(setPanelInterfere({ direction, value: -1 }));
   }
   static clickMap = (e, mapParRef, vectorName, dispatch, mapPagePosition, direction) => {
     let p = mapParRef.current;

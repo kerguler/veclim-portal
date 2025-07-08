@@ -9,13 +9,11 @@ import useDirectorFun from 'customHooks/useDirectorFun';
 function useTileHandler(mapParRef) {
   let p = mapParRef.current;
   const dispatch = useDispatch();
-  const { tileIcons, tileArray } = useDirectorFun('left');
-  const optionsPanel = useSelector((state) => state.fetcher.fetcherStates.map.optionsPanel);
+  const { tileIcons, tileArray, optionsPanel } = useDirectorFun('left');
 
   const { tileOpacity, showVectorAbundance, showMapLabels } = optionsPanel;
   useEffect(() => {
     // const tiles = PackageMapServices.chooseTileIcons(tileArray, tileIcons);
-
     let tileMat = PackageMapServices.addTiles(
       mapParRef,
       tileArray,

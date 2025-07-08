@@ -19,6 +19,7 @@ import { useSelector } from 'react-redux';
 import { setMapPagePosition } from 'store';
 import useFetcherStates from 'customHooks/fethcerStates/useFetcherStates';
 import useDirectorFun from 'customHooks/useDirectorFun';
+import { setDisplaySimulationPanel } from 'store';
 function MapPackageComponent({ fitworld }) {
   const dispatch = useDispatch();
   const {
@@ -35,6 +36,7 @@ function MapPackageComponent({ fitworld }) {
     userPosition,
     directInitError,
     mapVector,
+    invalidateTsData,
   } = useDirectorFun('left');
   const tileArray = useSelector((state) => state.fetcher.fetcherStates.tileArray);
   const { tileOpacity, showVectorAbundance, showMapLabels } = optionsPanel;
@@ -64,6 +66,7 @@ function MapPackageComponent({ fitworld }) {
   useZoomActions(mapParRef);
   useMapBasicEvents(mapParRef, fitworld);
   useLMapResize(mapParRef);
+
   useEffect(() => {
     if (
       (mapPagePosition && directMap.display !== -2 && directMap.display !== null) ||
@@ -75,6 +78,7 @@ function MapPackageComponent({ fitworld }) {
           lng: directMap.lon,
         },
       };
+
       PackageMapServices.handleMapClick(
         e,
         mapParRef,

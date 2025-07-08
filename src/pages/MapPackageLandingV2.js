@@ -19,7 +19,6 @@ function MapPackageLanding() {
   // useMapStarter();
 
   const readyToView = useSelector((state) => state.fetcher.fetcherStates.readyToView);
-
   return (
     readyToView && (
       <div className="wrappers-wrapper">
@@ -37,8 +36,6 @@ function MapPackageLanding() {
     )
   );
 }
-
-
 
 export default MapPackageLanding;
 

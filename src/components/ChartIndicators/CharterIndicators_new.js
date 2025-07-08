@@ -1,19 +1,22 @@
 import './ChartIndicators.css';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useFetchTimeSeriesDataQuery } from 'store';
 import ChartLoadingSkeleton from '../skeleton/Skeleton';
 import { dateToString } from 'store/apis/utils';
+import useDirectorFun from 'customHooks/useDirectorFun';
 function ChartIndicators() {
-  const position = useSelector((state) => {
-    return state.fetcher.fetcherStates.map.mapPagePosition;
-  });
-  const vectorName = useSelector((state) => {
-    return state.fetcher.fetcherStates.vectorName;
-  });
+  // const position = useSelector((state) => {
+  // 	return state.fetcher.fetcherStates.map.mapPagePosition;
+  // });
+  // const vectorName = useSelector((state) => {
+  // 	return state.fetcher.fetcherStates.vectorName;
+  // });
+  const { mapPagePosition, vectorName,mapVector } = useDirectorFun('left');
   const { data, error, isFetching } = useFetchTimeSeriesDataQuery({
-    position: position,
-    vectorName: vectorName,
+    position: JSON.stringify(mapPagePosition),
+    vectorName: mapVector,
   });
+
 
   if (isFetching) {
     return (
@@ -28,32 +31,51 @@ function ChartIndicators() {
   if (data === undefined) {
     return null;
   }
-
   var fdate = '';
-  if (data?.date && 'fcast-ts' in data) {
-    var fromdate = new Date(data.date.date0);
-    var todate = new Date(data.date.date1);
-    fdate = (
-      <>
-        <div className="chart-indicators-row">
-          <p>
-            <strong>Forecast range</strong>
-          </p>
-          <div>
-            <p>
-              {dateToString(fromdate, '-')} <span className="note">from</span>
-            </p>
-            <p>
-              {dateToString(todate, '-')} <span className="note">to</span>
-            </p>
-          </div>
-        </div>
-      </>
-    );
-  }
+
+  // if (data) {
+  // 	dispatch(setIsTsDataSet(true));
+  // }
+if (data.date && "fcast-ts" in data) {
+		var fromdate = new Date(data.date.date0)
+		var todate = new Date(data.date.date1);
+		fdate = (
+			<>
+				<div className="chart-indicators-row">
+					<p>
+						<strong>Forecast range</strong>
+					</p>
+					<div>
+						<p>
+							{dateToString(fromdate, "-")} <span className="note">from</span>
+						</p>
+						<p>
+							{dateToString(todate, "-")} <span className="note">to</span>
+						</p>
+					</div>
+				</div>
+			</>
+		);
+	}
+
+//   if (data && 'fcast-ts' in data) {
+ 
+//     var todate = new Date(data.date.date0);
+//     todate.setDate(todate.getDate() + data['fcast-ts'].ecmwf.colegg.length);
+//     fdate = (
+//       <>
+//         <p>
+//           {data['fcast-ts'].ecmwf.overlap[0]} <span className="note">from</span>
+//         </p>
+//         <p>
+//           {dateToString(todate, '-')} <span className="note">to</span>
+//         </p>
+//       </>
+//     );
+//   }
 
   var coord = '';
-  if (data?.location) {
+  if (data) {
     coord = (
       <>
         <p>
@@ -68,10 +90,10 @@ function ChartIndicators() {
   }
 
   var mosquito = '';
-  if ('presence' in data && 'albopictus' in data.presence && data.presence.albopictus[0]) {
-    mosquito = (
-      <>
-        <div className="chart-indicators-vector">
+  if (data) {
+    if ('presence' in data && 'albopictus' in data.presence && data.presence.albopictus[0]) {
+      mosquito = (
+        <>
           <p>
             Reports of the <strong>tiger mosquito</strong>
           </p>
@@ -86,54 +108,15 @@ function ChartIndicators() {
               );
             })}
           </ul>
-        </div>
-      </>
-    );
-  } else if ('presence' in data) {
-    mosquito = (
-      <div className="chart-indicators-vector">
+        </>
+      );
+    } else if ('presence' in data) {
+      mosquito = (
         <p>
           <strong>No</strong> reports of the tiger mosquito
         </p>
-      </div>
-    );
-  }
-
-  var londat = '';
-  if (
-    'surv-ts' in data &&
-    Object.values(data['surv-ts']).some((val) => Array.isArray(val) && val.length > 0)
-  ) {
-    let trans = {
-      vabun: { label: 'VectAbundance', href: 'https://doi.org/10.5281/zenodo.11486198' },
-      aimsurv: {
-        label: 'AIMSurv',
-        href: 'https://www.gbif.org/dataset/03269e13-84ae-430f-990e-f11069413e36',
-      },
-      vbase: { label: 'VectorBase', href: 'https://vectorbase.org/vectorbase/app/' },
-    };
-    londat = (
-      <>
-        <div className="chart-indicators-vector">
-          <p>
-            Long-term observations of the <strong>tiger mosquito</strong> from the area
-          </p>
-          <ul>
-            {Object.entries(data['surv-ts'])
-              .filter(([key, val]) => Array.isArray(val) && val.length > 0)
-              .map(([key, val], i) => {
-                return (
-                  <li key={i}>
-                    <a target="_blank" rel="noreferrer" href={trans[key]['href']}>
-                      {trans[key]['label']}
-                    </a>
-                  </li>
-                );
-              })}
-          </ul>
-        </div>
-      </>
-    );
+      );
+    }
   }
 
   const indicators = (
@@ -202,9 +185,13 @@ function ChartIndicators() {
             </p>
           </div>
         </div>
-        {fdate}
-        {mosquito}
-        {londat}
+        <div className="chart-indicators-row">
+          <p>
+            <strong>Forecast range</strong>
+          </p>
+          <div>{fdate}</div>
+        </div>
+        <div className="chart-indicators-vector">{mosquito}</div>
       </div>
     </>
   );
