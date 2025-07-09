@@ -13,6 +13,10 @@ import {
   setTwinIndex,
   setPanelLevel,
 } from 'store';
+import { setPanelInterfere } from 'store';
+import { setInvalidateSimData } from 'store';
+import findDestroyChildren from './findDestroyChildren';
+import { setLastPanelDisplayed } from 'store';
 
 export default function MapMenuPicker({ direction }) {
   const {
@@ -24,8 +28,10 @@ export default function MapMenuPicker({ direction }) {
     tree,
     invalidateSimData,
     displaySimulationPanel,
+    lastPanelDisplayed,
+    mapPagePosition,
+    panelInterfere,
   } = useDirectorFun('left');
-
   const dispatch = useDispatch();
   const [panelClassName, setPanelClassName] = useState('');
   const [shimmerOn, setShimmerOn] = useState(false);
@@ -45,18 +51,24 @@ export default function MapMenuPicker({ direction }) {
     }
   }, [invalidateSimData]);
 
-  useEffect(() => {
-    if (Object.keys(openItems).length === 0) {
-      //   dispatch(setPanelLevel({ ...levelData, level: 1 }));
-      //   dispatch(setOpenItems({ menu_icon: true }));
-    }
-  });
+  // useEffect(() => {
+  //   // dispatch(setOpenItems({ menu_icon: true }));
+  //   dispatch(setPanelInterfere({ direction, value: 0 }));
+  //   // dispatch(setInvalidateSimData(false));
+  // }, []);
 
   useEffect(() => {
     if (displaySimulationPanel) {
       handleToggle(displaySimulationPanel);
     }
   }, [displaySimulationPanel]);
+
+  useEffect(() => {
+    if (lastPanelDisplayed && panelInterfere === -1) {
+      console.log('lastPanelDisplayed', lastPanelDisplayed, mapPagePosition);
+      handleToggle(lastPanelDisplayed);
+    }
+  }, [mapPagePosition]);
 
   const currentParent = useRef(null);
   function handleToggle(clickedKey) {
@@ -71,38 +83,20 @@ export default function MapMenuPicker({ direction }) {
       );
     } else {
       setParent(desiredParent);
-      
-        
     }
     const findParents = (key) => {
       let dataInStructure = menuStructure.filter((item) => item.key === key);
       return dataInStructure[0].parent;
     };
-    const findDestroyChildren = (key) => {
-      let dataInStructure = menuStructure.filter((item) => item.key === key)[0];
-      let children = menuStructure.filter((item) => item.parent === key);
-      children = menuStructure.filter((item) => item.parent === key);
 
-      children.forEach((child) => {
-        if (openItemsTemp[child.key]) {
-          delete openItemsTemp[child.key];
-        }
-        findDestroyChildren(child.key);
-      });
-
-      dispatch(
-        setPanelLevel({
-          ...levelData,
-          level: Object.keys(openItemsTemp).length,
-        })
-      );
-    };
     let parentKey = findParents(clickedKey);
     let openItemsTemp = {};
+
     while (parentKey !== null) {
       openItemsTemp[parentKey] = true;
       parentKey = findParents(parentKey);
     }
+
     if (!openItems[clickedKey]) {
       openItemsTemp[clickedKey] = true;
       dispatch(setDisplaySimulationPanel({ direction, value: null }));
@@ -113,6 +107,7 @@ export default function MapMenuPicker({ direction }) {
         delete openItemsTemp[findParents(clickedKey)];
       }
     }
+
     dispatch(
       setPanelLevel({
         ...levelData,
@@ -121,6 +116,7 @@ export default function MapMenuPicker({ direction }) {
     );
     dispatch(setOpenItems(openItemsTemp));
     dispatch(setTwinIndex({ direction, value: 0 }));
+    console.log('handleToggle called', clickedKey, panelInterfere, openItemsTemp);
   }
 
   if (!tree || !tree.length) return null;

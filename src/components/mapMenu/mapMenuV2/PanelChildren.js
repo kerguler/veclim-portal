@@ -6,97 +6,97 @@ import { useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { setChartParameters } from 'store';
 import { setGraphType } from 'store';
+import { setLastPanelDisplayed, setPanelOpen } from '../menuStore/mapMenuSlice';
 function PanelChildren({ displayedItem, level, direction }) {
-	const dispatch = useDispatch();
-	const {
-		openItems,
-		panelDataDir: panelData,
-		dataArrived,
-		menuStructure,
-		twinIndex,
-		setOpenItems,
-		mapPagePosition,
-		interferePanelStyleRight: interferePanelStyle,
-	} = useDirectorFun(direction);
+  const dispatch = useDispatch();
+  const {
+    openItems,
+    panelDataDir: panelData,
+    dataArrived,
+    menuStructure,
+    twinIndex,
+    setOpenItems,
+    mapPagePosition,
+    interferePanelStyleRight: interferePanelStyle,
+    lastPanelDisplayed,
+    panelOpen,
+  } = useDirectorFun(direction);
 
-	const panelChildren = menuStructure.filter((child) => {
-		if (child.parent === displayedItem.key) {
-			const desiredPanel = panelData.filter(
-				(panel) => panel.key === child.key,
-			)[0];
-			if (desiredPanel.simulation && !dataArrived) {
-			} else if (desiredPanel.simulation && dataArrived) {
-				return child;
-			} else {
-				return child;
-			}
-		}
-	});
+  const panelChildren = menuStructure.filter((child) => {
+    if (child.parent === displayedItem.key) {
+      const desiredPanel = panelData.filter((panel) => panel.key === child.key)[0];
+      if (desiredPanel.simulation && !dataArrived) {
+      } else if (desiredPanel.simulation && dataArrived) {
+        return child;
+      } else {
+        return child;
+      }
+    }
+  });
 
-	useEffect(() => {
-		if (panelChildren && panelChildren[twinIndex]) {
-			let panel = panelData.filter(
-				(panel) => panel.key === panelChildren[twinIndex].key,
-			)[0];
+  useEffect(() => {
+    if (panelChildren && panelChildren[twinIndex]) {
+      let panel = panelData.filter((panel) => panel.key === panelChildren[twinIndex].key)[0];
 
-			if (
-				panel.chartParameters &&
-				Object.keys(panel.chartParameters).length > 0
-			) {
-				if (mapPagePosition.lat === null) {
-					const tempOpenItems = { ...openItems };
-					delete tempOpenItems[displayedItem.key];
-					dispatch(setOpenItems(tempOpenItems));
-				}
-			}
+      if (panel.chartParameters && Object.keys(panel.chartParameters).length > 0) {
+        if (mapPagePosition.lat === null) {
+          const tempOpenItems = { ...openItems };
+          delete tempOpenItems[displayedItem.key];
+          dispatch(setOpenItems(tempOpenItems));
+          console.log('PanelChildren', tempOpenItems);
+        }
+      }
 
-			if (
-				panelData.filter(
-					(panel) => panel.key === panelChildren[twinIndex].key,
-				)[0].simulation
-			) {
-				dispatch(setGraphType('sim'));
-			} else {
-				dispatch(setGraphType('ts'));
-			}
-		}
-	}, [
-		dispatch,
-		displayedItem.key,
-		mapPagePosition.lat,
-		openItems,
-		panelChildren,
-		panelData,
-		setOpenItems,
-		twinIndex,
-	]);
+      if (panelData.filter((panel) => panel.key === panelChildren[twinIndex].key)[0].simulation) {
+        dispatch(setGraphType('sim'));
+      } else {
+        dispatch(setGraphType('ts'));
+      }
+    }
+  }, [
+    dispatch,
+    displayedItem.key,
+    mapPagePosition.lat,
+    openItems,
+    panelChildren,
+    panelData,
+    setOpenItems,
+    twinIndex,
+  ]);
 
-	const siblingCount = panelChildren.length;
+  const siblingCount = panelChildren.length;
+  const displayedPanel = panelChildren && panelChildren[twinIndex];
+  useEffect(() => {
+    console.log({ displayedPanel, cc: panelChildren[twinIndex], lastPanelDisplayed });
+    let forgetOpen = panelData.filter((panel) => panel.key === displayedPanel.key)[0]?.forgetOpen;
+    dispatch(setPanelOpen({ direction, value: true }));
+    if (lastPanelDisplayed !== displayedPanel.key && !forgetOpen) {
+      dispatch(
+        setLastPanelDisplayed({
+          direction: 'left',
+          value: panelChildren[twinIndex].key,
+        })
+      );
+    }
+  }, [displayedPanel, lastPanelDisplayed, mapPagePosition]);
 
-	const displayedPanel = panelChildren && panelChildren[twinIndex];
-	const displayedPanelDetails = panelData.filter(
-		(panel) => panel.key === displayedPanel.key,
-	)[0];
-	const { content, chartParameters } = displayedPanelDetails;
-	useEffect(() => {
-		dispatch(setChartParameters({ direction, value: chartParameters }));
-	}, [displayedPanelDetails]);
+  const displayedPanelDetails = panelData.filter((panel) => panel.key === displayedPanel.key)[0];
+  const { content, chartParameters } = displayedPanelDetails;
+  useEffect(() => {
+    dispatch(setChartParameters({ direction, value: chartParameters }));
+  }, [displayedPanelDetails]);
 
-	return (
-		<RenderedPanelV2
-			siblingCount={siblingCount}
-			direction='left'
-			panelClassName={null}
-			panel={content}
-			level={level}
-			passedKey={panelChildren[twinIndex]}
-			panelChart={
-				chartParameters && Object.keys(chartParameters).length > 0
-					? true
-					: false
-			}
-		/>
-	);
+  return (
+    <RenderedPanelV2
+      siblingCount={siblingCount}
+      direction="left"
+      panelClassName={null}
+      panel={content}
+      level={level}
+      passedKey={panelChildren[twinIndex]}
+      panelChart={chartParameters && Object.keys(chartParameters).length > 0 ? true : false}
+    />
+  );
 }
 
 export default PanelChildren;

@@ -6,6 +6,7 @@ import PackageMapServices from 'components/map/mapPackage/PackageMapServices';
 import { useAlboData } from 'context/AlboDataContext';
 import useDirectorFun from 'customHooks/useDirectorFun';
 import { setDisplaySimulationPanel } from 'store';
+import { setLastPanelDisplayed } from 'components/mapMenu/menuStore/mapMenuSlice';
 function useMapBasicEvents(mapParRef, fitworld) {
   const dispatch = useDispatch();
   const {
@@ -14,6 +15,7 @@ function useMapBasicEvents(mapParRef, fitworld) {
     panelInterfere,
     invalidateSimData,
     mapPagePositionLeft: mapPagePosition,
+    lastPanelDisplayed,
   } = useDirectorFun('left');
 
   const { setDataSim } = useAlboData();
@@ -22,9 +24,17 @@ function useMapBasicEvents(mapParRef, fitworld) {
     const handleMapClick = (e) => {
       setDataSim(null);
 
-      if (panelInterfere === 0 && !invalidateSimData) {
-        dispatch(setDisplaySimulationPanel({ direction: 'left', value: 'location_info_panel' }));
-      }
+      // if (panelInterfere === 0 && !invalidateSimData) {
+      //   console.log('entered here');
+      //   dispatch(setLastPanelDisplayed({ direction: 'left', value: 'location_info_panel' }));
+      // }
+      // if (lastPanelDisplayed) {
+      //   console.log('useMapBasicEvents', lastPanelDisplayed);
+      //   dispatch(setLastPanelDisplayed({ direction: 'left', value: lastPanelDisplayed }));
+      // }
+      // if (invalidateSimData && lastPanelDisplayed) {
+      //   dispatch(setDisplaySimulationPanel({ direction: 'left', value: lastPanelDisplayed }));
+      // }
 
       PackageMapServices.handleMapClick(
         e,
@@ -36,6 +46,12 @@ function useMapBasicEvents(mapParRef, fitworld) {
         mapPagePosition,
         'left'
       );
+
+      // if (lastPanelDisplayed) {
+      //   console.log('lastPanelDisplayed', lastPanelDisplayed);
+
+      //   dispatch(setDisplaySimulationPanel({ direction: 'left', value: lastPanelDisplayed }));
+      // }
     };
 
     const handleMove = () => {
@@ -76,7 +92,7 @@ function useMapBasicEvents(mapParRef, fitworld) {
       p.map.off('move', handleMove);
       p.map.off('mouseout', PackageMapServices.mouseOut, true);
     };
-  }, [dispatch, mapParRef, p, vectorName, mapPagePosition, invalidateSimData]);
+  }, [dispatch, mapParRef, p, vectorName, mapPagePosition, lastPanelDisplayed, invalidateSimData]);
 
   useEffect(() => {
     if (fitworld) {

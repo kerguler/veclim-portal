@@ -20,6 +20,7 @@ import { setMapPagePosition } from 'store';
 import useFetcherStates from 'customHooks/fethcerStates/useFetcherStates';
 import useDirectorFun from 'customHooks/useDirectorFun';
 import { setDisplaySimulationPanel } from 'store';
+import ColorBarLabelComponent from '../ColorBarLabel/ColorBarLabelComponent';
 function MapPackageComponent({ fitworld }) {
   const dispatch = useDispatch();
   const {
@@ -115,8 +116,9 @@ function MapPackageComponent({ fitworld }) {
   return (
     <>
       {directInitError.isError && <ErrorScreenMap />} <MapCircularProgressBar />
-      <ColorBarComponent times={tileArray?.length}></ColorBarComponent>
-      <TileNameDisplay></TileNameDisplay>
+      {/* <ColorBarComponent times={tileArray?.length}></ColorBarComponent> */}
+      <ColorBarLabelComponent times={tileArray.length}></ColorBarLabelComponent>
+      {/* <TileNameDisplay></TileNameDisplay> */}
       <div className="map" id="map1">
         <div id="coordinates"></div>
       </div>

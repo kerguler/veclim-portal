@@ -29,6 +29,7 @@ import { setOpenItems } from 'store';
 import { zIndex } from 'material-ui/styles';
 import { setPlotReady } from 'store';
 import { setInvalidateTsData } from 'store';
+import { setLastPanelDisplayed } from 'components/mapMenu/menuStore/mapMenuSlice';
 
 class PackageMapServices {
   static baseLayer = L.tileLayer(
@@ -124,6 +125,7 @@ class PackageMapServices {
     dispatch(setInvalidateSimData(false));
     dispatch(setPanelInterfere({ direction: 'left', value: 0 }));
     dispatch(setOpenItems({}));
+    dispatch(setLastPanelDisplayed({ direction: 'left', value: 'location_info_panel' }));
   }
 
   static handleMapClick(e, mapParRef, vectorName, dispatch, directMap, mapPagePosition, direction) {
@@ -140,7 +142,7 @@ class PackageMapServices {
     // if (directMap) {
     //   dispatch(setPanelInterfere({ direction, value: null }));
     // }
-    
+
     dispatch(setPanelInterfere({ direction, value: -1 }));
   }
   static clickMap = (e, mapParRef, vectorName, dispatch, mapPagePosition, direction) => {

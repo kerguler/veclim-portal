@@ -9,123 +9,76 @@ import { lazy, Suspense } from 'react';
 import { useState } from 'react';
 import useWindowSize from 'customHooks/useWindowSize';
 import { useSelector } from 'react-redux';
+import useHandleInitialOpen from './useHandleInitialOpen';
+import useSetIconActive from './useSetIconActive';
+import useHandleIconShimmer from './useHandleIconShimmer';
+import useHandleDisabledIcons from './useHandleDisabledIcons';
+import { setPanelInterfere } from 'store';
 const PanelChildren = lazy(() => import('./PanelChildren'));
 const MenuChildren = lazy(() => import('./MenuChildren'));
 
 function MenuItemV2({ item, onToggle, shouldShimmer, shimmerList, direction }) {
   const {
-    panelDataDir: panelData,
+    panelData,
     openItems,
-    panelLevelLeft: levelData,
+    panelLevel: levelData,
     mapPagePosition,
+    displaySimulationPanel,
+    lastPanelDisplayed,
+    shimmered,
+    menuStructure,
+    panelInterfere,
   } = useDirectorFun('left');
+  let imgClassName = 'rotate0';
 
   let className = classNames('icon');
   const [shimmerOn, setShimmerOn] = useState(false);
+  const [level, setLevel] = useState(0);
+  const [style, setStyle] = useState({});
+  const [imgStyle, setImgStyle] = useState({});
 
   const dispatch = useDispatch();
-  const displaySimulationPanel = useSelector(
-    (state) => state.mapMenu['left'].displaySimulationPanel
-  );
 
   const isOpen = openItems[item.key];
   const displayedItem = panelData.filter((panel) => panel.key === item.key)[0];
 
-  let imgClassName = 'rotate0';
   if (displayedItem && displayedItem?.rotate === 90) {
     imgClassName = 'rotate90';
   }
   const panelChildren = item.children.filter((child) => child.key.endsWith('_panel'));
-
   const menuChildren = item.children.filter((child) => !child.key.endsWith('_panel'));
-  const [level, setLevel] = useState(0);
+  className = useSetIconActive(
+    openItems,
+    displayedItem,
+    className,
+    setLevel,
+    shimmerOn,
+    levelData,
+    isOpen
+  );
 
-  console.log(openItems[displayedItem.key], className);
-  useEffect(() => {
-    if (displayedItem?.initialOpen && !displaySimulationPanel) {
-      onToggle(displayedItem.key);
-    }
-    if (displayedItem.key === displaySimulationPanel) {
-      console.log('SET simulation panel NULL');
-      dispatch(setDisplaySimulationPanel({ direction, value: null }));
-    }
-  }, [displayedItem.initialOpen, displaySimulationPanel]);
-  const shimmered = useSelector((state) => state.mapMenu['left'].shimmered);
-
-  useEffect(() => {
-    if (shouldShimmer && !shimmered[item.key]) {
-      setShimmerOn(true);
-      const timeout = setTimeout(() => {
-        setShimmerOn(false);
-        let key = item['key'];
-
-        dispatch(
-          setShimmered({
-            direction,
-            value: { ...shimmered, [key]: true },
-          })
-        );
-      }, 3000);
-
-      return () => clearTimeout(timeout);
-    }
-  }, [shouldShimmer, shimmered]);
-  //   className = classNames(className, shimmerOn ? 'shimmer-on' : 'shimmer-off');
-  if (openItems[displayedItem.key]) {
-    if (displayedItem.key !== 'menu_icon' && displayedItem.key !== 'secondary_menu_icon') {
-      className = classNames('icon', 'active', shimmerOn ? 'shimmer-on' : 'shimmer-off');
-    } else {
-      className = classNames('icon', shimmerOn ? 'shimmer-on' : 'shimmer-off');
-    }
-  } else {
-    className = classNames('icon', shimmerOn ? 'shimmer-on' : 'shimmer-off');
-  }
-
-  useEffect(() => {
-    isOpen && setLevel(levelData.level);
-  }, [isOpen, levelData.level]);
-
+  useHandleInitialOpen(
+    displayedItem,
+    onToggle,
+    direction,
+    displaySimulationPanel,
+    lastPanelDisplayed
+  );
+  useHandleIconShimmer(shouldShimmer, shimmered, item, dispatch, direction, setShimmerOn);
   let menuDirection = displayedItem?.subMenuOpenDirection;
+  const handleToggle = (key) => {
+    panelInterfere === -1 && dispatch(setPanelInterfere({ direction, value: 0 }));
+    // console.log('handleToggle called', key, displayedItem.key);
+    // let children = menuStructure.filter((item) => item.parent === key);
+    // let childrenDetails = panelData.filter((panel) => panel.key === children[0].key)[0];
+    // let myKey = childrenDetails?.initialOpen ? childrenDetails.key : null;
+    // console.log('myKey', myKey, children);
+    // // penelData.filter((panel) => panel.key === key)[0].children
+    onToggle(key);
+  };
 
-  const [style, setStyle] = useState({});
-  const [imgStyle, setImgStyle] = useState({});
+  useHandleDisabledIcons(setStyle, setImgStyle, panelChildren);
 
-  useEffect(() => {
-    panelChildren.forEach((panel) => {
-      let myPanel = panelData.filter((panelData) => panelData.key === panel.key)[0];
-      if (mapPagePosition.lat === null) {
-        if (
-          (myPanel && myPanel.chartParameters && Object.keys(myPanel.chartParameters).length > 0) ||
-          myPanel.positionDependent
-        ) {
-          setStyle({
-            backgroundColor: 'var(--neutral-color1)',
-            pointerEvents: 'none',
-            cursor: 'not-allowed',
-          });
-          setImgStyle({
-            color: 'grey',
-            //width: "20px",
-            // height: "20px",
-          });
-        } else {
-          setStyle({ color: 'white', pointerEvents: 'all' });
-          setImgStyle({
-            color: 'grey',
-            // width: webApp ? "20px" : "2px",
-            // height: webApp ? "20px" : "32px",
-          });
-        }
-      } else {
-        setStyle({ color: 'white', pointerEvents: 'all' });
-        setImgStyle({
-          color: 'grey',
-          // width: webApp ? "20px" : "32px",
-          // height: webApp ? "20px" : "32px",
-        });
-      }
-    });
-  }, [mapPagePosition.lat, openItems]);
   return (
     <>
       {' '}
@@ -133,7 +86,7 @@ function MenuItemV2({ item, onToggle, shouldShimmer, shimmerList, direction }) {
         key={displayedItem.key}
         className={className}
         style={style}
-        onClick={() => onToggle(displayedItem.key)}
+        onClick={() => handleToggle(displayedItem.key)}
       >
         <img
           style={imgStyle}

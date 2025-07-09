@@ -19,6 +19,7 @@ function MenuList({ items, onToggle, iconClassName, direction }) {
     menuStructure,
     simulationPanels,
     invalidateSimData,
+    lastPanelDisplayed,
   } = useDirectorFun('left');
   const { dataSim } = useAlboData();
   const vectorName = useSelector((state) => state.fetcher.fetcherStates.vectorName);

@@ -6,17 +6,19 @@ import PanelContextV2 from 'context/panelsIconsV2';
 import { setOpenItems } from 'store';
 
 function useDirectorFun(direction) {
+  const shimmered = useSelector((state) => state.mapMenu[direction].shimmered);
+
   const displaySimulationPanel = useSelector(
-    (state) => state.mapMenu['left'].displaySimulationPanel
+    (state) => state.mapMenu[direction].displaySimulationPanel
   );
-  
+  const lastPanelDisplayed = useSelector((state) => state.mapMenu[direction].lastPanelDisplayed);
   const yaxisInfo = useSelector((state) => state.mapMenu[direction].chart.brush.yaxisInfo);
   const optionsPanel = useSelector((state) => state.fetcher.fetcherStates.map.optionsPanel);
   const shimmerIcons = useSelector((state) => state.mapMenu[direction].chart.shimmer);
   const simSlider1Value = useSelector(
     (state) => state.mapMenu[direction].chart.sliders.slider1.value
   );
-
+  const panelTop = useSelector((state) => state.mapMenu[direction].panel.panelTop);
   const simSlider1Enabled = useSelector(
     (state) => state.mapMenu[direction].chart.sliders.slider1.enabled
   );
@@ -93,7 +95,8 @@ function useDirectorFun(direction) {
   const switchMap = useSelector((state) => state.fetcher.fetcherStates.switchMap);
   // SETTERS
 
-  const panelLevelLeft = useSelector((state) => state.mapMenu.left.panelLevel);
+  const panelLevel = useSelector((state) => state.mapMenu[direction].panelLevel);
+  const panelLevelLeft = panelLevel;
   const userPosition = useSelector((state) => state.fetcher.fetcherStates.map.userPosition);
   return {
     userPosition,
@@ -110,6 +113,7 @@ function useDirectorFun(direction) {
     setOpenItems,
     menuStructure,
     panelLevelLeft,
+    panelLevel,
     tileIcons,
     tileIconsAlbo,
     tileIconsSand,
@@ -147,6 +151,9 @@ function useDirectorFun(direction) {
     optionsPanel,
     tileArray,
     displaySimulationPanel,
+    lastPanelDisplayed,
+    shimmered,
+    panelTop,
   };
 }
 function directorFun(direction, dataleft, dataright) {

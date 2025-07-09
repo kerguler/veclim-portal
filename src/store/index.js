@@ -47,6 +47,7 @@ import {
 } from './slices/fetcherSlice';
 
 import {
+  setLastPanelDisplayed,
   mapMenuReducer,
   setAlboRequestPlot,
   setBrushData,
@@ -303,4 +304,5 @@ export {
   setShowMapLabels,
   setShowVectorAbundance,
   setTileOpacity,
+  setLastPanelDisplayed,
 };

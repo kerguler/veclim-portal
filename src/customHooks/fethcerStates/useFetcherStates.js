@@ -17,6 +17,7 @@ import { setCurrentMapZoom } from 'store';
 import useQuery from './useQuery';
 import { setTileArray } from 'store';
 import { map } from 'leaflet';
+import { setLastPanelDisplayed } from 'components/mapMenu/menuStore/mapMenuSlice';
 
 const useFetcherStates = () => {
   let direction = 'left';
@@ -75,7 +76,8 @@ const useFetcherStates = () => {
 
   useEffect(() => {
     if (menuStructure.filter((item) => item.key === panel).length > 0) {
-      dispatch(setDisplaySimulationPanel({ direction, value: panel }));
+      console.log('useFetcherStates panel', panel);
+      dispatch(setLastPanelDisplayed({ direction, value: panel }));
     }
   }, [panel, menuStructure, direction, dispatch]);
 
@@ -98,7 +100,6 @@ const useFetcherStates = () => {
     try {
       console.log('useFetcherStates rerendered');
       FetcherService.handleTiles(dispatch, tile, tileIcons);
-
       FetcherService.handlePanels(dispatch, panel, panelData, lon, lat);
     } catch (e) {
       dispatch(
