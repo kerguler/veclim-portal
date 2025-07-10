@@ -9,11 +9,11 @@ function useHandleInitialOpen(
   displaySimulationPanel,
   lastDisplayedPanel
 ) {
-  const { panelInterfere } = useDirectorFun(direction);
+  const { panelInterfere, mapPagePosition } = useDirectorFun(direction);
 
   const dispatch = useDispatch();
   useEffect(() => {
-    if (displayedItem?.initialOpen && !displaySimulationPanel && panelInterfere == 0) {
+    if (displayedItem?.initialOpen && !displaySimulationPanel && panelInterfere === 0) {
       onToggle(displayedItem.key);
     }
 

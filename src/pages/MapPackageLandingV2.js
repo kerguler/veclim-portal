@@ -13,11 +13,13 @@ import useFetcherStates from 'customHooks/fethcerStates/useFetcherStates';
 import { setDirectInitError } from 'store';
 import { useContext } from 'react';
 import { PanelProviderV2 } from 'context/panelsIconsV2';
+import useDirectorFun from 'customHooks/useDirectorFun';
 
 function MapPackageLanding() {
   useFetcherStates();
   // useMapStarter();
-
+const {openItems}=useDirectorFun('left');
+console.log('openItems', openItems);
   const readyToView = useSelector((state) => state.fetcher.fetcherStates.readyToView);
   return (
     readyToView && (

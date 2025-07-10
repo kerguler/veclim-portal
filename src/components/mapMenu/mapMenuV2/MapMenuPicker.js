@@ -31,6 +31,7 @@ export default function MapMenuPicker({ direction }) {
     lastPanelDisplayed,
     mapPagePosition,
     panelInterfere,
+    directInit,
   } = useDirectorFun('left');
   const dispatch = useDispatch();
   const [panelClassName, setPanelClassName] = useState('');
@@ -62,13 +63,13 @@ export default function MapMenuPicker({ direction }) {
       handleToggle(displaySimulationPanel);
     }
   }, [displaySimulationPanel]);
-
   useEffect(() => {
+    console.log({ panelInterfere, directInit });
     if (lastPanelDisplayed && panelInterfere === -1) {
-      console.log('lastPanelDisplayed', lastPanelDisplayed, mapPagePosition);
+      console.log('There we go', lastPanelDisplayed, mapPagePosition);
       handleToggle(lastPanelDisplayed);
     }
-  }, [mapPagePosition]);
+  }, [panelInterfere, lastPanelDisplayed]);
 
   const currentParent = useRef(null);
   function handleToggle(clickedKey) {
@@ -84,6 +85,7 @@ export default function MapMenuPicker({ direction }) {
     } else {
       setParent(desiredParent);
     }
+
     const findParents = (key) => {
       let dataInStructure = menuStructure.filter((item) => item.key === key);
       return dataInStructure[0].parent;

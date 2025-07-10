@@ -17,7 +17,13 @@ import { setCurrentMapZoom } from 'store';
 import useQuery from './useQuery';
 import { setTileArray } from 'store';
 import { map } from 'leaflet';
-import { setLastPanelDisplayed } from 'components/mapMenu/menuStore/mapMenuSlice';
+import {
+  setLastPanelDisplayed,
+  setOpenItems,
+  setPanelOpen,
+} from 'components/mapMenu/menuStore/mapMenuSlice';
+import { setPanelInterfere } from 'store';
+import { setDirectInit } from 'store';
 
 const useFetcherStates = () => {
   let direction = 'left';
@@ -78,7 +84,11 @@ const useFetcherStates = () => {
     if (menuStructure.filter((item) => item.key === panel).length > 0) {
       console.log('useFetcherStates panel', panel);
       dispatch(setLastPanelDisplayed({ direction, value: panel }));
+      dispatch(setPanelInterfere({ direction, value: -1 }));
     }
+
+    // dispatch(setOpenItems({ direction, value: { menu_icon: true } }));
+    // panel || dispatch(setPanelInterfere({ direction, value: 0 }));
   }, [panel, menuStructure, direction, dispatch]);
 
   useEffect(() => {

@@ -83,8 +83,6 @@ function ColorBarLabelComponent({ times }) {
     if (!extractedTile || extractedTile.length === 0) return <div></div>;
     if (tileArray.length === 0) return <div></div>;
     if (!data) return <div></div>;
-    console.log(data);
-    console.log({ extractedTile });
     colors = data[colorKeys[extractedTile[0]]].colors;
     labels = data[colorKeys[extractedTile[0]]].labels;
     let renderedDivs2, renderedLabels2;

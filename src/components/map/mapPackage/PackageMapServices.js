@@ -142,7 +142,6 @@ class PackageMapServices {
     // if (directMap) {
     //   dispatch(setPanelInterfere({ direction, value: null }));
     // }
-
     dispatch(setPanelInterfere({ direction, value: -1 }));
   }
   static clickMap = (e, mapParRef, vectorName, dispatch, mapPagePosition, direction) => {
