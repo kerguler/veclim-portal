@@ -43,7 +43,6 @@ function PanelChildren({ displayedItem, level, direction }) {
           const tempOpenItems = { ...openItems };
           delete tempOpenItems[displayedItem.key];
           dispatch(setOpenItems(tempOpenItems));
-          console.log('PanelChildren', tempOpenItems);
         }
       }
 
@@ -67,7 +66,6 @@ function PanelChildren({ displayedItem, level, direction }) {
   const siblingCount = panelChildren.length;
   const displayedPanel = panelChildren && panelChildren[twinIndex];
   useEffect(() => {
-    console.log({ displayedPanel, cc: panelChildren[twinIndex], lastPanelDisplayed });
     let forgetOpen = panelData.filter((panel) => panel.key === displayedPanel.key)[0]?.forgetOpen;
     dispatch(setPanelOpen({ direction, value: true }));
     if (lastPanelDisplayed !== displayedPanel.key && !forgetOpen) {

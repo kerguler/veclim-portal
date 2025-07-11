@@ -95,7 +95,7 @@ function PanelProviderV2({ children }) {
       ),
     },
     {
-      key: 'presence',
+      key: 'albosurv',
       colkey: 'albosurv',
       label: <>Vector presence</>,
       icon: prpin,

@@ -13,7 +13,6 @@ function useLMap(mapParRef) {
   const dispatch = useDispatch();
   const mapOptions = useSelector((state) => state.fetcher.fetcherStates.map.optionsPanel);
   const { showVectorAbundance, tileOpacity, showMapLabels } = mapOptions;
-
   const pageTransition = useSelector((state) => state.location.pageTransition);
   let p = mapParRef.current;
 

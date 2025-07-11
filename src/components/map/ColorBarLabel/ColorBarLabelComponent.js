@@ -65,12 +65,14 @@ function ColorBarLabelComponent({ times }) {
   };
   const style = useColorBarResize(leftBarRef, rightBarRef, panelOpen, panelTop, times);
   let colors, labels;
+  console.log({ data });
   useEffect(() => {
     if (data) {
       const extractedTile1 = tileArray?.map((tile) => {
         const found = tileIcons.find((icon) => icon.key === tile);
         return found?.colkey;
       });
+      console.log('extractedTile1', extractedTile1);
       setExtractedTile(extractedTile1);
     }
   }, [data, tileArray, mapVector, isFetching, error]);
@@ -83,6 +85,8 @@ function ColorBarLabelComponent({ times }) {
     if (!extractedTile || extractedTile.length === 0) return <div></div>;
     if (tileArray.length === 0) return <div></div>;
     if (!data) return <div></div>;
+    console.log({ colkeys: colorKeys[extractedTile[0]], extractedTile, colorKeys });
+
     colors = data[colorKeys[extractedTile[0]]].colors;
     labels = data[colorKeys[extractedTile[0]]].labels;
     let renderedDivs2, renderedLabels2;

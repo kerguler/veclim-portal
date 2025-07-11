@@ -18,8 +18,7 @@ import useDirectorFun from 'customHooks/useDirectorFun';
 function MapPackageLanding() {
   useFetcherStates();
   // useMapStarter();
-const {openItems}=useDirectorFun('left');
-console.log('openItems', openItems);
+  const { openItems } = useDirectorFun('left');
   const readyToView = useSelector((state) => state.fetcher.fetcherStates.readyToView);
   return (
     readyToView && (
