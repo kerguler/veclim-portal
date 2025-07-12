@@ -28,8 +28,15 @@ import { setDirectInit } from 'store';
 const useFetcherStates = () => {
   let direction = 'left';
   const dispatch = useDispatch();
-  const { mapVector, mapPagePosition, tileArray, tileIcons, panelData, menuStructure } =
-    useDirectorFun(direction);
+  const {
+    mapVector,
+    mapPagePosition,
+    lastPanelDisplayed,
+    tileArray,
+    tileIcons,
+    panelData,
+    menuStructure,
+  } = useDirectorFun(direction);
   const { tile, panel, decade, lon, lat, session } = useQuery();
 
   useSessionControl(session);
@@ -108,7 +115,7 @@ const useFetcherStates = () => {
       return;
     }
     try {
-      console.log('useFetcherStates rerendered');
+      console.log({ lastPanelDisplayed });
       FetcherService.handleTiles(dispatch, tile, tileIcons);
       FetcherService.handlePanels(dispatch, panel, panelData, lon, lat);
     } catch (e) {

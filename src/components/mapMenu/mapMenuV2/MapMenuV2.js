@@ -28,7 +28,7 @@ function MapMenuV2({ menuDirection, direction, children, level }) {
 
 	className = classNames(className, `direction-${menuDirection}`);
 	return (
-		<div>
+		<div onContextMenu={(e) => e.preventDefault()}>
 			<div className={className} style={style}>
 				{
 					<div ref={menuRef} className='vertical-menu'>

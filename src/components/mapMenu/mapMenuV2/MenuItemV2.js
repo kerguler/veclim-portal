@@ -14,6 +14,7 @@ import useSetIconActive from './useSetIconActive';
 import useHandleIconShimmer from './useHandleIconShimmer';
 import useHandleDisabledIcons from './useHandleDisabledIcons';
 import { setPanelInterfere } from 'store';
+import { setTwinIndex } from 'store';
 const PanelChildren = lazy(() => import('./PanelChildren'));
 const MenuChildren = lazy(() => import('./MenuChildren'));
 
@@ -28,6 +29,8 @@ function MenuItemV2({ item, onToggle, shouldShimmer, shimmerList, direction }) {
     shimmered,
     menuStructure,
     panelInterfere,
+    twinIndex,
+    siblingCount,
   } = useDirectorFun('left');
   let imgClassName = 'rotate0';
 
@@ -68,6 +71,9 @@ function MenuItemV2({ item, onToggle, shouldShimmer, shimmerList, direction }) {
   let menuDirection = displayedItem?.subMenuOpenDirection;
   const handleToggle = (key) => {
     panelInterfere === -1 && dispatch(setPanelInterfere({ direction, value: 0 }));
+    console.log('handleToggle called', key, displayedItem.key);
+    console.log('RESETING TWQININDEX');
+    dispatch(setTwinIndex({ direction, value: 0 }));
     // console.log('handleToggle called', key, displayedItem.key);
     // let children = menuStructure.filter((item) => item.parent === key);
     // let childrenDetails = panelData.filter((panel) => panel.key === children[0].key)[0];

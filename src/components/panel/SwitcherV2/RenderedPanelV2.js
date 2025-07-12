@@ -39,6 +39,7 @@ const RenderedPanelV2 = ({
 				level: Object.keys(openItemsTemp).length,
 			}),
 		);
+		
 	};
 
 	const [showCoordinateWarning, setShowCoordinateWarning] = useState(false);

@@ -22,7 +22,7 @@ function useDirectorFun(direction) {
   const simSlider1Enabled = useSelector(
     (state) => state.mapMenu[direction].chart.sliders.slider1.enabled
   );
-
+  const siblingCount = useSelector((state) => state.graphSwitch[direction].siblingCount);
   const interferePanelStyle = useSelector((state) => state.mapMenu[direction].interferePanelStyle);
   const dispatch = useDispatch();
   const openItems = useSelector((state) => state.mapMenu.left.openItems);
@@ -154,6 +154,7 @@ function useDirectorFun(direction) {
     lastPanelDisplayed,
     shimmered,
     panelTop,
+    siblingCount,
   };
 }
 function directorFun(direction, dataleft, dataright) {

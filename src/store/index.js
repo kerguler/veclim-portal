@@ -87,6 +87,7 @@ import { languageReducer, changeLanguage } from './slices/languageSlice';
 import {
   setTwinArray,
   setTwinIndex,
+  setSiblingCount,
   setTwinsNotDisplayed,
   setSwitcher,
   setDisplayedIcons,
@@ -305,4 +306,5 @@ export {
   setShowVectorAbundance,
   setTileOpacity,
   setLastPanelDisplayed,
+  setSiblingCount,
 };

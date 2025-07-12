@@ -29,7 +29,10 @@ function TileNameDisplay({ side, tiles }) {
   });
 
   return (
-    <div className={`tile-name-wrapper ${faded ? 'faded' : 'visible'}`}>
+    <div
+      onContextMenu={(e) => e.preventDefault()}
+      className={`tile-name-wrapper ${faded ? 'faded' : 'visible'}`}
+    >
       <div className={side}>
         {' '}
         <p>{tileLabels[side == 'left' ? 0 : 1]}</p>
@@ -65,14 +68,12 @@ function ColorBarLabelComponent({ times }) {
   };
   const style = useColorBarResize(leftBarRef, rightBarRef, panelOpen, panelTop, times);
   let colors, labels;
-  console.log({ data });
   useEffect(() => {
     if (data) {
       const extractedTile1 = tileArray?.map((tile) => {
         const found = tileIcons.find((icon) => icon.key === tile);
         return found?.colkey;
       });
-      console.log('extractedTile1', extractedTile1);
       setExtractedTile(extractedTile1);
     }
   }, [data, tileArray, mapVector, isFetching, error]);
@@ -85,7 +86,6 @@ function ColorBarLabelComponent({ times }) {
     if (!extractedTile || extractedTile.length === 0) return <div></div>;
     if (tileArray.length === 0) return <div></div>;
     if (!data) return <div></div>;
-    console.log({ colkeys: colorKeys[extractedTile[0]], extractedTile, colorKeys });
 
     colors = data[colorKeys[extractedTile[0]]].colors;
     labels = data[colorKeys[extractedTile[0]]].labels;
@@ -95,6 +95,7 @@ function ColorBarLabelComponent({ times }) {
     const renderedDivs = colors.map((color, index) => {
       return (
         <div
+          onContextMenu={(e) => e.preventDefault()}
           key={index}
           className="color-bar-rect"
           style={{
@@ -114,7 +115,7 @@ function ColorBarLabelComponent({ times }) {
     });
     const renderedLabels = labels.map((label, index) => {
       return (
-        <div key={index} className="color-bar-p">
+        <div onContextMenu={(e) => e.preventDefault()} key={index} className="color-bar-p">
           <p>{labels[labels.length - index - 1]}</p>
         </div>
       );
@@ -126,6 +127,7 @@ function ColorBarLabelComponent({ times }) {
         renderedDivs2 = colors2.map((color, index) => {
           return (
             <div
+              onContextMenu={(e) => e.preventDefault()}
               key={index}
               className="color-bar-rect"
               style={{
@@ -141,7 +143,7 @@ function ColorBarLabelComponent({ times }) {
 
         renderedLabels2 = labels2.map((label, index) => {
           return (
-            <div key={index} className="color-bar-p">
+            <div onContextMenu={(e) => e.preventDefault()} key={index} className="color-bar-p">
               <p>{labels2[labels2.length - index - 1]}</p>
             </div>
           );
@@ -153,7 +155,7 @@ function ColorBarLabelComponent({ times }) {
     }
 
     return (
-      <div>
+      <div onContextMenu={(e) => e.preventDefault()}>
         <div
           onMouseOver={(e) => handleDisplayTiles(e, selectedTiles.length === 2 ? 'left' : 'center')}
           ref={leftBarRef}
@@ -168,6 +170,7 @@ function ColorBarLabelComponent({ times }) {
         </div>
         {times === 2 && (
           <div
+            onContextMenu={(e) => e.preventDefault()}
             onMouseOver={(e) => handleDisplayTiles(e, 'right')}
             ref={rightBarRef}
             className="color-bar right"

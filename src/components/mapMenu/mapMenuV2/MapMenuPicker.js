@@ -32,6 +32,8 @@ export default function MapMenuPicker({ direction }) {
     mapPagePosition,
     panelInterfere,
     directInit,
+    twinIndex,
+    siblingCount,
   } = useDirectorFun('left');
   const dispatch = useDispatch();
   const [panelClassName, setPanelClassName] = useState('');
@@ -64,24 +66,20 @@ export default function MapMenuPicker({ direction }) {
     }
   }, [displaySimulationPanel]);
   useEffect(() => {
-    console.log({ panelInterfere, directInit });
     if (lastPanelDisplayed && panelInterfere === -1) {
-      console.log('There we go', lastPanelDisplayed, mapPagePosition);
       handleToggle(lastPanelDisplayed);
     }
-  }, [panelInterfere, lastPanelDisplayed]);
+  }, [panelInterfere, lastPanelDisplayed, twinIndex]);
 
   const currentParent = useRef(null);
   function handleToggle(clickedKey) {
+    if (siblingCount === 1) {
+      dispatch(setTwinIndex({ direction, value: 0 }));
+    }
     let tempOpenItems = { ...openItems };
     let desiredParent = menuStructure.filter((item) => item.key === clickedKey)[0].parent;
     if (desiredParent === parent) {
-      dispatch(
-        setInterferePanelStyle({
-          direction,
-          value: { animation: 'none' },
-        })
-      );
+      dispatch(setInterferePanelStyle({ direction, value: { animation: 'none' } }));
     } else {
       setParent(desiredParent);
     }
@@ -101,6 +99,8 @@ export default function MapMenuPicker({ direction }) {
 
     if (!openItems[clickedKey]) {
       openItemsTemp[clickedKey] = true;
+  
+
       dispatch(setDisplaySimulationPanel({ direction, value: null }));
     } else {
       delete openItemsTemp[clickedKey];
@@ -117,8 +117,16 @@ export default function MapMenuPicker({ direction }) {
       })
     );
     dispatch(setOpenItems(openItemsTemp));
-    dispatch(setTwinIndex({ direction, value: 0 }));
-    console.log('handleToggle called', clickedKey, panelInterfere, openItemsTemp);
+    let sCount = menuStructure.filter(
+      (item) => item.key.includes('_panel') && item.parent === clickedKey
+    ).length;
+    console.log('siblingCount', sCount);
+    if (sCount === 1 && twinIndex > 0) {
+      console.log('siblingCount is 1, resetting twinIndex', lastPanelDisplayed);
+      dispatch(setTwinIndex({ direction, value: 0 }));
+    }
+    // console.log('MAPMENU', { siblingCount, sCount, twinIndex, clickedKey });
+    console.log(openItemsTemp);
   }
 
   if (!tree || !tree.length) return null;
@@ -126,7 +134,7 @@ export default function MapMenuPicker({ direction }) {
   const itemKey = tree[0].key;
   const menuDirection = '';
   return (
-    <MapMenuV2 menuDirection={menuDirection} level={0}>
+    <MapMenuV2  menuDirection={menuDirection} level={0}>
       <MenuList
         items={tree}
         iconClassName={className}
