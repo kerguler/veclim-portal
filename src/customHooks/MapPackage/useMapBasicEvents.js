@@ -61,7 +61,7 @@ function useMapBasicEvents(mapParRef, fitworld) {
         );
       }
     };
-
+    console.log('useMapBasicEvents');
     p.map.on('click', handleMapClick);
     p.map.on('mouseout', handleMouseOut);
     p.map.on('resize', handleResize);

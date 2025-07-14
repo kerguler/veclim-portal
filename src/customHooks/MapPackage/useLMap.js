@@ -16,7 +16,7 @@ function useLMap(mapParRef) {
   const pageTransition = useSelector((state) => state.location.pageTransition);
   let p = mapParRef.current;
 
-  const { vectorName, switchMap, currentMapCenter, currentMapZoom, mapVector } =
+  const { vectorName, switchMap, currentMapCenter, currentMapZoom, mapVector, panelInterfere } =
     useDirectorFun('left');
 
   useEffect(() => {
@@ -25,6 +25,36 @@ function useLMap(mapParRef) {
       maxBounds: p.maxBounds,
       zoomControl: false,
     });
+
+    p.map.setView({ lat: p.center.lat, lng: p.center.lng }, p.zoom);
+
+    let bounds = p.map ? p.map.getBounds() : null;
+    const boundsArray = [
+      [bounds._southWest.lat, bounds._southWest.lng], // South West corner
+      [bounds._northEast.lat, bounds._northEast.lng], // North East corner
+    ];
+    bounds && dispatch(setCurrentMapBounds(boundsArray));
+    return () => {
+      console.log('Cleaning up map');
+      p.map && p.map.remove();
+    };
+  }, [p]);
+
+  useEffect(() => {
+    p.map.setView({ lat: currentMapCenter.lat, lng: currentMapCenter.lng }, currentMapZoom);
+
+    PackageMapServices.mapBounds(
+      mapParRef,
+      vectorName,
+      pageTransition,
+      switchMap,
+      currentMapCenter,
+      currentMapZoom,
+      dispatch
+    );
+  }, [dispatch, pageTransition, switchMap, vectorName]);
+
+  useEffect(() => {
     const baseLayer = PackageMapServices.baseLayer;
     const baseLayerOSM = PackageMapServices.baseLayerOSM;
     const dataLayer = PackageMapServices.dataLayer;
@@ -54,33 +84,7 @@ function useLMap(mapParRef) {
         p.map.removeLayer(baseLayerOSM);
       }
     }
-
-    p.map.setView({ lat: p.center.lat, lng: p.center.lng }, p.zoom);
-
-    let bounds = p.map ? p.map.getBounds() : null;
-    const boundsArray = [
-      [bounds._southWest.lat, bounds._southWest.lng], // South West corner
-      [bounds._northEast.lat, bounds._northEast.lng], // North East corner
-    ];
-    bounds && dispatch(setCurrentMapBounds(boundsArray));
-    return () => {
-      p.map && p.map.remove();
-    };
-  }, [p, showVectorAbundance, showMapLabels]);
-
-  useEffect(() => {
-    p.map.setView({ lat: currentMapCenter.lat, lng: currentMapCenter.lng }, currentMapZoom);
-
-    PackageMapServices.mapBounds(
-      mapParRef,
-      vectorName,
-      pageTransition,
-      switchMap,
-      currentMapCenter,
-      currentMapZoom,
-      dispatch
-    );
-  }, [dispatch, pageTransition, switchMap, vectorName]);
+  }, [showVectorAbundance, showMapLabels]);
 }
 
 export default useLMap;
