@@ -63,15 +63,10 @@ function TileSelector({ tileIcons }) {
       })
     );
   };
-
-  // const handleIconSwitch = (item) => {
-  // 	let temp = [item];
-  // 	setDisplayWarning(false);
-  // 	dispatch(setSuperUser(false));
-  // 	setTimeout(() => {
-  // 		dispatch(setTileArray(temp));
-  // 	}, 100);
-  // };
+  useEffect(() => {
+    console.log('TileSelector: selectedTiles changed', selectedTiles);
+  }, [selectedTiles]);
+  
 
   useEffect(() => {
     setTimeout(() => {
@@ -212,68 +207,68 @@ const RenderedContent = ({ tileIcons, selectedTiles, handleIconClick }) => {
     </>
   );
 };
-  // const handleIconClick = (item) => {
-  // 	let temp;
-  // 	// item is the icon that was clicked
-  // 	const filteredArray = selectedTiles.filter(
-  // 		(element) => element === item,
-  // 	);
-  // 	// if the icon is already selected it will be in the array
-  // 	const exists = filteredArray.length > 0;
-  // 	// if the icon is already selected and there is more than one icon selected
-  // 	if (exists && selectedTiles.length !== 1) {
-  // 		temp = selectedTiles.filter((element) => {
-  // 			return element !== item;
-  // 		});
-  // 		// we remove it from the array of selected icons
-  // 		setDisplayWarning(false);
-  // 	} else if (exists && selectedTiles.length === 1) {
-  // 		//this means there was only one icon selected and it was the one that was clicked
-  // 		// we will remove it and show only the base layer
-  // 		/*
-  // 		 setDisplayNoTileWarning(true);
-  // 		 setDisplayWarning(false);
-  // 		 temp = [...selectedTiles];
-  // 		 */
-  // 		setDisplayNoTileWarning(false);
-  // 		setDisplayWarning(false);
-  // 		temp = [];
-  // 	} else {
-  // 		// if the icon is not in the array
-  // 		setDisplayNoTileWarning(false);
-  // 		if (selectedTiles.length === 2) {
-  // 			dispatch(setSuperUser(true));
-  // 			temp = [...selectedTiles];
-  // 			setDisplayWarning(true);
-  // 		} else {
-  // 			dispatch(setSuperUser(false));
-  // 			let existingTileDisplayIndex = selectedTiles.map((tileName) => {
-  // 				return tileIcons.filter((tileIcon, index) => {
-  // 					return tileIcon.key === tileName;
-  // 				})[0].tileLayer.displayIndex;
-  // 			});
-  // 			let newTileDisplayIndex = selectedTiles.map((tileName) => {
-  // 				return tileIcons.filter((tileIcon, index) => {
-  // 					return tileIcon.key === item;
-  // 				})[0].tileLayer.displayIndex;
-  // 			});
+// const handleIconClick = (item) => {
+// 	let temp;
+// 	// item is the icon that was clicked
+// 	const filteredArray = selectedTiles.filter(
+// 		(element) => element === item,
+// 	);
+// 	// if the icon is already selected it will be in the array
+// 	const exists = filteredArray.length > 0;
+// 	// if the icon is already selected and there is more than one icon selected
+// 	if (exists && selectedTiles.length !== 1) {
+// 		temp = selectedTiles.filter((element) => {
+// 			return element !== item;
+// 		});
+// 		// we remove it from the array of selected icons
+// 		setDisplayWarning(false);
+// 	} else if (exists && selectedTiles.length === 1) {
+// 		//this means there was only one icon selected and it was the one that was clicked
+// 		// we will remove it and show only the base layer
+// 		/*
+// 		 setDisplayNoTileWarning(true);
+// 		 setDisplayWarning(false);
+// 		 temp = [...selectedTiles];
+// 		 */
+// 		setDisplayNoTileWarning(false);
+// 		setDisplayWarning(false);
+// 		temp = [];
+// 	} else {
+// 		// if the icon is not in the array
+// 		setDisplayNoTileWarning(false);
+// 		if (selectedTiles.length === 2) {
+// 			dispatch(setSuperUser(true));
+// 			temp = [...selectedTiles];
+// 			setDisplayWarning(true);
+// 		} else {
+// 			dispatch(setSuperUser(false));
+// 			let existingTileDisplayIndex = selectedTiles.map((tileName) => {
+// 				return tileIcons.filter((tileIcon, index) => {
+// 					return tileIcon.key === tileName;
+// 				})[0].tileLayer.displayIndex;
+// 			});
+// 			let newTileDisplayIndex = selectedTiles.map((tileName) => {
+// 				return tileIcons.filter((tileIcon, index) => {
+// 					return tileIcon.key === item;
+// 				})[0].tileLayer.displayIndex;
+// 			});
 
-  // 			if (newTileDisplayIndex % 10 > existingTileDisplayIndex % 10) {
-  // 				temp = [...selectedTiles, item];
-  // 			} else {
-  // 				temp = [item, ...selectedTiles];
-  // 			}
-  // 		}
-  // 	}
-  // 	dispatch(setSuperUser(temp.length === 2 ? true : false));
-  // 	setTimeout(() => {
-  // 		dispatch(setTileArray(temp));
-  // 	}, 100);
-  // 	dispatch(
-  // 		setDisplayTileNames({
-  // 			center: temp.length === 1,
-  // 			left: temp.length === 2,
-  // 			right: temp.length === 2,
-  // 		}),
-  // 	);
-  // };
+// 			if (newTileDisplayIndex % 10 > existingTileDisplayIndex % 10) {
+// 				temp = [...selectedTiles, item];
+// 			} else {
+// 				temp = [item, ...selectedTiles];
+// 			}
+// 		}
+// 	}
+// 	dispatch(setSuperUser(temp.length === 2 ? true : false));
+// 	setTimeout(() => {
+// 		dispatch(setTileArray(temp));
+// 	}, 100);
+// 	dispatch(
+// 		setDisplayTileNames({
+// 			center: temp.length === 1,
+// 			left: temp.length === 2,
+// 			right: temp.length === 2,
+// 		}),
+// 	);
+// };
