@@ -2236,6 +2236,14 @@ function PanelProviderV2({ children }) {
             key: 'g3',
             levels: ['surv-ts', 'vabun'], // "v015"],
           },
+          {
+            key: 'g4',
+            levels: ['surv-ts', 'aimsurv'],
+          },
+          {
+            key: 'g5',
+            levels: ['surv-ts', 'vbase'],
+          },
         ],
         sliceInfo: {
           g1: {
@@ -2258,15 +2266,23 @@ function PanelProviderV2({ children }) {
             sliceLabels: { slice0: 'VectAbundance' },
             sliceColors: { slice0: '#167997' },
           },
+          g4: {
+            sliceLabels: { slice0: 'AIMsurv' },
+            sliceColors: { slice0: '#167997' },
+          },
+          g5: {
+            sliceLabels: { slice0: 'VectorBase' },
+            sliceColors: { slice0: '#167997' },
+          },
         },
 
         plottedKeys: ['g1', 'g2', 'g3'],
-        orientation: { g3: 'right' },
-        lineStyle: { g3: 'dots' },
-        colors: ['#1B3958', '#1B3958', '#167 997'],
+        orientation: { g3: 'right', g4: 'right', g5: 'right' },
+        lineStyle: { g3: 'dots', g4: 'dots', g5: 'dots' },
+        colors: ['#1B3958', '#1B3958', '#167997', '#167997', '#167997'],
         horizontalAxis: 'date',
         lineSlice: ['g1'],
-        labels: ['Activity forecast', 'Decadal activity', 'VectAbundance'],
+        labels: ['Activity forecast', 'Decadal activity', 'VectAbundance', 'AIMsurv', 'VectorBase'],
         sliceLabels: ['This year', 'Overlap', 'Forecast'],
         sliceColors: ['#50C0AD', 'orange', '#F15A48'],
       },
@@ -2386,6 +2402,7 @@ function PanelProviderV2({ children }) {
           },
         },
         horizontalAxis: 'date',
+        labels: ['Risk forecast', 'Decadal average'],
       },
       content: (
         <div className="text-area">
@@ -2440,23 +2457,24 @@ function PanelProviderV2({ children }) {
         ],
         sliceInfo: {
           g1: {
-            sliceLabels: { slice0: 'SSP2-4.5' },
+            sliceLabels: { slice0: '2010-2020' },
             sliceColors: { slice0: '#1B3958' },
           },
           g2: {
-            sliceLabels: { slice0: 'SSP5-8.5' },
+            sliceLabels: { slice0: '1980-1990' },
             sliceColors: { slice0: '#50C0AD' },
           },
           g3: {
-            sliceLabels: { slice0: '2010-2020' },
+            sliceLabels: { slice0: 'SSP2-4.5' },
             sliceColors: { slice0: 'orange' },
           },
           g4: {
-            sliceLabels: { slice0: '1980-1990' },
+            sliceLabels: { slice0: 'SSP5-8.5' },
             sliceColors: { slice0: '#F15A48' },
           },
         },
         horizontalAxis: 'date',
+        labels: ['2010-2020', '1980-1990', 'SSP2-4.5', 'SSP5-8.5'],
       },
       content: (
         <div className="text-area">
@@ -2520,6 +2538,9 @@ function PanelProviderV2({ children }) {
           },
         },
         horizontalAxis: 'date',
+        labels: ['Impact forecast', 'Decadal average'],
+        sliceLabels: ['This year', 'Overlap', 'Forecast'],
+        sliceColors: ['#50C0AD', 'orange', '#F15A48'],
       },
       content: (
         <div className="text-area">
@@ -2589,6 +2610,8 @@ function PanelProviderV2({ children }) {
             sliceColors: { slice0: '#F15A48' },
           },
         },
+        labels: ['2010-2020', '1980-1990', 'SSP2-4.5', 'SSP5-8.5'],
+        colors: ['#1B3958', '#50C0AD', 'orange', '#F15A48'],
 
         horizontalAxis: 'date',
       },

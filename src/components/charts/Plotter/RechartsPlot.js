@@ -119,10 +119,10 @@ function RechartsPlot({ direction, plotMat }) {
   const renderedAxes = buildAxes(plotMat, chartParameters, brushDatay, yaxisInfo);
   const renderedLines = buildLines(chartParameters, plotMat, direction, yaxisInfo);
   return (
-    <ResponsiveContainer key={`${direction}`} maxHeight={400} maxWidth={600}>
+    <ResponsiveContainer maxHeight={400} maxWidth={600}>
       <LineChart
         id="line-chart"
-        key={`line-chart-${direction}`}
+        key={`line-chart`}
         className="chart"
         width={500}
         height={400}
@@ -133,7 +133,6 @@ function RechartsPlot({ direction, plotMat }) {
         {renderedLines}
         <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
         <XAxis
-          key={`xaxis${direction}`}
           dataKey="date"
           tick={
             <CustomXAxisTick
@@ -147,7 +146,7 @@ function RechartsPlot({ direction, plotMat }) {
 
         {renderedAxes}
         <Brush
-          key={`brushx${direction}`}
+          key={`brushx`}
           className="myBrush"
           dataKey="date"
           height={15}
@@ -284,7 +283,7 @@ function buildLines(chartParameters, plotMat, direction, yaxisInfo) {
       return (
         <Line
           id={uniqueKey}
-          key={`${uniqueKey}${direction}`}
+          key={`${uniqueKey}`}
           yAxisId={yDirection}
           type={dotted ? 'linear' : 'monotone'}
           dataKey={key}
@@ -292,6 +291,7 @@ function buildLines(chartParameters, plotMat, direction, yaxisInfo) {
           strokeWidth={dotted ? '2.5' : '1.5'}
           strokeDasharray={dotted ? '5 5' : '0'}
           dot={false}
+          connectNulls={false}
         >
           {' '}
         </Line>
