@@ -16,13 +16,13 @@ function useZoomActions(mapParRef) {
       PackageMapServices.markerHandler(mapParRef, 4, mapVector, dispatch, mapPagePosition);
     };
     p.map.on('zoomend', handleMarkers);
-    if (switchMap) {
-      handleMarkers();
-    }
+
+    handleMarkers();
+
     return () => {
       p.map.off('zoomend', handleMarkers);
     };
-  }, [mapVector, p.map, mapParRef, dispatch, switchMap]);
+  }, [mapVector, p.map, mapParRef, dispatch, switchMap, mapVector]);
 }
 
 export default useZoomActions;

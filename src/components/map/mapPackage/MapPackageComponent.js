@@ -2,12 +2,9 @@ import { useEffect } from 'react';
 import '../MapComponent/mapComponent.css';
 import MapCircularProgressBar from '../MapCircularProgessBar/MapCircularProgressBar';
 import { useRef } from 'react';
-import ColorBarComponent from '../ColorBar/ColorBarComponent';
 import PackageMapServices from './PackageMapServices';
 import useLMapCoordinateUpdate from 'customHooks/MapPackage/useLMapCoordinateUpdate';
 import ErrorScreenMap from '../errorScreen/ErrorScreenMap';
-import TileNameDisplay from '../tileNameDisplay/TileNameDisplay';
-import useFetcherVariables from 'customHooks/useFetcherVariables';
 import useLMap from 'customHooks/MapPackage/useLMap';
 import { useDispatch } from 'react-redux';
 import useTileHandler from 'customHooks/MapPackage/useTileHandler';
@@ -16,10 +13,7 @@ import useZoomActions from 'customHooks/useZoomActions';
 import useMapBasicEvents from 'customHooks/MapPackage/useMapBasicEvents';
 import useLMapResize from 'customHooks/MapPackage/useLMapResize';
 import { useSelector } from 'react-redux';
-import { setMapPagePosition } from 'store';
-import useFetcherStates from 'customHooks/fethcerStates/useFetcherStates';
 import useDirectorFun from 'customHooks/useDirectorFun';
-import { setDisplaySimulationPanel } from 'store';
 import ColorBarLabelComponent from '../ColorBarLabel/ColorBarLabelComponent';
 function MapPackageComponent({ fitworld }) {
   const dispatch = useDispatch();
@@ -27,20 +21,15 @@ function MapPackageComponent({ fitworld }) {
     currentMapBounds,
     currentMaxBounds,
     currentMapZoom,
-    directMapLeft,
-    vectorName,
     mapPagePosition,
     currentMapCenter,
     directMap,
     switchMap,
     optionsPanel,
-    userPosition,
     directInitError,
     mapVector,
-    invalidateTsData,
   } = useDirectorFun('left');
   const tileArray = useSelector((state) => state.fetcher.fetcherStates.tileArray);
-  const { tileOpacity, showVectorAbundance, showMapLabels } = optionsPanel;
   const mapParameters = {
     map: null,
     center: currentMapCenter,
