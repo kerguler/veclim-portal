@@ -9,20 +9,20 @@ function CustomTooltip({ active, payload, label, parameters }) {
 		//hard coded test based on variable names slice1 slice 2 and slice 3
 
 		const RenderedTooltipElement = ({ entry, index }) => {
-			if (entry.name === "slice1") {
+			if (entry.name === "slice1" && parameters.sliceLabels !== null) {
 				return (
 					<span key={`${entry.value.toFixed(2)} - ${index}`}>
 						{" "}
 						{`${parameters.sliceLabels[0]}: ${entry.value.toFixed(2)}`}
 					</span>
 				);
-			} else if (entry.name === "slice2") {
+			} else if (entry.name === "slice2" && parameters.sliceLabels !== null) {
 				return (
 					<span key={`${entry.value.toFixed(2)} - ${index}`}>{`${
 						parameters.sliceLabels[1]
 					}: ${entry.value.toFixed(2)}`}</span>
 				);
-			} else if (entry.name === "slice3") {
+			} else if (entry.name === "slice3" && parameters.sliceLabels !== null) {
 				return (
 					<span key={`${entry.value.toFixed(2)} - ${index}`}>{`${
 						parameters.sliceLabels[2]
