@@ -3630,7 +3630,12 @@ function PanelProviderV2({ children }) {
       forgetOpen: true,
 
       chartParameters: {},
-      content: <ChangeMapPanel></ChangeMapPanel>,
+      content: (
+        <>
+          <ChangeMapPanel></ChangeMapPanel>
+          <OptionsPanel></OptionsPanel>
+        </>
+      ),
     },
   ];
 
