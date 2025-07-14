@@ -1,4 +1,4 @@
-import './ColorBarComponent.css';
+// import './ColorBarComponent.css';
 import { setDisplayTileNames, useFetchColorBarsDataQuery } from 'store';
 
 import { useDispatch, useSelector } from 'react-redux';

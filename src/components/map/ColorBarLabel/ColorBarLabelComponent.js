@@ -45,6 +45,7 @@ function ColorBarLabelComponent({ times }) {
   const colorBarRef = useRef();
   const { panelOpen, panelTop, tileArray, tileIcons, mapVector } = useDirectorFun('left');
   const [extractedTile, setExtractedTile] = useState([]);
+  const [style, setStyle] = useState([]);
 
   const { colorKeys } = useContext(PanelContextV2);
 
@@ -66,7 +67,7 @@ function ColorBarLabelComponent({ times }) {
       dispatch(setDisplayTileNames({ center: true, left: false, right: false }));
     }
   };
-  const style = useColorBarResize(leftBarRef, rightBarRef, panelOpen, panelTop, times);
+  useColorBarResize(leftBarRef, rightBarRef, panelOpen, panelTop, times, setStyle);
   let colors, labels;
   useEffect(() => {
     if (data) {

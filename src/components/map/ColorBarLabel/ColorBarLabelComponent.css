@@ -1,211 +1,211 @@
-@import url("styles/colors.css");
+@import url('styles/colors.css');
 
 .color-bar {
-	position: absolute;
-	display: flex;
-	align-items: flex-end;
-    justify-content: flex-start;
-	width: 240px;
-	top: 0rem;
-	bottom: unset;
-	left: 0.5rem;
-	z-index: 2000;
-	user-select: none;
-	pointer-events: none;
+  position: absolute;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-start;
+  width: 240px;
+  top: 0rem;
+  bottom: unset;
+  left: 0.5rem;
+  z-index: 2000;
+  user-select: none;
+  pointer-events: none;
 }
 .color-bar-rect {
-	width: 1.8rem;
-	height: 1.8rem;
-	position: relative;
+  width: 1.8rem;
+  height: 1.8rem;
+  position: relative;
 }
 .color-bar-wrapper {
-	background-color: transparent;
-	display: flex;
-	flex-wrap: nowrap;
-	user-select: none;
+  background-color: transparent;
+  display: flex;
+  flex-wrap: nowrap;
+  user-select: none;
 }
 .color-bar-colors {
-	display: flex;
-	flex-direction: column;
-	margin-top: 0.9rem;
-	margin-bottom: 0.9rem;
-	width: 2rem;
-	z-index: 2001;
-	border: 1px solid black;
-	height: auto;
-	max-height: fit-content;
-	justify-content: center;
-	pointer-events: all;
+  display: flex;
+  flex-direction: column;
+  margin-top: 0.9rem;
+  margin-bottom: 0.9rem;
+  width: 2rem;
+  z-index: 2001;
+  border: 1px solid black;
+  height: auto;
+  max-height: fit-content;
+  justify-content: center;
+  pointer-events: all;
 }
 .color-bar-p p {
-	text-align: left;
-	justify-self: center;
-	font-weight: 600;
+  text-align: left;
+  justify-self: center;
+  font-weight: 600;
 }
 .color-bar.left {
-	bottom: unset;
-	top: 0rem;
-	right: unset;
-	left: 0.5rem;
-	flex-direction: row;
+  bottom: unset;
+  top: 0rem;
+  right: unset;
+  left: 0.5rem;
+  flex-direction: row;
 }
 .color-bar.right {
-	bottom: 3rem;
-	left: unset;
-	right: 0.5rem;
-	flex-direction: row-reverse;
+  bottom: 3rem;
+  left: unset;
+  right: 0.5rem;
+  flex-direction: row-reverse;
 }
 .color-bar-texts {
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	pointer-events: all;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  pointer-events: all;
 }
 .color-bar-texts p {
-	font-family: "Inter-Bold", sans-serif;
-	font-weight: 600;
-	text-align: center;
-	text-justify: center;
+  font-family: 'Inter-Bold', sans-serif;
+  font-weight: 600;
+  text-align: center;
+  text-justify: center;
 }
 .color-bar-p {
-	width: 1.8rem;
-	height: 1.8rem;
-	display: flex;
-	align-items: center;
-	align-content: center;
-	text-align: left;
-	font-weight: 600;
-	margin-left: 0.5rem;
+  width: 1.8rem;
+  height: 1.8rem;
+  display: flex;
+  align-items: center;
+  align-content: center;
+  text-align: left;
+  font-weight: 600;
+  margin-left: 0.5rem;
 }
 .color-bar.right .color-bar-wrapper {
-	display: flex;
-	justify-content: right;
+  display: flex;
+  justify-content: right;
 }
 .color-bar.left .color-bar-wrapper {
-	display: flex;
-	align-content: flex-start;
-	align-items: center;
+  display: flex;
+  align-content: flex-start;
+  align-items: center;
 }
 .color-bar.left .color-bar-texts {
-	align-items: flex-end;
+  align-items: flex-end;
 }
 .color-bar.right .color-bar-texts {
-	align-items: flex-start;
+  align-items: flex-start;
 }
 .color-bar.left .color-bar-colors {
-	flex-grow: 0;
+  flex-grow: 0;
 }
 .color-bar.right .color-bar-colors {
-	flex-grow: 0;
+  flex-grow: 0;
 }
 .color-bar.right .color-bar-p {
-	width: 100%;
-	text-align: right;
-	margin-left: unset;
-	margin-right: 0.5rem;
-	justify-content: right;
+  width: 100%;
+  text-align: right;
+  margin-left: unset;
+  margin-right: 0.5rem;
+  justify-content: right;
 }
 .color-bar.left .color-bar-p {
-	width: 100%;
-	text-align: left;
-	margin-left: 0.5rem;
-	margin-right: unset;
-	justify-content: left;
+  width: 100%;
+  text-align: left;
+  margin-left: 0.5rem;
+  margin-right: unset;
+  justify-content: left;
 }
 .color-bar.right .color-bar-p p {
-	text-align: right;
-	overflow: hidden;
-	white-space: nowrap;
-	text-overflow: ellipsis;
-	align-self: right;
-	margin-right: 0.5rem;
+  text-align: right;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  align-self: right;
+  margin-right: 0.5rem;
 }
 .color-bar.left .color-bar-p p {
-	text-align: left;
-	overflow: hidden;
-	white-space: nowrap;
-	text-overflow: ellipsis;
-	align-self: left;
-	margin-left: 0.5rem;
+  text-align: left;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  align-self: left;
+  margin-left: 0.5rem;
 }
 
 @keyframes fadeOut {
-	from {
-	  opacity: 1;
-	}
-	to {
-	  opacity: 0;
-	}
+  from {
+    opacity: 1;
   }
+  to {
+    opacity: 0;
+  }
+}
 
 .tile-name-wrapper {
-	padding: 0;
-	min-width: 165px;
-	margin-left: 15px;
-	margin-right: 15px;
-	margin-bottom: 5px;
-	background-color: transparent;
-	border-radius: 0px;
-	font-size: 0.8rem;
-	font-weight: bold;
-	color: var(--primary-color1);
-	font-family: "Inter-Bold", sens-serif;
-	font-weight: bold;
-	pointer-events: none;
-	z-index: 5000;
-	opacity: 1;
-	transition: opacity 1s ease;
+  padding: 0;
+  min-width: 165px;
+  margin-left: 15px;
+  margin-right: 15px;
+  margin-bottom: 5px;
+  background-color: transparent;
+  border-radius: 0px;
+  font-size: 0.8rem;
+  font-weight: bold;
+  color: var(--primary-color1);
+  font-family: 'Inter-Bold', sens-serif;
+  font-weight: bold;
+  pointer-events: none;
+  z-index: 5000;
+  opacity: 1;
+  transition: opacity 1s ease;
 }
 .tile-name-wrapper.faded {
-	opacity: 0;
+  opacity: 0;
 }
 .color-bar-wrapper:hover ~ .tile-name-wrapper {
-	opacity: 1;
+  opacity: 1;
 }
 .tile-name-wrapper p {
-	font-size: 1.2rem;
+  font-size: 1.2rem;
 }
 .tile-name-wrapper .left p {
-	text-align: left;
+  text-align: left;
 }
 .tile-name-wrapper .right p {
-	text-align: right;
+  text-align: right;
 }
 
 @media (min-width: 500px) {
-	.color-bar {
-		top: unset;
-		bottom: 0rem;
-		left: 1rem;
-	}
-	.color-bar-colors {
-		height: 100%;
-	}
-	.color-bar-texts p {
-		text-align: left;
-		justify-self: center;
-	}
-	.color-bar-p {
-		width: 11rem;
-	}
-	.color-bar-p p {
-		text-align: left;
-		justify-self: center;
-		font-weight: 600;
-	}
-	.color-bar.right {
-		bottom: 0rem;
-		left: unset;
-		right: 0.5rem;
-	}
-	.color-bar.left {
-		top: unset;
-		bottom: 0rem;
-		right: unset;
-		left: 0.5rem;
-	}
+  .color-bar {
+    top: unset;
+    bottom: 0rem;
+    left: 1rem;
+  }
+  .color-bar-colors {
+    height: 100%;
+  }
+  .color-bar-texts p {
+    text-align: left;
+    justify-self: center;
+  }
+  .color-bar-p {
+    width: 11rem;
+  }
+  .color-bar-p p {
+    text-align: left;
+    justify-self: center;
+    font-weight: 600;
+  }
+  .color-bar.right {
+    bottom: 0rem;
+    left: unset;
+    right: 0.5rem;
+  }
+  .color-bar.left {
+    top: unset;
+    bottom: 0rem;
+    right: unset;
+    left: 0.5rem;
+  }
 
-	.tile-name-wrapper p {
-		font-size: 1.4rem;
-	}
+  .tile-name-wrapper p {
+    font-size: 1.4rem;
+  }
 }

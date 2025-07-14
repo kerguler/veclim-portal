@@ -5,9 +5,8 @@ function useColorBarResize(
 	rightBarRef,
 	panelOpen,
 	panelTop,
-	times,
+	times,setStyle
 ) {
-	const [style, setStyle] = useState([]);
 	useEffect(() => {
 		const handleResize = () => {
 			let leftHeight, rightHeight;
@@ -53,7 +52,6 @@ function useColorBarResize(
 			window.removeEventListener("resize", handleResize);
 		};
 	}, [panelOpen, panelTop, times]);
-	return { style };
 }
 
 export default useColorBarResize;

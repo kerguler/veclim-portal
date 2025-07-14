@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import './TileNameDisplay.css';
+// import './TileNameDisplay.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRef } from 'react';
 import { setDisplayTileNames } from '../../../store';
