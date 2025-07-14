@@ -3581,7 +3581,7 @@ function PanelProviderV2({ children }) {
         chartType: 'rechart',
         initialSetting: 'sim-ts',
         plottedKeys: ['simL', 'simH'],
-        orientation: { simL: 'right' },
+        orientation: { g1: 'right' },
         colors: ['#F15A48', '#1B3958'],
         labels: ['Secondary land type', 'Primary land type'],
         lineSlice: [],
