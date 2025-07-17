@@ -1,144 +1,146 @@
 .panel-content.chart > .recharts-responsive-container {
-	transform: translate(-30px, 0px);
-	width: 110%;
-	/* scale: (1.3,0); */
+  transform: translate(-30px, 0px);
+  width: 110%;
+  /* scale: (1.3,0); */
 }
 .recharts-wrapper.chart {
-	/* width: 100%; */
+  /* width: 100%; */
 }
-
+.recharts-layer.recharts-line {
+  max-width: 315px !important;
+}
 .recharts-wrapper.chart > .recharts-surface > .recharts-layer {
-	/* transform: translate(0px, 0px); */
+  /* transform: translate(0px, 0px); */
 }
 .recharts-wrapper.chart > .recharts-surface > .recharts-cartesian-grid {
-	/* transform: translate(0px, 0px); */
+  /* transform: translate(0px, 0px); */
 }
 
 /* margin and padding doesnt work on g elements */
 .recharts-default-legend {
-	margin: 10px;
+  margin: 10px;
 }
 .recharts-legend-wrapper {
-	transform: translate(0px, -25px);
-	padding: 0px;
+  transform: translate(0px, -25px);
+  padding: 0px;
 }
 .myLegend {
-	position: absolute;
-	top: 10;
-	right: 0;
+  position: absolute;
+  top: 10;
+  right: 0;
 }
 
-.recharts-layer.recharts-brush.myBrush > rect[fill="#fff"] {
-	fill: var(--primary-color2);
-	fill-opacity: 0.1;
+.recharts-layer.recharts-brush.myBrush > rect[fill='#fff'] {
+  fill: var(--primary-color2);
+  fill-opacity: 0.1;
 }
 .ybrush-wrap {
-	position: absolute;
+  position: absolute;
 }
 
 .recharts-layer.recharts-brush {
-	/* transform: translate(0, -2px); */
+  /* transform: translate(0, -2px); */
 }
 .recharts-layer.recharts-brush .recharts-brush-slide {
-	fill: var(--primary-color1) !important;
-	fill-opacity: 1 !important;
+  fill: var(--primary-color1) !important;
+  fill-opacity: 1 !important;
 }
 .recharts-layer.recharts-brush-traveller rect {
-	fill: var(--primary-color2);
+  fill: var(--primary-color2);
 }
 
 .recharts-layer.recharts-cartesian-axis.recharts-yAxis.yAxis {
-	font-size: 0.8rem;
+  font-size: 0.8rem;
 }
 .recharts-layer.recharts-cartesian-axis.recharts-xAxis.xAxis {
-	font-size: 0.8rem;
+  font-size: 0.8rem;
 }
 .recharts-surface {
-	/* transform: translate(0px, 0px); */
+  /* transform: translate(0px, 0px); */
 }
 .chart-container {
-	width: 100%; /* Adjust the width as needed */
-	height: 100%; /* Adjust the height as needed */
-	background-color: white; /* Change the background color as needed */
-	position: relative; /* Use relative positioning */
+  width: 100%; /* Adjust the width as needed */
+  height: 100%; /* Adjust the height as needed */
+  background-color: white; /* Change the background color as needed */
+  position: relative; /* Use relative positioning */
 }
 
 .chartZoom {
-	position: absolute;
-	display: flex;
-	top: 0;
-	left: 0;
+  position: absolute;
+  display: flex;
+  top: 0;
+  left: 0;
 }
 
 .error-container {
-	display: flex;
-	padding: 1rem;
-	border: 0.1rem solid var(--primary-color1);
-	border-radius: 2rem;
-	width: 100%;
-	height: 100%;
-	align-items: center;
-	justify-items: center;
+  display: flex;
+  padding: 1rem;
+  border: 0.1rem solid var(--primary-color1);
+  border-radius: 2rem;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-items: center;
 }
 .error-container p {
-	line-height: 1.6rem;
-	font-size: 1.4rem;
-	font-weight: bold;
-	text-align: center;
+  line-height: 1.6rem;
+  font-size: 1.4rem;
+  font-weight: bold;
+  text-align: center;
 }
 
 @media (max-width: 380px) {
-	.recharts-legend-wrapper {
-		transform: translate(25px, -25px);
-		padding: 0px;
-		background: transparent;
-	}
-	.recharts-surface {
-		/* transform: translate(0px, 0px); */
-	}
-	.legend-list span {
-		font-size: 3.5vw;
-	}
+  .recharts-legend-wrapper {
+    transform: translate(25px, -25px);
+    padding: 0px;
+    background: transparent;
+  }
+  .recharts-surface {
+    /* transform: translate(0px, 0px); */
+  }
+  .legend-list span {
+    font-size: 3.5vw;
+  }
 }
 @media (min-width: 500px) {
-	.chart-container {
-		background-color: white;
-	}
-	.recharts-wrapper.chart {
-		width: 100%;
-	}
-	/* margin and padding doesnt work on g elements */
-	.recharts-default-legend {
-		margin: 10px;
-	}
-	.recharts-legend-wrapper {
-		transform: translate(20px, -30px);
-	}
-	.myLegend {
-		position: absolute;
-		top: 0;
-		right: 0;
-	}
-	.recharts-layer.recharts-brush.myBrush > rect[fill="#fff"] {
-		fill: var(--primary-color2);
-		fill-opacity: 0.1;
-	}
+  .chart-container {
+    background-color: white;
+  }
+  .recharts-wrapper.chart {
+    width: 100%;
+  }
+  /* margin and padding doesnt work on g elements */
+  .recharts-default-legend {
+    margin: 10px;
+  }
+  .recharts-legend-wrapper {
+    transform: translate(20px, -30px);
+  }
+  .myLegend {
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+  .recharts-layer.recharts-brush.myBrush > rect[fill='#fff'] {
+    fill: var(--primary-color2);
+    fill-opacity: 0.1;
+  }
 
-	.recharts-layer.recharts-brush {
-		/* transform: translate(0, 4px); */
-	}
-	.recharts-layer.recharts-brush .recharts-brush-slide {
-		fill: var(--primary-color1) !important;
-		fill-opacity: 1 !important;
-	}
-	.recharts-layer.recharts-brush-traveller rect {
-		fill: var(--primary-color2);
-	}
+  .recharts-layer.recharts-brush {
+    /* transform: translate(0, 4px); */
+  }
+  .recharts-layer.recharts-brush .recharts-brush-slide {
+    fill: var(--primary-color1) !important;
+    fill-opacity: 1 !important;
+  }
+  .recharts-layer.recharts-brush-traveller rect {
+    fill: var(--primary-color2);
+  }
 
-	.recharts-layer.recharts-cartesian-axis.recharts-yAxis.yAxis {
-		font-size: 0.8rem;
-	}
-	.recharts-layer.recharts-cartesian-axis.recharts-xAxis.xAxis {
-		font-size: 0.8rem;
-	}
+  .recharts-layer.recharts-cartesian-axis.recharts-yAxis.yAxis {
+    font-size: 0.8rem;
+  }
+  .recharts-layer.recharts-cartesian-axis.recharts-xAxis.xAxis {
+    font-size: 0.8rem;
+  }
 }

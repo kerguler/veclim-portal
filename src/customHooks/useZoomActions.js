@@ -12,7 +12,6 @@ function useZoomActions(mapParRef) {
   const dispatch = useDispatch();
   useEffect(() => {
     const handleMarkers = () => {
-      console.log('useZoomActions: handleMarkers called');
       PackageMapServices.markerHandler(mapParRef, 4, mapVector, dispatch, mapPagePosition);
     };
     p.map.on('zoomend', handleMarkers);

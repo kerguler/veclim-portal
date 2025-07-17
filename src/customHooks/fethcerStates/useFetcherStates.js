@@ -89,7 +89,6 @@ const useFetcherStates = () => {
 
   useEffect(() => {
     if (menuStructure.filter((item) => item.key === panel).length > 0) {
-      console.log('useFetcherStates panel', panel);
       dispatch(setLastPanelDisplayed({ direction, value: panel }));
       dispatch(setPanelInterfere({ direction, value: -1 }));
     }
@@ -115,7 +114,6 @@ const useFetcherStates = () => {
       return;
     }
     try {
-      console.log({ lastPanelDisplayed });
       FetcherService.handleTiles(dispatch, tile, tileIcons);
       FetcherService.handlePanels(dispatch, panel, panelData, lon, lat);
     } catch (e) {

@@ -71,15 +71,8 @@ function MenuItemV2({ item, onToggle, shouldShimmer, shimmerList, direction }) {
   let menuDirection = displayedItem?.subMenuOpenDirection;
   const handleToggle = (key) => {
     panelInterfere === -1 && dispatch(setPanelInterfere({ direction, value: 0 }));
-    console.log('handleToggle called', key, displayedItem.key);
-    console.log('RESETING TWQININDEX');
     dispatch(setTwinIndex({ direction, value: 0 }));
-    // console.log('handleToggle called', key, displayedItem.key);
-    // let children = menuStructure.filter((item) => item.parent === key);
-    // let childrenDetails = panelData.filter((panel) => panel.key === children[0].key)[0];
-    // let myKey = childrenDetails?.initialOpen ? childrenDetails.key : null;
-    // console.log('myKey', myKey, children);
-    // // penelData.filter((panel) => panel.key === key)[0].children
+
     onToggle(key);
   };
 

@@ -95,13 +95,7 @@ function RechartsPlot({ direction, plotMat }) {
 
   useEffect(() => {
     plotMat &&
-      ChartCalculatorService.decideBrushRangeAlbo(
-        chartParameters,
-        plotMat,
-        dispatch,
-        d,
-        brushRange
-      );
+      ChartCalculatorService.decideBrushRange(chartParameters, plotMat, dispatch, d, brushRange);
   }, [plotMat, vectorName]);
   const handleBrushChange = (range) => {
     ChartCalculatorService.handleBrushChange(range, dispatch, plotMat, setBrushRange, direction);
@@ -118,8 +112,9 @@ function RechartsPlot({ direction, plotMat }) {
   };
   const renderedAxes = buildAxes(plotMat, chartParameters, brushDatay, yaxisInfo);
   const renderedLines = buildLines(chartParameters, plotMat, direction, yaxisInfo);
+
   return (
-    <ResponsiveContainer maxHeight={400} maxWidth={600}>
+    <ResponsiveContainer>
       <LineChart
         id="line-chart"
         key={`line-chart`}
@@ -128,7 +123,8 @@ function RechartsPlot({ direction, plotMat }) {
         height={400}
         data={plotMat}
         //  margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
-        margin={{ top: 5, right: -25, left: 20, bottom: 5 }}
+
+        margin={{ top: 5, right: 0, left: 20, bottom: 5 }}
       >
         {renderedLines}
         <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
@@ -136,7 +132,7 @@ function RechartsPlot({ direction, plotMat }) {
           dataKey="date"
           tick={
             <CustomXAxisTick
-              key={`${direction}`}
+              // key={`${direction}`}
               direction={direction}
               brushData={brushData}
               argRef={argRef}
@@ -202,7 +198,7 @@ function buildAxes(plotMat, chartParameters, brushDatay, yaxisInfo) {
   let rightCount = 0;
   renderedAxes = Object.keys(yaxisInfo).map((key) => {
     if (yaxisInfo[key].orientation === 'right' && rightCount === 0) {
-      rightCount++;
+      rightCount = rightCount + 1;
       return (
         <YAxis
           display={
@@ -219,6 +215,9 @@ function buildAxes(plotMat, chartParameters, brushDatay, yaxisInfo) {
       );
     } else if (yaxisInfo[key].orientation === 'left' && leftCount === 0) {
       leftCount++;
+      if (yaxisInfo[key].min === Infinity || yaxisInfo[key].max === -Infinity) {
+        return null;
+      }
       return (
         <YAxis
           display={
@@ -272,10 +271,7 @@ function buildLines(chartParameters, plotMat, direction, yaxisInfo) {
         primaryKey in chartParameters.lineStyle &&
         chartParameters.lineStyle[primaryKey] === 'dots';
 
-      if (yaxisInfo[key] === undefined) {
-        return null;
-      }
-      if (yaxisInfo[key]['min'] === Infinity && yaxisInfo[key]['max'] === -Infinity) {
+      if (!yaxisInfo[key] || yaxisInfo[key].min === Infinity || yaxisInfo[key].max === -Infinity) {
         return null;
       }
       let yDirection = yaxisInfo[key].orientation || 'left';
@@ -283,7 +279,7 @@ function buildLines(chartParameters, plotMat, direction, yaxisInfo) {
       return (
         <Line
           id={uniqueKey}
-          key={`${uniqueKey}`}
+          key={uniqueKey}
           yAxisId={yDirection}
           type={dotted ? 'linear' : 'monotone'}
           dataKey={key}

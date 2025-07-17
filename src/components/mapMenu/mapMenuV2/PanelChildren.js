@@ -66,8 +66,6 @@ function PanelChildren({ displayedItem, level, direction }) {
     twinIndex,
   ]);
   useEffect(() => {
-    console.log('PANEL CHILDREN', { siblingCount, twinIndex });
-
     dispatch(setSiblingCount({ direction, value: panelChildren.length }));
 
     // Clamp twinIndex if it's out of bounds

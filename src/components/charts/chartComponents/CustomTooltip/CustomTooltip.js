@@ -5,7 +5,7 @@ function CustomTooltip({ active, payload, label, parameters }) {
   if (active && payload1 && payload1.length) {
     //TODO:: fix the dodgy code coming up
     //hard coded test based on variable names slice1 slice 2 and slice 3
-    console.log({ parameters });
+    // console.log({ parameters });
 
     const RenderedTooltipElement = ({ entry, index }) => {
       if (entry.name === 'slice1') {

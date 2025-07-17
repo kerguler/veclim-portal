@@ -99,7 +99,6 @@ export default function MapMenuPicker({ direction }) {
 
     if (!openItems[clickedKey]) {
       openItemsTemp[clickedKey] = true;
-  
 
       dispatch(setDisplaySimulationPanel({ direction, value: null }));
     } else {
@@ -120,13 +119,9 @@ export default function MapMenuPicker({ direction }) {
     let sCount = menuStructure.filter(
       (item) => item.key.includes('_panel') && item.parent === clickedKey
     ).length;
-    console.log('siblingCount', sCount);
     if (sCount === 1 && twinIndex > 0) {
-      console.log('siblingCount is 1, resetting twinIndex', lastPanelDisplayed);
       dispatch(setTwinIndex({ direction, value: 0 }));
     }
-    // console.log('MAPMENU', { siblingCount, sCount, twinIndex, clickedKey });
-    console.log(openItemsTemp);
   }
 
   if (!tree || !tree.length) return null;
@@ -134,7 +129,7 @@ export default function MapMenuPicker({ direction }) {
   const itemKey = tree[0].key;
   const menuDirection = '';
   return (
-    <MapMenuV2  menuDirection={menuDirection} level={0}>
+    <MapMenuV2 menuDirection={menuDirection} level={0}>
       <MenuList
         items={tree}
         iconClassName={className}

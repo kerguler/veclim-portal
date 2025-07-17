@@ -35,7 +35,6 @@ function useLMap(mapParRef) {
     ];
     bounds && dispatch(setCurrentMapBounds(boundsArray));
     return () => {
-      console.log('Cleaning up map');
       p.map && p.map.remove();
     };
   }, [p]);
