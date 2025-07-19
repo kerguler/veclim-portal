@@ -2,38 +2,42 @@ import './CustomTooltip.css';
 
 function CustomTooltip({ active, payload, label, parameters }) {
   const payload1 = Array.from(new Map(payload.map((item) => [item.value, item])).values());
+  let preparedKeys = Object.keys(parameters.sliceInfo).flatMap((item) => {
+    let tempArray = Object.keys(parameters.sliceInfo[item].sliceLabels).map((element) => {
+      return parameters.sliceInfo[item].sliceLabels[element];
+    });
+    return tempArray;
+  });
   if (active && payload1 && payload1.length) {
     //TODO:: fix the dodgy code coming up
     //hard coded test based on variable names slice1 slice 2 and slice 3
     // console.log({ parameters });
-
+    // console.log({ payload1, preparedKeys });
     const RenderedTooltipElement = ({ entry, index }) => {
-      if (entry.name === 'slice1') {
-        return (
-          <span key={`${entry.value.toFixed(2)} - ${index}`}>
-            {' '}
-            {`${parameters.sliceLabels[0]}: ${entry.value.toFixed(2)}`}
-          </span>
-        );
-      } else if (entry.name === 'slice2') {
-        return (
-          <span key={`${entry.value.toFixed(2)} - ${index}`}>{`${
-            parameters.sliceLabels[1]
-          }: ${entry.value.toFixed(2)}`}</span>
-        );
-      } else if (entry.name === 'slice3') {
-        return (
-          <span key={`${entry.value.toFixed(2)} - ${index}`}>{`${
-            parameters.sliceLabels[2]
-          }: ${entry.value.toFixed(2)}`}</span>
-        );
+      let keyArray = entry.dataKey.split('.');
+      console.log({ keyArray });
+      let primaryKey, secondaryKey;
+      if (keyArray.length > 1) {
+        primaryKey = keyArray[0];
+        secondaryKey = keyArray[1];
       } else {
-        return (
-          <span key={`${entry.value.toFixed(2)} - ${index}`}>{`${
-            parameters.labels[index]
-          }: ${entry.value.toFixed(2)}`}</span>
-        );
+        primaryKey = keyArray[0];
+        secondaryKey = null;
       }
+      let value;
+      if (secondaryKey === null) {
+        console.error('shouldnt be here');
+        value = parameters.sliceInfo[primaryKey].sliceLabels;
+      } else {
+        value = parameters.sliceInfo[primaryKey].sliceLabels[secondaryKey];
+      }
+      console.log({ value });
+      return (
+        <span key={`${entry.value.toFixed(2)} - ${index}`}>
+          {' '}
+          {`${value}: ${entry.value.toFixed(2)}`}
+        </span>
+      );
     };
 
     let renderedTooltipvalues = payload1.map((entry, index) => {

@@ -228,7 +228,7 @@ function buildAxes(plotMat, chartParameters, brushDatay, yaxisInfo) {
           domain={[brushDataYL.min, brushDataYL.max]}
           allowDataOverflow={true}
           tickFormatter={formatYAxisTick}
-          stroke={'black'}
+          stroke={chartParameters.sliceInfo[key.split('.')[0]]?.sliceColors?.slice0 || 'black'}
         />
       );
     }

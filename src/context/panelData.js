@@ -147,15 +147,19 @@ export const panelData = [
       chartType: 'rechart',
       mixedKeys: [
         {
-          key: 'g1',
-          levels: ['fcast-ts', 'ecmwf', 'coln2'],
-        },
-        {
           key: 'g2',
           levels: ['sim-ts', '2010-2019', 'coln2'],
         },
+        {
+          key: 'g1',
+          levels: ['fcast-ts', 'ecmwf', 'coln2'],
+        },
       ],
       sliceInfo: {
+        g2: {
+          sliceLabels: { slice0: 'Decadal average' },
+          sliceColors: { slice0: '#1B3958' },
+        },
         g1: {
           sliceLabels: {
             slice0: 'This year',
@@ -168,10 +172,6 @@ export const panelData = [
             slice1: 'orange',
             slice2: '#F15A48',
           },
-        },
-        g2: {
-          sliceLabels: { slice0: 'Decadal average' },
-          sliceColors: { slice0: '#1B3958' },
         },
       },
       plottedKeys: ['g1', 'g2'],
@@ -202,13 +202,14 @@ export const panelData = [
     chartParameters: {
       mixedKeys: [
         {
-          key: 'g1',
-          levels: ['fcast-ts', 'ecmwf', 'colegg'],
-        },
-        {
           key: 'g2',
           levels: ['sim-ts', '2010-2019', 'colegg'],
         },
+        {
+          key: 'g1',
+          levels: ['fcast-ts', 'ecmwf', 'colegg'],
+        },
+
         {
           key: 'g3',
           levels: ['surv-ts', 'vabun'], // "v015"],
@@ -223,6 +224,10 @@ export const panelData = [
         },
       ],
       sliceInfo: {
+        g2: {
+          sliceLabels: { slice0: 'Decadal activity' },
+          sliceColors: { slice0: '#1B3958' },
+        },
         g1: {
           sliceLabels: {
             slice0: 'This year',
@@ -235,10 +240,7 @@ export const panelData = [
             slice2: '#F15A48',
           },
         },
-        g2: {
-          sliceLabels: { slice0: 'Decadal activity' },
-          sliceColors: { slice0: '#1B3958' },
-        },
+
         g3: {
           sliceLabels: { slice0: 'VectAbundance' },
           sliceColors: { slice0: '#167997' },
@@ -253,7 +255,6 @@ export const panelData = [
         },
       },
 
-      plottedKeys: ['g1', 'g2', 'g3'],
       orientation: { g3: 'right', g4: 'right', g5: 'right' },
       lineStyle: { g3: 'dots', g4: 'dots', g5: 'dots' },
       colors: ['#1B3958', '#1B3958', '#167997', '#167997', '#167997'],
@@ -281,14 +282,6 @@ export const panelData = [
       chartType: 'rechart',
       mixedKeys: [
         {
-          key: 'g1',
-          levels: ['fcast-ts', 'nasa', 'ssp245', 'colegg'],
-        },
-        {
-          key: 'g2',
-          levels: ['fcast-ts', 'nasa', 'ssp585', 'colegg'],
-        },
-        {
           key: 'g3',
           levels: ['sim-ts', '2010-2019', 'colegg'],
         },
@@ -296,16 +289,16 @@ export const panelData = [
           key: 'g4',
           levels: ['sim-ts', '1980-1989', 'colegg'],
         },
+        {
+          key: 'g1',
+          levels: ['fcast-ts', 'nasa', 'ssp245', 'colegg'],
+        },
+        {
+          key: 'g2',
+          levels: ['fcast-ts', 'nasa', 'ssp585', 'colegg'],
+        },
       ],
       sliceInfo: {
-        g1: {
-          sliceColors: { slice0: 'orange' },
-          sliceLabels: { slice0: 'SSP2-4.5' },
-        },
-        g2: {
-          sliceColors: { slice0: '#F15A48' },
-          sliceLabels: { slice0: 'SSP5-8.5' },
-        },
         g3: {
           sliceColors: { slice0: '#1B3958' },
           sliceLabels: { slice0: '2010-2020' },
@@ -313,6 +306,14 @@ export const panelData = [
         g4: {
           sliceColors: { slice0: '#50C0AD' },
           sliceLabels: { slice0: '1980-1990' },
+        },
+        g1: {
+          sliceColors: { slice0: 'orange' },
+          sliceLabels: { slice0: 'SSP2-4.5' },
+        },
+        g2: {
+          sliceColors: { slice0: '#F15A48' },
+          sliceLabels: { slice0: 'SSP5-8.5' },
         },
       },
       plottedKeys: ['g1', 'g2', 'g3', 'g4'],
@@ -349,15 +350,19 @@ export const panelData = [
       xbrushEnd: 3,
       mixedKeys: [
         {
-          key: 'g1',
-          levels: ['fcast-ts', 'ecmwf', 'pouts'],
-        },
-        {
           key: 'g2',
           levels: ['sim-ts', '2010-2019', 'pouts'],
         },
+        {
+          key: 'g1',
+          levels: ['fcast-ts', 'ecmwf', 'pouts'],
+        },
       ],
       sliceInfo: {
+        g2: {
+          sliceLabels: { slice0: 'Decadal average' },
+          sliceColors: { slice0: '#1B3958' },
+        },
         g1: {
           sliceLabels: {
             slice0: 'This year',
@@ -369,10 +374,6 @@ export const panelData = [
             slice1: 'orange',
             slice2: '#F15A48',
           },
-        },
-        g2: {
-          sliceLabels: { slice0: 'Decadal average' },
-          sliceColors: { slice0: '#1B3958' },
         },
       },
 
@@ -471,25 +472,22 @@ export const panelData = [
     icon: impact,
 
     chartParameters: {
-      twins: [{ id: 6.5, display: false }],
-
-      chartType: 'rechart',
-      initialSetting: 'fcast-ts',
-      years: 'ecmwf',
-      // xbrushStart: -6,
-      // xbrushEnd: 3,
       xinit: { date0: 15, date1: 125 },
       mixedKeys: [
-        {
-          key: 'g1',
-          levels: ['fcast-ts', 'ecmwf', 'iouts'],
-        },
         {
           key: 'g2',
           levels: ['sim-ts', '2010-2019', 'iouts'],
         },
+        {
+          key: 'g1',
+          levels: ['fcast-ts', 'ecmwf', 'iouts'],
+        },
       ],
       sliceInfo: {
+        g2: {
+          sliceLabels: { slice0: 'Decadal average' },
+          sliceColors: { slice0: '#1B3958' },
+        },
         g1: {
           sliceLabels: {
             slice0: 'This year',
@@ -501,10 +499,6 @@ export const panelData = [
             slice1: 'orange',
             slice2: '#F15A48',
           },
-        },
-        g2: {
-          sliceLabels: { slice0: 'Decadal average' },
-          sliceColors: { slice0: '#1B3958' },
         },
       },
       horizontalAxis: 'date',
