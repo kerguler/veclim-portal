@@ -9,10 +9,6 @@ function CustomTooltip({ active, payload, label, parameters }) {
     return tempArray;
   });
   if (active && payload1 && payload1.length) {
-    //TODO:: fix the dodgy code coming up
-    //hard coded test based on variable names slice1 slice 2 and slice 3
-    // console.log({ parameters });
-    // console.log({ payload1, preparedKeys });
     const RenderedTooltipElement = ({ entry, index }) => {
       let keyArray = entry.dataKey.split('.');
       console.log({ keyArray });
@@ -31,7 +27,6 @@ function CustomTooltip({ active, payload, label, parameters }) {
       } else {
         value = parameters.sliceInfo[primaryKey].sliceLabels[secondaryKey];
       }
-      console.log({ value });
       return (
         <span key={`${entry.value.toFixed(2)} - ${index}`}>
           {' '}

@@ -7,10 +7,8 @@ import { useSelector } from 'react-redux';
 import { useState } from 'react';
 import { timeSeriesApi } from 'store/apis/timeSeriesApi_new';
 import { useDispatch } from 'react-redux';
-import { setDisplaySimulationPanel } from 'store';
 import { setShimmered } from 'store';
-
-function MenuList({ items, onToggle, iconClassName, direction }) {
+function MenuList({ items, onToggle, direction }) {
   const dispatch = useDispatch();
   const {
     openItems,
@@ -21,12 +19,23 @@ function MenuList({ items, onToggle, iconClassName, direction }) {
     invalidateSimData,
     lastPanelDisplayed,
   } = useDirectorFun('left');
+  const [shouldShimmer, setShouldShimmer] = useState(false);
+
   const { dataSim } = useAlboData();
+  useEffect(() => {
+    if (Object.keys(openItems).length === 0) {
+      setShouldShimmer(true);
+      dispatch(setShimmered({ direction, value: { menu_icon: true } }));
+    } else {
+      setShouldShimmer(false);
+    }
+
+    // setShouldShimmer(Object.keys(openItems).length === 0 ? true : false);
+    console.log('openItems changed:', openItems);
+  }, [openItems]);
+
   const vectorName = useSelector((state) => state.fetcher.fetcherStates.vectorName);
   if (!items || items.length === 0) return null;
-
-  let shouldShimmer = Object.keys(openItems).length === 0 ? true : false;
-  let shimmerList = {};
 
   return items.map((item) => {
     let siblingKeys = items.filter((i) => i.key !== item.key).map((i) => i.key);
@@ -45,19 +54,13 @@ function MenuList({ items, onToggle, iconClassName, direction }) {
         }
         parents.push(...parentChain);
       });
-
-      if (parents.includes(item.key)) {
-        shouldShimmer = true;
-      } else {
-        shouldShimmer = false;
-      }
+      setShouldShimmer(parents.includes(item.key) ? true : false);
     }
 
     return (
       <MenuItemV2
         shouldShimmer={shouldShimmer}
         // iconClassName={className}
-        shimmerList={shimmerList}
         key={item.key}
         item={item}
         openItems={openItems}

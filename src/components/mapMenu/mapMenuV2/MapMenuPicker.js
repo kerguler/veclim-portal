@@ -1,10 +1,9 @@
 import useDirectorFun from 'customHooks/useDirectorFun';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import MapMenuV2 from './MapMenuV2';
 import classNames from 'classnames';
-import RenderedPanelV2 from 'components/panel/SwitcherV2/RenderedPanelV2';
 import MenuList from './MenuList';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useAlboData } from 'context/AlboDataContext';
 import {
   setDisplaySimulationPanel,
@@ -13,10 +12,6 @@ import {
   setTwinIndex,
   setPanelLevel,
 } from 'store';
-import { setPanelInterfere } from 'store';
-import { setInvalidateSimData } from 'store';
-import findDestroyChildren from './findDestroyChildren';
-import { setLastPanelDisplayed } from 'store';
 
 export default function MapMenuPicker({ direction }) {
   const {
@@ -36,14 +31,8 @@ export default function MapMenuPicker({ direction }) {
     siblingCount,
   } = useDirectorFun('left');
   const dispatch = useDispatch();
-  const [panelClassName, setPanelClassName] = useState('');
-  const [shimmerOn, setShimmerOn] = useState(false);
   let className = classNames('icon');
-  if (shimmerOn) {
-    className = classNames('icon', 'shimmer-on');
-  } else {
-    className = classNames('icon', 'shimmer-off');
-  }
+
   const { setDataSim, simResult, setSimResult } = useAlboData();
   const [parent, setParent] = useState(null);
   useEffect(() => {
@@ -53,12 +42,6 @@ export default function MapMenuPicker({ direction }) {
       setSimResult(null);
     }
   }, [invalidateSimData]);
-
-  // useEffect(() => {
-  //   // dispatch(setOpenItems({ menu_icon: true }));
-  //   dispatch(setPanelInterfere({ direction, value: 0 }));
-  //   // dispatch(setInvalidateSimData(false));
-  // }, []);
 
   useEffect(() => {
     if (displaySimulationPanel) {
@@ -71,7 +54,6 @@ export default function MapMenuPicker({ direction }) {
     }
   }, [panelInterfere, lastPanelDisplayed, twinIndex]);
 
-  const currentParent = useRef(null);
   function handleToggle(clickedKey) {
     if (siblingCount === 1) {
       dispatch(setTwinIndex({ direction, value: 0 }));
@@ -130,12 +112,7 @@ export default function MapMenuPicker({ direction }) {
   const menuDirection = '';
   return (
     <MapMenuV2 menuDirection={menuDirection} level={0}>
-      <MenuList
-        items={tree}
-        iconClassName={className}
-        onToggle={handleToggle}
-        direction={direction}
-      />
+      <MenuList items={tree} onToggle={handleToggle} direction={direction} />
     </MapMenuV2>
   );
 }

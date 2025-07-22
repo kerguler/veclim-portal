@@ -1,14 +1,8 @@
 import useDirectorFun from 'customHooks/useDirectorFun';
 import classNames from 'classnames';
-import { useRef } from 'react';
 import { useDispatch } from 'react-redux';
-import { setDisplaySimulationPanel } from 'store';
-import { setShimmered } from 'store';
-import { useEffect } from 'react';
 import { lazy, Suspense } from 'react';
 import { useState } from 'react';
-import useWindowSize from 'customHooks/useWindowSize';
-import { useSelector } from 'react-redux';
 import useHandleInitialOpen from './useHandleInitialOpen';
 import useSetIconActive from './useSetIconActive';
 import useHandleIconShimmer from './useHandleIconShimmer';
@@ -18,7 +12,7 @@ import { setTwinIndex } from 'store';
 const PanelChildren = lazy(() => import('./PanelChildren'));
 const MenuChildren = lazy(() => import('./MenuChildren'));
 
-function MenuItemV2({ item, onToggle, shouldShimmer, shimmerList, direction }) {
+function MenuItemV2({ item, onToggle, shouldShimmer, direction }) {
   const {
     panelData,
     openItems,
@@ -114,14 +108,6 @@ function MenuItemV2({ item, onToggle, shouldShimmer, shimmerList, direction }) {
                 direction={direction}
               />
             </Suspense>
-            // <MapMenuV2 menuDirection={menuDirection} level={level}>
-            // 	<MenuList
-            // 		iconClassName={iconClassName}
-            // 		items={menuChildren}
-            // 		openItems={openItems}
-            // 		onToggle={onToggle}
-            // 	/>
-            // </MapMenuV2>
           )}
         </>
       )}
@@ -129,29 +115,3 @@ function MenuItemV2({ item, onToggle, shouldShimmer, shimmerList, direction }) {
   );
 }
 export default MenuItemV2;
-
-// useEffect(() => {
-// 	if (shouldShimmer && s) {
-// 		console.log("SHIMMER CTRL", s);
-
-// 		setShimmerOn(true);
-// 		className = classNames("icon", "shimmer-on");
-// 	} else {
-// 		setShimmerOn(false);
-// 		s = false;
-// 		className = classNames("icon", "shimmer-off");
-// 	}
-// }, [shouldShimmer]);
-
-// className = classNames("icon", shimmerOn ? "shimmer-on" : "shimmer-off");
-// useEffect(() => {
-// 	if (shimmerOn) {
-// 		const timeout = setTimeout(() => {
-// 			className = classNames("icon", "shimmer-off");
-// 			console.log("SHIMMER OFF BY TIMER");
-// 			setShimmerOn(false);
-// 			s = false;
-// 		}, 3000);
-// 		return () => clearTimeout(timeout);
-// 	}
-// });
