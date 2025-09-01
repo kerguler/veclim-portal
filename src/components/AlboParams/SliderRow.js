@@ -1,110 +1,111 @@
-import React, { useState, useEffect } from "react";
-import { useAlboData } from "context/AlboDataContext";
+import React, { useState, useEffect } from 'react';
+import { useAlboData } from 'context/AlboDataContext';
 import {
-	setAlboRequestPlot,
-	setDataArrived,
-	setInvalidateSimData,
-	useFetchSimStatusQuery,
-} from "store";
-import useDirectorFun from "customHooks/useDirectorFun";
-import useWindowSize from "customHooks/useWindowSize";
+  setAlboRequestPlot,
+  setDataArrived,
+  setInvalidateSimData,
+  useFetchSimStatusQuery,
+} from 'store';
+import useDirectorFun from 'customHooks/useDirectorFun';
+import useWindowSize from 'customHooks/useWindowSize';
 import {
-	setSimSlider1Enabled,
-	setSimulationParameterSlider1 as setSimSlider1Value,
-} from "store";
-import { useCreateSimulationMutation } from "store";
-import { setMessenger } from "store";
-import { useSelector } from "react-redux";
-import useCsrf from "pages/LoginRegister/Services/useCsrf";
+  setSimSlider1Enabled,
+  setSimulationParameterSlider1 as setSimSlider1Value,
+} from 'store';
+import { useCreateSimulationMutation } from 'store';
+import { setMessenger } from 'store';
+import { useSelector } from 'react-redux';
+import useCsrf from 'pages/LoginRegister/Services/useCsrf';
 const SliderRow = ({ direction }) => {
-	const [taskId, setTaskId] = useState(null); // Store Task ID
-	const [shouldCheck, setShouldCheck] = useState(true);
-	const { mapPagePosition, invalidateSimData, simSlider1Value, dispatch } =
-		useDirectorFun(direction);
+  const [taskId, setTaskId] = useState(null); // Store Task ID
+  const [shouldCheck, setShouldCheck] = useState(true);
+  const { mapPagePosition, invalidateSimData, simSlider1Value, dispatch } =
+    useDirectorFun(direction);
 
-	const { setDataSim, setIsLoadingSim, setErrorSim } = useAlboData();
+  const { setDataSim, setIsLoadingSim, setErrorSim } = useAlboData();
 
-	const [createSimulation /* { isLoading, isError, data }*/] =
-		useCreateSimulationMutation();
+  const [createSimulation /* { isLoading, isError, data }*/] =
+    useCreateSimulationMutation();
 
-	// Handle Slider Change
-	const handleSliderChange = (e) => {
-		dispatch(
-			setSimSlider1Value({ direction: direction, value: e.target.value }),
-		);
-	};
+  // Handle Slider Change
+  const handleSliderChange = (e) => {
+    dispatch(
+      setSimSlider1Value({ direction: direction, value: e.target.value })
+    );
+  };
 
-	const simulationData = {
-		model_data: {
-			envir: [],
-			pr: [1.0, 33.0, 35.0, 4000.0, 60.0, 1000.0, 1.0, 0.0, -1.0],
-		},
+  const simulationData = {
+    model_type: 'model_albochik',
+    title: '',
+    description: '',
+    return_method: 'file',
+    model_data: {
+      envir: [],
+      pr: [1.0, 33.0, 35.0, 4000.0, 60.0, 100.0, 1.0, 0.0, -1.0],
+    },
 
-		model_type: "model_albochik",
+    title: 'Albochik',
+  };
 
-		title: "Albochik",
-	};
+  // Handle Confirm Button Click
+  const handleConfirm = async () => {
+    dispatch(setSimSlider1Enabled({ direction: direction, value: false }));
+    dispatch(setAlboRequestPlot(true));
+    console.log('Sending  Request to Start Simulation...', simulationData);
+    const response = await createSimulation(simulationData);
 
-	// Handle Confirm Button Click
-	const handleConfirm = async () => {
-		dispatch(setSimSlider1Enabled({ direction: direction, value: false }));
-		dispatch(setAlboRequestPlot(true));
-		console.log("Sending  Request to Start Simulation...", simulationData);
-		const response = await createSimulation(simulationData);
+    dispatch(setInvalidateSimData(false));
+    if (response?.data && 'task_id' in response.data) {
+      setTaskId(response.data.task_id);
+      localStorage.setItem('task_id', response.data.task_id);
+      console.log(`Received Task ID: ${response.data.task_id}`);
+      setIsLoadingSim(true); // Update context state
+    }
 
-		dispatch(setInvalidateSimData(false));
-		if (response?.data && "task_id" in response.data) {
-			setTaskId(response.data.task_id);
-			localStorage.setItem("task_id", response.data.task_id);
-			console.log(`Received Task ID: ${response.data.task_id}`);
-			setIsLoadingSim(true); // Update context state
-		}
+    if ('error' in response) {
+      console.log('Error:', response.error);
+      setErrorSim(response.error);
 
-		if ("error" in response) {
-			console.log("Error:", response.error);
-			setErrorSim(response.error);
+      // setIsLoadingSim(false); // Update context state
+    }
+  };
 
-			// setIsLoadingSim(false); // Update context state
-		}
-	};
+  useEffect(() => {
+    if (mapPagePosition.lat === null) {
+      setDataSim(null);
+      dispatch(setDataArrived({ direction, value: false }));
+      dispatch(setInvalidateSimData(true));
+    }
+  }, [mapPagePosition.lat]);
 
-	useEffect(() => {
-		if (mapPagePosition.lat === null) {
-			setDataSim(null);
-			dispatch(setDataArrived({ direction, value: false }));
-			dispatch(setInvalidateSimData(true));
-		}
-	}, [mapPagePosition.lat]);
+  const webApp = useWindowSize();
 
-	const webApp = useWindowSize();
+  return (
+    <div className="slider-row">
+      <div className="albo-params">
+        <input
+          type="range"
+          min="0"
+          max="100"
+          onChange={handleSliderChange}
+          value={simSlider1Value}
+          disabled={!invalidateSimData}
+        />
+      </div>
 
-	return (
-  <div className="slider-row">
-    <div className="albo-params">
-      <input
-        type="range"
-        min="0"
-        max="100"
-        onChange={handleSliderChange}
-        value={simSlider1Value}
+      <div className="slider-value">{simSlider1Value}</div>
+
+      <button
+        type="button"
+        onClick={handleConfirm}
+        className="confirm-button"
         disabled={!invalidateSimData}
-      />
+        aria-disabled={!invalidateSimData}
+      >
+        Confirm
+      </button>
     </div>
-
-    <div className="slider-value">{simSlider1Value}</div>
-
-    <button
-      type="button"
-      onClick={handleConfirm}
-      className="confirm-button"
-      disabled={!invalidateSimData}
-      aria-disabled={!invalidateSimData}
-    >
-      Confirm
-    </button>
-  </div>
-);
-
+  );
 };
 
 export default SliderRow;
