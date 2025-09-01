@@ -9,6 +9,7 @@ import useHandleIconShimmer from './useHandleIconShimmer';
 import useHandleDisabledIcons from './useHandleDisabledIcons';
 import { setPanelInterfere } from 'store';
 import { setTwinIndex } from 'store';
+import { setPanelOpen } from 'store';
 const PanelChildren = lazy(() => import('./PanelChildren'));
 const MenuChildren = lazy(() => import('./MenuChildren'));
 
@@ -42,8 +43,12 @@ function MenuItemV2({ item, onToggle, shouldShimmer, direction }) {
   if (displayedItem && displayedItem?.rotate === 90) {
     imgClassName = 'rotate90';
   }
-  const panelChildren = item.children.filter((child) => child.key.endsWith('_panel'));
-  const menuChildren = item.children.filter((child) => !child.key.endsWith('_panel'));
+  const panelChildren = item.children.filter((child) =>
+    child.key.endsWith('_panel')
+  );
+  const menuChildren = item.children.filter(
+    (child) => !child.key.endsWith('_panel')
+  );
   className = useSetIconActive(
     openItems,
     displayedItem,
@@ -61,12 +66,22 @@ function MenuItemV2({ item, onToggle, shouldShimmer, direction }) {
     displaySimulationPanel,
     lastPanelDisplayed
   );
-  useHandleIconShimmer(shouldShimmer, shimmered, item, dispatch, direction, setShimmerOn);
+  useHandleIconShimmer(
+    shouldShimmer,
+    shimmered,
+    item,
+    dispatch,
+    direction,
+    setShimmerOn
+  );
   let menuDirection = displayedItem?.subMenuOpenDirection;
   const handleToggle = (key) => {
-    panelInterfere === -1 && dispatch(setPanelInterfere({ direction, value: 0 }));
+    panelInterfere === -1 &&
+      dispatch(setPanelInterfere({ direction, value: 0 }));
     dispatch(setTwinIndex({ direction, value: 0 }));
-
+    if (!key.endsWith('_panel')) {
+      dispatch(setPanelOpen({ direction, value: false }));
+    }
     onToggle(key);
   };
 
@@ -92,7 +107,11 @@ function MenuItemV2({ item, onToggle, shouldShimmer, direction }) {
         <>
           {panelChildren.length > 0 && (
             <Suspense>
-              <PanelChildren level={level} displayedItem={displayedItem} direction={direction} />
+              <PanelChildren
+                level={level}
+                displayedItem={displayedItem}
+                direction={direction}
+              />
             </Suspense>
           )}
 

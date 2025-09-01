@@ -15,6 +15,8 @@ import OptionsPanel from 'components/optionsPanel/OptionsPanel';
 import ChangeMapPanel from '../components/vectorSelection/ChangeMapPanel/ChangeMapPanel';
 import SettingsPanel from 'components/panel/SettingsPanel';
 import { tileIcons, tileIconsSand } from './tileIcons';
+import AlboParams from 'components/AlboParams/AlboParams';
+import TsRequestV2 from 'components/charts/Plotter/plotterV2/TsRequestV2';
 export const panelData = [
   {
     key: 'menu_icon',
@@ -127,7 +129,8 @@ export const panelData = [
         <h1>Seasonal Profile</h1>
         <div>
           <p>
-            Decadal averages (2010-2020) of some of the environmental variables obtained from the{' '}
+            Decadal averages (2010-2020) of some of the environmental variables
+            obtained from the{' '}
             <a
               target="_blank"
               rel="noreferrer"
@@ -188,8 +191,8 @@ export const panelData = [
         <h1>Larva Forecast</h1>
         <div>
           <p>
-            Predicted number of larvae in a typical breeding site compared with the decadal
-            averages.
+            Predicted number of larvae in a typical breeding site compared with
+            the decadal averages.
           </p>
         </div>
       </div>
@@ -259,7 +262,13 @@ export const panelData = [
       lineStyle: { g3: 'dots', g4: 'dots', g5: 'dots' },
       colors: ['#1B3958', '#1B3958', '#167997', '#167997', '#167997'],
       horizontalAxis: 'date',
-      labels: ['Activity forecast', 'Decadal activity', 'VectAbundance', 'AIMsurv', 'VectorBase'],
+      labels: [
+        'Activity forecast',
+        'Decadal activity',
+        'VectAbundance',
+        'AIMsurv',
+        'VectorBase',
+      ],
       sliceLabels: ['This year', 'Overlap', 'Forecast'],
       sliceColors: ['#50C0AD', 'orange', '#F15A48'],
     },
@@ -269,8 +278,63 @@ export const panelData = [
         <h1>Activity Forecast</h1>
         <div>
           <p>
-            Daily number of eggs laid by the Asian tiger mosquito as a proxy to biting activity.
+            Daily number of eggs laid by the Asian tiger mosquito as a proxy to
+            biting activity.
           </p>
+        </div>
+      </div>
+    ),
+  },
+  // SIMULATION   ACTIVITY
+  {
+    id: [0, 2, 1, 0],
+    key: 'simulation_activity_graph_panel',
+    simulation: true,
+    chartParameters: {
+      mixedKeys: [
+        {
+          key: 'g1',
+          levels: ['fcast-ts', 'ecmwf', 'colegg'],
+        },
+        {
+          key: 'g2',
+          levels: ['ts', 'fcast-ts', 'ecmwf', 'colegg'],
+        },
+      ],
+
+      horizontalAxis: 'date',
+      sliceInfo: {
+        g1: {
+          sliceLabels: {
+            slice0: 'This year (sim)',
+            slice1: 'Overlap (sim) ',
+            slice2: 'Forecast (sim)',
+          },
+          sliceColors: {
+            slice0: '#1c2833',
+            slice1: '#af7ac5',
+            slice2: '#d98880',
+          },
+        },
+        g2: {
+          sliceLabels: {
+            slice0: 'This year',
+            slice1: 'Overlap',
+            slice2: 'Forecast',
+          },
+          sliceColors: {
+            slice0: '#50C0AD',
+            slice1: 'orange',
+            slice2: '#F15A48',
+          },
+        },
+      },
+    },
+    content: (
+      <div className="text-area">
+        <h1>Activity Simulation Data </h1>
+        <div>
+          <p>Here we will display simulation graphics</p>{' '}
         </div>
       </div>
     ),
@@ -329,9 +393,10 @@ export const panelData = [
         <h1>Activity Projections</h1>
         <div>
           <p>
-            Daily number of eggs in 2010-2020, compared to the historical (1980-1990) and projected
-            future (2090-2100) decadal averages. SSP 2-4.5 and SSP 5-8.5 represent the optimistic
-            and pessimistic scenarios, respectively.
+            Daily number of eggs in 2010-2020, compared to the historical
+            (1980-1990) and projected future (2090-2100) decadal averages. SSP
+            2-4.5 and SSP 5-8.5 represent the optimistic and pessimistic
+            scenarios, respectively.
           </p>
         </div>
       </div>
@@ -385,21 +450,81 @@ export const panelData = [
         <h1>Outbreak Forecast</h1>
         <div>
           <p>
-            The likeliness of an outbreak in response to an imported infectious case according to
-            the{' '}
-            <a target="_blank" rel="noreferrer" href="https://doi.org/10.1371/journal.pone.0174293">
+            The likeliness of an outbreak in response to an imported infectious
+            case according to the{' '}
+            <a
+              target="_blank"
+              rel="noreferrer"
+              href="https://doi.org/10.1371/journal.pone.0174293"
+            >
               Chikungunya model
             </a>
             .
           </p>
           <p>
-            We introduce an infectious case in a population of 4000. Outbreak <strong>risk</strong>{' '}
-            is the number of times (out of 100) when an autochthonous case is observed.
+            We introduce an infectious case in a population of 4000. Outbreak{' '}
+            <strong>risk</strong> is the number of times (out of 100) when an
+            autochthonous case is observed.
           </p>
         </div>
       </div>
     ),
   },
+  // SIMULATION OUTBREAK
+  {
+    id: [0, 2, 2, 0],
+    key: 'simulation_outbreak_graph_panel',
+    simulation: true,
+    chartParameters: {
+      mixedKeys: [
+        {
+          key: 'g1',
+          levels: ['fcast-ts', 'ecmwf', 'pouts'],
+        },
+        {
+          key: 'g2',
+          levels: ['ts', 'fcast-ts', 'ecmwf', 'pouts'],
+        },
+      ],
+
+      horizontalAxis: 'date',
+      sliceInfo: {
+        g1: {
+          sliceLabels: {
+            slice0: 'This year (sim)',
+            slice1: 'Overlap (sim) ',
+            slice2: 'Forecast (sim)',
+          },
+          sliceColors: {
+            slice0: '#1c2833',
+            slice1: '#af7ac5',
+            slice2: '#d98880',
+          },
+        },
+        g2: {
+          sliceLabels: {
+            slice0: 'This year',
+            slice1: 'Overlap',
+            slice2: 'Forecast',
+          },
+          sliceColors: {
+            slice0: '#50C0AD',
+            slice1: 'orange',
+            slice2: '#F15A48',
+          },
+        },
+      },
+    },
+    content: (
+      <div className="text-area">
+        <h1>Outbreak Simulation Data </h1>
+        <div>
+          <p>Here we will display simulation graphics</p>{' '}
+        </div>
+      </div>
+    ),
+  },
+
   {
     id: [0, 2, 2, 1],
     decade: '2090-2100',
@@ -452,9 +577,10 @@ export const panelData = [
         <h1>Outbreak Projections</h1>
         <div>
           <p>
-            Average outbreak risk in 2010-2020, compared to the historical (1980-1990) and projected
-            future (2090-2100) decadal averages. SSP 2-4.5 and SSP 5-8.5 represent the optimistic
-            and pessimistic scenarios, respectively.
+            Average outbreak risk in 2010-2020, compared to the historical
+            (1980-1990) and projected future (2090-2100) decadal averages. SSP
+            2-4.5 and SSP 5-8.5 represent the optimistic and pessimistic
+            scenarios, respectively.
           </p>
         </div>
       </div>
@@ -512,15 +638,76 @@ export const panelData = [
         <div>
           <p>
             The expected impact of an imported infectious case according to the{' '}
-            <a target="_blank" rel="noreferrer" href="https://doi.org/10.1371/journal.pone.0174293">
+            <a
+              target="_blank"
+              rel="noreferrer"
+              href="https://doi.org/10.1371/journal.pone.0174293"
+            >
               Chikungunya model
             </a>
             .
           </p>
           <p>
-            We introduce an infectious case in a population of 4000. The <strong>impact</strong> is
-            the average number of autochthonous cases in 60 days.
+            We introduce an infectious case in a population of 4000. The{' '}
+            <strong>impact</strong> is the average number of autochthonous cases
+            in 60 days.
           </p>
+        </div>
+      </div>
+    ),
+  },
+  {
+    id: [0, 2, 1, 0],
+    key: 'simulation_impact_graph_panel',
+    simulation: true,
+    chartParameters: {
+      chartType: 'rechart',
+      years: 'ecmwf',
+
+      mixedKeys: [
+        {
+          key: 'g1',
+          levels: ['fcast-ts', 'ecmwf', 'iouts'],
+        },
+        {
+          key: 'g2',
+          levels: ['ts', 'fcast-ts', 'ecmwf', 'iouts'],
+        },
+      ],
+
+      horizontalAxis: 'date',
+      sliceInfo: {
+        g1: {
+          sliceLabels: {
+            slice0: 'This year (sim)',
+            slice1: 'Overlap (sim) ',
+            slice2: 'Forecast (sim)',
+          },
+          sliceColors: {
+            slice0: '#1c2833',
+            slice1: '#af7ac5',
+            slice2: '#d98880',
+          },
+        },
+        g2: {
+          sliceLabels: {
+            slice0: 'This year',
+            slice1: 'Overlap',
+            slice2: 'Forecast',
+          },
+          sliceColors: {
+            slice0: '#50C0AD',
+            slice1: 'orange',
+            slice2: '#F15A48',
+          },
+        },
+      },
+    },
+    content: (
+      <div className="text-area">
+        <h1>Impact Simulation Data </h1>
+        <div>
+          <p>Here we will display simulation graphics</p>{' '}
         </div>
       </div>
     ),
@@ -581,9 +768,10 @@ export const panelData = [
         <h1>Impact Projections</h1>
         <div>
           <p>
-            Average importation impact in 2010-2020, compared to the historical (1980-1990) and
-            projected future (2090-2100) decadal averages. SSP 2-4.5 and SSP 5-8.5 represent the
-            optimistic and pessimistic scenarios, respectively.
+            Average importation impact in 2010-2020, compared to the historical
+            (1980-1990) and projected future (2090-2100) decadal averages. SSP
+            2-4.5 and SSP 5-8.5 represent the optimistic and pessimistic
+            scenarios, respectively.
           </p>
         </div>
       </div>
@@ -642,6 +830,29 @@ export const panelData = [
 
         <SettingsPanel />
         {/* <CoordinatePicker /> */}
+      </div>
+    ),
+  },
+  {
+    id: [0, 5],
+    key: 'simulation_adjustment',
+    icon: seasonal,
+    hasPanels: true,
+  },
+
+  {
+    id: [0, 5],
+    key: 'simulation_adjustment_panel',
+    icon: seasonal,
+    hasPanels: true,
+
+    chartParameters: {},
+    content: (
+      <div className="text-area">
+        <div>
+          <AlboParams />
+          {/* <CoordinatePicker /> */}
+        </div>
       </div>
     ),
   },

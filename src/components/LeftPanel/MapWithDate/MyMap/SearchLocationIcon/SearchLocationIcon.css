@@ -1,7 +1,9 @@
-.tooltip-element.search-icon{
+.search-icon {
+  position: absolute;
   text-align: right;
   margin-top: -40px;
-  z-index: 8001;
+  right: 0px;
+  z-index: 1000;
   cursor: pointer;
 }
 

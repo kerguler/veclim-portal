@@ -1,144 +1,202 @@
 import "./loginComponent.css";
 import React, { useEffect, useState } from "react";
-import veclimLogo from "assets/images/logos/VEClim-Logo-300px.png";
-import { useDispatch } from "react-redux";
-import { useSelector } from "react-redux";
-import {
-	setUsername,
-	setPassword,
-	setRememberLogin,
-} from "store/slices/loginSlice";
-import { get, useLoginMutation } from "store";
+import { useDispatch, useSelector } from "react-redux";
+import { setUsername, setPassword, setRememberLogin } from "store/slices/loginSlice";
+import { useLoginMutation, useRegisterMutation } from "store";
 import { setApiRegisterResponse } from "store";
-import { loginUser } from "../Services/backEndFunctions";
+import useCsrf from "../Services/useCsrf";
+
 function LoginComponent() {
-	const [displayWarning, setDisplayWarning] = useState({
-		emailMessage: "",
-		passwordMessage: "",
-		confirmPasswordMessage: "",
-		errorMessage: "",
-		loginStatus: "",
-	});
-	const dispatch = useDispatch();
-	const username = useSelector((state) => state.login.username);
-	const password = useSelector((state) => state.login.password);
-	const rememberLogin = useSelector((state) => state.login.rememberLogin);
-	const [login] = useLoginMutation();
+  const dispatch = useDispatch();
+  const { refresh } = useCsrf();
 
-	useEffect(() => {
-		const rememberLogin = localStorage.getItem("rememberLogin") === "true";
-		const username = localStorage.getItem("username");
-		const password = localStorage.getItem("password");
-		if (rememberLogin && username && password) {
-			dispatch(setUsername(username));
-			dispatch(setPassword(password));
-			dispatch(setRememberLogin(rememberLogin));
-		}
-	}, []);
+  const username = useSelector((s) => s.login.username);
+  const password = useSelector((s) => s.login.password);
+  const rememberLogin = useSelector((s) => s.login.rememberLogin);
 
-	const handleUsernameChange = (e) => {
-		dispatch(setUsername(e.target.value));
-	};
+  const [login,   { isLoading: loggingIn,   error: loginErr }]   = useLoginMutation();
+  const [register,{ isLoading: registering, error: registerErr }] = useRegisterMutation();
 
-	const handlePasswordChange = (e) => {
-		dispatch(setPassword(e.target.value));
-	};
+  const [mode, setMode] = useState("login"); // 'login' | 'register'
+  const [confirm, setConfirm] = useState("");
 
-	const handleRememberMeChange = (e) => {
-		dispatch(setRememberLogin(e.target.checked));
-		localStorage.setItem("rememberLogin", e.target.checked);
-		localStorage.setItem("username", username);
-		localStorage.setItem("password", password);
-	};
+  // NEW: show/hide toggles
+  const [showPw, setShowPw] = useState(false);
+  const [showConfirmPw, setShowConfirmPw] = useState(false);
 
-	// function getCookie(name) {
-	// 	// Parse `document.cookie` (all cookies in a single string)
-	// 	const cookies = document.cookie.split(";");
-	// 	console.log({ cookies });
-	// 	for (let c of cookies) {
-	// 		let cookie = c.trim();
-	// 		// Check if this cookie string begins with the name we want:
-	// 		if (cookie.startsWith(name + "=")) {
-	// 			return cookie.substring(name.length + 1);
-	// 		}
-	// 	}
-	// 	return null;
-	// }
+  useEffect(() => {
+    const remembered = localStorage.getItem("rememberLogin") === "true";
+    const storedUser = localStorage.getItem("username") || "";
+    if (remembered) {
+      dispatch(setRememberLogin(true));
+      if (storedUser) dispatch(setUsername(storedUser));
+    }
+  }, [dispatch]);
 
-	const handleLogin = async (e) => {
-		e.preventDefault();
-		try {
-			const response = await loginUser(login, { username, password });
-			dispatch(
-				setApiRegisterResponse({
-					response: response,
-					status: response.status,
-					message: response.message,
-					userName: username,
-					userId: response.userId,
-				}),
-			);
-			console.log({ response });
-			localStorage.setItem("username", response.userName);
+  const onUsername = (e) => dispatch(setUsername(e.target.value));
+  const onPassword = (e) => dispatch(setPassword(e.target.value));
+  const onConfirm  = (e) => setConfirm(e.target.value);
 
-			localStorage.setItem("id", response.userId);
-			// navigate("/ApiWelcome");
-		} catch (err) {
-			console.error("Failed to login:", err);
-		}
-	};
+  const onRemember = (e) => {
+    const val = e.target.checked;
+    dispatch(setRememberLogin(val));
+    localStorage.setItem("rememberLogin", String(val));
+    if (val) localStorage.setItem("username", username);
+    else localStorage.removeItem("username");
+  };
 
-	return (
-		<div className='login-base'>
-			{/* <div className='login-logo'>
-				{" "}
-				<img alt='veclim-logo' src={veclimLogo}></img>{" "}
-			</div> */}
-			<div className='login-boxes'>
-				<p>You must be logged in to run parameters</p>
-				<form onSubmit={handleLogin}>
-					<input
-						className='email-field'
-						// type='email'
-						placeholder='username'
-						value={username}
-						onChange={handleUsernameChange}
-						required
-					/>
-					<input
-						className='password-field'
-						type='password'
-						placeholder='password'
-						value={password}
-						onChange={handlePasswordChange}
-						required
-					/>
-					<br />
-					<label className='checkbox-field'>
-						<input
-							type='checkbox'
-							checked={rememberLogin}
-							onChange={handleRememberMeChange}
-						/>
-						Remember me
-					</label>
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    const res = await login({ username, password });
+    if ("data" in res) {
+      dispatch(setApiRegisterResponse({
+        response: res.data,
+        status: res.data?.status,
+        message: res.data?.message,
+        userName: username,
+        userId: res.data?.userId,
+      }));
+      if (rememberLogin) localStorage.setItem("username", username);
+      await refresh();
+    }
+  };
 
-					<button
-						className='login-submit-button'
-						type='submit'
-						// onClick={handleLogin}
-					>
-						Login
-					</button>
-				</form>
-				<div>{displayWarning.message}</div>
-			</div>
-			{/* <div className='register-text'>
-				If you don't have an account. You can get one from
-				<Link to='/RegistrationPage'>here</Link>
-			</div> */}
-		</div>
-	);
+  const handleRegister = async (e) => {
+    e.preventDefault();
+    if (password !== confirm) return;
+    const res = await register({ username, password });
+    if ("data" in res) {
+      await handleLogin(e); // optional auto-login
+    }
+  };
+
+  const submitting = loggingIn || registering;
+  const showError =
+    (loginErr && mode === "login") || (registerErr && mode === "register");
+
+  return (
+    <div className="login-base">
+      <div className="login-card">
+        <h2 className="login-title">Simulation Data</h2>
+        <p className="login-sub">You must be logged in to run parameters</p>
+
+        <form
+          onSubmit={mode === "login" ? handleLogin : handleRegister}
+          className="login-form"
+          noValidate
+        >
+          <label className="visually-hidden" htmlFor="username">Username</label>
+          <input
+            id="username"
+            className="text-field"
+            placeholder="username"
+            autoComplete="username"
+            value={username}
+            onChange={onUsername}
+            required
+          />
+
+          <label className="visually-hidden" htmlFor="password">Password</label>
+          <div className="input-wrap">
+            <input
+              id="password"
+              type={showPw ? "text" : "password"}
+              className="text-field"
+              placeholder="password"
+              autoComplete={mode === "login" ? "current-password" : "new-password"}
+              value={password}
+              onChange={onPassword}
+              required
+            />
+            <button
+              type="button"
+              className="pw-toggle"
+              aria-pressed={showPw}
+              aria-controls="password"
+              onClick={() => setShowPw((v) => !v)}
+              title={showPw ? "Hide password" : "Show password"}
+            >
+              {showPw ? "Hide" : "Show"}
+            </button>
+          </div>
+
+          {mode === "register" && (
+            <>
+              <label className="visually-hidden" htmlFor="confirm">Confirm password</label>
+              <div className="input-wrap">
+                <input
+                  id="confirm"
+                  type={showConfirmPw ? "text" : "password"}
+                  className="text-field"
+                  placeholder="confirm password"
+                  autoComplete="new-password"
+                  value={confirm}
+                  onChange={onConfirm}
+                  required
+                />
+                <button
+                  type="button"
+                  className="pw-toggle"
+                  aria-pressed={showConfirmPw}
+                  aria-controls="confirm"
+                  onClick={() => setShowConfirmPw((v) => !v)}
+                  title={showConfirmPw ? "Hide password" : "Show password"}
+                >
+                  {showConfirmPw ? "Hide" : "Show"}
+                </button>
+              </div>
+            </>
+          )}
+
+          <div className="form-row">
+            <label className="checkbox">
+              <input type="checkbox" checked={rememberLogin} onChange={onRemember} />
+              <span>Remember me</span>
+            </label>
+
+            <button
+              type="submit"
+              className="primary-btn"
+              disabled={submitting || (mode === "register" && password !== confirm)}
+            >
+              {mode === "login"
+                ? (loggingIn ? "Logging in…" : "Login")
+                : (registering ? "Registering…" : "Register")}
+            </button>
+          </div>
+
+          {mode === "register" && password !== confirm && (
+            <div className="error small">Passwords don’t match.</div>
+          )}
+          {showError && (
+            <div className="error" aria-live="polite">
+              {("error" in (mode === "login" ? loginErr : registerErr) &&
+                (mode === "login" ? loginErr : registerErr)?.error) ||
+                "Something went wrong."}
+            </div>
+          )}
+        </form>
+
+        <div className="form-footer">
+          {mode === "login" ? (
+            <span>
+              Don’t have an account?{" "}
+              <button className="link-btn" onClick={() => setMode("register")} type="button">
+                Create one
+              </button>
+            </span>
+          ) : (
+            <span>
+              Already have an account?{" "}
+              <button className="link-btn" onClick={() => setMode("login")} type="button">
+                Log in
+              </button>
+            </span>
+          )}
+        </div>
+      </div>
+    </div>
+  );
 }
 
 export default LoginComponent;

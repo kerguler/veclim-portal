@@ -1,52 +1,129 @@
+/* Responsive icon size */
+:root {
+  --icon-size: 20px; /* < 500px */
+  --icon-gap: 8px;
+}
+@media (min-width: 500px) {
+  :root {
+    --icon-size: 24px;
+  } /* ≥ 500px */
+}
+
+/* Row */
 .sim-list-item {
-	width: 90%;
-	min-height: 5rem;
-	display: flex;
-	border-radius: 5px;
-}
-.sim-list-item p {
-	color: black;
-}
-
-.tile-entry {
-	display: flex;
-	align-items: center;
-	width: 100%;
-}
-.tile-entry p {
-	font-size: 1.5rem;
-}
-
-.icon-area {
-	width: 100%;
-	display: flex;
-	justify-content: flex-end;
-	color: var(--meteo-text);
-	align-items: center;
-	margin-right: 1rem;
+  width: 100%;
+  min-height: 3rem;
+  display: flex;
+  align-items: center;
+  padding: 0.25rem 0.5rem;
+  transition: filter 0.15s ease, background-color 0.15s ease;
+  border-bottom: 1px solid;
 }
 .sim-list-item:hover {
-	background-color: #b9dff1;
-	filter: drop-shadow(0px 0px 3px var(--neutral-color1));
-}
-.sim-list-item h3 {
-	font-size: 1.8rem;
-	color: black;
+  background-color: #b9dff1;
+  filter: drop-shadow(0px 0px 3px var(--neutral-color1));
 }
 
-.sim-icon {
-	width: 2.5rem;
-	height: 2.5rem;
-	cursor: pointer;
+/* Left info block */
+.tile-entry {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.5rem;
+  width: 80%;
 }
-.sim-icon path {
-	stroke: var(--meteo-text);
+.sim-list-item p {
+  color: black;
+  margin: 0;
+}
+.tile-entry p {
+  font-size: 1rem;
+}
+.sim-date p {
+  font-size: 1rem;
+  color: var(--meteo-text);
 }
 
-.sim-icon:hover path {
-	stroke: var(--primary-color1);
+@media (min-width: 500px) {
+  .tile-entry p {
+    font-size: 1.2rem;
+  }
+  .sim-date p {
+    font-size: 1rem;
+  }
 }
 
-.icon-img:hover {
-	filter: drop-shadow(0px 0px 2px var(--neutral-color1));
+/* Right icon bar: 3 fixed slots (eye | status | trash) */
+.icon-area {
+  display: grid;
+  grid-template-columns: var(--icon-size) var(--icon-size) var(--icon-size);
+  column-gap: var(--icon-gap);
+  align-items: center;
+  justify-content: end;
+  width: calc(3 * var(--icon-size) + 2 * var(--icon-gap)); /* lock width */
+}
+
+.icon-cell {
+  width: var(--icon-size);
+  height: var(--icon-size);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Reserve the slot without affecting layout */
+.hidden-keep-space {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* Icon reset button */
+.icon-btn {
+  width: var(--icon-size);
+  height: var(--icon-size);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+/* SVGs share the same size */
+.sim-icon,
+.status-icon {
+  width: var(--icon-size);
+  height: var(--icon-size);
+}
+
+/* Color helpers (target SVG <path>) */
+.sim-icon path,
+.status-icon path {
+  stroke: var(--meteo-text);
+}
+
+.sim-icon.icon-img.green path,
+.status-icon.green path {
+  fill: green;
+  stroke: green;
+}
+.sim-icon.icon-img.blue path,
+.status-icon.blue path {
+  fill: blue;
+  stroke: blue;
+}
+.sim-icon.icon-img.red path,
+.status-icon.red path {
+  fill: red;
+  stroke: red;
+}
+
+/* Small hover polish */
+.sim-icon:hover path,
+.status-icon:hover path {
+  stroke: var(--primary-color1);
+}
+.icon-btn:hover .icon-img {
+  filter: drop-shadow(0px 0px 2px var(--neutral-color1));
 }

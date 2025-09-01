@@ -43,7 +43,6 @@ function handleAxisAdjustments(plotMat, chartParameters, vectorName, argKeys, s3
   Object.keys(s3).forEach((key) => {
     s3[key]?.orientation || (s3[key]['orientation'] = 'left');
   });
-  console.log({ s3before: s3 });
   Object.keys(s3).forEach((key) => {
     const val = s3[key];
     if (val.min === Infinity || val.max === -Infinity) {
@@ -51,7 +50,6 @@ function handleAxisAdjustments(plotMat, chartParameters, vectorName, argKeys, s3
     }
   });
 
-  console.log({ s3after: s3 });
   Object.keys(s3)
     .filter((key) => s3[key].orientation === 'left')
     .forEach((key) => {

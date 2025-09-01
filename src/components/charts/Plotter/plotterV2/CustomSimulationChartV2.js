@@ -29,11 +29,10 @@ function CustomSimulationChartV2({ direction }) {
 		error: errorTs,
 		isFetching: isLoadingTs,
 	} = useFetchTimeSeriesDataQuery({
-		position: JSON.stringify(mapPagePosition),
+		position: mapPagePosition,
 		vectorName,
 		dateArray,
 	});
-
 	const [alboDataArrived, setAlboDataArrived] = useState(false);
 
 	const rawData = useRef({

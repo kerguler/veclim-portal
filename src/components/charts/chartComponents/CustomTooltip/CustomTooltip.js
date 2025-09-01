@@ -11,7 +11,6 @@ function CustomTooltip({ active, payload, label, parameters }) {
   if (active && payload1 && payload1.length) {
     const RenderedTooltipElement = ({ entry, index }) => {
       let keyArray = entry.dataKey.split('.');
-      console.log({ keyArray });
       let primaryKey, secondaryKey;
       if (keyArray.length > 1) {
         primaryKey = keyArray[0];

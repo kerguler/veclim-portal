@@ -1,17 +1,30 @@
 @import url('styles/colors.css');
 
 .color-bar {
-  position: absolute;
+  position: fixed;
   display: flex;
   align-items: flex-end;
   justify-content: flex-start;
   width: 240px;
-  top: 0rem;
-  bottom: unset;
   left: 0.5rem;
+  top: 0px;
   z-index: 2000;
   user-select: none;
   pointer-events: none;
+
+  transition: transform 0.3s ease;
+  will-change: transform;
+}
+
+.color-bar.left {
+  right: unset;
+  left: 0.5rem;
+  flex-direction: row;
+}
+.color-bar.right {
+  left: unset;
+  right: 0.5rem;
+  flex-direction: row-reverse;
 }
 .color-bar-rect {
   width: 1.8rem;
@@ -41,19 +54,6 @@
   text-align: left;
   justify-self: center;
   font-weight: 600;
-}
-.color-bar.left {
-  bottom: unset;
-  top: 0rem;
-  right: unset;
-  left: 0.5rem;
-  flex-direction: row;
-}
-.color-bar.right {
-  bottom: 3rem;
-  left: unset;
-  right: 0.5rem;
-  flex-direction: row-reverse;
 }
 .color-bar-texts {
   display: flex;
@@ -174,10 +174,15 @@
 
 @media (min-width: 500px) {
   .color-bar {
-    top: unset;
-    bottom: 0rem;
     left: 1rem;
   }
+  .color-bar.right {
+    right: 0.5rem;
+  }
+  .color-bar.left {
+    left: 0.5rem;
+  }
+
   .color-bar-colors {
     height: 100%;
   }
@@ -192,17 +197,6 @@
     text-align: left;
     justify-self: center;
     font-weight: 600;
-  }
-  .color-bar.right {
-    bottom: 0rem;
-    left: unset;
-    right: 0.5rem;
-  }
-  .color-bar.left {
-    top: unset;
-    bottom: 0rem;
-    right: unset;
-    left: 0.5rem;
   }
 
   .tile-name-wrapper p {

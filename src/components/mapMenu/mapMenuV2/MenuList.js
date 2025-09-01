@@ -24,14 +24,12 @@ function MenuList({ items, onToggle, direction }) {
   const { dataSim } = useAlboData();
   useEffect(() => {
     if (Object.keys(openItems).length === 0) {
+
       setShouldShimmer(true);
       dispatch(setShimmered({ direction, value: { menu_icon: true } }));
     } else {
       setShouldShimmer(false);
     }
-
-    // setShouldShimmer(Object.keys(openItems).length === 0 ? true : false);
-    console.log('openItems changed:', openItems);
   }, [openItems]);
 
   const vectorName = useSelector((state) => state.fetcher.fetcherStates.vectorName);

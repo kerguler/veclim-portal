@@ -1,47 +1,92 @@
 .simlist-container {
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
-	width: 100%;
-	height: 100%;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
 }
 
-.scrollable-list {
-	display: flex;
-	flex-direction: column;
-	gap: 10px;
-	justify-content: center;
-	overflow-y: scroll;
-	align-items: center;
-	width:90%
+.scrollable-list.fixed {
+  max-height: 250px;
+  min-height: 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  justify-content: flex-start;
+  align-items: stretch;
+  width: 90%;
+}
+.tile {
+  width: 100%;
 }
 
 .title-simulations {
-	font-size: 1.8rem;
-	color: var(--primary-color1);
-	background-color: var(--www-color-float-bg1);
-	border-bottom: 1px solid var(--neutral-color1);
-	width: 100%;
-	text-align: center;
-	border-radius: 10px 10px 0px 0px;
+  font-size: 1.2rem;
+  color: var(--primary-color1);
+  background-color: var(--www-color-float-bg1);
+  border-bottom: 1px solid var(--neutral-color1);
+  width: 100%;
+  text-align: center;
+  border-radius: 10px 10px 0px 0px;
 }
-.title-simulations h3 {
-	margin: 0px;
-	padding: 10px;
-}
+@media (min-width: 500px) {
+  .simlist-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+  }
+  .scrollable-list {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    justify-content: flex-start;
+    align-items: stretch;
+    width: 90%;
+  }
 
-.tile:hover {
-	filter: drop-shadow(0px 0px 10px var(--www-color-float-fg1));
-}
+  .scrollable-list.fixed {
+    max-height: 250px;
+    min-height: 0;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    justify-content: flex-start;
+    align-items: stretch;
+    width: 90%;
+  }
 
+  .tile {
+    width: 100%;
+  }
+  .title-simulations {
+    font-size: 1.8rem;
+    color: var(--primary-color1);
+    background-color: var(--www-color-float-bg1);
+    border-bottom: 1px solid var(--neutral-color1);
+    width: 100%;
+    text-align: center;
+    border-radius: 10px 10px 0px 0px;
+  }
+  .title-simulations h3 {
+    margin: 0px;
+    padding: 10px;
+  }
 
+  .tile:hover {
+    filter: drop-shadow(0px 0px 10px var(--www-color-float-fg1));
+  }
 
-
-
-.flex-row textarea {
-	width: 100%;
-	height: 100px;
-	border: none;
-	box-shadow: 0px 0px 5px var(--neutral-color1);
+  .flex-row textarea {
+    width: 100%;
+    height: 100px;
+    border: none;
+    box-shadow: 0px 0px 5px var(--neutral-color1);
+  }
 }

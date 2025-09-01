@@ -1,0 +1,71 @@
+:root {
+  --icon-size: 20px;
+}
+@media (min-width: 500px) {
+  :root {
+    --icon-size: 24px;
+  }
+}
+
+/* base icon sizing used everywhere (FAILURE, spinner, etc.) */
+.status-icon {
+  width: var(--icon-size);
+  height: var(--icon-size);
+}
+
+/* success/download layering only */
+.status-icon-wrap {
+  position: relative;
+  width: var(--icon-size);
+  height: var(--icon-size);
+  overflow: hidden; /* defensive */
+}
+
+.status-icon-layer {
+  position: absolute; /* only layered pair is absolute */
+  inset: 0;
+  transition: opacity 0.15s ease;
+}
+
+/* default: show OK, hide Download */
+.status-icon-layer.ok {
+  opacity: 1;
+}
+.status-icon-layer.download {
+  opacity: 0;
+}
+
+/* on hover swap */
+.status-btn.is-hovered .status-icon-layer.ok {
+  opacity: 0;
+}
+.status-btn.is-hovered .status-icon-layer.download {
+  opacity: 1;
+}
+
+/* button reset */
+.status-btn {
+  width: var(--icon-size);
+  height: var(--icon-size);
+  padding: 0;
+  border: none;
+  background: transparent;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+/* colors */
+.status-icon.green path {
+  fill: green;
+  stroke: green;
+}
+.status-icon.blue path {
+  fill: blue;
+  stroke: blue;
+}
+.status-icon.red path {
+  fill: red;
+  stroke: red;
+}

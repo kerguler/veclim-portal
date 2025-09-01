@@ -67,7 +67,11 @@ function ColorBarLabelComponent({ times }) {
       dispatch(setDisplayTileNames({ center: true, left: false, right: false }));
     }
   };
-  useColorBarResize(leftBarRef, rightBarRef, panelOpen, panelTop, times, setStyle);
+
+  const barsReady =
+  !!data && !isFetching && extractedTile && extractedTile.length > 0;
+
+  useColorBarResize(leftBarRef, rightBarRef, panelOpen, panelTop, times, setStyle,barsReady);
   let colors, labels;
   useEffect(() => {
     if (data) {

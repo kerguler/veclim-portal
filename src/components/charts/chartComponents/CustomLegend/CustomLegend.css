@@ -1,41 +1,43 @@
-
 .legend-list {
-	list-style-type: none;
-	font-size: 1.1rem;
+  list-style-type: none;
+  font-size: 1.1rem;
 }
 
 .horizontal-legend {
-	display: flex;
-	flex-wrap: wrap;
+  display: flex;
+  flex-wrap: wrap;
 
-	/* flex-direction: column; */
-	/* width: 100px; */
+  /* flex-direction: column; */
+  /* width: 100px; */
 }
 .horizontal-legend p {
-	font-size: 0.8rem;
-	padding: 0;
-	margin: 0;
+  font-size: 0.8rem;
+  padding: 0;
+  margin: 0;
+}
+.horizontal-legend span {
+  font-size: 1rem;
+  padding: 0;
+  margin: 0;
 }
 @media (min-width: 500px) {
-
-
-	.legend-list {
-		list-style-type: none;
-		font-size: unset;
-	}
-	.horizontal-legend {
-		display: flex;
-		flex-direction: row;
-	}
-	.horizontal-legend span {
-		font-size: 1.2rem;
-		padding: 0;
-		margin: 0;
-	}
+  .legend-list {
+    list-style-type: none;
+    font-size: unset;
+  }
+  .horizontal-legend {
+    display: flex;
+    flex-direction: row;
+  }
+  .horizontal-legend span {
+    font-size: 1.2rem;
+    padding: 0;
+    margin: 0;
+  }
 }
 @media (max-width: 280px) {
-	.horizontal-legend {
-		/* flex-direction: column;  */
-		flex-wrap: wrap;
-	}
+  .horizontal-legend {
+    /* flex-direction: column;  */
+    flex-wrap: wrap;
+  }
 }

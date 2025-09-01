@@ -15,10 +15,11 @@ function useHandleInitialOpen(
   useEffect(() => {
     if (displayedItem?.initialOpen && !displaySimulationPanel && panelInterfere === 0) {
       onToggle(displayedItem.key);
+      console.log('Initial open for:', displayedItem.key);
     }
 
     if (displayedItem.key === displaySimulationPanel) {
-      console.log('SET simulation panel NULL');
+      console.log({current_DisplayedITEM:displayedItem })
       dispatch(setDisplaySimulationPanel({ direction, value: null }));
     }
   }, [displayedItem.initialOpen, displaySimulationPanel]);

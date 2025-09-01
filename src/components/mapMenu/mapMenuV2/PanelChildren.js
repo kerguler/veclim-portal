@@ -24,17 +24,29 @@ function PanelChildren({ displayedItem, level, direction }) {
     panelOpen,
     siblingCount,
   } = useDirectorFun(direction);
-
+  const panelRef = useRef(null);
+  let p = panelRef.current;
   const panelChildren = menuStructure.filter((child) => {
     if (child.parent === displayedItem.key) {
       const desiredPanel = panelData.filter((panel) => panel.key === child.key)[0];
-      if (desiredPanel.simulation && !dataArrived) {
-      } else if (desiredPanel.simulation && dataArrived) {
+      // we will use this logic later on
+      if (desiredPanel?.simulation && !dataArrived) {
+      } else if (desiredPanel?.simulation && dataArrived) {
         return child;
       } else {
         return child;
       }
     }
+  });
+  useEffect(() => {
+    const parents = menuStructure
+      .map((menuItem) => {
+        if (menuItem.key === displayedItem.key) {
+          return menuItem.parent;
+        }
+      })
+      .filter((value) => value !== null && value !== undefined);
+    panelRef.current = parents;
   });
 
   useEffect(() => {
@@ -107,7 +119,7 @@ function PanelChildren({ displayedItem, level, direction }) {
     <RenderedPanelV2
       siblingCount={siblingCount}
       direction="left"
-      panelClassName={null}
+      panelClassName={'no-anim'}
       panel={content}
       level={level}
       passedKey={panelChildren[twinIndex]}

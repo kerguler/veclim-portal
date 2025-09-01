@@ -1,44 +1,141 @@
-.slider-row {
-	display: flex;
-	justify-content: space-between;
-	margin-bottom: 10px;
-	padding: 0.5rem;
-}
-.confirm-button {
-	width: 50%;
-	text-align: center;
-	border-radius: 1rem;
-	background-color: var(--primary-color1);
-	color: white;
-	box-shadow: 0 5px 5px 0 rgba(0, 0, 0, 0.2);
-}
-button.confirm-button:disabled {
-	background-color: var(--neutral-color1);
-	box-shadow: none;
-	color: white;
-	/* box-shadow: 0 5px 5px 0 rgba(0, 0, 0, 0.2); */
-	border: none;
+/* container */
+.albo-params-container {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: center;
+  background-color: white;
+  gap: 0.5rem;
+  width: 100%;
 }
 
-.confirm-button:disabled:hover {
-	background-color: var(--neutral-color1);
-	color: white;
-	/* box-shadow: 0 5px 5px 0 rgba(0, 0, 0, 0.2); */
+/* row: slider | value | button (stacks on small screens) */
+.slider-row {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem;
+  width: 100%;
+  min-width: 0; /* allow children to shrink properly */
 }
+
+/* slider expands */
+.albo-params input[type='range'] {
+  width: 100%;
+  min-width: 0;
+}
+
+/* numeric value next to slider */
+.slider-value {
+  font-variant-numeric: tabular-nums;
+  opacity: 0.8;
+}
+
+/* responsive button that fits its text */
+.confirm-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.45rem 0.9rem;
+  border-radius: 9999px; /* pill */
+  border: 0;
+  appearance: none;
+  -webkit-appearance: none;
+  background-color: var(--primary-color1);
+  color: #fff;
+  font-weight: 600;
+  line-height: 1; /* keep pill compact */
+  font-size: clamp(12px, 2.4vw, 14px);
+  white-space: nowrap; /* keep text on one line */
+  min-height: 2.25rem;
+  min-width: 6.5rem; /* ensures readable tap target */
+  width: auto; /* content-based, not 50% */
+  box-shadow: 0 5px 5px rgba(0, 0, 0, 0.2);
+}
+
+/* states */
+button.confirm-button:disabled,
+.confirm-button:disabled:hover {
+  background-color: var(--neutral-color1);
+  color: #fff;
+  box-shadow: none;
+  cursor: not-allowed;
+}
+
 .confirm-button:hover {
-	background-color: var(--primary-color2);
-	box-shadow: 0 5px 5px 0 rgba(0, 0, 0, 0.4);
+  background-color: var(--primary-color2);
 }
 .confirm-button:active {
-	background-color: var(--primary-color2);
-	box-shadow: 5px 0px 5px 0 rgba(0, 0, 0, 0.4);
+  box-shadow: 0 0 0 rgba(0, 0, 0, 0.4);
 }
-.albo-params-container {
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
 
-	background-color: white;
-	/* box-shadow: 0 5px 5px 0 rgba(0, 0, 0, 0.2); */
+/* Small screens: stack; make button full-width */
+@media (max-width: 499px) {
+  .slider-row {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+  .slider-value {
+    justify-self: end;
+  }
+  .confirm-button {
+    width: 100%;
+    min-width: 0; /* allow shrink on very small screens */
+  }
+
+  .confirm-button {
+    display: inline-flex;
+    /* align-items: center;
+    justify-content: center;
+    padding: 0.45rem 0.9rem;
+    border-radius: 9999px;
+    border: 0;
+    appearance: none;
+    -webkit-appearance: none;
+    background-color: var(--primary-color1);
+    color: #fff;
+    font-weight: 600;
+    line-height: 1;
+    font-size: clamp(12px, 2.4vw, 14px);
+    white-space: nowrap;
+    min-height: 2.25rem;
+    min-width: 6.5rem;
+    width: auto;
+    box-shadow: 0 5px 5px rgba(0, 0, 0, 0.2); */
+    max-width: fit-content;
+  }
+}
+
+.albo-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  gap: 8px;
+  margin-bottom: 8px;
+  margin-top: 10px;
+}
+
+.albo-user {
+  font-size: 1rem;
+  color: var(--meteo-text);
+  opacity: 1;
+}
+
+/* reuse the link-btn style if you already have it; otherwise: */
+.link-btn.logout {
+  background: none;
+  border: 0;
+  padding: 0;
+  color: var(--primary-color1);
+  text-decoration: underline;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.95rem;
+}
+.link-btn.logout:disabled {
+  color: var(--neutral-color1);
+  text-decoration: none;
+  cursor: not-allowed;
 }

@@ -98,9 +98,9 @@
   .recharts-surface {
     /* transform: translate(0px, 0px); */
   }
-  .legend-list span {
-    font-size: 3.5vw;
-  }
+  /* .legend-list span {
+    font-size: 2.5vw;
+  } */
 }
 @media (min-width: 500px) {
   .chart-container {

@@ -66,7 +66,7 @@ function PanelProviderV2({ children }) {
       parent: 'secondary_menu_icon',
     },
 
-    // { key: "simulation_activity_graph_panel", parent: "activity_forecast" },
+    { key: 'simulation_activity_graph_panel', parent: 'activity_forecast' },
     { key: 'activity_forecast_panel', parent: 'activity_forecast' },
     { key: 'activity_projections_panel', parent: 'activity_forecast' },
 
@@ -74,7 +74,7 @@ function PanelProviderV2({ children }) {
       key: 'outbreak_forecast',
       parent: 'secondary_menu_icon',
     },
-    // { key: "simulation_outbreak_graph_panel", parent: "outbreak_forecast" },
+    { key: 'simulation_outbreak_graph_panel', parent: 'outbreak_forecast' },
     { key: 'outbreak_forecast_panel', parent: 'outbreak_forecast' },
     { key: 'outbreak_projections_panel', parent: 'outbreak_forecast' },
 
@@ -82,7 +82,7 @@ function PanelProviderV2({ children }) {
       key: 'impact_forecast',
       parent: 'secondary_menu_icon',
     },
-    // { key: "simulation_impact_graph_panel", parent: "impact_forecast" },
+    { key: 'simulation_impact_graph_panel', parent: 'impact_forecast' },
     { key: 'impact_forecast_panel', parent: 'impact_forecast' },
     {
       key: 'impact_projections_panel',
@@ -100,6 +100,11 @@ function PanelProviderV2({ children }) {
       parent: 'menu_icon',
     },
     { key: 'vector_selector_panel', parent: 'vector_selector' },
+    {
+      key: 'simulation_adjustment',
+      parent: 'menu_icon',
+    },
+    { key: 'simulation_adjustment_panel', parent: 'simulation_adjustment' },
   ];
   const menuStructureSand = [
     {

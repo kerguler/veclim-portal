@@ -79,27 +79,32 @@ const SliderRow = ({ direction }) => {
 	const webApp = useWindowSize();
 
 	return (
-		<div className='slider-row'>
-			<div className='albo-params'>
-				<input
-					type='range'
-					min='0'
-					max='100'
-					onChange={handleSliderChange}
-					value={simSlider1Value}
-					disabled={!invalidateSimData}
-				/>
-			</div>
-			<div>{simSlider1Value}</div> {/* Display the value */}
-			<button
-				onClick={handleConfirm}
-				className='confirm-button'
-				disabled={!invalidateSimData}
-			>
-				<p style={{ fontSize: webApp ? "10px" : "14px" }}>Confirm</p>
-			</button>
-		</div>
-	);
+  <div className="slider-row">
+    <div className="albo-params">
+      <input
+        type="range"
+        min="0"
+        max="100"
+        onChange={handleSliderChange}
+        value={simSlider1Value}
+        disabled={!invalidateSimData}
+      />
+    </div>
+
+    <div className="slider-value">{simSlider1Value}</div>
+
+    <button
+      type="button"
+      onClick={handleConfirm}
+      className="confirm-button"
+      disabled={!invalidateSimData}
+      aria-disabled={!invalidateSimData}
+    >
+      Confirm
+    </button>
+  </div>
+);
+
 };
 
 export default SliderRow;

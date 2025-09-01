@@ -71,6 +71,10 @@ function useArrangeDataSim({
 						setPlotReady({ direction, value: true });
 					}
 				} else {
+					console.log({simResult ,
+					dataTs ,
+					chartParameters ,
+					chartParLen: Object.keys(chartParameters).length >0})
 					console.log("shouldnt have come here");
 					dispatch(setPlotReady({ direction, value: false }));
 				}

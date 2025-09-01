@@ -1,42 +1,70 @@
-import { useDispatch } from "react-redux";
+// hooks/useCsrf.js
 import { useEffect } from "react";
-import { setCsrfToken } from "store"; // Adjust this import path as necessary
-import { useFetchCsrfQuery } from "store"; // Ensure this is correctly imported
+import { useFetchCsrfQuery } from "store";
+import { useDispatch } from "react-redux";
+import { setCsrfToken } from "store/slices/loginSlice";
+import { getCookie } from "store/apis/utils";
 
-function useCsrf(checkToken) {
-	const dispatch = useDispatch();
-	const { data: csrfData, error: csrfError, refetch } = useFetchCsrfQuery();
-	useEffect(() => {
-		if (!checkToken) {
-			refetch();
-		}
-	}, [refetch, checkToken]);
+export default function useCsrf() {
+  // If you’re truly cross-origin, this will usually be false (can’t read cookie).
+  const hasCookie = !!getCookie("csrftoken");
+  const { data, isFetching, isSuccess, refetch } = useFetchCsrfQuery(
+    undefined,
+    { skip: hasCookie } // hit /csrf/ only if no cookie visible
+  );
 
-	useEffect(() => {
-		if (checkToken) {
-			const localToken = localStorage.getItem("csrfToken");
-			if (localToken) {
-				dispatch(setCsrfToken(localToken));
-			}
-		}
-		// Refetch the CSRF token at app start or when needed to refresh
+  const dispatch = useDispatch();
+  useEffect(() => {
+    if (data?.csrftoken) dispatch(setCsrfToken(data.csrftoken));
+  }, [data, dispatch]);
 
-		// When a CSRF token is successfully fetched
-		else if (csrfData && !csrfError) {
-			const { csrfToken } = csrfData;
-			// Update CSRF token in localStorage
-			localStorage.setItem("csrfToken", csrfToken);
-			// Dispatch action to update CSRF token in the global state
-			dispatch(setCsrfToken(csrfToken));
-		}
-	}, [csrfData, csrfError, dispatch, checkToken]);
-
-	// Optionally, expose a method to manually refresh the CSRF token
-	const refreshCsrfToken = () => {
-		refetch();
-	};
-
-	return { refreshCsrfToken };
+  return { ready: hasCookie || isSuccess || isFetching, refresh: refetch };
 }
 
-export default useCsrf;
+
+// import { useDispatch } from "react-redux";
+// import { useEffect,useState } from "react";
+// import { setCsrfToken } from "store"; // Adjust this import path as necessary
+// import { useFetchCsrfQuery } from "store"; // Ensure this is correctly imported
+// import { getCookie } from "store/apis/utils";
+
+
+// export default function useCsrf() {
+//   const API_BASE = process.env.REACT_APP_DEV_URL; // <-- unify with baseQuery
+//   const [ready, setReady] = useState(() => !!getCookie("csrftoken"));
+
+//   useEffect(() => {
+//     let cancelled = false;
+
+//     async function prime() {
+//       // if cookie already exists, we're done
+//       if (getCookie("csrftoken")) {
+//         if (!cancelled) setReady(true);
+//         return;
+//       }
+//       try {
+//         await fetch(`${API_BASE}/csrf/`, { credentials: "include" });
+//       } catch {
+//         // ignore — cookie might still exist or be set later
+//       } finally {
+//         if (!cancelled) setReady(!!getCookie("csrftoken"));
+//       }
+//     }
+
+//     prime();
+
+//     // optional: after login Django rotates csrftoken; re-check on focus
+//     const recheck = () => setReady(!!getCookie("csrftoken"));
+//     window.addEventListener("focus", recheck);
+//     document.addEventListener("visibilitychange", recheck);
+
+//     return () => {
+//       cancelled = true;
+//       window.removeEventListener("focus", recheck);
+//       document.removeEventListener("visibilitychange", recheck);
+//     };
+//   }, [API_BASE]);
+
+//   return ready; // you can ignore this for GETs and just call the hook for side-effect
+// }
+

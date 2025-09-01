@@ -42,14 +42,14 @@ export default function MapMenuPicker({ direction }) {
       setSimResult(null);
     }
   }, [invalidateSimData]);
-
   useEffect(() => {
     if (displaySimulationPanel) {
+
       handleToggle(displaySimulationPanel);
     }
   }, [displaySimulationPanel]);
   useEffect(() => {
-    if (lastPanelDisplayed && panelInterfere === -1) {
+    if (lastPanelDisplayed && panelInterfere === -1 && displaySimulationPanel === null) {
       handleToggle(lastPanelDisplayed);
     }
   }, [panelInterfere, lastPanelDisplayed, twinIndex]);
@@ -78,11 +78,9 @@ export default function MapMenuPicker({ direction }) {
       openItemsTemp[parentKey] = true;
       parentKey = findParents(parentKey);
     }
-
     if (!openItems[clickedKey]) {
       openItemsTemp[clickedKey] = true;
-
-      dispatch(setDisplaySimulationPanel({ direction, value: null }));
+      // dispatch(setDisplaySimulationPanel({ direction, value: null }));
     } else {
       delete openItemsTemp[clickedKey];
       let currentPanel = panelData.filter((panel) => panel.key === clickedKey)[0];
@@ -107,7 +105,6 @@ export default function MapMenuPicker({ direction }) {
   }
 
   if (!tree || !tree.length) return null;
-
   const itemKey = tree[0].key;
   const menuDirection = '';
   return (

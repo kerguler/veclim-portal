@@ -1,190 +1,204 @@
-@import url("styles/colors.css");
+@import url('styles/colors.css');
 
 .risk-indicator > p {
-	font-family: "Inter", sens-serif;
+  font-family: 'Inter', sens-serif;
 }
 
 .risk-indicator-container-wrap {
-	margin: 0;
-	margin-bottom: 0.3rem;
+  margin: 0;
+  margin-bottom: 0.3rem;
 }
 
 .risk-indicator-container {
-	display: flex;
-	justify-content: space-between;
-	flex-direction: row;
-	margin: 0rem;
-	margin-bottom: 0.7rem;
-	width: 100%;
-	background-color: var(--risk-container);
-	color: var(--primary-color);
-	border-radius: 2rem;
-	padding: 0.4rem;
-	height: 3.5rem;
-	cursor: default;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  margin: 0rem;
+  margin-bottom: 0.7rem;
+  width: 100%;
+  background-color: var(--risk-container);
+  color: var(--primary-color);
+  border-radius: 2rem;
+  padding: 0.4rem;
+  height: 3.5rem;
+  cursor: default;
 }
 
 .risk-indicator-container-nodata {
-	margin-bottom: 1rem;
-	background-color: var(--risk-container);
-	font-size: 1.2rem;
-	align-self: center;
-	text-align: left;
-	display: flex;
-	align-content: center;
-	align-items: center;
+  margin-bottom: 1rem;
+  background-color: var(--risk-container);
+  font-size: 1.2rem;
+  align-self: center;
+  text-align: left;
+  display: flex;
+  align-content: center;
+  align-items: center;
 }
 
 .risk-indicator-container-nodata p {
-	padding: 1rem;
-	margin: 0rem 1rem;
-	font-family: "Inter", sens-serif;
+  padding: 1rem;
+  margin: 0rem 1rem;
+  font-family: 'Inter', sens-serif;
 }
 
 .risk-indicator-ipanel {
-	font-size: 1.2rem;
-	background-color: var(--risk-container);
-	border-radius: 4px;
-	margin-bottom: 1rem;
-	padding: 1rem;
+  font-size: 1.2rem;
+  background-color: var(--risk-container);
+  border-radius: 4px;
+  margin-bottom: 1rem;
+  padding: 1rem;
 }
 .risk-indicator-ipanel h1 {
-	margin: 0;
-	font-size: 1.4rem;
-	font-family: "Inter-Bold", sens-serif;
-	font-weight: bold;
+  margin: 0;
+  font-size: 1.4rem;
+  font-family: 'Inter-Bold', sens-serif;
+  font-weight: bold;
 }
 .risk-indicator-ipanel h1:first-child {
-	padding-right: 24px;
+  padding-right: 24px;
 }
 .risk-indicator-ipanel strong {
-	font-family: "Inter-Bold", sens-serif;
-	font-weight: bold;
+  font-family: 'Inter-Bold', sens-serif;
+  font-weight: bold;
 }
 .risk-indicator-ipanel p {
-	font-size: 1.2rem;
-	padding: 0.5rem 0 0.5rem 0;
+  font-size: 1.2rem;
+  padding: 0.5rem 0 0.5rem 0;
 }
 .risk-indicator-ipanel ul {
-	padding: 0.5rem 0 0.5rem 0;
+  padding: 0.5rem 0 0.5rem 0;
 }
 .risk-indicator-ipanel li {
-	list-style: none;
-	padding: 0 0 0.5rem 1rem;
-	font-family: "Inter", sens-serif;
+  list-style: none;
+  padding: 0 0 0.5rem 1rem;
+  font-family: 'Inter', sens-serif;
 }
 
 .risk-indicator-mini {
-	zoom: 0.85;
+  zoom: 0.85;
 }
 .risk-indicator-mini .risk-indicator-container {
-	margin-bottom: 0;
+  margin-bottom: 0;
 }
 
 .risk-indicator-container h1 {
-	font-size: 1.4rem;
-	align-self: center;
-	margin-left: 1rem;
+  font-size: 1.4rem;
+  align-self: center;
+  margin-left: 1rem;
 }
 
 .risk-indicator-item {
-	display: flex;
-	background-color: var(--risk-item);
-	border-radius: 2rem;
-	width: 33%;
-	padding: 0.3rem;
+  display: flex;
+  background-color: var(--risk-item);
+  border-radius: 2rem;
+  width: 33%;
+  padding: 0.3rem;
 }
-
+.risk-indicator-item-placeholder {
+  display: flex;
+  border-radius: 2rem;
+  width: 100%;
+  height: 100%;
+  padding: 0.3rem;
+}
 .risk-indicator {
-	border-radius: 2rem;
+  border-radius: 2rem;
 }
 
 .risk-indicator-0 {
-	border-radius: 2rem;
-	width: 33%;
-	background-color: var(--risk-item-0);
-	height: 100%;
-	overflow: visible;
+  border-radius: 2rem;
+  width: 33%;
+  background-color: var(--risk-item-0);
+  height: 100%;
+  overflow: visible;
+}
+
+/* in your risk css file */
+.risk-tip {
+  background: #e53935;
+  color: #fff;
+  padding: 8px 10px;
+  border-radius: 12px;
 }
 
 .risk-indicator-1 {
-	border-radius: 2rem;
-	width: 66%;
-	background-color: var(--risk-item-1);
-	height: 100%;
-	overflow: visible;
+  border-radius: 2rem;
+  width: 66%;
+  background-color: var(--risk-item-1);
+  height: 100%;
+  overflow: visible;
 }
 
 .risk-indicator-2 {
-	border-radius: 2rem;
-	width: 100%;
-	background-color: var(--risk-item-2);
-	height: 100%;
-	overflow: visible;
+  border-radius: 2rem;
+  width: 100%;
+  background-color: var(--risk-item-2);
+  height: 100%;
+  overflow: visible;
 }
 
 .risk-indicator-info {
-	width: 28px;
-	height: 28px;
-	background-image: url("assets/icons/info-i-32px.png");
-	background-size: 28px;
-	background-repeat: no-repeat;
-	margin-bottom: 1.6rem;
+  width: 28px;
+  height: 28px;
+  background-image: url('assets/icons/info-i-32px.png');
+  background-size: 28px;
+  background-repeat: no-repeat;
+  margin-bottom: 1.6rem;
 }
 
 .risk-indicator-acc {
-	width: 100%;
-	font-family: "Inter-Bold";
-	font-weight: bold;
-	font-size: 1.6rem;
-	color: white;
-	align-self: center;
-	text-align: center;
-	display: flex;
-	align-content: center;
-	justify-content: center;
-	align-items: center;
+  width: 100%;
+  font-family: 'Inter-Bold';
+  font-weight: bold;
+  font-size: 1.6rem;
+  color: white;
+  align-self: center;
+  text-align: center;
+  display: flex;
+  align-content: center;
+  justify-content: center;
+  align-items: center;
 }
 
 .risk-indicator-acc-0 {
-	border-radius: 2rem;
-	width: 33%;
-	background-color: var(--acc-item-0);
-	height: 100%;
-	overflow: visible;
+  border-radius: 2rem;
+  width: 33%;
+  background-color: var(--acc-item-0);
+  height: 100%;
+  overflow: visible;
 }
 
 .risk-indicator-acc-1 {
-	font-size: 2rem;
-	border-radius: 2rem;
-	width: 66%;
-	background-color: var(--acc-item-1);
-	height: 100%;
-	overflow: visible;
+  font-size: 2rem;
+  border-radius: 2rem;
+  width: 66%;
+  background-color: var(--acc-item-1);
+  height: 100%;
+  overflow: visible;
 }
 
 .risk-indicator-acc-2 {
-	border-radius: 2rem;
-	width: 100%;
-	background-color: var(--acc-item-2);
-	height: 100%;
-	overflow: visible;
+  border-radius: 2rem;
+  width: 100%;
+  background-color: var(--acc-item-2);
+  height: 100%;
+  overflow: visible;
 }
 
 @media (max-width: 499px) {
-	.risk-indicator-container {
-		background-color: var(--www-color-float-bg1);
-	}
-	.risk-indicator-container-nodata {
-		background-color: var(--www-color-float-bg1);
-	}
-	.risk-indicator-item {
-		background-color: var(--risk-container);
-	}
-	.risk-indicator-info {
-		background-image: url("assets/icons/info-i-blue-32px.png");
-	}
-	.risk-indicator-ipanel {
-		background-color: var(--www-color-float-bg1);
-	}
+  .risk-indicator-container {
+    background-color: var(--www-color-float-bg1);
+  }
+  .risk-indicator-container-nodata {
+    background-color: var(--www-color-float-bg1);
+  }
+  .risk-indicator-item {
+    background-color: var(--risk-container);
+  }
+  .risk-indicator-info {
+    background-image: url('assets/icons/info-i-blue-32px.png');
+  }
+  .risk-indicator-ipanel {
+    background-color: var(--www-color-float-bg1);
+  }
 }

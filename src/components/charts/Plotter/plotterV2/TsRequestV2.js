@@ -71,7 +71,6 @@ function TsRequestV2({ direction }) {
         r.dataToPlot = {};
         r.rawDataToPlot = {};
         ChartCalculatorService.createDateArray(rawData, chartParameters);
-        console.log('rawData.current', rawData.current);
         ChartCalculatorService.handleMixedKeys(rawData, chartParameters);
         ChartCalculatorService.handleSlices(rawData, chartParameters);
         dispatch(setPlotReady({ direction, value: true }));

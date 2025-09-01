@@ -6,8 +6,6 @@ function useHandleIconShimmer(shouldShimmer, shimmered, item, dispatch, directio
 
   useEffect(() => {
     if (Object.keys(openItems).length !== 0) {
-      console.log('set Shimmer to false', item.key);
-
       setShimmerOn(false);
     } else {
       setShimmerOn(true);
@@ -16,7 +14,6 @@ function useHandleIconShimmer(shouldShimmer, shimmered, item, dispatch, directio
 
   useEffect(() => {
     if (shouldShimmer && !shimmered[item.key]) {
-      console.log('Shimmering icon:', item.key);
       setShimmerOn(true);
 
       const timeout = setTimeout(() => {

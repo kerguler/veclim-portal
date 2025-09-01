@@ -92,3 +92,12 @@ export function useUserLocation() {
 
 	return;
 }
+export function getCookie(name) {
+
+  return (
+    document.cookie
+      .split('; ')
+      .find((row) => row.startsWith(name + '='))
+      ?.split('=')[1] || ''
+  );
+}
