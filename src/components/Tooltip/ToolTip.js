@@ -3,15 +3,18 @@ import { createPortal } from 'react-dom';
 import './tooltip.css';
 
 function composeHandlers(a, b) {
-  return (e) => { a?.(e); b?.(e); };
+  return (e) => {
+    a?.(e);
+    b?.(e);
+  };
 }
 
 const Tooltip = ({ children, label, placement = 'top', delay = 150 }) => {
-  const childRef = useRef(null);     // ref to the actual trigger DOM node
+  const childRef = useRef(null); // ref to the actual trigger DOM node
   const [open, setOpen] = useState(false);
   const [coords, setCoords] = useState({ top: 0, left: 0 });
   const timerRef = useRef(null);
-
+  console.log('');
   const show = () => {
     clearTimeout(timerRef.current);
     timerRef.current = setTimeout(() => setOpen(true), delay);
@@ -30,13 +33,21 @@ const Tooltip = ({ children, label, placement = 'top', delay = 150 }) => {
     let left = rect.left + rect.width / 2;
 
     if (placement === 'bottom') top = rect.bottom + pad;
-    if (placement === 'left')   { top = rect.top + rect.height / 2; left = rect.left - pad; }
-    if (placement === 'right')  { top = rect.top + rect.height / 2; left = rect.right + pad; }
+    if (placement === 'left') {
+      top = rect.top + rect.height / 2;
+      left = rect.left - pad;
+    }
+    if (placement === 'right') {
+      top = rect.top + rect.height / 2;
+      left = rect.right + pad;
+    }
 
     setCoords({ top, left });
   };
 
-  useLayoutEffect(() => { if (open) updatePosition(); }, [open, placement, label]);
+  useLayoutEffect(() => {
+    if (open) updatePosition();
+  }, [open, placement, label]);
 
   useEffect(() => {
     if (!open) return;
@@ -67,12 +78,17 @@ const Tooltip = ({ children, label, placement = 'top', delay = 150 }) => {
           onMouseEnter: composeHandlers(onMouseEnter, show),
           onMouseLeave: composeHandlers(onMouseLeave, hide),
         })}
-        {open && createPortal(
-          <div className={`tt-portal tt-${placement}`} style={{ top: coords.top, left: coords.left }} role="tooltip">
-            <div className="tt-bubble">{label}</div>
-          </div>,
-          document.body
-        )}
+        {open &&
+          createPortal(
+            <div
+              className={`tt-portal tt-${placement}`}
+              style={{ top: coords.top, left: coords.left }}
+              role="tooltip"
+            >
+              <div className="tt-bubble">{label}</div>
+            </div>,
+            document.body
+          )}
       </>
     );
   }
@@ -88,12 +104,17 @@ const Tooltip = ({ children, label, placement = 'top', delay = 150 }) => {
       >
         {children}
       </span>
-      {open && createPortal(
-        <div className={`tt-portal tt-${placement}`} style={{ top: coords.top, left: coords.left }} role="tooltip">
-          <div className="tt-bubble">{label}</div>
-        </div>,
-        document.body
-      )}
+      {open &&
+        createPortal(
+          <div
+            className={`tt-portal tt-${placement}`}
+            style={{ top: coords.top, left: coords.left }}
+            role="tooltip"
+          >
+            <div className="tt-bubble">{label}</div>
+          </div>,
+          document.body
+        )}
     </>
   );
 };
