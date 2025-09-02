@@ -39,7 +39,7 @@ function PanelProviderV2({ children }) {
     { key: 'location_info_panel', parent: 'location_info' },
     {
       key: 'seasonal_profile',
-      parent: 'menu_icon',
+      parent: 'secondary_menu_icon',
     },
     {
       key: 'seasonal_profile_panel',
