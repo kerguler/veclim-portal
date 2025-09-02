@@ -8,7 +8,7 @@ import {
   setShowSearchBar,
   setLocationRequested,
 } from 'store';
-import Tooltip from 'components/Tooltip/Tooltip';
+import Tooltip from 'components/ToolTipComponent/ToolTipComponent';
 import './SearchLocationIcon.css';
 import { useEffect, useRef } from 'react';
 function SearchLocationIcon() {

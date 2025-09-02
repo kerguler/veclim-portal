@@ -134,7 +134,7 @@ import simTileHelpers from './simTileHelpers';
 import { useAlboData } from 'context/AlboDataContext';
 import useSimTileFunctions from './useSimTileFunctions';
 import { setShimmered } from 'store';
-import Tooltip from 'components/Tooltip/Tooltip';
+import Tooltip from 'components/ToolTipComponent/ToolTipComponent';
 
 function SimTile({ sim, direction, shimmerList }) {
   const dispatch = useDispatch();
@@ -202,7 +202,9 @@ function SimTile({ sim, direction, shimmerList }) {
         {/* Eye (left slot) — reserve space via visibility toggle */}
         <span
           className={`icon-cell ${
-            isAlboChik && displayViewIcon && displayIcon ? '' : 'hidden-keep-space'
+            isAlboChik && displayViewIcon && displayIcon
+              ? ''
+              : 'hidden-keep-space'
           }`}
         >
           <Tooltip label="view results" placement="top">

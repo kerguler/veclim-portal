@@ -1,6 +1,6 @@
 import React, { useLayoutEffect, useRef, useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
-import './tooltip.css';
+import './tooltipComponent.css';
 
 function composeHandlers(a, b) {
   return (e) => {
@@ -9,12 +9,16 @@ function composeHandlers(a, b) {
   };
 }
 
-const Tooltip = ({ children, label, placement = 'top', delay = 150 }) => {
+const ToolTipComponent = ({
+  children,
+  label,
+  placement = 'top',
+  delay = 150,
+}) => {
   const childRef = useRef(null); // ref to the actual trigger DOM node
   const [open, setOpen] = useState(false);
   const [coords, setCoords] = useState({ top: 0, left: 0 });
   const timerRef = useRef(null);
-  console.log('');
   const show = () => {
     clearTimeout(timerRef.current);
     timerRef.current = setTimeout(() => setOpen(true), delay);
@@ -119,4 +123,4 @@ const Tooltip = ({ children, label, placement = 'top', delay = 150 }) => {
   );
 };
 
-export default Tooltip;
+export default ToolTipComponent;

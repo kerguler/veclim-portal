@@ -1,6 +1,6 @@
 import './RiskIndicator.css';
 
-import Tooltip from 'components/Tooltip/Tooltip';
+import Tooltip from 'components/ToolTipComponent/ToolTipComponent';
 
 function RiskIndicator({ props }) {
   return (

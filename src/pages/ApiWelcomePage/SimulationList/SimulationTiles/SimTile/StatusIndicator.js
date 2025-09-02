@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import Tooltip from 'components/Tooltip/Tooltip';
+import Tooltip from 'components/ToolTipComponent/ToolTipComponent';
 import { ReactComponent as OkIcon } from 'assets/icons/django/done-icon.svg';
 import { ReactComponent as DownloadIcon } from 'assets/icons/django/download-icon.svg';
 import { ReactComponent as ErrorIcon } from 'assets/icons/django/fail-icon.svg';
