@@ -51,7 +51,7 @@ const SliderRow = ({ direction }) => {
     model_data: {
       envir: [],
       pr: [
-        1.0,
+        0.0,
         mapPagePosition.lat,
         mapPagePosition.lng,
         4000.0,
