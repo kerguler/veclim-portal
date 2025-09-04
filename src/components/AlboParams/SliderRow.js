@@ -13,20 +13,29 @@ import {
   setSimulationParameterSlider1 as setSimSlider1Value,
 } from 'store';
 import { useCreateSimulationMutation } from 'store';
-import { setMessenger } from 'store';
-import { useSelector } from 'react-redux';
-import useCsrf from 'pages/LoginRegister/Services/useCsrf';
+import ToolTipComponent from 'components/ToolTipComponent/ToolTipComponent';
+
 const SliderRow = ({ direction }) => {
   const [taskId, setTaskId] = useState(null); // Store Task ID
   const [shouldCheck, setShouldCheck] = useState(true);
-  const { mapPagePosition, invalidateSimData, simSlider1Value, dispatch } =
-    useDirectorFun(direction);
-
+  const {
+    mapPagePosition,
+    simList,
+    invalidateSimData,
+    simSlider1Value,
+    dispatch,
+  } = useDirectorFun(direction);
   const { setDataSim, setIsLoadingSim, setErrorSim } = useAlboData();
-
+  const [enableSlider, setEnableSlider] = useState(false);
   const [createSimulation /* { isLoading, isError, data }*/] =
     useCreateSimulationMutation();
-
+  useEffect(() => {
+    if (simList.length >= 10) {
+      setEnableSlider(false);
+    } else {
+      setEnableSlider(true);
+    }
+  }, [simList]);
   // Handle Slider Change
   const handleSliderChange = (e) => {
     dispatch(
@@ -47,11 +56,10 @@ const SliderRow = ({ direction }) => {
     title: 'Albochik',
   };
 
-  // Handle Confirm Button Click
   const handleConfirm = async () => {
     dispatch(setSimSlider1Enabled({ direction: direction, value: false }));
     dispatch(setAlboRequestPlot(true));
-    console.log('Sending  Request to Start Simulation...', simulationData);
+
     const response = await createSimulation(simulationData);
 
     dispatch(setInvalidateSimData(false));
@@ -65,8 +73,6 @@ const SliderRow = ({ direction }) => {
     if ('error' in response) {
       console.log('Error:', response.error);
       setErrorSim(response.error);
-
-      // setIsLoadingSim(false); // Update context state
     }
   };
 
@@ -89,7 +95,7 @@ const SliderRow = ({ direction }) => {
           max="100"
           onChange={handleSliderChange}
           value={simSlider1Value}
-          disabled={!invalidateSimData}
+          disabled={!enableSlider}
         />
       </div>
 
@@ -99,54 +105,22 @@ const SliderRow = ({ direction }) => {
         type="button"
         onClick={handleConfirm}
         className="confirm-button"
-        disabled={!invalidateSimData}
-        aria-disabled={!invalidateSimData}
+        disabled={!enableSlider}
+        aria-disabled={!enableSlider}
       >
-        Confirm
+        {!enableSlider ? (
+          <ToolTipComponent
+            placement="top"
+            label="you cannot add another simulation you need to delete some simulations"
+          >
+            Confirm{' '}
+          </ToolTipComponent>
+        ) : (
+          'Confirm'
+        )}
       </button>
     </div>
   );
 };
 
 export default SliderRow;
-
-// const { data: simStatus, refetch } = useFetchSimStatusQuery(
-// 	localStorage.getItem("task_id"),
-// 	{
-// 		skip: !shouldCheck, // Avoid fetching if no taskId
-// 		pollingInterval: 3000, // Fetch status every 3 seconds
-// 	},
-// );
-
-// useEffect(() => {
-// 	if (!taskId) {
-// 		setShouldCheck(false);
-// 	} else if (
-// 		simStatus?.state === "SUCCESS" ||
-// 		simStatus?.state === "FAILED"
-// 	) {
-// 		setShouldCheck(false);
-// 	} else {
-// 		setShouldCheck(true);
-// 	}
-// 	if (simStatus) {
-// 		console.log("Simulation Status:", simStatus);
-
-// 		if (
-// 			simStatus.state === "SUBMITTED" ||
-// 			simStatus.state === "PENDING"
-// 		) {
-// 			setIsLoadingSim(true);
-// 		} else if (simStatus.state === "SUCCESS") {
-// 			setDataSim(simStatus.result.result);
-// 			setIsLoadingSim(false);
-// 			console.log({ result: simStatus.result.result });
-// 			dispatch(setDataArrived({ direction, value: true }));
-// 		} else if (simStatus.state === "FAILED") {
-// 			setIsLoadingSim(false);
-// 			console.error("Simulation Failed:", simStatus);
-// 		}
-// 	}
-
-// 	return () => {};
-// }, [taskId, simStatus]); // Only re-run when `taskId` changes

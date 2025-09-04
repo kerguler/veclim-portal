@@ -1,42 +1,41 @@
 import { useState } from 'react';
-import Tooltip from 'components/ToolTipComponent/ToolTipComponent';
 import { ReactComponent as OkIcon } from 'assets/icons/django/done-icon.svg';
 import { ReactComponent as DownloadIcon } from 'assets/icons/django/download-icon.svg';
 import { ReactComponent as ErrorIcon } from 'assets/icons/django/fail-icon.svg';
 import CircularSpinner from 'components/spinner/CircularSpinner';
 import './statusIndicator.css';
+import { useDispatch } from 'react-redux';
+import ToolTipComponent from 'components/ToolTipComponent/ToolTipComponent';
 
 function StatusIndicator({ status, setDownloadResult }) {
   const [hovered, setHovered] = useState(false);
+  const dispatch = useDispatch();
 
-  // Spinner branch (PENDING / STARTED)
   if (status === 'PENDING' || status === 'STARTED') {
     const isSmall =
       typeof window !== 'undefined' ? window.innerWidth < 500 : true;
     return (
-      <Tooltip placement="top" label="pending" delay={150}>
+      <ToolTipComponent placement="top" label="pending" delay={150}>
         <CircularSpinner
           size={isSmall ? 20 : 24} // match 20px / 24px
           strokeWidth={3}
           className="status-spinner"
         />
-      </Tooltip>
+      </ToolTipComponent>
     );
   }
 
-  // Failure branch
   if (status === 'FAILURE') {
     return (
-      <Tooltip placement="top" label="failure" delay={150}>
+      <ToolTipComponent placement="top" label="failure" delay={150}>
         <ErrorIcon className="status-icon red" />
-      </Tooltip>
+      </ToolTipComponent>
     );
   }
 
-  // Success branch (layered OK / Download, no reflow)
   if (status === 'SUCCESS') {
     return (
-      <Tooltip
+      <ToolTipComponent
         placement="top"
         label={hovered ? 'download' : 'success'}
         delay={200}
@@ -54,7 +53,7 @@ function StatusIndicator({ status, setDownloadResult }) {
             <DownloadIcon className="status-icon status-icon-layer download " />
           </span>
         </button>
-      </Tooltip>
+      </ToolTipComponent>
     );
   }
 

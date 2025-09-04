@@ -60,7 +60,7 @@ button.confirm-button:disabled,
   background-color: var(--neutral-color1);
   color: #fff;
   box-shadow: none;
-  cursor: not-allowed;
+  /* cursor: not-allowed; */
 }
 
 .confirm-button:hover {

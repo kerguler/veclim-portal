@@ -37,9 +37,9 @@ function AlboParams() {
     dispatch(setApiRegisterResponse({
       response: null, status: null, message: null, userName: null, userId: null,
     }));
-    dispatch(setPassword(''));          // don’t keep password in Redux
-    localStorage.removeItem('id');      // optional local storage cleanup
-    await refresh();                    // get a fresh CSRF cookie after logout
+    dispatch(setPassword(''));          
+    localStorage.removeItem('id');      
+    await refresh();                    
   };
 
 return showPanel ? (

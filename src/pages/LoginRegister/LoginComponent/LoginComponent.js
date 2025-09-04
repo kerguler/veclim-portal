@@ -1,10 +1,14 @@
-import "./loginComponent.css";
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { setUsername, setPassword, setRememberLogin } from "store/slices/loginSlice";
-import { useLoginMutation, useRegisterMutation } from "store";
-import { setApiRegisterResponse } from "store";
-import useCsrf from "../Services/useCsrf";
+import './loginComponent.css';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  setUsername,
+  setPassword,
+  setRememberLogin,
+} from 'store/slices/loginSlice';
+import { useLoginMutation, useRegisterMutation } from 'store';
+import { setApiRegisterResponse } from 'store';
+import useCsrf from '../Services/useCsrf';
 
 function LoginComponent() {
   const dispatch = useDispatch();
@@ -14,49 +18,59 @@ function LoginComponent() {
   const password = useSelector((s) => s.login.password);
   const rememberLogin = useSelector((s) => s.login.rememberLogin);
 
-  const [login,   { isLoading: loggingIn,   error: loginErr }]   = useLoginMutation();
-  const [register,{ isLoading: registering, error: registerErr }] = useRegisterMutation();
+  const [login, { isLoading: loggingIn, error: loginErr }] = useLoginMutation();
+  const [register, { isLoading: registering, error: registerErr }] =
+    useRegisterMutation();
 
-  const [mode, setMode] = useState("login"); // 'login' | 'register'
-  const [confirm, setConfirm] = useState("");
+  const [mode, setMode] = useState('login'); // 'login' | 'register'
+  const [confirm, setConfirm] = useState('');
 
   // NEW: show/hide toggles
   const [showPw, setShowPw] = useState(false);
   const [showConfirmPw, setShowConfirmPw] = useState(false);
 
   useEffect(() => {
-    const remembered = localStorage.getItem("rememberLogin") === "true";
-    const storedUser = localStorage.getItem("username") || "";
+    const remembered = localStorage.getItem('rememberLogin') === 'true';
+    const storedUser = localStorage.getItem('username') || '';
+    const storedPw = localStorage.getItem('password') || '';
     if (remembered) {
       dispatch(setRememberLogin(true));
       if (storedUser) dispatch(setUsername(storedUser));
+      if (storedPw) dispatch(setPassword(storedPw));
     }
   }, [dispatch]);
 
   const onUsername = (e) => dispatch(setUsername(e.target.value));
   const onPassword = (e) => dispatch(setPassword(e.target.value));
-  const onConfirm  = (e) => setConfirm(e.target.value);
+  const onConfirm = (e) => setConfirm(e.target.value);
 
   const onRemember = (e) => {
     const val = e.target.checked;
     dispatch(setRememberLogin(val));
-    localStorage.setItem("rememberLogin", String(val));
-    if (val) localStorage.setItem("username", username);
-    else localStorage.removeItem("username");
+    localStorage.setItem('rememberLogin', String(val));
+    if (val) {
+      localStorage.setItem('username', username);
+      localStorage.setItem('password', password);
+    } else {
+      localStorage.removeItem('username');
+      localStorage.removeItem('password');
+    }
   };
 
   const handleLogin = async (e) => {
     e.preventDefault();
     const res = await login({ username, password });
-    if ("data" in res) {
-      dispatch(setApiRegisterResponse({
-        response: res.data,
-        status: res.data?.status,
-        message: res.data?.message,
-        userName: username,
-        userId: res.data?.userId,
-      }));
-      if (rememberLogin) localStorage.setItem("username", username);
+    if ('data' in res) {
+      dispatch(
+        setApiRegisterResponse({
+          response: res.data,
+          status: res.data?.status,
+          message: res.data?.message,
+          userName: username,
+          userId: res.data?.userId,
+        })
+      );
+      if (rememberLogin) localStorage.setItem('username', username);
       await refresh();
     }
   };
@@ -65,14 +79,14 @@ function LoginComponent() {
     e.preventDefault();
     if (password !== confirm) return;
     const res = await register({ username, password });
-    if ("data" in res) {
+    if ('data' in res) {
       await handleLogin(e); // optional auto-login
     }
   };
 
   const submitting = loggingIn || registering;
   const showError =
-    (loginErr && mode === "login") || (registerErr && mode === "register");
+    (loginErr && mode === 'login') || (registerErr && mode === 'register');
 
   return (
     <div className="login-base">
@@ -81,11 +95,13 @@ function LoginComponent() {
         <p className="login-sub">You must be logged in to run parameters</p>
 
         <form
-          onSubmit={mode === "login" ? handleLogin : handleRegister}
+          onSubmit={mode === 'login' ? handleLogin : handleRegister}
           className="login-form"
           noValidate
         >
-          <label className="visually-hidden" htmlFor="username">Username</label>
+          <label className="visually-hidden" htmlFor="username">
+            Username
+          </label>
           <input
             id="username"
             className="text-field"
@@ -96,14 +112,18 @@ function LoginComponent() {
             required
           />
 
-          <label className="visually-hidden" htmlFor="password">Password</label>
+          <label className="visually-hidden" htmlFor="password">
+            Password
+          </label>
           <div className="input-wrap">
             <input
               id="password"
-              type={showPw ? "text" : "password"}
+              type={showPw ? 'text' : 'password'}
               className="text-field"
               placeholder="password"
-              autoComplete={mode === "login" ? "current-password" : "new-password"}
+              autoComplete={
+                mode === 'login' ? 'current-password' : 'new-password'
+              }
               value={password}
               onChange={onPassword}
               required
@@ -114,19 +134,21 @@ function LoginComponent() {
               aria-pressed={showPw}
               aria-controls="password"
               onClick={() => setShowPw((v) => !v)}
-              title={showPw ? "Hide password" : "Show password"}
+              title={showPw ? 'Hide password' : 'Show password'}
             >
-              {showPw ? "Hide" : "Show"}
+              {showPw ? 'Hide' : 'Show'}
             </button>
           </div>
 
-          {mode === "register" && (
+          {mode === 'register' && (
             <>
-              <label className="visually-hidden" htmlFor="confirm">Confirm password</label>
+              <label className="visually-hidden" htmlFor="confirm">
+                Confirm password
+              </label>
               <div className="input-wrap">
                 <input
                   id="confirm"
-                  type={showConfirmPw ? "text" : "password"}
+                  type={showConfirmPw ? 'text' : 'password'}
                   className="text-field"
                   placeholder="confirm password"
                   autoComplete="new-password"
@@ -140,9 +162,9 @@ function LoginComponent() {
                   aria-pressed={showConfirmPw}
                   aria-controls="confirm"
                   onClick={() => setShowConfirmPw((v) => !v)}
-                  title={showConfirmPw ? "Hide password" : "Show password"}
+                  title={showConfirmPw ? 'Hide password' : 'Show password'}
                 >
-                  {showConfirmPw ? "Hide" : "Show"}
+                  {showConfirmPw ? 'Hide' : 'Show'}
                 </button>
               </div>
             </>
@@ -150,45 +172,63 @@ function LoginComponent() {
 
           <div className="form-row">
             <label className="checkbox">
-              <input type="checkbox" checked={rememberLogin} onChange={onRemember} />
+              <input
+                type="checkbox"
+                checked={rememberLogin}
+                onChange={onRemember}
+              />
               <span>Remember me</span>
             </label>
 
             <button
               type="submit"
               className="primary-btn"
-              disabled={submitting || (mode === "register" && password !== confirm)}
+              disabled={
+                submitting || (mode === 'register' && password !== confirm)
+              }
             >
-              {mode === "login"
-                ? (loggingIn ? "Logging in…" : "Login")
-                : (registering ? "Registering…" : "Register")}
+              {mode === 'login'
+                ? loggingIn
+                  ? 'Logging in…'
+                  : 'Login'
+                : registering
+                ? 'Registering…'
+                : 'Register'}
             </button>
           </div>
 
-          {mode === "register" && password !== confirm && (
+          {mode === 'register' && password !== confirm && (
             <div className="error small">Passwords don’t match.</div>
           )}
           {showError && (
             <div className="error" aria-live="polite">
-              {("error" in (mode === "login" ? loginErr : registerErr) &&
-                (mode === "login" ? loginErr : registerErr)?.error) ||
-                "Something went wrong."}
+              {('error' in (mode === 'login' ? loginErr : registerErr) &&
+                (mode === 'login' ? loginErr : registerErr)?.error) ||
+                'Something went wrong.'}
             </div>
           )}
         </form>
 
         <div className="form-footer">
-          {mode === "login" ? (
+          {mode === 'login' ? (
             <span>
-              Don’t have an account?{" "}
-              <button className="link-btn" onClick={() => setMode("register")} type="button">
+              Don’t have an account?{' '}
+              <button
+                className="link-btn"
+                onClick={() => setMode('register')}
+                type="button"
+              >
                 Create one
               </button>
             </span>
           ) : (
             <span>
-              Already have an account?{" "}
-              <button className="link-btn" onClick={() => setMode("login")} type="button">
+              Already have an account?{' '}
+              <button
+                className="link-btn"
+                onClick={() => setMode('login')}
+                type="button"
+              >
                 Log in
               </button>
             </span>

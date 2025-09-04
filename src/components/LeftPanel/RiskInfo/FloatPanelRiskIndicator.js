@@ -1,6 +1,5 @@
+import ToolTipComponent from 'components/ToolTipComponent/ToolTipComponent';
 import './RiskIndicator.css';
-
-import Tooltip from 'components/ToolTipComponent/ToolTipComponent';
 
 function RiskIndicator({ props }) {
   return (
@@ -8,9 +7,9 @@ function RiskIndicator({ props }) {
       <h1>{props.name}</h1>{' '}
       <div className="risk-indicator-item">
         {' '}
-        <Tooltip label={props.text} placement="top">
+        <ToolTipComponent label={props.text} placement="top">
           <div className={'risk-indicator-' + props.value} />
-        </Tooltip>
+        </ToolTipComponent>
       </div>{' '}
     </div>
   );
@@ -27,7 +26,9 @@ function AccuracyIndicator({ props }) {
       <h1>{props.name}</h1>
       <div className="risk-indicator-item">
         <div className={'risk-indicator-acc risk-indicator-acc-' + props.value}>
-          <Tooltip label={props.text}>{labels[props.value]} </Tooltip>
+          <ToolTipComponent label={props.text}>
+            {labels[props.value]}{' '}
+          </ToolTipComponent>
         </div>
       </div>
     </div>

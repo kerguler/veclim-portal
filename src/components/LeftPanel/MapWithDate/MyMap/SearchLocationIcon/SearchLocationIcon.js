@@ -8,7 +8,7 @@ import {
   setShowSearchBar,
   setLocationRequested,
 } from 'store';
-import Tooltip from 'components/ToolTipComponent/ToolTipComponent';
+import ToolTipComponent from 'components/ToolTipComponent/ToolTipComponent';
 import './SearchLocationIcon.css';
 import { useEffect, useRef } from 'react';
 function SearchLocationIcon() {
@@ -48,16 +48,15 @@ function SearchLocationIcon() {
   }, [dispatch]);
   return (
     <div ref={searchContainerRef1} className="search-icon">
-      <Tooltip label="Search among some capitals" placement="top">
+      <ToolTipComponent label="Search among some capitals" placement="top">
         <img
           alt="search-icon"
           className="locate-me-icon"
           onClick={handleSearchIconClick}
           src={searchIcon}
         />{' '}
-      </Tooltip>
+      </ToolTipComponent>
 
-      {/* <ToolTip>Search among some capitals</ToolTip> */}
       {searchBarState && <LiveSearchCaps />}
     </div>
   );

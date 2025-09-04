@@ -115,7 +115,7 @@ import {
   setEditedSimulation,
   setAddedSimulation,
   simulationReducer,
-  setParsedJson,
+  setParsedJson,setAlbochickStatus
 } from './slices/simulationSlice';
 import {
   setLocationRequested,
@@ -203,7 +203,7 @@ export {
 
 export { useFetchNewsDataQuery } from './apis/newsApi';
 export {
-  setShimmered,
+  setShimmered,setAlbochickStatus,
   setDisplaySimulationPanel,
   setOpenItems,
   setInterferePanelStyle,
