@@ -50,7 +50,17 @@ const SliderRow = ({ direction }) => {
     return_method: 'file',
     model_data: {
       envir: [],
-      pr: [1.0, 33.0, 35.0, 4000.0, 60.0, 100.0, 1.0, 0.0, -1.0],
+      pr: [
+        1.0,
+        mapPagePosition.lat,
+        mapPagePosition.lng,
+        4000.0,
+        60.0,
+        100.0,
+        1.0,
+        0.0,
+        -1.0,
+      ],
     },
 
     title: 'Albochik',
