@@ -13,15 +13,19 @@ function useHandleInitialOpen(
 
   const dispatch = useDispatch();
   useEffect(() => {
-    if (displayedItem?.initialOpen && !displaySimulationPanel && panelInterfere === 0) {
-      onToggle(displayedItem.key);
-      console.log('Initial open for:', displayedItem.key);
+    if (
+      displayedItem?.initialOpen &&
+      !displaySimulationPanel &&
+      panelInterfere === 0
+    ) {
+      onToggle(displayedItem?.key);
+      console.log('Initial open for:', displayedItem?.key);
     }
 
-    if (displayedItem.key === displaySimulationPanel) {
-      console.log({current_DisplayedITEM:displayedItem })
+    if (displayedItem?.key === displaySimulationPanel) {
+      console.log({ current_DisplayedITEM: displayedItem });
       dispatch(setDisplaySimulationPanel({ direction, value: null }));
     }
-  }, [displayedItem.initialOpen, displaySimulationPanel]);
+  }, [displayedItem?.initialOpen, displaySimulationPanel]);
 }
 export default useHandleInitialOpen;

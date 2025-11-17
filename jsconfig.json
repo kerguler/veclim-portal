@@ -2,5 +2,5 @@
 	"compilerOptions": {
 		"baseUrl": "src"
 	},
-	"include": ["src"]
+	"include": ["src", "Unused_Untracked/ChangesComponent", "Unused_Untracked/useMapLoaders.js"]
 }

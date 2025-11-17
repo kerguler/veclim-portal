@@ -1,87 +1,87 @@
-import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
-import {
-	setSwitchMap,
-	setVectorName,
-	setTileArray,
-	setMapPagePosition,
-	setCurrentMapCenter,
-	setCurrentMapZoom,
-	setDisplayedPanelID,
-	setPanelOpen,
-	setPageTransition,
-} from "store";
-import tileIconMoz from "assets/icons/map-page-right-menu/png/adult-32px.png";
-import tileIconFly from "assets/icons/map-page-right-menu/png/mosquito-3-32px.png";
-import useWindowSize from "customHooks/useWindowSize";
-import { Link } from "react-router-dom";
-import "./ChangeMapPanel.css";
-import PackageMapServices from "components/map/mapPackage/PackageMapServices";
+// ChangeMapPanel.js
+import React, { useMemo } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
+
+import { setPageTransition } from 'store';
+import PackageMapServices from 'components/map/mapPackage/PackageMapServices';
+import { getVector, ALL_VECTORS } from 'vectors/registry';
+import useDirectorFun from 'customHooks/useDirectorFun';
+
+import './ChangeMapPanel.css';
+
 function ChangeMapPanel() {
-	const dispatch = useDispatch();
-	const vectorName = useSelector(
-		(state) => state.fetcher.fetcherStates.vectorName
-	);
-	const vectorNames = useSelector((state) => state.vector.vectorNames);
-	const tileIcons = {
-		albopictus: tileIconMoz,
-		papatasi: tileIconFly,
-	};
-	const descr = {
-		albopictus: (
-			<p>
-				The model of the Asian tiger mosquito (<i>Ae. albopictus</i>) and
-				disease (CHIKV/DENV/ZIKV) transmission
-			</p>
-		),
-		papatasi: (
-			<>
-				<p>
-					The model of sand flies (<i>Ph. papatasi</i>) in Cyprus
-				</p>
-			</>
-		),
-	};
-	const handleChangeTile = (desiredVector) => {
-		PackageMapServices.handleMapSwitch(dispatch, vectorName, desiredVector);
-		dispatch(setPageTransition(false));
-	};
+  const dispatch = useDispatch();
 
-	const listVectors = vectorNames.map((vec, index) => {
-		const active =
-			"panel-content icons-area " +
-			["inactive", "active"][Number(vec === vectorName)];
-		let linkText;
-		if (vec === "albopictus") {
-			linkText = "/MapPage";
-		} else {
-			linkText = "/MapPage?session=papatasi";
-		}
-		return (
-			<div key={index} className="description-row">
-				<div key={"A" + index}>
-					<Link
-						to={linkText}
-						onClick={() => {
-							handleChangeTile(vec);
-						}}
-						className={active}
-					>
-						<img alt="albopictus-icon" src={tileIcons[vec]}></img>
-					</Link>
-				</div>
-				<div key={"B" + index}>{descr[vec]}</div>
-			</div>
-		);
-	});
+  // current map/vector state
+  const { vectorName, currentMapCenter, currentMapZoom } =
+    useDirectorFun('left');
 
-	return (
-		<div className="text-area">
-			<h1>Model Repository</h1>
-			<div className="map-descriptions-wrapper">{listVectors}</div>
-			
-		</div>
-	);
+  // whatever is in Redux (may contain duplicates)
+  const vectorNamesFromStore = useSelector((state) => state.vector.vectorNames);
+
+  // 🔑 Build a clean, unique list of IDs to render
+  const vectorIds = useMemo(() => {
+    // if store has something, use it; otherwise, use registry list
+    const baseIds =
+      Array.isArray(vectorNamesFromStore) && vectorNamesFromStore.length > 0
+        ? vectorNamesFromStore
+        : ALL_VECTORS.map((v) => v.id);
+
+    // dedupe by ID
+    return Array.from(new Set(baseIds));
+  }, [vectorNamesFromStore]);
+
+  const handleChangeTile = (desiredVectorId) => {
+    PackageMapServices.handleMapSwitch(
+      dispatch,
+      vectorName, // current vector
+      desiredVectorId, // target vector
+      currentMapCenter,
+      currentMapZoom
+    );
+    dispatch(setPageTransition(false));
+  };
+
+  const listVectors = vectorIds.map((id) => {
+    const vec = getVector(id);
+    if (!vec) return null;
+
+    const meta = vec.meta || {};
+    const icon = meta.icon;
+    const description = meta.description;
+    const route =
+      meta.route ||
+      (meta.session
+        ? `/MapPage?session=${encodeURIComponent(meta.session)}`
+        : '/MapPage');
+
+    const isActive = id === vectorName;
+    const className =
+      'panel-content icons-area ' + (isActive ? 'active' : 'inactive');
+
+    return (
+      <div key={id} className="description-row">
+        <div>
+          <Link
+            to={route}
+            onClick={() => handleChangeTile(id)}
+            className={className}
+          >
+            {icon && <img alt={`${id}-icon`} src={icon} />}
+          </Link>
+        </div>
+        <div>{description}</div>
+      </div>
+    );
+  });
+
+  return (
+    <div className="text-area">
+      <h1>Model Repository</h1>
+      <div className="map-descriptions-wrapper">{listVectors}</div>
+    </div>
+  );
 }
 
 export default ChangeMapPanel;

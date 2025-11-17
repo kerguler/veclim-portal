@@ -1,22 +1,20 @@
 import seasonal from 'assets/icons/map-page-right-menu/png/019-cloud-32px.png';
 import adult from 'assets/icons/map-page-right-menu/png/adult-32px.png';
-import adultsandfly from 'assets/icons/map-page-right-menu/png/mosquito-3-32px.png';
 import larva from 'assets/icons/map-page-right-menu/png/larva-32px.png';
 import virus from 'assets/icons/map-page-right-menu/png/013-coronavirus-32px.png';
 import impact from 'assets/icons/map-page-right-menu/png/015-heart rate-32px.png';
 import model from 'assets/icons/map-page-right-menu/png/019-refresh-32px.png';
 import settingsIcon from 'assets/icons/map-page-right-menu/svg/plot-icon.svg';
 import info from 'assets/icons/map-page-right-menu/png/008-files-32px.png';
-import { ChartIndicators } from '../components/ChartIndicators/CharterIndicators';
-import TileSelector from '../components/TileSelector/TileSelector';
-import suser from '../assets/icons/map-page-right-menu/png/007-arrows-32px.png';
+import { ChartIndicators } from '../../components/ChartIndicators/CharterIndicators';
+import TileSelector from '../../components/TileSelector/TileSelector';
+import suser from 'assets/icons/map-page-right-menu/png/007-arrows-32px.png';
 import menuIcon from 'assets/icons/map-page-right-menu/png/menu-32px.png';
 import OptionsPanel from 'components/optionsPanel/OptionsPanel';
-import ChangeMapPanel from '../components/vectorSelection/ChangeMapPanel/ChangeMapPanel';
+import ChangeMapPanel from '../../components/vectorSelection/ChangeMapPanel/ChangeMapPanel';
 import SettingsPanel from 'components/panel/SettingsPanel';
-import { tileIcons, tileIconsSand } from './tileIcons';
+import { tileIcons } from './tileIcons';
 import AlboParams from 'components/AlboParams/AlboParams';
-import TsRequestV2 from 'components/charts/Plotter/plotterV2/TsRequestV2';
 export const panelData = [
   {
     key: 'menu_icon',

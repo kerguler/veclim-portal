@@ -61,34 +61,11 @@ function SimDataMessenger({ direction }) {
         }
       }
 
-      // if (dataSim) {
-      //   if (invalidateSimData) {
-      //     setMessage(
-      //       'you have picked new coordinates, you need to resubmit your coordinates to run a new simulation'
-      //     );
-      //     dispatch(setDataArrived({ direction, value: false }));
-      //     dispatch(setInvalidateSimData(false));
-      //     setDataSim(null);
-      //   } else {
-      //     if (contextLoading) {
-      //       setMessage('We are checking the status of your simulation');
-      //     } else if (albochickStatus === 'SUCCESS') {
-      //       setMessage(
-      //         `We have received your simulation data for lat:${mapPagePosition.lat.toFixed(
-      //           2
-      //         )} lng:${mapPagePosition.lng.toFixed(2)}.`
-      //       );
-      //       setSimResult(dataSim.result);
-      //     } else {
-      //       setMessage(`your status is ${dataSim.state}`);
-      //     }
-      //   }
-      // }
       if (errorSim && !invalidateSimData) {
         setMessage(
           `We have an error for lat:${mapPagePosition.lat.toFixed(
             2
-          )} lng:${mapPagePosition.lng.toFixed(2)}.`
+          )} lng:${mapPagePosition.lng.toFixed(2)}: ${errorSim?.data?.detail} `
         );
       }
     } else {
@@ -154,3 +131,26 @@ function DisplayedContent({ mapPagePosition }) {
   return displayedContent;
 }
 export default SimDataMessenger;
+// if (dataSim) {
+//   if (invalidateSimData) {
+//     setMessage(
+//       'you have picked new coordinates, you need to resubmit your coordinates to run a new simulation'
+//     );
+//     dispatch(setDataArrived({ direction, value: false }));
+//     dispatch(setInvalidateSimData(false));
+//     setDataSim(null);
+//   } else {
+//     if (contextLoading) {
+//       setMessage('We are checking the status of your simulation');
+//     } else if (albochickStatus === 'SUCCESS') {
+//       setMessage(
+//         `We have received your simulation data for lat:${mapPagePosition.lat.toFixed(
+//           2
+//         )} lng:${mapPagePosition.lng.toFixed(2)}.`
+//       );
+//       setSimResult(dataSim.result);
+//     } else {
+//       setMessage(`your status is ${dataSim.state}`);
+//     }
+//   }
+// }

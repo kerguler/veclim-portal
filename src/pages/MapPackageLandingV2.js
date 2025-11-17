@@ -19,7 +19,9 @@ function MapPackageLanding() {
   useFetcherStates();
   // useMapStarter();
   const { openItems } = useDirectorFun('left');
-  const readyToView = useSelector((state) => state.fetcher.fetcherStates.readyToView);
+  const readyToView = useSelector(
+    (state) => state.fetcher.fetcherStates.readyToView
+  );
   return (
     readyToView && (
       <div className="wrappers-wrapper">
@@ -43,7 +45,9 @@ export default MapPackageLanding;
 const DirectInitError = ({ message }) => {
   const dispatch = useDispatch();
   const [counter, setCounter] = useState(10);
-  const tileArray = useSelector((state) => state.fetcher.fetcherStates.tileArray);
+  const tileArray = useSelector(
+    (state) => state.fetcher.fetcherStates.tileArray
+  );
   const errorInfo = useSelector((state) => state.mapMenu.left.directInitError);
   console.log('tileArray', { tileArray });
   useEffect(() => {

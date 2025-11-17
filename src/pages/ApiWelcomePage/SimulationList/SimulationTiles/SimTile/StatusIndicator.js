@@ -25,7 +25,7 @@ function StatusIndicator({ status, setDownloadResult }) {
     );
   }
 
-  if (status === 'FAILURE') {
+  if (status === 'FAILURE' || status === 'FAILED') {
     return (
       <ToolTipComponent placement="top" label="failure" delay={150}>
         <ErrorIcon className="status-icon red" />
@@ -33,7 +33,7 @@ function StatusIndicator({ status, setDownloadResult }) {
     );
   }
 
-  if (status === 'SUCCESS') {
+  if (status === 'SUCCESS' || status === 'COMPLETED') {
     return (
       <ToolTipComponent
         placement="top"

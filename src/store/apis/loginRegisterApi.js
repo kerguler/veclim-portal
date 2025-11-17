@@ -74,7 +74,7 @@ export const {
   useRegisterMutation,
   useLoginWithTokenMutation,
   useFetchCsrfQuery,
-  useLogoutMutation,
+  useLogoutMutation,useLazyFetchCsrfQuery
 } = loginRegisterApi;
 
 export { loginRegisterApi };

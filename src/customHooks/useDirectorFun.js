@@ -95,7 +95,6 @@ function useDirectorFun(direction) {
   // PANEL DATA
   const {
     panelData,
-    parPickerPanelData,
     menuStructure,
     simulationPanels,
     tree,
@@ -103,7 +102,6 @@ function useDirectorFun(direction) {
   const tileArray = useSelector(
     (state) => state.fetcher.fetcherStates.tileArray
   );
-  const panelDataDir = directorFun(direction, panelData, parPickerPanelData);
 
   const { tileIcons, tileIconsAlbo, tileIconsSand } =
     useContext(PanelContextV2);
@@ -223,7 +221,6 @@ function useDirectorFun(direction) {
     directInitError,
     mapVector,
     panelData,
-    panelDataDir,
     mapMenuOpen,
     dispatch,
     openItems,

@@ -19,7 +19,7 @@ export default function MapMenuPicker({ direction }) {
     openItems,
     setOpenItems,
     panelLevelLeft: levelData,
-    panelDataDir: panelData,
+    panelData,
     tree,
     invalidateSimData,
     displaySimulationPanel,
@@ -44,12 +44,15 @@ export default function MapMenuPicker({ direction }) {
   }, [invalidateSimData]);
   useEffect(() => {
     if (displaySimulationPanel) {
-
       handleToggle(displaySimulationPanel);
     }
   }, [displaySimulationPanel]);
   useEffect(() => {
-    if (lastPanelDisplayed && panelInterfere === -1 && displaySimulationPanel === null) {
+    if (
+      lastPanelDisplayed &&
+      panelInterfere === -1 &&
+      displaySimulationPanel === null
+    ) {
       handleToggle(lastPanelDisplayed);
     }
   }, [panelInterfere, lastPanelDisplayed, twinIndex]);
@@ -59,9 +62,13 @@ export default function MapMenuPicker({ direction }) {
       dispatch(setTwinIndex({ direction, value: 0 }));
     }
     let tempOpenItems = { ...openItems };
-    let desiredParent = menuStructure.filter((item) => item.key === clickedKey)[0].parent;
+    let desiredParent = menuStructure.filter(
+      (item) => item.key === clickedKey
+    )[0].parent;
     if (desiredParent === parent) {
-      dispatch(setInterferePanelStyle({ direction, value: { animation: 'none' } }));
+      dispatch(
+        setInterferePanelStyle({ direction, value: { animation: 'none' } })
+      );
     } else {
       setParent(desiredParent);
     }
@@ -83,7 +90,9 @@ export default function MapMenuPicker({ direction }) {
       // dispatch(setDisplaySimulationPanel({ direction, value: null }));
     } else {
       delete openItemsTemp[clickedKey];
-      let currentPanel = panelData.filter((panel) => panel.key === clickedKey)[0];
+      let currentPanel = panelData.filter(
+        (panel) => panel.key === clickedKey
+      )[0];
       if (currentPanel.selfClose) {
         delete openItemsTemp[findParents(clickedKey)];
       }

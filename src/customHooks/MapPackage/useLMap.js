@@ -4,26 +4,33 @@ import L from 'leaflet';
 import { useDispatch, useSelector } from 'react-redux';
 import PackageMapServices from 'components/map/mapPackage/PackageMapServices';
 import useLMapResize from './useLMapResize';
-import { setCurrentMapCenter, setCurrentMapBounds } from 'store';
-import { current } from '@reduxjs/toolkit';
-import useFetcherVariables from 'customHooks/useFetcherVariables';
+import { setCurrentMapBounds } from 'store';
 import useDirectorFun from 'customHooks/useDirectorFun';
 function useLMap(mapParRef) {
-  useLMapResize();
+  // useLMapResize(mapParRef);
   const dispatch = useDispatch();
-  const mapOptions = useSelector((state) => state.fetcher.fetcherStates.map.optionsPanel);
+  const mapOptions = useSelector(
+    (state) => state.fetcher.fetcherStates.map.optionsPanel
+  );
   const { showVectorAbundance, tileOpacity, showMapLabels } = mapOptions;
   const pageTransition = useSelector((state) => state.location.pageTransition);
   let p = mapParRef.current;
 
-  const { vectorName, switchMap, currentMapCenter, currentMapZoom, mapVector, panelInterfere } =
-    useDirectorFun('left');
+  const {
+    vectorName,
+    switchMap,
+    currentMapCenter,
+    currentMapZoom,
+    mapVector,
+    panelInterfere,
+  } = useDirectorFun('left');
 
   useEffect(() => {
     p.map = L.map('map1', {
-      maxBoundsViscosity: 0,
-      maxBounds: p.maxBounds,
+      maxBoundsViscosity: 1,
+      maxBounds: PackageMapServices.worldBounds,
       zoomControl: false,
+      minZoom: 3,
     });
 
     p.map.setView({ lat: p.center.lat, lng: p.center.lng }, p.zoom);
@@ -40,18 +47,22 @@ function useLMap(mapParRef) {
   }, [p]);
 
   useEffect(() => {
-    p.map.setView({ lat: currentMapCenter.lat, lng: currentMapCenter.lng }, currentMapZoom);
+    if (!p.map) return;
 
+    // always sync to Redux center/zoom
+    if (currentMapCenter && typeof currentMapZoom === 'number') {
+      p.map.setView(
+        { lat: currentMapCenter.lat, lng: currentMapCenter.lng },
+        currentMapZoom
+      );
+    }
     PackageMapServices.mapBounds(
       mapParRef,
       vectorName,
-      pageTransition,
-      switchMap,
-      currentMapCenter,
-      currentMapZoom,
+
       dispatch
     );
-  }, [dispatch, pageTransition, switchMap, vectorName]);
+  }, [dispatch, vectorName, currentMapCenter, currentMapZoom]);
 
   useEffect(() => {
     const baseLayer = PackageMapServices.baseLayer;

@@ -38,7 +38,11 @@ function MenuItemV2({ item, onToggle, shouldShimmer, direction }) {
   const dispatch = useDispatch();
 
   const isOpen = openItems[item.key];
-  const displayedItem = panelData.filter((panel) => panel.key === item.key)[0];
+  const displayedItem = Array.isArray(panelData)
+    ? panelData.find((panel) => panel.key === item.key)
+    : null;
+
+  // const displayedItem = panelData.filter((panel) => panel.key === item.key)[0];
 
   if (displayedItem && displayedItem?.rotate === 90) {
     imgClassName = 'rotate90';
@@ -49,7 +53,7 @@ function MenuItemV2({ item, onToggle, shouldShimmer, direction }) {
   const menuChildren = item.children.filter(
     (child) => !child.key.endsWith('_panel')
   );
-  className = useSetIconActive(
+  className =  useSetIconActive(
     openItems,
     displayedItem,
     className,
@@ -91,16 +95,16 @@ function MenuItemV2({ item, onToggle, shouldShimmer, direction }) {
     <>
       {' '}
       <div
-        key={displayedItem.key}
+        key={displayedItem?.key}
         className={className}
         style={style}
-        onClick={() => handleToggle(displayedItem.key)}
+        onClick={() => handleToggle(displayedItem?.key)}
       >
         <img
           style={imgStyle}
           className={imgClassName}
           alt="item icon"
-          src={displayedItem.icon}
+          src={displayedItem?.icon}
         ></img>
       </div>
       {isOpen && (

@@ -14,6 +14,7 @@ import {
 } from 'store';
 import { useCreateSimulationMutation } from 'store';
 import ToolTipComponent from 'components/ToolTipComponent/ToolTipComponent';
+import { setMessenger } from 'store';
 
 const SliderRow = ({ direction }) => {
   const [taskId, setTaskId] = useState(null); // Store Task ID
@@ -56,8 +57,8 @@ const SliderRow = ({ direction }) => {
         /* Latitude                             */ mapPagePosition.lat,
         /* Human population size                */ 4000.0,
         /* Days to run transmission             */ 60.0,
-        /* Number of repetitions                */ 100.0,
-        /* Vec/human scaling (0.01x-100x)       */ 1.0,
+        /* Number of repetitions                */ 10000.0,
+        /* Vec/human scaling (0.01x-100x)       */ simSlider1Value / 100,
         /* Personal protection (0, 1-100)       */ 0.0,
         /* Vector control delay (-1:no_control) */ -1.0,
       ],
@@ -81,6 +82,7 @@ const SliderRow = ({ direction }) => {
     }
 
     if ('error' in response) {
+      // dispatch(setMessenger("response"))
       console.log('Error:', response.error);
       setErrorSim(response.error);
     }

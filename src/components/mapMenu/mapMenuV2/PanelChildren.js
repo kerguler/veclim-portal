@@ -13,7 +13,7 @@ function PanelChildren({ displayedItem, level, direction }) {
   const dispatch = useDispatch();
   const {
     openItems,
-    panelDataDir: panelData,
+    panelData,
     dataArrived,
     menuStructure,
     twinIndex,
@@ -28,7 +28,9 @@ function PanelChildren({ displayedItem, level, direction }) {
   let p = panelRef.current;
   const panelChildren = menuStructure.filter((child) => {
     if (child.parent === displayedItem.key) {
-      const desiredPanel = panelData.filter((panel) => panel.key === child.key)[0];
+      const desiredPanel = panelData.filter(
+        (panel) => panel.key === child.key
+      )[0];
       // we will use this logic later on
       if (desiredPanel?.simulation && !dataArrived) {
       } else if (desiredPanel?.simulation && dataArrived) {
@@ -51,9 +53,14 @@ function PanelChildren({ displayedItem, level, direction }) {
 
   useEffect(() => {
     if (panelChildren && panelChildren[twinIndex]) {
-      let panel = panelData.filter((panel) => panel.key === panelChildren[twinIndex].key)[0];
+      let panel = panelData.filter(
+        (panel) => panel.key === panelChildren[twinIndex].key
+      )[0];
 
-      if (panel.chartParameters && Object.keys(panel.chartParameters).length > 0) {
+      if (
+        panel.chartParameters &&
+        Object.keys(panel.chartParameters).length > 0
+      ) {
         if (mapPagePosition.lat === null) {
           const tempOpenItems = { ...openItems };
           delete tempOpenItems[displayedItem.key];
@@ -61,7 +68,11 @@ function PanelChildren({ displayedItem, level, direction }) {
         }
       }
 
-      if (panelData.filter((panel) => panel.key === panelChildren[twinIndex].key)[0].simulation) {
+      if (
+        panelData.filter(
+          (panel) => panel.key === panelChildren[twinIndex].key
+        )[0].simulation
+      ) {
         dispatch(setGraphType('sim'));
       } else {
         dispatch(setGraphType('ts'));
@@ -95,9 +106,12 @@ function PanelChildren({ displayedItem, level, direction }) {
     }
   }, [panelChildren.length]);
 
-  const displayedPanel = panelChildren?.length > 1 ? panelChildren[twinIndex] : panelChildren[0];
+  const displayedPanel =
+    panelChildren?.length > 1 ? panelChildren[twinIndex] : panelChildren[0];
   useEffect(() => {
-    let forgetOpen = panelData.filter((panel) => panel.key === displayedPanel.key)[0]?.forgetOpen;
+    let forgetOpen = panelData.filter(
+      (panel) => panel.key === displayedPanel.key
+    )[0]?.forgetOpen;
     dispatch(setPanelOpen({ direction, value: true }));
     if (lastPanelDisplayed !== displayedPanel.key && !forgetOpen) {
       dispatch(
@@ -108,7 +122,9 @@ function PanelChildren({ displayedItem, level, direction }) {
       );
     }
   }, [displayedPanel, lastPanelDisplayed, mapPagePosition, twinIndex]);
-  const displayedPanelDetails = panelData.filter((panel) => panel.key === displayedPanel.key)[0];
+  const displayedPanelDetails = panelData.filter(
+    (panel) => panel.key === displayedPanel.key
+  )[0];
   const { content, chartParameters } = displayedPanelDetails;
 
   useEffect(() => {
@@ -123,7 +139,11 @@ function PanelChildren({ displayedItem, level, direction }) {
       panel={content}
       level={level}
       passedKey={panelChildren[twinIndex]}
-      panelChart={chartParameters && Object.keys(chartParameters).length > 0 ? true : false}
+      panelChart={
+        chartParameters && Object.keys(chartParameters).length > 0
+          ? true
+          : false
+      }
     />
   );
 }

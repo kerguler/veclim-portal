@@ -18,7 +18,7 @@ function useSimTileFunctions(sim) {
     if (!pollingActive) return;
     const interval = setInterval(() => {
       refetch();
-    }, 3000);
+    }, 5000);
     return () => clearInterval(interval);
   }, [pollingActive, refetch]);
 
@@ -40,7 +40,10 @@ function useSimTileFunctions(sim) {
       if (simRecord.status === 'PENDING' || simRecord.status === 'STARTED') {
         setDisplayViewIcon(false);
         dispatch(setAlbochickStatus('PENDING'));
-      } else if (simRecord.status === 'SUCCESS') {
+      } else if (
+        simRecord.status === 'SUCCESS' ||
+        simRecord.status === 'COMPLETED'
+      ) {
         setDisplayViewIcon(true);
         dispatch(setAlbochickStatus('SUCCESS'));
       }

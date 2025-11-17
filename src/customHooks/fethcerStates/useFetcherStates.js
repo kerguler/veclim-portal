@@ -1,45 +1,43 @@
-import { useContext, useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import PanelContextV2 from 'context/panelsIconsV2';
+// customHooks/fethcerStates/useFetcherStates.js
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+
 import FetcherService from 'services/FetcherService';
-import { setMapVector } from 'store';
-import { setVectorName } from 'store';
-import { setDirectInitError } from 'store';
-import { setReadyToView } from 'store';
-import { setMapPagePosition } from 'store';
 import PackageMapServices from 'components/map/mapPackage/PackageMapServices';
-import { setDisplaySimulationPanel } from 'store';
+
 import useDirectorFun from '../useDirectorFun';
 import useSessionControl from './useSessionControl';
-import { setCurrentMapCenter } from 'store';
-import { setCurrentMapBounds } from 'store';
-import { setCurrentMapZoom } from 'store';
 import useQuery from './useQuery';
-import { setTileArray } from 'store';
-import { map } from 'leaflet';
+
 import {
-  setLastPanelDisplayed,
-  setOpenItems,
-  setPanelOpen,
-} from 'components/mapMenu/menuStore/mapMenuSlice';
-import { setPanelInterfere } from 'store';
-import { setDirectInit } from 'store';
+  setMapPagePosition,
+  setReadyToView,
+  setDirectInitError,
+  setPanelInterfere,
+  setTileArray,
+} from 'store';
+
+import { setLastPanelDisplayed } from 'components/mapMenu/menuStore/mapMenuSlice';
+import { getVector } from 'vectors/registry';
 
 const useFetcherStates = () => {
-  let direction = 'left';
+  const direction = 'left';
   const dispatch = useDispatch();
+
   const {
     mapVector,
     mapPagePosition,
-    lastPanelDisplayed,
-    tileArray,
     tileIcons,
     panelData,
     menuStructure,
   } = useDirectorFun(direction);
+
   const { tile, panel, decade, lon, lat, session } = useQuery();
 
+  // 0) keep session ↔ mapVector in sync
   useSessionControl(session);
+
+  // 1) initial short-circuit
   useEffect(() => {
     if (
       session === null &&
@@ -51,28 +49,33 @@ const useFetcherStates = () => {
     ) {
       return;
     }
-  });
+  }, [session, tile, panel, decade, lon, lat]);
+
+  // 2) make sure we always have a mapPagePosition
   useEffect(() => {
-    if (mapPagePosition.lat === null) {
+    if (!mapPagePosition || mapPagePosition.lat == null) {
       dispatch(setMapPagePosition(PackageMapServices.defaultCypCenter));
     }
-  });
-  useEffect(() => {
-    if (session === 'albopictus') {
-      if (tile === null || tile === undefined) {
-        dispatch(setTileArray(['colegg']));
-        dispatch(setReadyToView(false));
-      }
-    } else if (session === 'papatasi') {
-      if (tile === null || tile === undefined) {
-        dispatch(setTileArray(['papatasi_aprdec']));
-        dispatch(setReadyToView(false));
-      }
-    }
-  }, [tile, dispatch, session]);
+  }, [mapPagePosition, dispatch]);
 
+  // --- 🔑 decide which vector config to use ---
+  // Prefer URL `session` (what the user asked for); fall back to Redux.
+  const effectiveVectorId = session || mapVector;
+  const activeVector = getVector(effectiveVectorId);
+  const defaultTiles = activeVector?.defaults?.tileArray || [];
+
+  // 3) default tileArray for this vector if URL doesn't specify `tile`
   useEffect(() => {
-    if (mapPagePosition.lat === null || mapPagePosition.lat === undefined) {
+    if ((tile === null || tile === undefined || tile === '') && defaultTiles.length > 0) {
+      dispatch(setTileArray(defaultTiles));
+      // we will set readyToView=true once fetching succeeds
+      dispatch(setReadyToView(false));
+    }
+  }, [tile, dispatch, defaultTiles.join(',')]);
+
+  // 4) if URL has lon/lat and no center yet, use that
+  useEffect(() => {
+    if (!mapPagePosition || mapPagePosition.lat == null) {
       if (lon && lat) {
         dispatch(
           setMapPagePosition({
@@ -80,39 +83,46 @@ const useFetcherStates = () => {
             lng: parseFloat(lon),
           })
         );
-      }
-      if (!lon || !lat) {
+      } else {
         dispatch(setMapPagePosition(PackageMapServices.defaultCypCenter));
       }
     }
   }, [lon, lat, dispatch, mapPagePosition]);
 
+  // 5) open a panel from URL if it exists
   useEffect(() => {
-    if (menuStructure.filter((item) => item.key === panel).length > 0) {
+    if (!panel) return;
+    if (!Array.isArray(menuStructure)) return;
+
+    const exists = menuStructure.some((item) => item.key === panel);
+    if (exists) {
       dispatch(setLastPanelDisplayed({ direction, value: panel }));
       dispatch(setPanelInterfere({ direction, value: -1 }));
     }
-
-    // dispatch(setOpenItems({ direction, value: { menu_icon: true } }));
-    // panel || dispatch(setPanelInterfere({ direction, value: 0 }));
   }, [panel, menuStructure, direction, dispatch]);
 
+  // 6) fetch tiles + panels and control readyToView
   useEffect(() => {
-    if (
-      session === 'albopictus' &&
-      tileIcons.filter((item) => item.key === 'colegg').length === 0
-    ) {
-      dispatch(setReadyToView(false));
-      return;
-    }
-    if (
-      session === 'papatasi' &&
-      tileIcons.filter((item) => item.key === 'papatasi_aprdec').length === 0
-    ) {
-      dispatch(setReadyToView(false));
+    const iconsReady = Array.isArray(tileIcons) && tileIcons.length > 0;
+    const panelsReady = Array.isArray(panelData) && panelData.length > 0;
 
+    if (!iconsReady || !panelsReady) {
+      dispatch(setReadyToView(false));
       return;
     }
+
+    // Generic “has this vector actually loaded?” check
+    const hasDefaultTileIcon =
+      defaultTiles.length === 0 ||
+      defaultTiles.some((tKey) =>
+        tileIcons.some((icon) => icon.key === tKey)
+      );
+
+    if (!hasDefaultTileIcon) {
+      dispatch(setReadyToView(false));
+      return;
+    }
+
     try {
       FetcherService.handleTiles(dispatch, tile, tileIcons);
       FetcherService.handlePanels(dispatch, panel, panelData, lon, lat);
@@ -130,11 +140,22 @@ const useFetcherStates = () => {
           },
         })
       );
+      dispatch(setReadyToView(false));
+      return;
     }
 
     dispatch(setReadyToView(true));
-
-    //setting ready to view... are we going to handle directMap.display===-2 situation?
-  }, [tile, session, panel, lon, lat, dispatch, decade, tileIcons.length, panelData.length]);
+  }, [
+    tile,
+    panel,
+    lon,
+    lat,
+    dispatch,
+    decade,
+    Array.isArray(tileIcons) ? tileIcons.length : 0,
+    Array.isArray(panelData) ? panelData.length : 0,
+    defaultTiles.join(','),
+  ]);
 };
+
 export default useFetcherStates;

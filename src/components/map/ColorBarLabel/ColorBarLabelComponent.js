@@ -43,14 +43,17 @@ function TileNameDisplay({ side, tiles }) {
 
 function ColorBarLabelComponent({ times }) {
   const colorBarRef = useRef();
-  const { panelOpen, panelTop, tileArray, tileIcons, mapVector } = useDirectorFun('left');
+  const { panelOpen, panelTop, tileArray, tileIcons, mapVector } =
+    useDirectorFun('left');
   const [extractedTile, setExtractedTile] = useState([]);
   const [style, setStyle] = useState([]);
 
   const { colorKeys } = useContext(PanelContextV2);
 
   const { data, error, isFetching } = useFetchColorBarsDataQuery();
-  const selectedTiles = useSelector((state) => state.fetcher.fetcherStates.tileArray);
+  const selectedTiles = useSelector(
+    (state) => state.fetcher.fetcherStates.tileArray
+  );
 
   const leftBarRef = useRef(),
     rightBarRef = useRef();
@@ -60,25 +63,41 @@ function ColorBarLabelComponent({ times }) {
 
   const handleDisplayTiles = (e, direction) => {
     if (direction === 'left') {
-      dispatch(setDisplayTileNames({ center: false, left: true, right: false }));
+      dispatch(
+        setDisplayTileNames({ center: false, left: true, right: false })
+      );
     } else if (direction === 'right') {
-      dispatch(setDisplayTileNames({ center: false, left: false, right: true }));
+      dispatch(
+        setDisplayTileNames({ center: false, left: false, right: true })
+      );
     } else {
-      dispatch(setDisplayTileNames({ center: true, left: false, right: false }));
+      dispatch(
+        setDisplayTileNames({ center: true, left: false, right: false })
+      );
     }
   };
 
   const barsReady =
-  !!data && !isFetching && extractedTile && extractedTile.length > 0;
+    !!data && !isFetching && extractedTile && extractedTile.length > 0;
 
-  useColorBarResize(leftBarRef, rightBarRef, panelOpen, panelTop, times, setStyle,barsReady);
+  useColorBarResize(
+    leftBarRef,
+    rightBarRef,
+    panelOpen,
+    panelTop,
+    times,
+    setStyle,
+    barsReady
+  );
   let colors, labels;
   useEffect(() => {
     if (data) {
-      const extractedTile1 = tileArray?.map((tile) => {
-        const found = tileIcons.find((icon) => icon.key === tile);
-        return found?.colkey;
-      });
+      const extractedTile1 = tileArray
+        ?.map((tile) => {
+          const found = tileIcons?.find((icon) => icon.key === tile);
+          return found?.colkey;
+        })
+        .filter(Boolean);
       setExtractedTile(extractedTile1);
     }
   }, [data, tileArray, mapVector, isFetching, error]);
@@ -92,8 +111,13 @@ function ColorBarLabelComponent({ times }) {
     if (tileArray.length === 0) return <div></div>;
     if (!data) return <div></div>;
 
-    colors = data[colorKeys[extractedTile[0]]].colors;
-    labels = data[colorKeys[extractedTile[0]]].labels;
+    const key0 = extractedTile[0];
+    const entry0 = key0 && data ? data[key0] : null;
+    if (!entry0) return <div></div>;
+
+    colors = entry0.colors || [];
+    labels = entry0.labels || [];
+
     let renderedDivs2, renderedLabels2;
     let transColor = '#00000000';
 
@@ -120,14 +144,21 @@ function ColorBarLabelComponent({ times }) {
     });
     const renderedLabels = labels.map((label, index) => {
       return (
-        <div onContextMenu={(e) => e.preventDefault()} key={index} className="color-bar-p">
+        <div
+          onContextMenu={(e) => e.preventDefault()}
+          key={index}
+          className="color-bar-p"
+        >
           <p>{labels[labels.length - index - 1]}</p>
         </div>
       );
     });
     if (extractedTile.length === 2) {
-      let colors2 = data[colorKeys[extractedTile[1]]].colors;
-      let labels2 = data[colorKeys[extractedTile[1]]].labels;
+      const key1 = extractedTile[1];
+      const entry1 = key1 && data ? data[key1] : null;
+
+      let colors2 = entry1.colors || [];
+      let labels2 = entry1.labels || [];
       if (colors2.length !== 0) {
         renderedDivs2 = colors2.map((color, index) => {
           return (
@@ -148,7 +179,11 @@ function ColorBarLabelComponent({ times }) {
 
         renderedLabels2 = labels2.map((label, index) => {
           return (
-            <div onContextMenu={(e) => e.preventDefault()} key={index} className="color-bar-p">
+            <div
+              onContextMenu={(e) => e.preventDefault()}
+              key={index}
+              className="color-bar-p"
+            >
               <p>{labels2[labels2.length - index - 1]}</p>
             </div>
           );
@@ -162,7 +197,12 @@ function ColorBarLabelComponent({ times }) {
     return (
       <div onContextMenu={(e) => e.preventDefault()}>
         <div
-          onMouseOver={(e) => handleDisplayTiles(e, selectedTiles.length === 2 ? 'left' : 'center')}
+          onMouseOver={(e) =>
+            handleDisplayTiles(
+              e,
+              selectedTiles.length === 2 ? 'left' : 'center'
+            )
+          }
           ref={leftBarRef}
           className="color-bar left"
           style={style[0]}

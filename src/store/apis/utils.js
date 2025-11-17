@@ -27,7 +27,7 @@ export function dateToString(today, sep = "") {
 
 export function getCurrentDate(sep = "") {
 	let today = new Date();
-	return dateToString(today, sep=sep)
+	return dateToString(today, sep)
 }
 
 export function getDateRange(sep = ":") {

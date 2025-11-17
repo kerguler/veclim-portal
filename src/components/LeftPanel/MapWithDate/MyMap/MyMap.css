@@ -1,34 +1,34 @@
 .map-container-wrapper {
-	position: relative;
-	width: 100%;
-	height: 75%;
+  position: relative;
+  width: 100%;
+  height: 75%;
 }
 
 .rectangle {
-	animation: appear 0.2s ease-in-out;
+  animation: appear 0.2s ease-in-out;
 }
 .leaflet-container {
-	font-family: "Helvetica Neue", Arial, Helvetica, sans-serif;
-	font-size: 12px;
-	font-size: 0.75rem;
-	line-height: 1.5;
+  font-family: 'Helvetica Neue', Arial, Helvetica, sans-serif;
+  font-size: 12px;
+  font-size: 0.75rem;
+  line-height: 1.5;
 }
 
 .leaflet-container {
-	background: #ddd;
-	outline-offset: 1px;
+  background: #ddd;
+  outline-offset: 1px;
 }
 .leaflet-container {
-	-webkit-tap-highlight-color: transparent;
+  -webkit-tap-highlight-color: transparent;
 }
 .mymap-circular-progress {
-	position: absolute;
-	left: 90px;
-	top: 60px;
-	z-index: 1000;
+  position: absolute;
+  left: 90px;
+  top: 60px;
+  z-index: 1000;
 }
 .leaflet-container {
-	overflow: hidden;
+  overflow: hidden;
 }
 .leaflet-pane,
 .leaflet-tile,
@@ -40,100 +40,100 @@
 .leaflet-zoom-box,
 .leaflet-image-layer,
 .leaflet-layer {
-	position: absolute;
-	left: 0;
-	top: 0;
+  position: absolute;
+  left: 0;
+  top: 0;
 }
 
 .leaflet-layer {
-	filter: drop-shadow(5px 5px 5px rgba(0, 0, 0, 0.3));
+  filter: drop-shadow(5px 5px 5px rgba(0, 0, 0, 0.3));
 }
 
 .map-container-wrapper.leaflet-pane.leaflet-overlay-pane
-	g
-	path.leaflet-interactive {
-	stroke: red;
-	stroke-opacity: 1;
-	stroke-width: 3;
-	stroke-linecap: round;
-	stroke-linejoin: round;
-	fill: red;
-	fill-opacity: 0.2;
-	fill-rule: evenodd;
-	/* z-index: 5000; */
-	/* d: path("M 146 132 L 146 104 L 169 104 L 169 132 Z"); */
+  g
+  path.leaflet-interactive {
+  stroke: red;
+  stroke-opacity: 1;
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  fill: red;
+  fill-opacity: 0.2;
+  fill-rule: evenodd;
+  /* z-index: 5000; */
+  /* d: path("M 146 132 L 146 104 L 169 104 L 169 132 Z"); */
 }
 
 .leaflet-pane > svg path.leaflet-interactive {
-	pointer-events: auto;
+  pointer-events: auto;
 }
 .leaflet-pane {
-	z-index: 401;
+  z-index: 401;
 }
 
 .leaflet-marker-icon.leaflet-interactive,
 .leaflet-image-layer.leaflet-interactive,
 .leaflet-pane > svg path.leaflet-interactive,
 svg.leaflet-image-layer.leaflet-interactive path {
-	pointer-events: visiblePainted;
-	pointer-events: auto;
+  pointer-events: visiblePainted;
+  pointer-events: auto;
 }
 
 .leaflet-marker-icon.leaflet-interactive,
 .leaflet-image-layer.leaflet-interactive,
 .leaflet-pane > svg path.leaflet-interactive,
 svg.leaflet-image-layer.mymap-indicator.leaflet-interactive path {
-	pointer-events: none;
+  pointer-events: none;
 }
 
 #map {
-	height: 180px;
+  height: 180px;
 }
 
 .leaflet-tile-container
-	.leaflet-tile.leaflet-tile-loaded
-	.leaflet-layer:not(.leaflet-marker-icon):not(.leaflet-control) {
-	fill: black !important;
-	stroke: black !important;
+  .leaflet-tile.leaflet-tile-loaded
+  .leaflet-layer:not(.leaflet-marker-icon):not(.leaflet-control) {
+  fill: black !important;
+  stroke: black !important;
 }
 
 .leaflet-container {
-	width: 100%;
-	object-fit: contain;
-	padding-top: 75%; /* Aspect ratio of 4:3 (divide 3 by 4 = 0.75) */
-	border-radius: 0.7rem;
+  width: 100%;
+  object-fit: contain;
+  padding-top: 75%; /* Aspect ratio of 4:3 (divide 3 by 4 = 0.75) */
+  border-radius: 0.7rem;
 }
 
 .layover {
-	position: absolute;
-	width: 100%;
-	height: 100%;
-	z-index: 5000;
-	opacity: 1;
-	right: 0px;
-	bottom: 0px;
-	display: flex;
-	align-items: flex-end;
-	justify-content: flex-end;
-	/* margin: 1rem 1rem; */
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 5000;
+  opacity: 1;
+  right: 0px;
+  bottom: 0px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  /* margin: 1rem 1rem; */
 }
 
 @keyframes appear {
-	0% {
-		opacity: 0;
-	}
-	100% {
-		opacity: 100;
-	}
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 100;
+  }
 }
 
 @keyframes slide-left {
-	0% {
-		transform: scaleX(0);
-		opacity: 0;
-	}
-	100% {
-		transform: scaleX(1);
-		opacity: 100;
-	}
+  0% {
+    transform: scaleX(0);
+    opacity: 0;
+  }
+  100% {
+    transform: scaleX(1);
+    opacity: 100;
+  }
 }

@@ -1,12 +1,18 @@
+// useMapBasicEvents.js
 import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { setCurrentMapCenter, setCurrentMapZoom, setDirectInitError } from 'store';
+import { useDispatch } from 'react-redux';
+import {
+  // setCurrentMapCenter,
+  // setCurrentMapZoom,
+  setDirectInitError,
+} from 'store';
 
 import PackageMapServices from 'components/map/mapPackage/PackageMapServices';
 import { useAlboData } from 'context/AlboDataContext';
 import useDirectorFun from 'customHooks/useDirectorFun';
 import { setDisplaySimulationPanel } from 'store';
 import { setLastPanelDisplayed } from 'components/mapMenu/menuStore/mapMenuSlice';
+
 function useMapBasicEvents(mapParRef, fitworld) {
   const dispatch = useDispatch();
   const {
@@ -18,8 +24,11 @@ function useMapBasicEvents(mapParRef, fitworld) {
   } = useDirectorFun('left');
 
   const { setDataSim } = useAlboData();
-  let p = mapParRef.current;
+
   useEffect(() => {
+    const p = mapParRef.current;
+    if (!p || !p.map) return;
+
     const handleMapClick = (e) => {
       setDataSim(null);
 
@@ -35,17 +44,24 @@ function useMapBasicEvents(mapParRef, fitworld) {
       );
     };
 
-    const handleMove = () => {
-      let tempC = p.map.getCenter();
-      let tempZ = p.map.getZoom();
+    const handleMoveEnd = () => {
+      const map = p.map;
+      if (!map) return;
+
+      const tempC = map.getCenter();
+      const tempZ = map.getZoom();
       p.zoom = tempZ;
       p.center = [tempC.lat, tempC.lng];
-      dispatch(setCurrentMapZoom(tempZ));
-      dispatch(setCurrentMapCenter({ lat: tempC.lat, lng: tempC.lng }));
+
+      // IMPORTANT: do NOT dispatch on every moveend – this causes feedback loops
+      // dispatch(setCurrentMapZoom(tempZ));
+      // dispatch(setCurrentMapCenter({ lat: tempC.lat, lng: tempC.lng }));
     };
+
     const handleMouseOut = () => {
       PackageMapServices.mouseOut(mapParRef);
     };
+
     const handleResize = () => {
       try {
         PackageMapServices.resizeMap(mapParRef, vectorName, dispatch);
@@ -61,25 +77,41 @@ function useMapBasicEvents(mapParRef, fitworld) {
         );
       }
     };
+
+    // attach once
     p.map.on('click', handleMapClick);
     p.map.on('mouseout', handleMouseOut);
     p.map.on('resize', handleResize);
-    p.map.on('move', handleMove);
+    p.map.on('moveend', handleMoveEnd);
+
+    // clean up ALL handlers properly
     return () => {
+      if (!p.map) return;
       p.map.off('click', handleMapClick);
       p.map.off('mouseout', handleMouseOut);
       p.map.off('resize', handleResize);
-      p.map.off('move', handleMove);
-      p.map.off('mouseout', PackageMapServices.mouseOut, true);
+      p.map.off('moveend', handleMoveEnd);
     };
-  }, [dispatch, mapParRef, p, vectorName, mapPagePosition, invalidateSimData]);
+  }, [
+    dispatch,
+    mapParRef,
+    vectorName,
+    mapPagePosition,
+    invalidateSimData,
+    directInitError,
+    setDataSim,
+  ]);
 
+  // fit-world behaviour
   useEffect(() => {
+    const p = mapParRef.current;
+    if (!p || !p.map) return;
+
     if (fitworld) {
       p.map.setView(PackageMapServices.defaultWorldCenter, 1);
       p.map.fitWorld();
     }
-  }, [fitworld, p.map]);
+  }, [fitworld, mapParRef]);
 }
 
 export default useMapBasicEvents;

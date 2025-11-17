@@ -1,81 +1,56 @@
-import { current } from '@reduxjs/toolkit';
-import PackageMapServices from 'components/map/mapPackage/PackageMapServices';
-import PanelContextV2 from 'context/panelsIconsV2';
-import useDirectorFun from 'customHooks/useDirectorFun';
-import { useContext, useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { setCurrentMapZoom } from 'store';
-import { setTileArray } from 'store';
-import { setReadyToView } from 'store';
-import { setCurrentMapCenter } from 'store';
-import { setCurrentMapBounds } from 'store';
-import { setMapVector, setVectorName, setDirectInitError, setMapPagePosition } from 'store';
 
-const defaultAlboBehaviour = (dispatch, mapVector, mapPagePosition, tile) => {
-  dispatch(setMapVector('albopictus'));
-  dispatch(setCurrentMapBounds(PackageMapServices.worldBounds));
-  dispatch(setCurrentMapCenter(PackageMapServices.defaultCypCenter));
-  dispatch(setCurrentMapZoom(2));
-  mapPagePosition.lat === null && dispatch(setMapPagePosition(PackageMapServices.defaultCypCenter));
-  if (!tile) {
-    dispatch(setTileArray(['colegg']));
-  }
-};
+import PackageMapServices from 'components/map/mapPackage/PackageMapServices';
+import useDirectorFun from 'customHooks/useDirectorFun';
+import { setMapVector, setVectorName, setDirectInitError } from 'store';
 
-const defaultPapatasiBehaviour = (dispatch, mapVector, mapPagePosition, tile) => {
-  dispatch(setMapVector('papatasi'));
-
-  dispatch(setCurrentMapBounds(PackageMapServices.cyprusBounds));
-  dispatch(setCurrentMapCenter(PackageMapServices.defaultCypCenter));
-  dispatch(setCurrentMapZoom(8));
-  mapPagePosition.lat === null && dispatch(setMapPagePosition(PackageMapServices.defaultCypCenter));
-  if (!tile) {
-    dispatch(setTileArray(['papatasi_aprdec']));
-  }
-};
-
-function useSessionControl(session, tile) {
-  const direction = 'left'; // Assuming direction is always 'left' for this hoo
-  const { vectorNames, mapVector, mapPagePosition } = useDirectorFun(direction);
+function useSessionControl(session) {
+  const direction = 'left';
+  const { vectorNames, mapVector } = useDirectorFun(direction);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (session) {
-      if (vectorNames.includes(session)) {
-        dispatch(setMapVector(session));
-        dispatch(setVectorName(session));
-      } else {
-        const e = new Error('No Session Found');
-        e.type = 'SessionError';
-        e.heading = `Session ${session} Not Found`;
-        e.explanation = `Available sessions are: ${vectorNames.join(', ')}`;
-        dispatch(
-          setDirectInitError({
-            direction,
-            value: {
-              isError: true,
-              message: {
-                heading: e.heading,
-                explanation: e.explanation,
-              },
-              type: e.type,
-            },
-          })
-        );
-        // TODO: INVOKE ERROR MESSAGE ABOUT INVALID SESSION
-      }
+    if (!session) {
+      // no session in URL → do nothing; mapVector/initial state will be used
+      return;
     }
-  }, [session, dispatch, vectorNames, direction]);
 
-  useEffect(() => {
-    if (session === 'albopictus') {
-      defaultAlboBehaviour(dispatch, mapVector, mapPagePosition, tile);
-      dispatch(setReadyToView(false));
-    } else if (session === 'papatasi') {
-      defaultPapatasiBehaviour(dispatch, mapVector, mapPagePosition, tile);
-      dispatch(setReadyToView(false));
+    // 1) validate session against known vector ids
+    if (!vectorNames.includes(session)) {
+      const e = new Error('No Session Found');
+      e.type = 'SessionError';
+      e.heading = `Session ${session} Not Found`;
+      e.explanation = `Available sessions are: ${vectorNames.join(', ')}`;
+
+      dispatch(
+        setDirectInitError({
+          direction,
+          value: {
+            isError: true,
+            message: {
+              heading: e.heading,
+              explanation: e.explanation,
+            },
+            type: e.type,
+          },
+        })
+      );
+      return;
     }
-  }, [session, dispatch]);
+
+    // 2) Apply the session:
+    //    If the current map vector is different, ask PackageMapServices
+    //    to do a full switch based on the vector's module config.
+    if (mapVector !== session) {
+      PackageMapServices.handleMapSwitch(dispatch, mapVector, session);
+    } else {
+      // Already on this vector (e.g. user changed query params manually),
+      // just make sure names are correct.
+      dispatch(setMapVector(session));
+      dispatch(setVectorName(session));
+    }
+  }, [session, vectorNames, mapVector, dispatch]);
 }
 
 export default useSessionControl;

@@ -23,6 +23,7 @@ const fetcherSlice = createSlice({
         mapLoaded: false,
         leftMapLoaded: false,
         rightMapLoaded: false,
+        leafletLoaded: false,
         optionsPanel: {
           showVectorAbundance: false,
           tileOpacity: 1.0,
@@ -41,6 +42,9 @@ const fetcherSlice = createSlice({
   },
 
   reducers: {
+    setLeafletLoaded(state, action) {
+      state.fetcherStates.map.leafletLoaded = !!action.payload;
+    },
     setShowVectorAbundance(state, action) {
       state.fetcherStates.map.optionsPanel.showVectorAbundance = action.payload;
     },
@@ -134,6 +138,7 @@ const fetcherSlice = createSlice({
 });
 
 export const {
+  setLeafletLoaded,
   setShowVectorAbundance,
   setAvailableTiles,
   setCurrentMapBounds,

@@ -1,69 +1,78 @@
-import React, { useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
-import "./hoverMenuMethods.css";
-import { useDispatch } from "react-redux";
-import useWindowSize from "customHooks/useWindowSize";
+// HoverMenuMethods.js
+import React, { useEffect, useRef, useState, useMemo } from 'react';
+import { Link } from 'react-router-dom';
+import './hoverMenuMethods.css';
+import { useSelector } from 'react-redux';
+import useWindowSize from 'customHooks/useWindowSize';
+import { getVector } from 'vectors/registry';
+
 const HoverMenuMethods = ({ mainDivRef, onClose }) => {
-	const webApp = useWindowSize();
+  const webApp = useWindowSize(); // still here if you need responsive behavior
 
-	const dispatch = useDispatch();
-	const [isMenuOpen, setIsMenuOpen] = useState(false);
-	const handleLinkClickSand = () => {
-		onClose(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const menuRef = useRef();
 
-		setIsMenuOpen(false);
-	};
-	const handleLinkClickAlbo = () => {
-		onClose(false);
-		setIsMenuOpen(false);
-	};
-	const handleMenuOpen = () => {
-		setIsMenuOpen(!isMenuOpen);
-	};
-	const menuRef = useRef();
+  const vectorNames = useSelector((state) => state.vector.vectorNames);
 
-	// useOutsideClickClose(menuRef, setIsMenuOpen);
-	useEffect(() => {
-		const handleClickOnDoc = (event) => {
-			if (!menuRef.current) {
-			}
-			if (
-				menuRef &&
-				menuRef.current &&
-				!menuRef.current.contains(event.target)
-			) {
-				setIsMenuOpen(false);
-			}
-		};
-		window.addEventListener("click", handleClickOnDoc, true);
-		return () => {
-			window.removeEventListener("click", handleClickOnDoc);
-		};
-	});
+  const handleMenuToggle = () => {
+    setIsMenuOpen((prev) => !prev);
+  };
 
-	return (
-		<div
-			ref={menuRef}
-			className="hover-menu-wrapper"
-			//  onClick={handleMenuOpen}
-		>
-			<div onClick={handleMenuOpen} style={{ cursor: "pointer" }}>
-				{" "}
-				METHODS
-			</div>
-			{isMenuOpen && (
-				<div className="hover-menu">
-					<Link onClick={handleLinkClickAlbo} to="/Methods/TigerMosquito">
-						Tiger Mosquito
-					</Link>
+  const handleLinkClick = () => {
+    onClose(false);
+    setIsMenuOpen(false);
+  };
 
-					<Link onClick={handleLinkClickSand} to="/Methods/SandFly">
-						Sand&nbsp;Fly
-					</Link>
-				</div>
-			)}
-		</div>
-	);
+  useEffect(() => {
+    const handleClickOnDoc = (event) => {
+      if (!menuRef.current) return;
+      if (!menuRef.current.contains(event.target)) {
+        setIsMenuOpen(false);
+      }
+    };
+
+    window.addEventListener('click', handleClickOnDoc, true);
+    return () => {
+      window.removeEventListener('click', handleClickOnDoc, true);
+    };
+  }, []);
+
+  // 🔑 Deduplicate vector ids once
+  const uniqueVectorIds = useMemo(
+    () => Array.from(new Set(vectorNames)),
+    [vectorNames]
+  );
+
+  // Build menu items from registry/meta
+  const methodItems = uniqueVectorIds
+    .map((id) => {
+      const vec = getVector(id);
+      const methods = vec?.meta?.methods;
+      if (!methods || !methods.route || !methods.label) return null;
+      return {
+        id,
+        route: methods.route,
+        label: methods.label,
+      };
+    })
+    .filter(Boolean);
+
+  return (
+    <div ref={menuRef} className="hover-menu-wrapper">
+      <div onClick={handleMenuToggle} style={{ cursor: 'pointer' }}>
+        METHODS
+      </div>
+      {isMenuOpen && methodItems.length > 0 && (
+        <div className="hover-menu">
+          {methodItems.map((item) => (
+            <Link key={item.id} onClick={handleLinkClick} to={item.route}>
+              {item.label}
+            </Link>
+          ))}
+        </div>
+      )}
+    </div>
+  );
 };
 
 export default HoverMenuMethods;

@@ -59,19 +59,21 @@ function LoginComponent() {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    const res = await login({ username, password });
-    if ('data' in res) {
+    try {
+      const data = await login({ username, password }).unwrap();
       dispatch(
         setApiRegisterResponse({
-          response: res.data,
-          status: res.data?.status,
-          message: res.data?.message,
+          response: data,
+          status: data?.status,
+          message: data?.message,
           userName: username,
-          userId: res.data?.userId,
+          userId: data?.userId,
         })
       );
       if (rememberLogin) localStorage.setItem('username', username);
-      await refresh();
+      await refresh(); // now triggers the lazy query; no more refetch error
+    } catch (err) {
+      // optional: show a toast / set error state
     }
   };
 

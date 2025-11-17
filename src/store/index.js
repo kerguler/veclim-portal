@@ -4,7 +4,11 @@ import { coordinatesApi } from './apis/coordinatesApi';
 import { timeSeriesApi } from './apis/timeSeriesApi_new';
 import { colorBarsApi } from './apis/colorBarsApi';
 import { alboApi } from './apis/alboApi';
-import { searchBarReducer, setShowSearchBar, toggleShowSearchBar } from './slices/searchBarSlice';
+import {
+  searchBarReducer,
+  setShowSearchBar,
+  toggleShowSearchBar,
+} from './slices/searchBarSlice';
 import {
   setNews,
   setPreloadedImages,
@@ -18,6 +22,7 @@ import {
 } from './slices/newsSlice';
 import {
   setAvailableTiles,
+  setLeafletLoaded,
   setCurrentMapBounds,
   setCurrentMapCenter,
   setCurrentMapZoom,
@@ -115,7 +120,8 @@ import {
   setEditedSimulation,
   setAddedSimulation,
   simulationReducer,
-  setParsedJson,setAlbochickStatus
+  setParsedJson,
+  setAlbochickStatus,
 } from './slices/simulationSlice';
 import {
   setLocationRequested,
@@ -182,7 +188,10 @@ export {
   useFetchSimStatusQuery,
   useListenToSimUpdatesQuery,
 } from './apis/alboApi';
-export { useFetchTimeSeriesDataQuery, useFetchTSDateRangeQuery } from './apis/timeSeriesApi_new';
+export {
+  useFetchTimeSeriesDataQuery,
+  useFetchTSDateRangeQuery,
+} from './apis/timeSeriesApi_new';
 export { useFetchColorBarsDataQuery } from './apis/colorBarsApi';
 export {
   useLoginMutation,
@@ -190,6 +199,7 @@ export {
   useLoginWithTokenMutation,
   useFetchCsrfQuery,
   useLogoutMutation,
+  useLazyFetchCsrfQuery,
 } from './apis/loginRegisterApi';
 
 export {
@@ -203,7 +213,9 @@ export {
 
 export { useFetchNewsDataQuery } from './apis/newsApi';
 export {
-  setShimmered,setAlbochickStatus,
+  setShimmered,
+  setLeafletLoaded,
+  setAlbochickStatus,
   setDisplaySimulationPanel,
   setOpenItems,
   setInterferePanelStyle,

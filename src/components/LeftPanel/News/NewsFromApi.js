@@ -25,7 +25,7 @@ const News = ({ width }) => {
 	}, [data, dispatch]);
 
 	useEffect(() => {
-		if (data && displayedArticleId === -1) {
+		if (data && data?.id && displayedArticleId === -1) {
 			dispatch(setDisplayedArticleId(data[0].id));
 		}
 	}, [data, dispatch, displayedArticleId]);

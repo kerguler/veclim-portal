@@ -9,9 +9,16 @@ function useSetIconActive(
   levelData,
   isOpen
 ) {
-  if (openItems[displayedItem.key]) {
-    if (displayedItem.key !== 'menu_icon' && displayedItem.key !== 'secondary_menu_icon') {
-      className = classNames('icon', 'active', shimmerOn ? 'shimmer-on' : 'shimmer-off');
+  if (openItems[displayedItem?.key]) {
+    if (
+      displayedItem?.key !== 'menu_icon' &&
+      displayedItem?.key !== 'secondary_menu_icon'
+    ) {
+      className = classNames(
+        'icon',
+        'active',
+        shimmerOn ? 'shimmer-on' : 'shimmer-off'
+      );
     } else {
       className = classNames('icon', shimmerOn ? 'shimmer-on' : 'shimmer-off');
     }
@@ -23,7 +30,7 @@ function useSetIconActive(
     isOpen && setLevel(levelData.level);
   }, [isOpen, levelData.level]);
 
- return className
+  return className;
 }
 
 export default useSetIconActive;

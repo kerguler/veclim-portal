@@ -29,7 +29,9 @@ function MapPackageComponent({ fitworld }) {
     directInitError,
     mapVector,
   } = useDirectorFun('left');
-  const tileArray = useSelector((state) => state.fetcher.fetcherStates.tileArray);
+  const tileArray = useSelector(
+    (state) => state.fetcher.fetcherStates.tileArray
+  );
   const mapParameters = {
     map: null,
     center: currentMapCenter,
@@ -59,7 +61,9 @@ function MapPackageComponent({ fitworld }) {
 
   useEffect(() => {
     if (
-      (mapPagePosition && directMap.display !== -2 && directMap.display !== null) ||
+      (mapPagePosition &&
+        directMap.display !== -2 &&
+        directMap.display !== null) ||
       (directMap.display !== -2 && directMap.display !== null)
     ) {
       let e = {

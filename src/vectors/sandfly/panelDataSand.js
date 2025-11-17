@@ -1,12 +1,12 @@
 import adultsandfly from 'assets/icons/map-page-right-menu/png/mosquito-3-32px.png';
 import model from 'assets/icons/map-page-right-menu/png/019-refresh-32px.png';
 import info from 'assets/icons/map-page-right-menu/png/008-files-32px.png';
-import { ChartIndicators } from '../components/ChartIndicators/CharterIndicators';
-import TileSelector from '../components/TileSelector/TileSelector';
-import suser from '../assets/icons/map-page-right-menu/png/007-arrows-32px.png';
+import { ChartIndicators } from '../../components/ChartIndicators/CharterIndicators';
+import TileSelector from '../../components/TileSelector/TileSelector';
+import suser from 'assets/icons/map-page-right-menu/png/007-arrows-32px.png';
 import menuIcon from 'assets/icons/map-page-right-menu/png/menu-32px.png';
 import OptionsPanel from 'components/optionsPanel/OptionsPanel';
-import ChangeMapPanel from '../components/vectorSelection/ChangeMapPanel/ChangeMapPanel';
+import ChangeMapPanel from '../../components/vectorSelection/ChangeMapPanel/ChangeMapPanel';
 import { tileIconsSand } from './tileIconsSand';
 
 export const panelDataSand = [
@@ -85,7 +85,11 @@ export const panelDataSand = [
         <div>
           <p>
             The number of females (normalised) for the year 2015 as simulated in{' '}
-            <a target="_blank" rel="noreferrer" href="https://doi.org/10.1016/j.crpvbd.2023.100152">
+            <a
+              target="_blank"
+              rel="noreferrer"
+              href="https://doi.org/10.1016/j.crpvbd.2023.100152"
+            >
               Christou et al. (2023)
             </a>
             .

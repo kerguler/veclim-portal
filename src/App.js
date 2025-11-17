@@ -11,6 +11,9 @@ import { PanelProviderV2 } from "context/panelsIconsV2";
 const GenericPage = lazy(() => import("pages/GenericPage/GenericPage"));
 const NoPage = lazy(() => import("pages/NoPage"));
 const MapPackageLandingV2 = lazy(() => import("pages/MapPackageLandingV2"));
+const VectorMethodsPage = lazy(() =>
+  import('pages/VectorMethodsPage')
+);
 function App() {
 	useUserLocation();
 	return (
@@ -22,14 +25,16 @@ function App() {
 						<Route path='/' element={<GenericPage />} />
 						<Route path='/Project' element={<GenericPage />} />
 						<Route path='/Policy' element={<GenericPage />} />
-						<Route
+						{/* <Route
 							path='/Methods/TigerMosquito'
 							element={<GenericPage />}
 						/>
 						<Route
 							path='/Methods/SandFly'
 							element={<GenericPage />}
-						/>
+						/> */}
+						  <Route path='/Methods/:vecId' element={<VectorMethodsPage />} />
+
 						<Route path='/404' element={<NoPage />} />
 						<Route
 							path='/MapPage'

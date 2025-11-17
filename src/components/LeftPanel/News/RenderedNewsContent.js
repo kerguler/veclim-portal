@@ -1,11 +1,19 @@
-import rightArrow from "assets/icons/arrow-teal-16px.png";
-import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
-import { setDisplayedArticleId, setRotateShow, setTimer, clearTimer, setReadMore } from "store";
+import rightArrow from 'assets/icons/arrow-teal-16px.png';
+import { useDispatch, useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import {
+  setDisplayedArticleId,
+  setRotateShow,
+  setTimer,
+  clearTimer,
+  setReadMore,
+} from 'store';
 
 const RenderedNewsContent = () => {
   const news = useSelector((state) => state.news.news);
-  const displayedArticleId = useSelector((state) => state.news.displayedArticleId);
+  const displayedArticleId = useSelector(
+    (state) => state.news.displayedArticleId
+  );
   const rotateShow = useSelector((state) => state.news.rotateShow);
   const displayReady = useSelector((state) => state.news.displayReady);
   const dispatch = useDispatch();
@@ -14,7 +22,6 @@ const RenderedNewsContent = () => {
   const newsArray =
     news &&
     news.map((article) => {
-
       return (
         <div key={article.id} className="news-container">
           <div
@@ -36,10 +43,13 @@ const RenderedNewsContent = () => {
     });
 
   useEffect(() => {
-    if (rotateShow && displayReady) {
+    if (rotateShow && displayReady && news.length > 0) {
       const goToNextSlide = () => {
-        const currentIndex = news.findIndex((item) => item.id === displayedArticleId);
+        const currentIndex = news.findIndex(
+          (item) => item.id === displayedArticleId
+        );
         const nextIndex = currentIndex < news.length - 1 ? currentIndex + 1 : 0;
+        console.log(news);
         dispatch(setDisplayedArticleId(news[nextIndex].id));
       };
 
@@ -56,14 +66,16 @@ const RenderedNewsContent = () => {
     dispatch(setRotateShow(false));
     dispatch(clearTimer());
     dispatch(setReadMore(true));
-    window.open(url, "_blank", "noreferrer");
+    window.open(url, '_blank', 'noreferrer');
   };
 
   if (!displayReady) {
     return <div>Loading images, please wait...</div>; // Show loading message or spinner while preloading
   }
 
-  const currentIndex = news.findIndex((article) => article.id === displayedArticleId);
+  const currentIndex = news.findIndex(
+    (article) => article.id === displayedArticleId
+  );
 
   // Render the current JSX element from `newsArray`
   return newsArray[currentIndex];
