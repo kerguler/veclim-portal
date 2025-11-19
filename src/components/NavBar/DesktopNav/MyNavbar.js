@@ -48,6 +48,7 @@ function MyNavbar({ style }) {
           <Link to="/Policy">POLICY</Link>
 
           <HoverMenuMethods onClose={() => {}}></HoverMenuMethods>
+          <Link to="/tutorials-viewer/localfile/README.ipynb">TUTORIALS</Link>
           {/* 
 					<Link onClick={handleMapBounds} className="button" to={linkText}>
 						MAP &gt;
