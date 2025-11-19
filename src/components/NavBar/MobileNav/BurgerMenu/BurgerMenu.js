@@ -27,9 +27,9 @@ function BurgerMenu({ mainDivRef, linkText, handleMapBounds, handleMenu }) {
 						
 					</HoverMenuMethods>
 
-			        <Link onClick={handleMenuClose} to="/tutorials-viewer/localfile/README.ipynb">
+			        <a onClick={handleMenuClose} href="/tutorials-viewer/localfile/README.ipynb">
 						TUTORIALS
-					</Link>
+					</a>
 
 					<Link to={linkText} onClick={handleMapBounds} className="map">
 						MAP
