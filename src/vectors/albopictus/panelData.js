@@ -19,17 +19,12 @@ export const panelData = [
   {
     key: 'menu_icon',
     icon: menuIcon,
-    hasPanels: false,
-    panelList: [],
-    hasSubMenus: true,
     subMenuOpenDirection: 'down',
-    subMenuIndex: 0,
   },
   {
     key: 'secondary_menu_icon',
     icon: menuIcon,
     rotate: 90,
-    hasSubMenus: true,
     subMenuOpenDirection: 'down',
     initialOpen: true,
     selfClose: true,
@@ -37,37 +32,27 @@ export const panelData = [
   {
     icon: info,
     key: 'location_info',
-    hasPanels: true,
   },
   {
     icon: seasonal,
     key: 'seasonal_profile',
-    hasPanels: true,
   },
   {
     key: 'graphics_menu_icon',
-    hasSubMenus: true,
     subMenuOpenDirection: 'right',
-    submenuIndex: 1,
     icon: settingsIcon,
   },
   {
     key: 'larva_forecast',
     icon: larva,
-    hasPanels: true,
   },
 
   {
     icon: adult,
     key: 'activity_forecast',
-    hasPanels: true,
   },
   {
     key: 'location_info_panel',
-    decade: '',
-    icon: info,
-    chartParameters: {},
-    positionDependent: true,
     content: (
       <div className="text-area">
         <h1>Location Information</h1>
@@ -79,7 +64,6 @@ export const panelData = [
   },
   {
     key: 'seasonal_profile_panel',
-    icon: seasonal,
     chartParameters: {
       chartType: 'rechart',
       initialSetting: 'meteo-ts',
@@ -116,10 +100,6 @@ export const panelData = [
           sliceColors: { slice0: '#1B3958' },
         },
       },
-      plottedKeys: ['atemp', 'rehum', 'precp'],
-      colors: ['#F15A48', '#50C0AD', '#1B3958'],
-      horizontalAxis: 'date',
-      labels: ['Temperature (°C)', 'Rel. humidity (%)', 'Precipitation (mm)'],
     },
 
     content: (
@@ -145,7 +125,6 @@ export const panelData = [
   {
     key: 'larva_forecast_panel',
     chartParameters: {
-      chartType: 'rechart',
       mixedKeys: [
         {
           key: 'g2',
@@ -175,15 +154,7 @@ export const panelData = [
           },
         },
       },
-      plottedKeys: ['g1', 'g2'],
-      colors: ['#1B3958', '#1B3958'],
-      horizontalAxis: 'date',
-      lineSlice: ['g1'],
-      labels: ['Larva forecast', 'Decadal average'],
-      sliceLabels: ['This year', 'Overlap', 'Forecast'],
-      sliceColors: ['#50C0AD', 'orange', '#F15A48'],
     },
-    icon: larva,
     content: (
       <div className="text-area">
         <h1>Larva Forecast</h1>
@@ -197,7 +168,6 @@ export const panelData = [
     ),
   },
   {
-    id: [0, 2, 1, 1],
     key: 'activity_forecast_panel',
 
     chartParameters: {
@@ -258,17 +228,6 @@ export const panelData = [
 
       orientation: { g3: 'right', g4: 'right', g5: 'right' },
       lineStyle: { g3: 'dots', g4: 'dots', g5: 'dots' },
-      colors: ['#1B3958', '#1B3958', '#167997', '#167997', '#167997'],
-      horizontalAxis: 'date',
-      labels: [
-        'Activity forecast',
-        'Decadal activity',
-        'VectAbundance',
-        'AIMsurv',
-        'VectorBase',
-      ],
-      sliceLabels: ['This year', 'Overlap', 'Forecast'],
-      sliceColors: ['#50C0AD', 'orange', '#F15A48'],
     },
     icon: adult,
     content: (
@@ -285,7 +244,6 @@ export const panelData = [
   },
   // SIMULATION   ACTIVITY
   {
-    id: [0, 2, 1, 0],
     key: 'simulation_activity_graph_panel',
     simulation: true,
     chartParameters: {
@@ -300,7 +258,6 @@ export const panelData = [
         },
       ],
 
-      horizontalAxis: 'date',
       sliceInfo: {
         g1: {
           sliceLabels: {
@@ -341,7 +298,6 @@ export const panelData = [
     decade: '2090-2100',
     key: 'activity_projections_panel',
     chartParameters: {
-      chartType: 'rechart',
       mixedKeys: [
         {
           key: 'g3',
@@ -378,12 +334,6 @@ export const panelData = [
           sliceLabels: { slice0: 'SSP5-8.5' },
         },
       },
-      plottedKeys: ['g1', 'g2', 'g3', 'g4'],
-      colors: ['#1B3958', '#50C0AD', 'orange', '#F15A48'],
-      sliceColors: ['#50C0AD', 'orange', '#F15A48'],
-      horizontalAxis: 'date',
-      lineSlice: [],
-      labels: ['2010-2020', '1980-1990', 'SSP2-4.5', 'SSP5-8.5'],
     },
     icon: adult,
     content: (
@@ -403,7 +353,6 @@ export const panelData = [
   {
     key: 'outbreak_forecast',
     icon: virus,
-    hasPanels: true,
   },
   {
     key: 'outbreak_forecast_panel',
@@ -439,9 +388,6 @@ export const panelData = [
           },
         },
       },
-
-      horizontalAxis: 'date',
-      labels: ['Risk forecast', 'Decadal average'],
     },
     content: (
       <div className="text-area">
@@ -470,7 +416,6 @@ export const panelData = [
   },
   // SIMULATION OUTBREAK
   {
-    id: [0, 2, 2, 0],
     key: 'simulation_outbreak_graph_panel',
     simulation: true,
     chartParameters: {
@@ -485,7 +430,6 @@ export const panelData = [
         },
       ],
 
-      horizontalAxis: 'date',
       sliceInfo: {
         g1: {
           sliceLabels: {
@@ -524,13 +468,8 @@ export const panelData = [
   },
 
   {
-    id: [0, 2, 2, 1],
-    decade: '2090-2100',
     key: 'outbreak_projections_panel',
     chartParameters: {
-      chartType: 'rechart',
-      initialSetting: 'fcast-ts',
-      years: '2090-2100',
       mixedKeys: [
         {
           key: 'g1',
@@ -567,8 +506,6 @@ export const panelData = [
           sliceColors: { slice0: '#F15A48' },
         },
       },
-      horizontalAxis: 'date',
-      labels: ['2010-2020', '1980-1990', 'SSP2-4.5', 'SSP5-8.5'],
     },
     content: (
       <div className="text-area">
@@ -585,15 +522,11 @@ export const panelData = [
     ),
   },
   {
-    id: [0, 2, 3],
     key: 'impact_forecast',
     icon: impact,
-    hasPanels: true,
   },
   {
-    id: [0, 2, 3, 0],
     key: 'impact_forecast_panel',
-    icon: impact,
 
     chartParameters: {
       xinit: { date0: 15, date1: 125 },
@@ -625,10 +558,6 @@ export const panelData = [
           },
         },
       },
-      horizontalAxis: 'date',
-      labels: ['Impact forecast', 'Decadal average'],
-      sliceLabels: ['This year', 'Overlap', 'Forecast'],
-      sliceColors: ['#50C0AD', 'orange', '#F15A48'],
     },
     content: (
       <div className="text-area">
@@ -655,13 +584,9 @@ export const panelData = [
     ),
   },
   {
-    id: [0, 2, 1, 0],
     key: 'simulation_impact_graph_panel',
     simulation: true,
     chartParameters: {
-      chartType: 'rechart',
-      years: 'ecmwf',
-
       mixedKeys: [
         {
           key: 'g1',
@@ -673,7 +598,6 @@ export const panelData = [
         },
       ],
 
-      horizontalAxis: 'date',
       sliceInfo: {
         g1: {
           sliceLabels: {
@@ -711,13 +635,8 @@ export const panelData = [
     ),
   },
   {
-    id: [0, 2, 3, 1],
-    decade: '2090-2100',
     key: 'impact_projections_panel',
     chartParameters: {
-      chartType: 'rechart',
-      initialSetting: 'fcast-ts',
-      years: '2090-2100',
       mixedKeys: [
         {
           key: 'g1',
@@ -755,10 +674,6 @@ export const panelData = [
           sliceColors: { slice0: '#F15A48' },
         },
       },
-      labels: ['2010-2020', '1980-1990', 'SSP2-4.5', 'SSP5-8.5'],
-      colors: ['#1B3958', '#50C0AD', 'orange', '#F15A48'],
-
-      horizontalAxis: 'date',
     },
     icon: impact,
     content: (
@@ -776,32 +691,22 @@ export const panelData = [
     ),
   },
   {
-    id: [2, 4],
     key: 'tile_selector',
     icon: suser,
-    hasPanels: true,
   },
   {
-    id: [0, 3, 0],
     key: 'tile_selector_panel',
-    chartParameters: {},
     forgetOpen: true,
-    icon: suser,
     content: <TileSelector tileIcons={tileIcons}></TileSelector>,
   },
   {
-    id: [0, 4],
     key: 'vector_selector',
     icon: model,
-    hasPanels: true,
   },
   {
-    id: [0, 4, 0],
     key: 'vector_selector_panel',
-    chartParameters: {},
     forgetOpen: true,
 
-    icon: model,
     content: (
       <>
         <ChangeMapPanel></ChangeMapPanel>
@@ -810,16 +715,12 @@ export const panelData = [
     ),
   },
   {
-    id: [0, 6],
     key: 'settings_adjustment',
     icon: settingsIcon,
-    hasPanels: true,
   },
 
   {
     key: 'settings_adjustment_panel',
-    id: [0, 6, 0],
-    chartParameters: {},
     forgetOpen: true,
 
     content: (
@@ -832,24 +733,17 @@ export const panelData = [
     ),
   },
   {
-    id: [0, 5],
     key: 'simulation_adjustment',
     icon: seasonal,
-    hasPanels: true,
   },
 
   {
-    id: [0, 5],
     key: 'simulation_adjustment_panel',
-    icon: seasonal,
-    hasPanels: true,
 
-    chartParameters: {},
     content: (
       <div className="text-area">
         <div>
           <AlboParams />
-          {/* <CoordinatePicker /> */}
         </div>
       </div>
     ),
