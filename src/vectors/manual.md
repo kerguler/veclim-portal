@@ -4,11 +4,104 @@
 
 This guide will walk you through the process of adding a new vector to the veclim portal.
 
-## Prerequisites
+## The file system
 
-- Basic understanding of vector operations
-- Access to the veclim portal codebase
-- Development environment set up
+The script looks for all files named `module.js` in the subfolders of the folder `src/vectors`.
+
+The user can create a directory in vectors and add the following files.
+
+![alt text](image-6.png)
+
+In this case we have simply copied and paster the sandfly folder, and changed names accordingly. the script will find the `module.js` and register the vector according to a system.
+
+### The Module file
+
+an example module file:
+
+```js
+const moduleObj = {
+  // this is the name of the vector we will be adding to our system
+  id: 'albopictus',
+  meta: {
+    // in the vector selsction menu the icon and description we will be using is defined here.
+    icon: tileIconMoz,
+    description: (
+      <p>
+        The model of the Asian tiger mosquito (<i>Ae. albopictus</i>) and
+        disease (CHIKV/DENV/ZIKV) transmission
+      </p>
+    ),
+    // default route for this vector  IT will open when /MapPAge is written
+    route: '/MapPage',
+    // When we want to use session and tiles  `session`
+    session: 'albopictus',
+    methods: {
+      route: '/Methods/albopictus',
+      label: 'Tiger Mosquito',
+    },
+  },
+  //  The custom methods page for the vector. If there is no custom method, we can copy an existing one on it.
+  methodsPage,
+
+  // which tiles will be shown.
+  tileIcons,
+  // panels and menu items are defined here
+  panelData,
+  // the menu items are declared here
+  menu: ALB_MENU,
+  // tile row headings when looking at the tile selection panel
+  tileIconRowHeadings,
+  // default Bounds.
+  map: {
+    defaultBounds: 'world',
+    // when switching to this vector from another one, you can set bounds here
+    // default is when switching from papatasi to albopictus, the bounds stay over cyprus
+    switchBounds: 'cyprus',
+    defaultCenter: { lat: 0, lng: 0 },
+    defaultZoom: 1,
+    switchCenter: { lat: 35.1, lng: 33.33 },
+    switchZoom: 8,
+  },
+
+  // transition is a function to determine custom actions on map bounds zoom and center, when switching vectors.
+  transition(
+    fromId,
+    {
+      currentCenter,
+      currentZoom,
+      defaultBoundsKey,
+      defaultCenter,
+      defaultZoom,
+      getVectorConfig,
+    }
+  ) {
+    // Only special-case papatasi -> albopictus
+    if (fromId !== 'papatasi') {
+      return { keepView: true }; // use default switchBounds/switchCenter/switchZoom
+    }
+
+    return null;
+  },
+
+  // sampling for the rectangular markers
+  sampling: {
+    round(lat, lng) {
+      const latR = Math.round(lat / 0.25) * 0.25;
+      const lngR = Math.round(lng / 0.25) * 0.25;
+      return { lat: latR, lng: lngR, res: [0.125, 0.125] };
+    },
+  },
+
+  // default starting tile Array for the vector
+  defaults: {
+    tileArray: ['colegg'],
+    // when the vector is selected and map is clicked which panel should open
+    firstPanelKey: 'location_info_panel',
+  },
+};
+
+export default moduleObj;
+```
 
 ## Preparing the menu
 
