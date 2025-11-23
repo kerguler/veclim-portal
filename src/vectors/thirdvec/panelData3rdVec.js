@@ -48,15 +48,15 @@ export const panelDataSand = [
   {
     key: 'sandfly_population_panel',
     chartParameters: {
-      years: '2015',
+      years: 'ISMED-CLIM',
       mixedKeys: [
         {
           key: 'g1',
-          levels: ['sim-ts', '2015', 'simL'],
+          levels: ['sim-ts', 'ISMED-CLIM', 'simL'],
         },
         {
           key: 'g2',
-          levels: ['sim-ts', '2015', 'simH'],
+          levels: ['sim-ts', 'ISMED-CLIM', 'simH'],
         },
       ],
       sliceInfo: {

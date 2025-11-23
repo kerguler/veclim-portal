@@ -41,19 +41,19 @@ const timeSeriesApi = createApi({
 					const dateRange = getDateRange(":");
 					const vectorName = data.vectorName;
 					let param = {
-						vec:
-							vectorName === "albopictus"
-								? "albopictus"
-								: "papatasi",
+						vec: vectorName,
+						dates: dateRange,
 						lon: location.lng,
 						lat: location.lat,
-						dates:
-							vectorName === "albopictus"
-								? dateRange
-								: "2015-03-31:2015-12-31",
 						opr: "ts",
 					};
-
+					if (vectorName === "albopictus") {
+						param['dates'] = dateRange;
+					} else if (vectorName === "papatasi") {
+						param['dates'] = "2015-03-31:2015-12-31";
+					} else if (vectorName === "ISMED-CLIM") {
+						param['vec'] = "papatasi_V2511A";
+					}
 
 					return {
 						url: "",

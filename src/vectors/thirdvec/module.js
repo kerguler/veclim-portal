@@ -9,20 +9,20 @@ const colorKeys = Object.fromEntries(
 );
 
 const moduleObj = {
-  id: 'thirdvec',
+  id: 'ISMED-CLIM',
   meta: {
     icon: tileIconFly,
     description: (
       <p>
-        THIRD VECTOR
+        ISMED-CLIM
       </p>
     ),
     // this one still uses the session param
-    route: '/MapPage?session=thirdvec',
-    session: 'thirdvec',
+    route: '/MapPage?session=ISMED-CLIM',
+    session: 'ISMED-CLIM',
     methods: {
-      route: '/Methods/thirdvec',
-      label: 'Third Vector',
+      route: '/Methods/ISMED-CLIM',
+      label: 'ISMED-CLIM',
     },
   },
   methodsPage,
@@ -32,12 +32,12 @@ const moduleObj = {
   tileIconRowHeadings,
   colorKeys,
   map: {
-    defaultBounds: 'cyprus',
-    switchBounds: 'cyprus',
-    defaultCenter: { lat: 35.1, lng: 33.33 },
-    defaultZoom: 8,
-    switchCenter: { lat: 35.1, lng: 33.33 },
-    switchZoom: 8,
+    defaultBounds: 'portugal',
+    switchBounds: 'portugal',
+    defaultCenter: { lat: 39.0, lng: -8.0 },
+    defaultZoom: 7,
+    switchCenter: { lat: 39.0, lng: -8.0 },
+    switchZoom: 7,
   },
   sampling: {
     round(lat, lng) {
@@ -47,7 +47,7 @@ const moduleObj = {
     },
   },
   defaults: {
-    tileArray: ['papatasi_aprdec'],
+    tileArray: ['papatasi_V2511A'],
     firstPanelKey: 'location_info_panel',
   },
 };
