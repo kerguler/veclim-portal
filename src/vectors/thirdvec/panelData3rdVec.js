@@ -8,6 +8,7 @@ import menuIcon from 'assets/icons/map-page-right-menu/png/menu-32px.png';
 import OptionsPanel from 'components/optionsPanel/OptionsPanel';
 import ChangeMapPanel from '../../components/vectorSelection/ChangeMapPanel/ChangeMapPanel';
 import { tileIconsSand } from './tileIcons3rdVec';
+import { ActionLineStyle } from 'material-ui/svg-icons';
 
 export const panelDataSand = [
   {
@@ -51,48 +52,48 @@ export const panelDataSand = [
       years: 'ISMED-CLIM',
       mixedKeys: [
         {
-          key: 'g1',
-          levels: ['sim-ts', 'ISMED-CLIM', 'simL'],
+          key: 'g3',
+          levels: ['sim-ts', 'V2511A', 'simL'],
         },
         {
           key: 'g2',
-          levels: ['sim-ts', 'ISMED-CLIM', 'simH'],
+          levels: ['sim-ts', 'V2511A', 'simM'],
+        },
+        {
+          key: 'g1',
+          levels: ['sim-ts', 'V2511A', 'simH'],
         },
       ],
       sliceInfo: {
-        g1: {
-          sliceLabels: { slice0: 'Secondary land type' },
-          sliceColors: { slice0: '#F15A48' },
+        g3: {
+          sliceLabels: { slice0: 'Q1: 25%' },
+          sliceColors: { slice0: '#167997' },
         },
         g2: {
-          sliceLabels: { slice0: 'Primary land type' },
+          sliceLabels: { slice0: 'Median' },
           sliceColors: { slice0: '#1B3958' },
+        },
+        g1: {
+          sliceLabels: { slice0: 'Q3: 75%' },
+          sliceColors: { slice0: '#167997' },
         },
       },
       horizontalAxis: 'date',
       chartType: 'rechart',
       initialSetting: 'sim-ts',
-      plottedKeys: ['simL', 'simH'],
-      orientation: { g1: 'right' },
-      colors: ['#F15A48', '#1B3958'],
-      labels: ['Secondary land type', 'Primary land type'],
+      plottedKeys: ['simL', 'simM', 'simH'],
+      colors: ['#167997', '#1B3958', '#167997'],
+      labels: ['Q1: 25%', 'Median', 'Q3: 75%'],
+      lineStyle: {g1: 'dots', g3: 'dots'},
       lineSlice: [],
     },
 
     content: (
       <div className="text-area">
-        <h1>Sand fly population size</h1>
+        <h1>Female vector abundance</h1>
         <div>
           <p>
-            The number of females (normalised) for the year 2015 as simulated in{' '}
-            <a
-              target="_blank"
-              rel="noreferrer"
-              href="https://doi.org/10.1016/j.crpvbd.2023.100152"
-            >
-              Christou et al. (2023)
-            </a>
-            .
+            The number of <i>Phlebotomus papatasi</i> females averaged over the time period: 2011-2015. The dotted lines mark the 50% range of the model output
           </p>
         </div>
       </div>

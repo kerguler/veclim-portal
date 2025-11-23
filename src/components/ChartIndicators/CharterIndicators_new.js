@@ -242,7 +242,62 @@ if (data.date && "fcast-ts" in data) {
     </>
   );
 
-  return vectorName === 'albopictus' ? indicators : indicatorsSand; // indicatorsSand;
+    const indicatorsISMED_CLIM = (
+    <>
+      <div className="chart-indicators">
+        <div className="chart-indicators-row">
+          <p>
+            <strong>Coordinates</strong>
+          </p>
+          <div>{coord}</div>
+        </div>
+        <div className="chart-indicators-row">
+          <p>
+            <strong>Resolution</strong>
+          </p>
+          <div>
+            <p>5.5 km x 5.5 km</p>
+          </div>
+        </div>
+        <div className="chart-indicators-row">
+          <p>
+            <strong>Model</strong>
+          </p>
+          <div>
+            <p>
+              Model of <i>Phlebotomus papatasi</i>, version <strong style={{fontFamily:"'Inter-Bold', sens-serif"}}>V2511A</strong>, developed as part of ISMED-CLIM's early warning system against zoonotic diseases
+            </p>
+          </div>
+        </div>
+        <div className="chart-indicators-row">
+          <p>
+            <strong>Covariates</strong>
+          </p>
+          <div>
+            <p>
+              <a target="_blank" rel="noreferrer" href="https://cds.climate.copernicus.eu/datasets/reanalysis-cerra-single-levels">
+                CERRA
+              </a>{' '}
+              <a target="_blank" rel="noreferrer" href="https://cds.climate.copernicus.eu/datasets/reanalysis-cerra-land">
+                CERRA-Land
+              </a>{' '}
+              <a target="_blank" rel="noreferrer" href="https://land.copernicus.eu/en/products/corine-land-cover">
+                CORINE land cover
+              </a>{' '}
+            </p>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+
+  if (vectorName === 'albopictus') {
+    return indicators;
+  } else if (vectorName === 'papatasi') {
+    return indicatorsSand;
+  } else if (vectorName === 'ISMED-CLIM') {
+    return indicatorsISMED_CLIM;
+  }
 }
 
 export { ChartIndicators };
