@@ -1,15 +1,10 @@
-import { useSelector } from 'react-redux';
 import './SimulationTiles.css';
-import { areArraysIdentical } from 'pages/ApiWelcomePage/SimulationList/utils/simUtils';
 import SimTile from './SimTile/SimTile';
 import React from 'react';
 import useDirectorFun from 'customHooks/useDirectorFun';
-import { useDispatch } from 'react-redux';
-import { setShimmered } from 'store';
 function SimulationTiles({ fetchedSimList, direction }) {
   const { simulationPanels, menuStructure } = useDirectorFun(direction);
   let parents = [];
-  const dispatch = useDispatch();
   const findParents = (key) => {
     let parent = menuStructure.filter((item) => item.key === key)[0].parent;
     return parent;
@@ -43,7 +38,6 @@ function SimulationTiles({ fetchedSimList, direction }) {
     return (
       fetchedSimList &&
       fetchedSimList.map((sim) => {
-        // console.log(sim.id);
         return (
           <SimTile shimmerList={shimmerList} direction={direction} key={sim.id} sim={sim}></SimTile>
         );

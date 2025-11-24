@@ -2,9 +2,9 @@ import React, { createContext, useEffect, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { getVector } from '../vectors/registry';
 
-const PanelContextV2 = createContext(null);
+const PanelContext = createContext(null);
 
-export function PanelProviderV2({ children }) {
+export function PanelProvider({ children }) {
   const mapVector = useSelector((s) => s.fetcher.fetcherStates.mapVector);
   const vec = useMemo(() => getVector(mapVector), [mapVector]);
 
@@ -46,10 +46,10 @@ export function PanelProviderV2({ children }) {
   }, [vec, tree]);
 
   return (
-    <PanelContextV2.Provider value={sharedValues}>
+    <PanelContext.Provider value={sharedValues}>
       {children}
-    </PanelContextV2.Provider>
+    </PanelContext.Provider>
   );
 }
 
-export default PanelContextV2;
+export default PanelContext;

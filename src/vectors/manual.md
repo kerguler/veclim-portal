@@ -111,7 +111,7 @@ Each menu starts with a main button with a null parent. This menu item is the pa
 
 ![Figure 1: Initial Menu Item](image-1.png)
 
-it can be created by
+it can be created by 
 
 ```js
 export const ALB_MENU = [{ key: 'menu_icon', parent: null }];

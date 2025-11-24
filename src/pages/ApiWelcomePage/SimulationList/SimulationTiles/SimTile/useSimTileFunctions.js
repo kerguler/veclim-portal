@@ -48,7 +48,7 @@ function useSimTileFunctions(sim) {
         dispatch(setAlbochickStatus('SUCCESS'));
       }
     }
-  }, [sim.status, simRecord]);
+  }, [sim.status, simRecord,dispatch]);
 
   return {
     simRecord,

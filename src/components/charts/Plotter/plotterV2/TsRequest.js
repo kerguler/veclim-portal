@@ -12,7 +12,7 @@ import { useSelector } from 'react-redux';
 import { setPlotReady } from 'store';
 import { setBrushRange } from 'store';
 import { setMessenger } from 'store';
-function TsRequestV2({ direction }) {
+function TsRequest({ direction }) {
   const dispatch = useDispatch();
 
   const rawData = useRef({
@@ -48,15 +48,21 @@ function TsRequestV2({ direction }) {
     let r = rawData.current;
 
     try {
-      if (!isFetching && data && Object.keys(chartParameters).length > 0 && mapPagePosition.lat) {
-        const { errorMessage, isError } = ChartCalculatorService.checkDataForMixedKeys(
-          chartParameters,
-          data,
-          dispatch,
-          setPlotReady,
-          mapPagePosition,
-          direction
-        );
+      if (
+        !isFetching &&
+        data &&
+        Object.keys(chartParameters).length > 0 &&
+        mapPagePosition.lat
+      ) {
+        const { errorMessage, isError } =
+          ChartCalculatorService.checkDataForMixedKeys(
+            chartParameters,
+            data,
+            dispatch,
+            setPlotReady,
+            mapPagePosition,
+            direction
+          );
         if (isError) {
           console.log('shouldnt have come here');
           dispatch(
@@ -153,7 +159,10 @@ function TsRequestV2({ direction }) {
     return (
       plotReady && (
         <ErrorBoundary>
-          <RechartsPlot direction={direction} plotMat={r.dataToPlot}></RechartsPlot>
+          <RechartsPlot
+            direction={direction}
+            plotMat={r.dataToPlot}
+          ></RechartsPlot>
         </ErrorBoundary>
       )
     );
@@ -166,4 +175,4 @@ function TsRequestV2({ direction }) {
   }
 }
 
-export default TsRequestV2;
+export default TsRequest;

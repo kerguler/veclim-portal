@@ -1,8 +1,5 @@
-import { setOpenItems } from 'store';
 import { setDisplaySimulationPanel } from 'store';
 import { setPanelInterfere } from 'store';
-import { setShimmered } from 'store';
-import { setPanelLevel } from 'store';
 import { setDataArrived } from 'store';
 import { setInvalidateSimData } from 'store';
 
@@ -26,7 +23,6 @@ class simTileHelpers {
     console.log('delete', id);
     try {
       const response = deleteSimulation({ id: id });
-      // console.log("DELETE RESPONSE", response);
     } catch (err) {
       console.log(err);
     }
@@ -38,7 +34,6 @@ class simTileHelpers {
     dispatch,
     direction
   ) => {
-    const result = results;
     setSimResult(results);
     dispatch(setInvalidateSimData(false));
     dispatch(setDataArrived({ direction: direction, value: true }));
@@ -49,8 +44,7 @@ class simTileHelpers {
         value: 'activity_forecast',
       })
     );
-     dispatch(setPanelInterfere({ direction, value: -1 }));
-
+    dispatch(setPanelInterfere({ direction, value: -1 }));
   };
 }
 export default simTileHelpers;

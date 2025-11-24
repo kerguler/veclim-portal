@@ -5,7 +5,6 @@ import { useAlboData } from 'context/AlboDataContext';
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useState } from 'react';
-import { timeSeriesApi } from 'store/apis/timeSeriesApi_new';
 import { useDispatch } from 'react-redux';
 import { setShimmered } from 'store';
 function MenuList({ items, onToggle, direction }) {
@@ -17,7 +16,6 @@ function MenuList({ items, onToggle, direction }) {
     menuStructure,
     simulationPanels,
     invalidateSimData,
-    lastPanelDisplayed,
   } = useDirectorFun('left');
   const [shouldShimmer, setShouldShimmer] = useState(false);
 

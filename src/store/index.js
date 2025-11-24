@@ -1,7 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { setupListeners } from '@reduxjs/toolkit/query';
 import { coordinatesApi } from './apis/coordinatesApi';
-import { timeSeriesApi } from './apis/timeSeriesApi_new';
+import { timeSeriesApi } from './apis/timeSeriesApi';
 import { colorBarsApi } from './apis/colorBarsApi';
 import { alboApi } from './apis/alboApi';
 import {
@@ -188,10 +188,7 @@ export {
   useFetchSimStatusQuery,
   useListenToSimUpdatesQuery,
 } from './apis/alboApi';
-export {
-  useFetchTimeSeriesDataQuery,
-  useFetchTSDateRangeQuery,
-} from './apis/timeSeriesApi_new';
+export { useFetchTimeSeriesDataQuery } from './apis/timeSeriesApi';
 export { useFetchColorBarsDataQuery } from './apis/colorBarsApi';
 export {
   useLoginMutation,

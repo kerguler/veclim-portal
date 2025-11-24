@@ -1,5 +1,4 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { getCurrentDate } from "./utils";
 
 const newsApi = createApi({
 	reducerPath: "newsApi",

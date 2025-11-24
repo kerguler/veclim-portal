@@ -1,14 +1,13 @@
 import adultsandfly from 'assets/icons/map-page-right-menu/png/mosquito-3-32px.png';
 import model from 'assets/icons/map-page-right-menu/png/019-refresh-32px.png';
 import info from 'assets/icons/map-page-right-menu/png/008-files-32px.png';
-import { ChartIndicators } from '../../components/ChartIndicators/CharterIndicators';
+import  ChartIndicators  from 'components/ChartIndicators/CharterIndicators';
 import TileSelector from '../../components/TileSelector/TileSelector';
 import suser from 'assets/icons/map-page-right-menu/png/007-arrows-32px.png';
 import menuIcon from 'assets/icons/map-page-right-menu/png/menu-32px.png';
 import OptionsPanel from 'components/optionsPanel/OptionsPanel';
 import ChangeMapPanel from '../../components/vectorSelection/ChangeMapPanel/ChangeMapPanel';
 import { tileIconsSand } from './tileIcons3rdVec';
-import { ActionLineStyle } from 'material-ui/svg-icons';
 
 export const panelDataSand = [
   {
@@ -84,7 +83,7 @@ export const panelDataSand = [
       plottedKeys: ['simL', 'simM', 'simH'],
       colors: ['#167997', '#1B3958', '#167997'],
       labels: ['Q1: 25%', 'Median', 'Q3: 75%'],
-      lineStyle: {g1: 'dots', g3: 'dots'},
+      lineStyle: { g1: 'dots', g3: 'dots' },
       lineSlice: [],
     },
 
@@ -93,7 +92,9 @@ export const panelDataSand = [
         <h1>Female vector abundance</h1>
         <div>
           <p>
-            The number of <i>Phlebotomus papatasi</i> females averaged over the time period: 2011-2015. The dotted lines mark the 50% range of the model output
+            The number of <i>Phlebotomus papatasi</i> females averaged over the
+            time period: 2011-2015. The dotted lines mark the 50% range of the
+            model output
           </p>
         </div>
       </div>

@@ -1,4 +1,3 @@
-import LiveSearchCaps from 'components/LeftPanel/MapWithDate/MyMap/SearchLocationIcon/LiveSearchCaps/LiveSearchCaps';
 import SearchLocationIcon from 'components/LeftPanel/MapWithDate/MyMap/SearchLocationIcon/SearchLocationIcon';
 import './settingsPanel.css';
 import { useDispatch, useSelector } from 'react-redux';
@@ -6,11 +5,7 @@ import { useEffect, useState } from 'react';
 import { setCurrentMapCenter } from 'store';
 import { setCurrentMapBounds } from 'store';
 import { setCurrentMapZoom } from 'store';
-import { setCurrentMaxBounds } from 'store';
-import { setDirectMapLeft } from 'store';
-import { setDirectInitLeft } from 'store';
-import useMapStarter from 'customHooks/useMapStarter';
-import { L } from 'leaflet';
+
 
 import { setSwitchMap } from 'store';
 function SettingsPanel() {

@@ -1,6 +1,19 @@
 {
-	"compilerOptions": {
-		"baseUrl": "src"
-	},
-	"include": ["src", "Unused_Untracked/ChangesComponent", "Unused_Untracked/useMapLoaders.js"]
+  "compilerOptions": {
+    "baseUrl": "src"
+  },
+  "include": [
+    "src",
+    "Unused_Untracked/ChangesComponent",
+    "Unused_Untracked/useMapLoaders.js",
+    "Unused_Untracked/timeSeries.js",
+    "Unused_Untracked/timeSeriesApi.js",
+    "Unused_Untracked/simulationApi_old.js",
+    "Unused_Untracked/panelsIcons_old.js",
+    "Unused_Untracked/CharterIndicators.js",
+    "Unused_Untracked/RechartsPlot_old.js",
+    "Unused_Untracked/CustomLegend_old.js",
+    "Unused_Untracked/MapAdjustmentsService_old.js",
+    "Unused_Untracked/ChartCalculatorService_old.js"
+  ]
 }

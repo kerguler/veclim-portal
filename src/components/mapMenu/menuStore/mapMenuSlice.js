@@ -34,9 +34,8 @@ const mapMenuSlice = createSlice({
       },
     },
     left: {
-      lastPanelDisplayed: "location_info_panel",
+      lastPanelDisplayed: 'location_info_panel',
       displaySimulationPanel: null,
-      
       panelLevel: { path: [0, 0], level: 0, key: 'menu_icon' },
       panel: { panelInterfere: 0, panelTop: 0 },
       shimmered: {},

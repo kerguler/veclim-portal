@@ -1,14 +1,8 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { getDateRange } from "./utils";
-// import { io } from "socket.io-client";
-// const SOCKET_URL = "ws://localhost:8000/devapi/sim-runner/socket.io/";
-const SOCKET_URL = "ws://localhost:8000/sim";
-let socket; // Singleton instance of WebSocket
 const alboApi = createApi({
 	reducerPath: "alboInfo",
 	baseQuery: fetchBaseQuery({
 		baseUrl: "https://veclim.com/devapi/sim-runner/",
-		// baseUrl: 'http://localhost:8000/devapi/sim-runner/',
 		prepareHeaders: (headers) => {
 			headers.set("Content-Type", "application/json");
 			return headers;

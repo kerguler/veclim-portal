@@ -1,7 +1,7 @@
 import adultsandfly from 'assets/icons/map-page-right-menu/png/mosquito-3-32px.png';
 import model from 'assets/icons/map-page-right-menu/png/019-refresh-32px.png';
 import info from 'assets/icons/map-page-right-menu/png/008-files-32px.png';
-import { ChartIndicators } from '../../components/ChartIndicators/CharterIndicators';
+import ChartIndicators from 'components/ChartIndicators/CharterIndicators';
 import TileSelector from '../../components/TileSelector/TileSelector';
 import suser from 'assets/icons/map-page-right-menu/png/007-arrows-32px.png';
 import menuIcon from 'assets/icons/map-page-right-menu/png/menu-32px.png';

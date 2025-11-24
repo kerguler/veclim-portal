@@ -5,6 +5,8 @@ import { ALB_MENU } from './menu';
 import { tileIconRowHeadings } from './tileIconsRowHeadings';
 import tileIconMoz from 'assets/icons/map-page-right-menu/png/adult-32px.png';
 import { methodsPage } from './methodsPage';
+import { indicators } from './indicators';
+import { timeseries } from './timeSeries';
 
 const moduleObj = {
   id: 'albopictus',
@@ -30,7 +32,8 @@ const moduleObj = {
   panelData,
   menu: ALB_MENU,
   tileIconRowHeadings,
-
+  indicators,
+  timeseries,
   map: {
     defaultBounds: 'world',
     switchBounds: 'cyprus',

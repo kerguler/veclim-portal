@@ -4,6 +4,8 @@ import { panelDataSand as panelData } from './panelData3rdVec';
 import { tileIconRowHeadingsSand as tileIconRowHeadings } from './tileIconRowHeadings';
 import tileIconFly from 'assets/icons/map-page-right-menu/png/mosquito-3-32px.png';
 import { methodsPageSand as methodsPage } from './methodsPage';
+import { indicators } from './indicators';
+import { timeseries } from './timeSeries';
 const colorKeys = Object.fromEntries(
   (tileIcons || []).map((t) => [t.key, t.colkey])
 );
@@ -12,11 +14,7 @@ const moduleObj = {
   id: 'ISMED-CLIM',
   meta: {
     icon: tileIconFly,
-    description: (
-      <p>
-        ISMED-CLIM
-      </p>
-    ),
+    description: <p>ISMED-CLIM</p>,
     // this one still uses the session param
     route: '/MapPage?session=ISMED-CLIM',
     session: 'ISMED-CLIM',
@@ -27,10 +25,12 @@ const moduleObj = {
   },
   methodsPage,
   tileIcons,
+  indicators,
   panelData,
   menu: SAND_MENU,
   tileIconRowHeadings,
   colorKeys,
+  timeseries,
   map: {
     defaultBounds: 'portugal',
     switchBounds: 'portugal',

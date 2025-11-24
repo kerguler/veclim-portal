@@ -4,6 +4,8 @@ import { panelDataSand as panelData } from './panelDataSand';
 import { tileIconRowHeadingsSand as tileIconRowHeadings } from './tileIconRowHeadings';
 import tileIconFly from 'assets/icons/map-page-right-menu/png/mosquito-3-32px.png';
 import { methodsPageSand as methodsPage } from './methodsPage';
+import { indicators } from './indicators';
+import { timeseries } from './timeSeries';
 const colorKeys = Object.fromEntries(
   (tileIcons || []).map((t) => [t.key, t.colkey])
 );
@@ -26,11 +28,13 @@ const moduleObj = {
     },
   },
   methodsPage,
+  indicators,
   tileIcons,
   panelData,
   menu: SAND_MENU,
   tileIconRowHeadings,
   colorKeys,
+  timeseries,
   map: {
     defaultBounds: 'cyprus',
     switchBounds: 'cyprus',
