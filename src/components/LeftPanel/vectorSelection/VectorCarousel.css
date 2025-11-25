@@ -1,0 +1,71 @@
+/* src/components/LeftPanel/vectorSelection/VectorCarousel.css */
+
+.vector-carousel {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 999px;
+  border: 1px solid #ccc;
+  background: rgba(255, 255, 255, 0.9);
+  user-select: none;
+}
+
+.vector-carousel__arrow {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-size: 1.1rem;
+  padding: 0.1rem 0.4rem;
+  line-height: 1;
+}
+
+/* 👇 fixed-width label area */
+.vector-carousel__label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  width: 140px; /* fixed width – adjust to taste */
+  max-width: 140px;
+  text-align: center;
+}
+
+.vector-carousel__name {
+  font-size: 0.95rem;
+  font-weight: 600;
+
+  /* prevent layout jump on long names */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.vector-carousel__index {
+  font-size: 0.7rem;
+  opacity: 0.7;
+}
+
+/* Mobile tweaks */
+@media (max-width: 768px) {
+  .vector-carousel {
+    width: 100%;
+    justify-content: space-between;
+    padding: 0.4rem 0.75rem;
+  }
+
+  .vector-carousel__label {
+    width: 160px; /* a bit more space for mobile */
+    max-width: 160px;
+  }
+
+  .vector-carousel__name {
+    font-size: 1rem;
+  }
+
+  .vector-carousel__index {
+    font-size: 0.75rem;
+  }
+}

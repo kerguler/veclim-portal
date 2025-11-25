@@ -12,69 +12,70 @@ import TemplatePage from 'pages/TemplatePage/TemplatePage';
 import { useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import Skeleton from 'components/skeleton/Skeleton';
+import VectorSelector from './vectorSelection/VectorCarousel';
 
 function LeftPanel({ page, displayNews, displayContent }) {
-	const { webApp } = useWindowSize();
-	const location = useLocation();
-	const position = useSelector(
-		(state) => state.fetcher.fetcherStates.map.globalPosition,
-	);
+  const { webApp } = useWindowSize();
+  const location = useLocation();
+  const position = useSelector(
+    (state) => state.fetcher.fetcherStates.map.globalPosition
+  );
 
-	const home = (
-		<>
-			{webApp && <div className='spacer'></div>}
+  const home = (
+    <>
+      {webApp && <div className="spacer"></div>}
 
-			<div className='left-panel-container'>
-				<div className='left-panel-inner-content'>
-					{displayNews && !webApp && <News />}
-					{position.lat === null ? (
-						<Skeleton times={4} noBorder={true} />
-					) : (
-						<MapWithDate></MapWithDate>
-					)}
+      <div className="left-panel-container">
+        <div className="left-panel-inner-content">
+          {displayNews && !webApp && <News />}
+          {position.lat === null ? (
+            <Skeleton times={4} noBorder={true} />
+          ) : (
+            <MapWithDate></MapWithDate>
+          )}
+          <VectorSelector />
+          <div className="indicators-container">
+            {position.lat === null ? (
+              <Skeleton times={4} noBorder={true} />
+            ) : (
+              <div className="indicators-container inner-content">
+                <FloatPanelMosquitoInfo />
+                <RiskPanel />
+                <FloatPanelIndicators />
+              </div>
+            )}
+          </div>
 
-					<div className='indicators-container'>
-						{position.lat === null ? (
-							<Skeleton times={4} noBorder={true} />
-						) : (
-							<div className='indicators-container inner-content'>
-								<FloatPanelMosquitoInfo />
-								<RiskPanel />
-								<FloatPanelIndicators />
-							</div>
-						)}
-					</div>
+          {displayNews && webApp && <News />}
+          {webApp && displayContent && <TemplatePage />}
+        </div>
+      </div>
+    </>
+  );
 
-					{displayNews && webApp && <News />}
-					{webApp && displayContent && <TemplatePage />}
-				</div>
-			</div>
-		</>
-	);
+  const rest = (
+    <>
+      <div className="left-panel-container">
+        <div className="left-panel-inner-content">
+          {displayNews && !webApp && <News />}
+          {!webApp && <MapWithDate></MapWithDate>}
 
-	const rest = (
-		<>
-			<div className='left-panel-container'>
-				<div className='left-panel-inner-content'>
-					{displayNews && !webApp && <News />}
-					{!webApp && <MapWithDate></MapWithDate>}
+          {!webApp && (
+            <div className="indicators-container">
+              <div className="indicators-container inner-content">
+                <FloatPanelMosquitoInfo />
+                <RiskPanel />
+                <FloatPanelIndicators />
+              </div>
+            </div>
+          )}
 
-					{!webApp && (
-						<div className='indicators-container'>
-							<div className='indicators-container inner-content'>
-								<FloatPanelMosquitoInfo />
-								<RiskPanel />
-								<FloatPanelIndicators />
-							</div>
-						</div>
-					)}
-
-					{webApp && displayContent && <TemplatePage />}
-				</div>
-			</div>
-		</>
-	);
-	return location.pathname === '/' ? home : rest;
+          {webApp && displayContent && <TemplatePage />}
+        </div>
+      </div>
+    </>
+  );
+  return location.pathname === '/' ? home : rest;
 }
 
 export default LeftPanel;
