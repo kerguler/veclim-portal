@@ -1,10 +1,10 @@
 // src/components/LeftPanel/LeftPanel.js
 import { useSelector } from 'react-redux';
 import { getVector } from 'vectors/registry';
+import AlbopictusLeftPanel from 'vectors/albopictus/LeftPanel';
 
-// Fallback in case a vector doesn’t define its own LeftPanel yet
 function DefaultLeftPanel() {
-  return null; // or a simple placeholder
+  return <AlbopictusLeftPanel />;
 }
 
 function LeftPanel(props) {
