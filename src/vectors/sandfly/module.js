@@ -6,6 +6,7 @@ import tileIconFly from 'assets/icons/map-page-right-menu/png/mosquito-3-32px.pn
 import { methodsPageSand as methodsPage } from './methodsPage';
 import { indicators } from './indicators';
 import { timeseries } from './timeSeries';
+import PapatasiLeftPanel from './LeftPanel';
 const colorKeys = Object.fromEntries(
   (tileIcons || []).map((t) => [t.key, t.colkey])
 );
@@ -43,6 +44,7 @@ const moduleObj = {
     switchCenter: { lat: 35.1, lng: 33.33 },
     switchZoom: 8,
   },
+  ui: { LeftPanelComponent: PapatasiLeftPanel },
   sampling: {
     round(lat, lng) {
       const latR = 0.009 + Math.round((lat - 0.009) / 0.0215) * 0.0215;

@@ -7,7 +7,7 @@ import tileIconMoz from 'assets/icons/map-page-right-menu/png/adult-32px.png';
 import { methodsPage } from './methodsPage';
 import { indicators } from './indicators';
 import { timeseries } from './timeSeries';
-
+import AlbopictusLeftPanel from './LeftPanel';
 const moduleObj = {
   id: 'albopictus',
   meta: {
@@ -34,6 +34,7 @@ const moduleObj = {
   tileIconRowHeadings,
   indicators,
   timeseries,
+  ui: { LeftPanelComponent: AlbopictusLeftPanel },
   map: {
     defaultBounds: 'world',
     switchBounds: 'cyprus',

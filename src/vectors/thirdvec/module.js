@@ -6,6 +6,7 @@ import tileIconFly from 'assets/icons/map-page-right-menu/png/mosquito-3-32px.pn
 import { methodsPageSand as methodsPage } from './methodsPage';
 import { indicators } from './indicators';
 import { timeseries } from './timeSeries';
+import IsmedClimLeftPanel from './LeftPanel';
 const colorKeys = Object.fromEntries(
   (tileIcons || []).map((t) => [t.key, t.colkey])
 );
@@ -31,6 +32,7 @@ const moduleObj = {
   tileIconRowHeadings,
   colorKeys,
   timeseries,
+  ui: { LeftPanelComponent: IsmedClimLeftPanel },
   map: {
     defaultBounds: 'portugal',
     switchBounds: 'portugal',
