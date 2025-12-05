@@ -20,7 +20,7 @@ const moduleObj = {
     route: '/MapPage?session=Bologna2024',
     session: 'Bologna2024',
     methods: {
-      route: '/Methods/Bologna2024',
+      route: '/Methods/albopictus',
       label: 'Bologna2024',
     },
   },
@@ -37,9 +37,9 @@ const moduleObj = {
     defaultBounds: 'italy',
     switchBounds: 'italy',
     defaultCenter: { lat: 44.5, lng: 11.3 },
-    defaultZoom: 7,
+    defaultZoom: 5,
     switchCenter: { lat: 44.5, lng: 11.3 },
-    switchZoom: 7,
+    switchZoom: 5,
   },
   sampling: {
     round(lat, lng) {
