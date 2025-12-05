@@ -36,7 +36,6 @@ function PapatasiLeftPanel({ page, displayNews, displayContent }) {
             <MapWithDate />
           )}
 
-      
           <VectorSelector />
 
           <div className="indicators-container">
@@ -64,6 +63,7 @@ function PapatasiLeftPanel({ page, displayNews, displayContent }) {
         <div className="left-panel-inner-content">
           {displayNews && !webApp && <News />}
           {!webApp && <MapWithDate />}
+          <VectorSelector />
 
           {!webApp && (
             <div className="indicators-container">
