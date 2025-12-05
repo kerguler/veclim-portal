@@ -40,8 +40,8 @@ const moduleObj = {
     switchBounds: 'cyprus',
     defaultCenter: { lat: 0, lng: 0 },
     defaultZoom: 1,
-    switchCenter: { lat: 35.1, lng: 33.33 },
-    switchZoom: 8,
+    switchCenter: { lat: 0, lng: 0 },
+    switchZoom: 1,
   },
   transition(
     fromId,

@@ -1,4 +1,4 @@
-import { SAND_MENU } from './menu';
+import { Bologna2024_MENU } from './menu';
 import { tileIconsSand as tileIcons } from './tileIcons3rdVec';
 import { panelDataSand as panelData } from './panelData3rdVec';
 import { tileIconRowHeadingsSand as tileIconRowHeadings } from './tileIconRowHeadings';
@@ -6,39 +6,39 @@ import tileIconFly from 'assets/icons/map-page-right-menu/png/mosquito-3-32px.pn
 import { methodsPageSand as methodsPage } from './methodsPage';
 import { indicators } from './indicators';
 import { timeseries } from './timeSeries';
-import IsmedClimLeftPanel from './LeftPanel';
+import Bologna2024LeftPanel from './LeftPanel';
 const colorKeys = Object.fromEntries(
   (tileIcons || []).map((t) => [t.key, t.colkey])
 );
 
 const moduleObj = {
-  id: 'ISMED-CLIM',
+  id: 'Bologna2024',
   meta: {
     icon: tileIconFly,
-    description: <p>ISMED-CLIM</p>,
+    description: <p>CSVD Bologna Workshop (September 2024)</p>,
     // this one still uses the session param
-    route: '/MapPage?session=ISMED-CLIM',
-    session: 'ISMED-CLIM',
+    route: '/MapPage?session=Bologna2024',
+    session: 'Bologna2024',
     methods: {
-      route: '/Methods/ISMED-CLIM',
-      label: 'ISMED-CLIM',
+      route: '/Methods/Bologna2024',
+      label: 'Bologna2024',
     },
   },
   methodsPage,
   tileIcons,
   indicators,
   panelData,
-  menu: SAND_MENU,
+  menu: Bologna2024_MENU,
   tileIconRowHeadings,
   colorKeys,
   timeseries,
-  ui: { LeftPanelComponent: IsmedClimLeftPanel },
+  ui: { LeftPanelComponent: Bologna2024LeftPanel },
   map: {
-    defaultBounds: 'portugal',
-    switchBounds: 'portugal',
-    defaultCenter: { lat: 39.0, lng: -8.0 },
+    defaultBounds: 'italy',
+    switchBounds: 'italy',
+    defaultCenter: { lat: 44.5, lng: 11.3 },
     defaultZoom: 7,
-    switchCenter: { lat: 39.0, lng: -8.0 },
+    switchCenter: { lat: 44.5, lng: 11.3 },
     switchZoom: 7,
   },
   sampling: {
@@ -49,7 +49,7 @@ const moduleObj = {
     },
   },
   defaults: {
-    tileArray: ['papatasi_V2511A'],
+    tileArray: ['Bologna2024_M0'],
     firstPanelKey: 'location_info_panel',
   },
 };
