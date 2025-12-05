@@ -48,41 +48,41 @@ export const panelDataSand = [
   {
     key: 'sandfly_population_panel',
     chartParameters: {
-      years: 'ISMED-CLIM',
+      years: 'Bologna2024',
       mixedKeys: [
         {
           key: 'g3',
-          levels: ['sim-ts', 'V2511A', 'simL'],
+          levels: ['surv', 'eggs'],
         },
         {
           key: 'g2',
-          levels: ['sim-ts', 'V2511A', 'simM'],
+          levels: ['models', 'albopictus (sPop)'],
         },
         {
           key: 'g1',
-          levels: ['sim-ts', 'V2511A', 'simH'],
+          levels: ['models', 'ArboCartoR'],
         },
       ],
       sliceInfo: {
         g3: {
-          sliceLabels: { slice0: 'Q1: 25%' },
+          sliceLabels: { slice0: 'eggs' },
           sliceColors: { slice0: '#167997' },
         },
         g2: {
-          sliceLabels: { slice0: 'Median' },
+          sliceLabels: { slice0: 'albopictus (sPop)' },
           sliceColors: { slice0: '#1B3958' },
         },
         g1: {
-          sliceLabels: { slice0: 'Q3: 75%' },
+          sliceLabels: { slice0: 'ArboCartoR' },
           sliceColors: { slice0: '#167997' },
         },
       },
       horizontalAxis: 'date',
       chartType: 'rechart',
       initialSetting: 'sim-ts',
-      plottedKeys: ['simL', 'simM', 'simH'],
+      plottedKeys: ['eggs', 'albopictus (sPop)', 'ArboCartoR'],
       colors: ['#167997', '#1B3958', '#167997'],
-      labels: ['Q1: 25%', 'Median', 'Q3: 75%'],
+      labels: ['eggs', 'albopictus (sPop)', 'ArboCartoR'],
       lineStyle: { g1: 'dots', g3: 'dots' },
       lineSlice: [],
     },
