@@ -1,7 +1,7 @@
 import './ChartIndicators.css';
 import { useFetchTimeSeriesDataQuery } from 'store';
 import ChartLoadingSkeleton from '../skeleton/Skeleton';
-import { dateToString } from 'store/apis/utils';
+import { parseDate, dateToString } from 'store/apis/utils';
 import useDirectorFun from 'customHooks/useDirectorFun';
 import { getVector } from 'vectors/registry';
 
@@ -42,8 +42,8 @@ function ChartIndicators() {
   // ----- Forecast range -----
   let forecastRangeBlock = null;
   if (showForecastRange) {
-    const fromdate = new Date(data.date.date0);
-    const todate = new Date(data.date.date1);
+    const fromdate = parseDate('date0' in data.date ? data.date.date0 : data.date[0]);
+    const todate = parseDate('date1' in data.date ? data.date.date1 : data.date[data.date.length-1]);
 
     forecastRangeBlock = (
       <div className="chart-indicators-row">

@@ -230,39 +230,6 @@ class ChartCalculatorService {
     }
   }
 
-  static decideBrushRange(parameters, plotMat, dispatch, d, brushRange) {
-    d.currentDate = new Date();
-    d.dStart = new Date();
-    d.dEnd = new Date();
-    if (brushRange.startIndex !== null && brushRange.endIndex !== null) {
-      //that means someone has b4een fiddling with brush we need to set it
-      d.index[0] = brushRange.startIndex;
-      d.index[1] = brushRange.endIndex;
-    } else {
-      //noone has played with brush, so we need to set the brush to the start and end of the data
-      if (parameters.brushStart && parameters.brushEnd) {
-        // there is a specified start and end
-        d.dStart.setMonth(d.currentDate.getMonth() + parameters.brushStart);
-        d.dEnd.setMonth(d.currentDate.getMonth() + parameters.brushEnd);
-      } else {
-        //no start and end specified, so we need to set the brush to the start and end of the data
-        d.dStart = new Date(plotMat[0].date);
-        d.dEnd = new Date(plotMat[plotMat.length - 1].date);
-      }
-      d.finalStart = Math.max(d.dStart.getTime(), new Date(plotMat[0].date).getTime());
-
-      d.finalEnd = Math.min(d.dEnd.getTime(), new Date(plotMat[plotMat.length - 1].date).getTime());
-      d.index[0] = ChartCalculatorService.dateToIndex(
-        ChartCalculatorService.formatDate(d.finalStart),
-        plotMat
-      );
-      d.index[1] = ChartCalculatorService.dateToIndex(
-        ChartCalculatorService.formatDate(d.finalEnd),
-        plotMat
-      );
-    }
-  }
-
   static handleBrushChange = (range, dispatch, plotMat, setBrushRange, direction) => {
     dispatch(
       setBrushRange({
@@ -276,6 +243,12 @@ class ChartCalculatorService {
   };
 
   static createDateArray(rawData, params, dates) {
+    //
+    // TO DO:
+    // Modify this to accept
+    // - a dictionary with date0 and date1
+    // - a list of dates
+    //
     let r = rawData.current;
     r.dateInfo = {};
     r.dateInfo.dates = {};
@@ -318,6 +291,9 @@ class ChartCalculatorService {
       r.dateInfo.dateArray['total'].push(formattedDate);
       currentDate.setDate(currentDate.getDate() + 1);
     }
+    //
+    console.dir(r.dateInfo);
+    //
   }
 
   static formatDate = (date) => {

@@ -1,6 +1,7 @@
 import { useSelector } from "react-redux";
 import { useFetchCoordinateDataQuery } from "store";
 import { useContext } from "react";
+import { parseDate } from "store/apis/utils";
 import TextContext from "context/appText";
 import "./DateDisplay.css";
 const DateDisplay = () => {
@@ -11,7 +12,7 @@ const DateDisplay = () => {
 	const { months } = useContext(TextContext);
 	var today;
 	if (data) {
-		today = new Date(data.date.date0);
+		today = parseDate('date0' in data.date ? data.date.date0 : data.date[0]);
 		today =
 			(today.getDate() < 10 ? "0" : "") +
 			today.getDate() +

@@ -4,6 +4,41 @@ import { setUserPosition } from "store";
 import { useCookies } from "react-cookie";
 import { setLocationRequested, setGlobalPosition} from "store";
 
+export function parseDate(dstr) {
+	// Trim whitespace just in case
+	dstr = dstr.trim();
+
+	// --- Case 1: ISO week format: YYYY-ww ---
+	// Example: 2025-07 (year 2025, ISO week 7)
+	if (/^\d{4}-\d{2}$/.test(dstr)) {
+		const [year, week] = dstr.split("-").map(Number);
+
+		// ISO rule: Week 1 is the week with the first Thursday in January.
+		const date = new Date(Date.UTC(year, 0, 4)); // Jan 4 is always in week 1
+		const firstThursday = date.getUTCDay() || 7; // Convert Sunday (0) to 7
+
+		// Move to Monday of Week 1
+		date.setUTCDate(date.getUTCDate() - (firstThursday - 1) + (week - 1) * 7);
+
+		return date;
+	}
+
+	// --- Case 2: YYYY-MM-DD ---
+	if (/^\d{4}-\d{2}-\d{2}$/.test(dstr)) {
+		const [year, month, day] = dstr.split("-").map(Number);
+		return new Date(year, month - 1, day); // month is zero-indexed
+	}
+
+	// --- Case 3: DD-MM-YYYY ---
+	if (/^\d{2}-\d{2}-\d{4}$/.test(dstr)) {
+		const [day, month, year] = dstr.split("-").map(Number);
+		return new Date(year, month - 1, day);
+	}
+
+	// --- Fallback: Let JS try ---
+	return new Date(dstr);
+}
+
 export function dateToString(today, sep = "") {
 	let d_raw = today.getDate();
 	let m_raw = today.getMonth() + 1;
