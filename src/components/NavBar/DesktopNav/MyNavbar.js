@@ -9,6 +9,7 @@ import { setReadyToView } from 'store';
 import { setPanelOpen } from 'store';
 import PackageMapServices from 'components/map/mapPackage/PackageMapServices';
 import useDirectorFun from 'customHooks/useDirectorFun';
+import MethodsNavItem from 'components/MethodsNavItem/MethodsNavItem';
 function MyNavbar({ style }) {
   const panelInterfere = useSelector((state) => state.mapMenu.left.panel.panelInterfere);
   const openItems = useSelector((state) => state.mapMenu.left.openItems);
@@ -46,8 +47,8 @@ function MyNavbar({ style }) {
           <Link to="/">HOME</Link>
           <Link to="/Project">PROJECT</Link>
           <Link to="/Policy">POLICY</Link>
-
-          <HoverMenuMethods onClose={() => {}}></HoverMenuMethods>
+          <MethodsNavItem/>
+          {/* <HoverMenuMethods onClose={() => {}}></HoverMenuMethods> */}
           <a href="/tutorials-viewer/localfile/README.ipynb">TUTORIALS</a>
           {/* 
 					<Link onClick={handleMapBounds} className="button" to={linkText}>

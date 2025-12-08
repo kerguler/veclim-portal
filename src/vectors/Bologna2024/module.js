@@ -20,7 +20,7 @@ const moduleObj = {
     route: '/MapPage?session=Bologna2024',
     session: 'Bologna2024',
     methods: {
-      route: '/Methods/albopictus',
+      route: '/Methods/Bologna2024',
       label: 'Bologna2024',
     },
   },

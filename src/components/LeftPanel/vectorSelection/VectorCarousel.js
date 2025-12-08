@@ -44,7 +44,14 @@ const VectorCarousel = ({ className = '', onChange }) => {
     PackageMapServices.handleMapSwitch(dispatch, currentVectorId, nextId);
 
     const vec = getVector(nextId);
-    const route = vec?.map?.routePath;
+
+    let route;
+    if (location.pathname.startsWith('/Methods')) {
+      route = vec?.meta?.methods?.route || `/Methods/${nextId}`;
+    } else {
+      route = vec?.map?.routePath;
+    }
+
     if (route && route !== location.pathname) {
       navigate(route);
     }
@@ -53,6 +60,11 @@ const VectorCarousel = ({ className = '', onChange }) => {
       onChange(nextId, vec);
     }
   };
+
+  //   if (typeof onChange === 'function') {
+  //     onChange(nextId, vec);
+  //   }
+  // };
 
   const goRelative = (offset) => {
     if (!vectorOrder.length) return;

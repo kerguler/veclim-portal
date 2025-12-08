@@ -529,7 +529,7 @@ export const panelData = [
     key: 'impact_forecast_panel',
 
     chartParameters: {
-      xinit: { : 15, date1: 125 },
+      xinit: { date0: 15, date1: 125 },
       mixedKeys: [
         {
           key: 'g2',
