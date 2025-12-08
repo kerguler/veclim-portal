@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { getVector } from 'vectors/registry';
 import { setMapVector, setVectorName } from 'store';
-
+import PackageMapServices from 'components/map/mapPackage/PackageMapServices';
 import NavBarContainer from 'components/NavBar/NavBarContainer';
 import LeftPanel from 'components/LeftPanel/LeftPanel';
 import DesktopContentWrapper from './GenericPage/DesktopContentWrapper';
@@ -21,20 +21,27 @@ function VectorMethodsPage() {
   const currentVectorName = useSelector(
     (state) => state.fetcher.fetcherStates.vectorName
   );
+  const currentMapCenter = useSelector(
+    (state) => state.fetcher.fetcherStates.map.currentMapCenter
+  );
 
+  const currentMapZoom = useSelector(
+    (state) => state.fetcher.fetcherStates.map.currentMapZoom
+  );
   // Run URL → Redux sync only once per mount
-  const initializedRef = useRef(false);
 
   useEffect(() => {
-    if (initializedRef.current) return;
-    initializedRef.current = true;
-
     if (!vecId) return;
 
     // bootstrap vector from URL
-    dispatch(setVectorName(vecId));
-    dispatch(setMapVector(vecId));
-  }, [vecId, dispatch]);
+    PackageMapServices.handleMapSwitch(
+      dispatch,
+      currentVectorName,
+      vecId,
+      currentMapCenter,
+      currentMapZoom
+    );
+  }, [vecId, dispatch, currentMapCenter, currentMapZoom, currentVectorName]);
 
   // Which vector's methods do we show?
   // Prefer Redux (selector), fall back to URL if Redux is still empty.
