@@ -19,7 +19,7 @@ const moduleObj = {
       </p>
     ),
     // default route for this vector
-    route: '/MapPage',
+    route: '/MapPage?session=albopictus',
     // if you still rely on `session`
     session: 'albopictus',
     methods: {
