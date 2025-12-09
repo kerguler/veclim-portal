@@ -246,12 +246,6 @@ class ChartCalculatorService {
   };
 
   static createDateArray(rawData, params, dates) {
-    //
-    // TO DO:
-    // Modify this to accept
-    // - a dictionary with date0 and date1
-    // - a list of dates
-    //
     let r = rawData.current;
     r.dateInfo = {};
     r.dateInfo.dates = {};
@@ -296,18 +290,21 @@ class ChartCalculatorService {
         tempDatesArray.push(parseDate(r.dateInfo.dates[key][r.dateInfo.dates[key].length - 1]));
       }
     });
-    let dateMin = new Date(Math.min(...tempDatesArray));
-    let dateMax = new Date(Math.max(...tempDatesArray));
     r.dateInfo.dateArray['total'] = [];
-    let currentDate = new Date(dateMin);
-    while (currentDate <= new Date(dateMax)) {
-      let formattedDate = this.formatDate(currentDate);
-      r.dateInfo.dateArray['total'].push(formattedDate);
-      currentDate.setDate(currentDate.getDate() + 1);
+    if ('date0' in r.data['date'] && 'date1' in r.data['date']) {
+      let dateMin = new Date(Math.min(...tempDatesArray));
+      let dateMax = new Date(Math.max(...tempDatesArray));
+      let currentDate = new Date(dateMin);
+      while (currentDate <= new Date(dateMax)) {
+        let formattedDate = this.formatDate(currentDate);
+        r.dateInfo.dateArray['total'].push(formattedDate);
+        currentDate.setDate(currentDate.getDate() + 1);
+      }
+    } else {
+      r.dateInfo.dateArray['total'] = r.data['date'].map((d) => {
+        return this.formatDate(parseDate(d));
+      });
     }
-    //
-    console.dir(r.dateInfo);
-    //
   }
 
   static formatDate = (date) => {
