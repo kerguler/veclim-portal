@@ -10,6 +10,7 @@ import useFetcherStates from 'customHooks/fethcerStates/useFetcherStates';
 
 function MapPackageLanding() {
   useFetcherStates();
+  // useMapUrlSync();
   const readyToView = useSelector(
     (state) => state.fetcher.fetcherStates.readyToView
   );

@@ -1,19 +1,15 @@
 // useMapBasicEvents.js
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import {
-  // setCurrentMapCenter,
-  // setCurrentMapZoom,
-  setDirectInitError,
-} from 'store';
+import { setDirectInitError } from 'store';
 
 import PackageMapServices from 'components/map/mapPackage/PackageMapServices';
 import { useAlboData } from 'context/AlboDataContext';
 import useDirectorFun from 'customHooks/useDirectorFun';
-import { setDisplaySimulationPanel } from 'store';
-import { setLastPanelDisplayed } from 'components/mapMenu/menuStore/mapMenuSlice';
 
-function useMapBasicEvents(mapParRef, fitworld) {
+import { buildMapPermalink } from 'utils/mapPermalink';
+
+function useMapBasicEvents(mapParRef, fitworld, onContextMenu) {
   const dispatch = useDispatch();
   const {
     directInitError,
@@ -21,6 +17,9 @@ function useMapBasicEvents(mapParRef, fitworld) {
     panelInterfere,
     invalidateSimData,
     mapPagePositionLeft: mapPagePosition,
+    lastPanelDisplayed,
+    tileIcons, // 🔹 make sure useDirectorFun returns this
+    tileArray,
   } = useDirectorFun('left');
 
   const { setDataSim } = useAlboData();
@@ -28,6 +27,8 @@ function useMapBasicEvents(mapParRef, fitworld) {
   useEffect(() => {
     const p = mapParRef.current;
     if (!p || !p.map) return;
+
+    const map = p.map;
 
     const handleMapClick = (e) => {
       setDataSim(null);
@@ -45,17 +46,10 @@ function useMapBasicEvents(mapParRef, fitworld) {
     };
 
     const handleMoveEnd = () => {
-      const map = p.map;
-      if (!map) return;
-
       const tempC = map.getCenter();
       const tempZ = map.getZoom();
       p.zoom = tempZ;
       p.center = [tempC.lat, tempC.lng];
-
-      // IMPORTANT: do NOT dispatch on every moveend – this causes feedback loops
-      // dispatch(setCurrentMapZoom(tempZ));
-      // dispatch(setCurrentMapCenter({ lat: tempC.lat, lng: tempC.lng }));
     };
 
     const handleMouseOut = () => {
@@ -78,19 +72,65 @@ function useMapBasicEvents(mapParRef, fitworld) {
       }
     };
 
-    // attach once
-    p.map.on('click', handleMapClick);
-    p.map.on('mouseout', handleMouseOut);
-    p.map.on('resize', handleResize);
-    p.map.on('moveend', handleMoveEnd);
+    // 🔹 Right-click → delegate to React via onContextMenu
+    const handleContextMenu = (e) => {
+      if (
+        e.originalEvent &&
+        typeof e.originalEvent.preventDefault === 'function'
+      ) {
+        e.originalEvent.preventDefault();
+      }
 
-    // clean up ALL handlers properly
+      const center =
+        mapPagePosition &&
+        mapPagePosition.lat != null &&
+        mapPagePosition.lng != null
+          ? mapPagePosition
+          : map.getCenter();
+
+      const zoom = map.getZoom();
+
+      // 🔹 Build tile param from active tiles
+      // Adjust the property name (isActive / selected / checked) to match your tileIcons
+      const tileParam =
+        Array.isArray(tileArray) && tileArray.length > 0
+          ? tileArray.join(':')
+          : undefined;
+
+      const permalink = buildMapPermalink({
+        vectorName,
+        center: { lat: center.lat, lng: center.lng },
+        zoom,
+        panelKey: lastPanelDisplayed,
+        tileKey: tileParam, // 🔹 include tiles here
+        pathname: '/MapPage',
+      });
+
+      if (typeof onContextMenu === 'function') {
+        const containerPoint = map.latLngToContainerPoint(e.latlng);
+
+        onContextMenu({
+          latlng: e.latlng,
+          containerPoint,
+          permalink,
+          originalEvent: e.originalEvent,
+        });
+      }
+    };
+
+    map.on('click', handleMapClick);
+    map.on('mouseout', handleMouseOut);
+    map.on('resize', handleResize);
+    map.on('moveend', handleMoveEnd);
+    map.on('contextmenu', handleContextMenu);
+
     return () => {
-      if (!p.map) return;
-      p.map.off('click', handleMapClick);
-      p.map.off('mouseout', handleMouseOut);
-      p.map.off('resize', handleResize);
-      p.map.off('moveend', handleMoveEnd);
+      if (!map) return;
+      map.off('click', handleMapClick);
+      map.off('mouseout', handleMouseOut);
+      map.off('resize', handleResize);
+      map.off('moveend', handleMoveEnd);
+      map.off('contextmenu', handleContextMenu);
     };
   }, [
     dispatch,
@@ -100,9 +140,12 @@ function useMapBasicEvents(mapParRef, fitworld) {
     invalidateSimData,
     directInitError,
     setDataSim,
+    lastPanelDisplayed,
+    tileIcons, // 🔹 include so permalink updates if tiles change
+    onContextMenu,
   ]);
 
-  // fit-world behaviour
+  // fit-world behaviour unchanged
   useEffect(() => {
     const p = mapParRef.current;
     if (!p || !p.map) return;

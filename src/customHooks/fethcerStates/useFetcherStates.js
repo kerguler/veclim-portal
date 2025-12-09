@@ -15,6 +15,9 @@ import {
   setDirectInitError,
   setPanelInterfere,
   setTileArray,
+  setCurrentMapBounds,
+  setCurrentMaxBounds,
+  setCurrentMapZoom,
 } from 'store';
 
 import { setLastPanelDisplayed } from 'components/mapMenu/menuStore/mapMenuSlice';
@@ -32,12 +35,13 @@ const useFetcherStates = () => {
     menuStructure,
   } = useDirectorFun(direction);
 
-  const { tile, panel, decade, lon, lat, session } = useQuery();
+  // NOTE: now includes zoom + bounds!
+  const { tile, panel, decade, lon, lat, session, zoom, bounds } = useQuery();
 
-  // 0) keep session ↔ mapVector in sync
+  // 0) keep session ↔ mapVector in sync (vector in URL)
   useSessionControl(session);
 
-  // 1) initial short-circuit
+  // 1) initial short-circuit — unchanged
   useEffect(() => {
     if (
       session === null &&
@@ -59,16 +63,17 @@ const useFetcherStates = () => {
   }, [mapPagePosition, dispatch]);
 
   // --- 🔑 decide which vector config to use ---
-  // Prefer URL `session` (what the user asked for); fall back to Redux.
   const effectiveVectorId = session || mapVector;
   const activeVector = getVector(effectiveVectorId);
   const defaultTiles = activeVector?.defaults?.tileArray || [];
 
   // 3) default tileArray for this vector if URL doesn't specify `tile`
   useEffect(() => {
-    if ((tile === null || tile === undefined || tile === '') && defaultTiles.length > 0) {
+    if (
+      (tile === null || tile === undefined || tile === '') &&
+      defaultTiles.length > 0
+    ) {
       dispatch(setTileArray(defaultTiles));
-      // we will set readyToView=true once fetching succeeds
       dispatch(setReadyToView(false));
     }
   }, [tile, dispatch, defaultTiles.join(',')]);
@@ -89,6 +94,31 @@ const useFetcherStates = () => {
     }
   }, [lon, lat, dispatch, mapPagePosition]);
 
+  // 🔹 NEW: apply zoom from URL if present
+  useEffect(() => {
+    if (!zoom) return;
+    const zNum = parseInt(zoom, 10);
+    if (!Number.isNaN(zNum)) {
+      dispatch(setCurrentMapZoom(zNum));
+    }
+  }, [zoom, dispatch]);
+
+  // 🔹 NEW: apply bounds from URL if present
+  useEffect(() => {
+    if (!bounds) return;
+    const parts = bounds.split(',').map((v) => parseFloat(v));
+    if (parts.length !== 4 || parts.some((v) => Number.isNaN(v))) return;
+
+    const [minLat, minLng, maxLat, maxLng] = parts;
+    const boundsBox = {
+      _southWest: { lat: minLat, lng: minLng },
+      _northEast: { lat: maxLat, lng: maxLng },
+    };
+
+    dispatch(setCurrentMapBounds(boundsBox));
+    dispatch(setCurrentMaxBounds(boundsBox));
+  }, [bounds, dispatch]);
+
   // 5) open a panel from URL if it exists
   useEffect(() => {
     if (!panel) return;
@@ -101,7 +131,7 @@ const useFetcherStates = () => {
     }
   }, [panel, menuStructure, direction, dispatch]);
 
-  // 6) fetch tiles + panels and control readyToView
+  // 6) fetch tiles + panels and control readyToView – unchanged
   useEffect(() => {
     const iconsReady = Array.isArray(tileIcons) && tileIcons.length > 0;
     const panelsReady = Array.isArray(panelData) && panelData.length > 0;
@@ -111,7 +141,6 @@ const useFetcherStates = () => {
       return;
     }
 
-    // Generic “has this vector actually loaded?” check
     const hasDefaultTileIcon =
       defaultTiles.length === 0 ||
       defaultTiles.some((tKey) =>

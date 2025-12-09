@@ -15,6 +15,8 @@ import useLMapResize from 'customHooks/MapPackage/useLMapResize';
 import { useSelector } from 'react-redux';
 import useDirectorFun from 'customHooks/useDirectorFun';
 import ColorBarLabelComponent from '../ColorBarLabel/ColorBarLabelComponent';
+import { useState } from 'react';
+import MapContextMenu from '../mapContextMenu/MapContextMenu';
 function MapPackageComponent({ fitworld }) {
   const dispatch = useDispatch();
   const {
@@ -50,13 +52,28 @@ function MapPackageComponent({ fitworld }) {
 
   const mapParRef = useRef(mapParameters);
   let p = mapParRef.current;
-
+  const [ctxMenu, setCtxMenu] = useState({
+    visible: false,
+    x: 0,
+    y: 0,
+    permalink: '',
+  });
   useLMap(mapParRef);
   useLMapCoordinateUpdate(mapParRef);
   useTileHandler(mapParRef);
   useSeparatorActions(mapParRef);
   useZoomActions(mapParRef);
-  useMapBasicEvents(mapParRef, fitworld);
+  useMapBasicEvents(mapParRef, fitworld, ({ containerPoint, permalink }) => {
+    setCtxMenu({
+      visible: true,
+      x: containerPoint.x,
+      y: containerPoint.y,
+      permalink,
+    });
+  });
+
+  const closeContextMenu = () => setCtxMenu((s) => ({ ...s, visible: false }));
+
   useLMapResize(mapParRef);
 
   useEffect(() => {
@@ -87,24 +104,6 @@ function MapPackageComponent({ fitworld }) {
 
     return () => {};
   }, [directMap, dispatch, mapVector, tileArray, mapPagePosition, switchMap]);
-  // useEffect(() => {
-  // 	let e = {
-  // 		latlng: {
-  // 			lat: userPosition.lat,
-  // 			lng: userPosition.lng,
-  // 		},
-  // 	};
-  // 	if (mapPagePosition.lat===null){userPosition.lat &&
-  // 		userPosition.lng &&
-  // 		PackageMapServices.handleMapClick(
-  // 			e,
-  // 			mapParRef,
-  // 			vectorName,
-  // 			dispatch,
-  // 			directMapLeft,
-  // 			directMapRight
-  // 		);}
-  // }, [userPosition]);
 
   return (
     <>
@@ -114,6 +113,14 @@ function MapPackageComponent({ fitworld }) {
       {/* <TileNameDisplay></TileNameDisplay> */}
       <div className="map" id="map1">
         <div id="coordinates"></div>
+        {ctxMenu.visible && (
+          <MapContextMenu
+            x={ctxMenu.x}
+            y={ctxMenu.y}
+            permalink={ctxMenu.permalink}
+            onClose={closeContextMenu}
+          />
+        )}
       </div>
     </>
   );

@@ -42,6 +42,7 @@ export default function MapMenuPicker({ direction }) {
       setSimResult(null);
     }
   }, [invalidateSimData]);
+  console.log({ lastPanelDisplayed });
   useEffect(() => {
     if (displaySimulationPanel) {
       handleToggle(displaySimulationPanel);
