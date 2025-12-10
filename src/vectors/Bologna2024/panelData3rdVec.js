@@ -85,7 +85,7 @@ export const panelDataSand = [
       ],
       sliceInfo: {
         g1: {
-          sliceLabels: { slice0: 'eggs' },
+          sliceLabels: { slice0: 'VectAbundance (2019-2022)' },
           sliceColors: { slice0: '#1f77b4' },
         },
         g2: {
@@ -120,9 +120,9 @@ export const panelDataSand = [
       horizontalAxis: 'date',
       chartType: 'rechart',
       initialSetting: 'sim-ts',
-      plottedKeys: ['eggs', 'albopictus (sPop)', 'ArboCartoR', 'dynamAedes', 'Metelmann et al. (2019)', 'VECTRI', 'AedesDDE', 'Stacked Machine Learning'],
+      plottedKeys: ['VectAbundance (2019-2022)', 'albopictus (sPop)', 'ArboCartoR', 'dynamAedes', 'Metelmann et al. (2019)', 'VECTRI', 'AedesDDE', 'Stacked Machine Learning'],
       colors: ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b', '#e377c2', '#bcbd22'],
-      labels: ['eggs', 'albopictus (sPop)', 'ArboCartoR', 'dynamAedes', 'Metelmann et al. (2019)', 'VECTRI', 'AedesDDE', 'Stacked Machine Learning'],
+      labels: ['VectAbundance (2019-2022)', 'albopictus (sPop)', 'ArboCartoR', 'dynamAedes', 'Metelmann et al. (2019)', 'VECTRI', 'AedesDDE', 'Stacked Machine Learning'],
       lineStyle: { g1: 'dots' },
       lineSlice: [],
     },
