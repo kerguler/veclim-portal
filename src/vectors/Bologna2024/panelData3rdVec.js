@@ -1,4 +1,4 @@
-import adultsandfly from 'assets/icons/map-page-right-menu/png/mosquito-3-32px.png';
+import adult from 'assets/icons/map-page-right-menu/png/adult-32px.png';
 import model from 'assets/icons/map-page-right-menu/png/019-refresh-32px.png';
 import info from 'assets/icons/map-page-right-menu/png/008-files-32px.png';
 import  ChartIndicators  from 'components/ChartIndicators/CharterIndicators';
@@ -8,6 +8,7 @@ import menuIcon from 'assets/icons/map-page-right-menu/png/menu-32px.png';
 import OptionsPanel from 'components/optionsPanel/OptionsPanel';
 import ChangeMapPanel from '../../components/vectorSelection/ChangeMapPanel/ChangeMapPanel';
 import { tileIconsSand } from './tileIcons3rdVec';
+import XLink from 'components/xlink';
 
 export const panelDataSand = [
   {
@@ -43,7 +44,7 @@ export const panelDataSand = [
   {
     id: 1,
     key: 'sandfly_population',
-    icon: adultsandfly,
+    icon: adult,
   },
   {
     key: 'sandfly_population_panel',
@@ -129,12 +130,12 @@ export const panelDataSand = [
 
     content: (
       <div className="text-area">
-        <h1>Female vector abundance</h1>
+        <h1>Female vector activity (egg laying)</h1>
         <div>
           <p>
-            The number of <i>Phlebotomus papatasi</i> females averaged over the
-            time period: 2011-2015. The dotted lines mark the 50% range of the
-            model output
+            Daily number of eggs laid by the Asian tiger mosquito as a proxy to
+            biting activity as predicted by the 7 climate-sensitive models.
+            These models have been presented during the <XLink href="https://www.vectormodelling.com/Bologna2024/">Bologna 2024 Workshop</XLink>.
           </p>
         </div>
       </div>
