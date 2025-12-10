@@ -1,5 +1,5 @@
 // CRA/webpack: require.context lets us load every */module.js automatically.
-const ctx = require.context('./', true, /module\.js?$/);
+const ctx = require.context('.', true, /module\.js?$/);
 const modules = ctx.keys().map((key) => {
   const mod = ctx(key);
   return mod.default || mod;
