@@ -1,4 +1,4 @@
-import adultsandfly1 from 'assets/icons/map-page-right-menu/png/mosquito-3-aprdec-32px.png';
+import adultsandfly from 'assets/icons/map-page-right-menu/png/mosquito-3-32px.png';
 import XLink from 'components/xlink';
 const tileBase = process.env.REACT_APP_BASE_URL;
 
@@ -8,7 +8,7 @@ export const tileIconsSand = [
     colkey: 'papatasi_V2511A',
 
     label: 'Ph. papatasi female abundance ratio',
-    icon: adultsandfly1,
+    icon: adultsandfly,
     tileLayer: {
       tile: tileBase + '?v=papatasi_V2511A&z={z}&x={x}&y={y}',
       props: { attribution: '', noWrap: true },
