@@ -1,3 +1,6 @@
+import { parse } from "jsoneditor/dist/jsoneditor-minimalist";
+import { parseDate } from "store/apis/utils";
+
 class ChartCalculatorService {
   static handleMixedKeys(rawData, params) {
     let r = rawData.current;
@@ -243,12 +246,6 @@ class ChartCalculatorService {
   };
 
   static createDateArray(rawData, params, dates) {
-    //
-    // TO DO:
-    // Modify this to accept
-    // - a dictionary with date0 and date1
-    // - a list of dates
-    //
     let r = rawData.current;
     r.dateInfo = {};
     r.dateInfo.dates = {};
@@ -261,13 +258,19 @@ class ChartCalculatorService {
           if ('date' in val) {
             r.dateInfo.dates[key] = val['date'];
             r.dateInfo.dateArray[key] = [];
-            let date0 = new Date(r.dateInfo.dates[key].date0);
-            let date1 = new Date(r.dateInfo.dates[key].date1);
-            let currentDate = new Date(date0);
-            while (currentDate <= new Date(date1)) {
-              let formattedDate = this.formatDate(currentDate);
-              r.dateInfo.dateArray[key].push(formattedDate);
-              currentDate.setDate(currentDate.getDate() + 1);
+            if ('date0' in r.dateInfo.dates[key] && 'date1' in r.dateInfo.dates[key]) {
+              let date0 = new Date(r.dateInfo.dates[key].date0);
+              let date1 = new Date(r.dateInfo.dates[key].date1);
+              let currentDate = new Date(date0);
+              while (currentDate <= new Date(date1)) {
+                let formattedDate = this.formatDate(currentDate);
+                r.dateInfo.dateArray[key].push(formattedDate);
+                currentDate.setDate(currentDate.getDate() + 1);
+              }
+            } else {
+              r.dateInfo.dateArray[key] = r.dateInfo.dates[key].map((d) => {
+                return this.formatDate(parseDate(d));
+              });
             }
           }
           if (v in val) {
@@ -279,21 +282,29 @@ class ChartCalculatorService {
 
     let tempDatesArray = [];
     Object.keys(r.dateInfo.dates).forEach((key) => {
-      tempDatesArray.push(new Date(r.dateInfo.dates[key].date0).getTime());
-      tempDatesArray.push(new Date(r.dateInfo.dates[key].date1).getTime());
+      if ('date0' in r.dateInfo.dates[key] && 'date1' in r.dateInfo.dates[key]) {
+        tempDatesArray.push(new Date(r.dateInfo.dates[key].date0).getTime());
+        tempDatesArray.push(new Date(r.dateInfo.dates[key].date1).getTime());
+      } else {
+        tempDatesArray.push(parseDate(r.dateInfo.dates[key][0]));
+        tempDatesArray.push(parseDate(r.dateInfo.dates[key][r.dateInfo.dates[key].length - 1]));
+      }
     });
-    let dateMin = new Date(Math.min(...tempDatesArray));
-    let dateMax = new Date(Math.max(...tempDatesArray));
     r.dateInfo.dateArray['total'] = [];
-    let currentDate = new Date(dateMin);
-    while (currentDate <= new Date(dateMax)) {
-      let formattedDate = this.formatDate(currentDate);
-      r.dateInfo.dateArray['total'].push(formattedDate);
-      currentDate.setDate(currentDate.getDate() + 1);
+    if ('date0' in r.data['date'] && 'date1' in r.data['date']) {
+      let dateMin = new Date(Math.min(...tempDatesArray));
+      let dateMax = new Date(Math.max(...tempDatesArray));
+      let currentDate = new Date(dateMin);
+      while (currentDate <= new Date(dateMax)) {
+        let formattedDate = this.formatDate(currentDate);
+        r.dateInfo.dateArray['total'].push(formattedDate);
+        currentDate.setDate(currentDate.getDate() + 1);
+      }
+    } else {
+      r.dateInfo.dateArray['total'] = r.data['date'].map((d) => {
+        return this.formatDate(parseDate(d));
+      });
     }
-    //
-    console.dir(r.dateInfo);
-    //
   }
 
   static formatDate = (date) => {

@@ -1,4 +1,4 @@
-import adultsandfly from 'assets/icons/map-page-right-menu/png/mosquito-3-32px.png';
+import adult from 'assets/icons/map-page-right-menu/png/adult-32px.png';
 import model from 'assets/icons/map-page-right-menu/png/019-refresh-32px.png';
 import info from 'assets/icons/map-page-right-menu/png/008-files-32px.png';
 import  ChartIndicators  from 'components/ChartIndicators/CharterIndicators';
@@ -8,6 +8,7 @@ import menuIcon from 'assets/icons/map-page-right-menu/png/menu-32px.png';
 import OptionsPanel from 'components/optionsPanel/OptionsPanel';
 import ChangeMapPanel from '../../components/vectorSelection/ChangeMapPanel/ChangeMapPanel';
 import { tileIconsSand } from './tileIcons3rdVec';
+import XLink from 'components/xlink';
 
 export const panelDataSand = [
   {
@@ -43,7 +44,7 @@ export const panelDataSand = [
   {
     id: 1,
     key: 'sandfly_population',
-    icon: adultsandfly,
+    icon: adult,
   },
   {
     key: 'sandfly_population_panel',
@@ -51,7 +52,7 @@ export const panelDataSand = [
       years: 'Bologna2024',
       mixedKeys: [
         {
-          key: 'g3',
+          key: 'g1',
           levels: ['surv', 'eggs'],
         },
         {
@@ -59,42 +60,82 @@ export const panelDataSand = [
           levels: ['models', 'albopictus (sPop)'],
         },
         {
-          key: 'g1',
+          key: 'g3',
           levels: ['models', 'ArboCartoR'],
+        },
+        {
+          key: 'g4',
+          levels: ['models', 'dynamAedes'],
+        },
+        {
+          key: 'g5',
+          levels: ['models', 'Metelmann et al. (2019)'],
+        },
+        {
+          key: 'g6',
+          levels: ['models', 'VECTRI'],
+        },
+        {
+          key: 'g7',
+          levels: ['models', 'AedesDDE'],
+        },
+        {
+          key: 'g8',
+          levels: ['models', 'Stacked Machine Learning'],
         },
       ],
       sliceInfo: {
-        g3: {
-          sliceLabels: { slice0: 'eggs' },
-          sliceColors: { slice0: '#167997' },
+        g1: {
+          sliceLabels: { slice0: 'VectAbundance (2019-2022)' },
+          sliceColors: { slice0: '#1f77b4' },
         },
         g2: {
           sliceLabels: { slice0: 'albopictus (sPop)' },
-          sliceColors: { slice0: '#1B3958' },
+          sliceColors: { slice0: '#ff7f0e' },
         },
-        g1: {
+        g3: {
           sliceLabels: { slice0: 'ArboCartoR' },
-          sliceColors: { slice0: '#167997' },
+          sliceColors: { slice0: '#2ca02c' },
+        },
+        g4: {
+          sliceLabels: { slice0: 'dynamAedes' },
+          sliceColors: { slice0: '#d62728' },
+        },
+        g5: {
+          sliceLabels: { slice0: 'Metelmann et al. (2019)' },
+          sliceColors: { slice0: '#9467bd' },
+        },
+        g6: {
+          sliceLabels: { slice0: 'VECTRI' },
+          sliceColors: { slice0: '#8c564b' },
+        },
+        g7: {
+          sliceLabels: { slice0: 'AedesDDE' },
+          sliceColors: { slice0: '#e377c2' },
+        },
+        g8: {
+          sliceLabels: { slice0: 'Stacked Machine Learning' },
+          sliceColors: { slice0: '#bcbd22' },
         },
       },
       horizontalAxis: 'date',
       chartType: 'rechart',
       initialSetting: 'sim-ts',
-      plottedKeys: ['eggs', 'albopictus (sPop)', 'ArboCartoR'],
-      colors: ['#167997', '#1B3958', '#167997'],
-      labels: ['eggs', 'albopictus (sPop)', 'ArboCartoR'],
-      lineStyle: { g1: 'dots', g3: 'dots' },
+      plottedKeys: ['VectAbundance (2019-2022)', 'albopictus (sPop)', 'ArboCartoR', 'dynamAedes', 'Metelmann et al. (2019)', 'VECTRI', 'AedesDDE', 'Stacked Machine Learning'],
+      colors: ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b', '#e377c2', '#bcbd22'],
+      labels: ['VectAbundance (2019-2022)', 'albopictus (sPop)', 'ArboCartoR', 'dynamAedes', 'Metelmann et al. (2019)', 'VECTRI', 'AedesDDE', 'Stacked Machine Learning'],
+      lineStyle: { g1: 'dots' },
       lineSlice: [],
     },
 
     content: (
       <div className="text-area">
-        <h1>Female vector abundance</h1>
+        <h1>Female vector activity (egg laying)</h1>
         <div>
           <p>
-            The number of <i>Phlebotomus papatasi</i> females averaged over the
-            time period: 2011-2015. The dotted lines mark the 50% range of the
-            model output
+            Daily number of eggs laid by the Asian tiger mosquito as a proxy to
+            biting activity as predicted by the 7 climate-sensitive models.
+            These models have been presented during the <XLink href="https://www.vectormodelling.com/Bologna2024/">Bologna 2024 Workshop</XLink>.
           </p>
         </div>
       </div>

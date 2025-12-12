@@ -16,7 +16,7 @@ export const indicators = {
       url: 'https://cds.climate.copernicus.eu/datasets/reanalysis-cerra-land',
     },
     {
-      label: 'CORINE land cover',
+      label: 'CORINE Land Cover',
       url: 'https://land.copernicus.eu/en/products/corine-land-cover',
     },
   ],

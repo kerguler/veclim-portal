@@ -3,7 +3,6 @@ import { tileIconsSand as tileIcons } from './tileIcons3rdVec';
 import { panelDataSand as panelData } from './panelData3rdVec';
 import { tileIconRowHeadingsSand as tileIconRowHeadings } from './tileIconRowHeadings';
 import tileIconFly from 'assets/icons/map-page-right-menu/png/mosquito-3-32px.png';
-import { methodsPageSand as methodsPage } from './methodsPage';
 import { indicators } from './indicators';
 import { timeseries } from './timeSeries';
 import Bologna2024LeftPanel from './LeftPanel';
@@ -24,7 +23,6 @@ const moduleObj = {
       label: 'Bologna2024',
     },
   },
-  methodsPage,
   tileIcons,
   indicators,
   panelData,
@@ -49,7 +47,7 @@ const moduleObj = {
     },
   },
   defaults: {
-    tileArray: ['Bologna2024_M0'],
+    tileArray: ['Bologna2024_vabun'],
     firstPanelKey: 'location_info_panel',
   },
 };

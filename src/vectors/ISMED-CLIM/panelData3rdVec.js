@@ -8,6 +8,7 @@ import menuIcon from 'assets/icons/map-page-right-menu/png/menu-32px.png';
 import OptionsPanel from 'components/optionsPanel/OptionsPanel';
 import ChangeMapPanel from '../../components/vectorSelection/ChangeMapPanel/ChangeMapPanel';
 import { tileIconsSand } from './tileIcons3rdVec';
+import XLink from 'components/xlink';
 
 export const panelDataSand = [
   {
@@ -94,7 +95,7 @@ export const panelDataSand = [
           <p>
             The number of <i>Phlebotomus papatasi</i> females averaged over the
             time period: 2011-2015. The dotted lines mark the 50% range of the
-            model output
+            V2511A model output. This work has been developed in the framework of the <XLink href="https://ismed-clim.eu/">ISMED-CLIM</XLink> project.
           </p>
         </div>
       </div>

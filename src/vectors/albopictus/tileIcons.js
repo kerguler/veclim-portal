@@ -6,8 +6,9 @@ import impact from 'assets/icons/map-page-right-menu/png/015-heart rate-32px.png
 import prpin from 'assets/icons/map-page-right-menu/png/027-pin-32px.png';
 const tileBase = process.env.REACT_APP_BASE_URL;
 
-const fcastDateRange = '2025-09-01:2025-12-01';
-const fcastDateLabel = 'September - November, 2025';
+const fcastDateRange = "2025-12-01:2026-03-01";
+const fcastDateLabel = "December - February, 2025";
+
 export const tileIcons = [
   {
     key: 'colegg',

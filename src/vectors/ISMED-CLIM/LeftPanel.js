@@ -5,22 +5,25 @@ import 'components/LeftPanel/LeftPanel.css';
 import 'components/LeftPanel/GeneralStyles/OverflowIndicator.css';
 
 import useWindowSize from 'customHooks/useWindowSize';
-import RiskPanel from 'components/LeftPanel/RiskInfo/FloatPanelRisk';
 import MapWithDate from 'components/LeftPanel/MapWithDate/MapWithDate';
-import FloatPanelMosquitoInfo from 'components/LeftPanel/MosquitoInfo/FloatPanelMosquitoInfo';
-import FloatPanelIndicators from 'components/LeftPanel/Indicators/FloatPanelIndicators';
+import PlainInfo from 'components/LeftPanel/PlainInfo/PlainInfo';
 import News from 'components/LeftPanel/News/NewsFromApi';
 import TemplatePage from 'pages/TemplatePage/TemplatePage';
 import { useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import Skeleton from 'components/skeleton/Skeleton';
 import VectorSelector from 'components/LeftPanel/vectorSelection/VectorCarousel';
+import XLink from 'components/xlink';
 
 function IsmedClimLeftPanel({ page, displayNews, displayContent }) {
   const { webApp } = useWindowSize();
   const location = useLocation();
   const position = useSelector(
     (state) => state.fetcher.fetcherStates.map.globalPosition
+  );
+
+  const text = (
+    <p>Risk indicators from the <XLink href="https://ismed-clim.eu/"><strong>ISMED-CLIM</strong></XLink> project are not yet available on <strong>VEClim</strong></p>
   );
 
   const home = (
@@ -45,9 +48,9 @@ function IsmedClimLeftPanel({ page, displayNews, displayContent }) {
               <Skeleton times={4} noBorder={true} />
             ) : (
               <div className="indicators-container inner-content">
-                <FloatPanelMosquitoInfo />
-                <RiskPanel />
-                <FloatPanelIndicators />
+                <PlainInfo>
+                  {text}
+                </PlainInfo>
               </div>
             )}
           </div>
@@ -70,9 +73,9 @@ function IsmedClimLeftPanel({ page, displayNews, displayContent }) {
           {!webApp && (
             <div className="indicators-container">
               <div className="indicators-container inner-content">
-                <FloatPanelMosquitoInfo />
-                <RiskPanel />
-                <FloatPanelIndicators />
+                <PlainInfo>
+                  {text}
+                </PlainInfo>
               </div>
             </div>
           )}

@@ -1,24 +1,15 @@
 export const indicators = {
-  resolution: '5.5 km x 5.5 km',
+  resolution: '11 km x 11 km',
   model: {
-    label: 'Model of Phlebotomus papatasi',
+    label: '7 climate-sensitive models of the Asian tiger mosquito',
     url: null,
-    description:
-      "Model of Phlebotomus papatasi, version V2511A, developed as part of ISMED-CLIM's early warning system against zoonotic diseases",
+    description: "",
   },
   covariates: [
     {
-      label: 'CERRA',
-      url: 'https://cds.climate.copernicus.eu/datasets/reanalysis-cerra-single-levels',
-    },
-    {
-      label: 'CERRA-Land',
-      url: 'https://cds.climate.copernicus.eu/datasets/reanalysis-cerra-land',
-    },
-    {
-      label: 'CORINE land cover',
-      url: 'https://land.copernicus.eu/en/products/corine-land-cover',
-    },
+      label: 'ERA5-Land',
+      url: 'https://cds.climate.copernicus.eu/datasets/reanalysis-era5-land',
+    }
   ],
   showForecastRange: false,
 };
