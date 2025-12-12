@@ -1,5 +1,4 @@
-import { useDispatch, useSelector } from 'react-redux';
-import { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import {
   LineChart,
@@ -11,7 +10,6 @@ import {
   Legend,
   ResponsiveContainer,
   Brush,
-  BrushY,
 } from '@kerguler/recharts';
 import { useRef } from 'react';
 import './RechartsPlot.css';
@@ -69,8 +67,11 @@ function RechartsPlot({ direction, plotMat }) {
       const { date, ...restObj } = plotMat[0];
       return Object.keys(restObj);
     }
+
     return [];
   }, [plotMat]);
+
+  console.log({ p: plotMat[0], c: chartParameters });
   useEffect(() => {
     if (argKeys.length > 0) {
       argRef.current.keys = argKeys;
@@ -82,7 +83,14 @@ function RechartsPlot({ direction, plotMat }) {
   });
 
   useMemo(() => {
-    handleAxisAdjustments(plotMat, chartParameters, vectorName, argKeys, s3Ref, dispatch);
+    handleAxisAdjustments(
+      plotMat,
+      chartParameters,
+      vectorName,
+      argKeys,
+      s3Ref,
+      dispatch
+    );
   }, [plotMat, chartParameters, vectorName, argKeys, s3Ref, dispatch]);
 
   // useAdjustAxes(plotMat, chartParameters, vectorName, argKeys);
@@ -92,10 +100,22 @@ function RechartsPlot({ direction, plotMat }) {
 
   useEffect(() => {
     plotMat &&
-      ChartCalculatorService.decideBrushRange(chartParameters, plotMat, dispatch, d, brushRange);
+      ChartCalculatorService.decideBrushRange(
+        chartParameters,
+        plotMat,
+        dispatch,
+        d,
+        brushRange
+      );
   }, [plotMat, vectorName]);
   const handleBrushChange = (range) => {
-    ChartCalculatorService.handleBrushChange(range, dispatch, plotMat, setBrushRange, direction);
+    ChartCalculatorService.handleBrushChange(
+      range,
+      dispatch,
+      plotMat,
+      setBrushRange,
+      direction
+    );
   };
   if (!plotMat || plotMat.length === 0) {
     return <div>Loading data...</div>;
@@ -107,8 +127,18 @@ function RechartsPlot({ direction, plotMat }) {
     }
     return value; // If not a number, return it as is
   };
-  const renderedAxes = buildAxes(plotMat, chartParameters, brushDatay, yaxisInfo);
-  const renderedLines = buildLines(chartParameters, plotMat, direction, yaxisInfo);
+  const renderedAxes = buildAxes(
+    plotMat,
+    chartParameters,
+    brushDatay,
+    yaxisInfo
+  );
+  const renderedLines = buildLines(
+    chartParameters,
+    plotMat,
+    direction,
+    yaxisInfo
+  );
 
   return (
     <ResponsiveContainer>
@@ -152,7 +182,12 @@ function RechartsPlot({ direction, plotMat }) {
         />
         <Tooltip
           contentStyle={{ margin: '20px' }}
-          content={<CustomTooltip keys={argRef.current.keys} parameters={chartParameters} />}
+          content={
+            <CustomTooltip
+              keys={argRef.current.keys}
+              parameters={chartParameters}
+            />
+          }
         />
         <Legend
           key={'legend'}
@@ -170,7 +205,11 @@ function RechartsPlot({ direction, plotMat }) {
           align="top"
           margin={10}
           content={
-            <CustomLegend keys={argRef.current.keys} key={'customLegend'} direction={direction} />
+            <CustomLegend
+              keys={argRef.current.keys}
+              key={'customLegend'}
+              direction={direction}
+            />
           }
         />
       </LineChart>
@@ -199,14 +238,19 @@ function buildAxes(plotMat, chartParameters, brushDatay, yaxisInfo) {
       return (
         <YAxis
           display={
-            yaxisInfo[key].min === Infinity && yaxisInfo[key].max === -Infinity ? 'none' : 'true'
+            yaxisInfo[key].min === Infinity && yaxisInfo[key].max === -Infinity
+              ? 'none'
+              : 'true'
           }
           yAxisId="right"
           key="right-0"
           domain={[brushDataYR.min, brushDataYR.max]}
           allowDataOverflow={true}
           tickFormatter={formatYAxisTick}
-          stroke={chartParameters.sliceInfo[key.split('.')[0]]?.sliceColors?.slice0 || 'black'}
+          stroke={
+            chartParameters.sliceInfo[key.split('.')[0]]?.sliceColors?.slice0 ||
+            'black'
+          }
           orientation="right"
         />
       );
@@ -218,14 +262,19 @@ function buildAxes(plotMat, chartParameters, brushDatay, yaxisInfo) {
       return (
         <YAxis
           display={
-            yaxisInfo[key].min === Infinity && yaxisInfo[key].max === -Infinity ? 'none' : 'true'
+            yaxisInfo[key].min === Infinity && yaxisInfo[key].max === -Infinity
+              ? 'none'
+              : 'true'
           }
           yAxisId="left"
           key="left-0"
           domain={[brushDataYL.min, brushDataYL.max]}
           allowDataOverflow={true}
           tickFormatter={formatYAxisTick}
-          stroke={chartParameters.sliceInfo[key.split('.')[0]]?.sliceColors?.slice0 || 'black'}
+          stroke={
+            chartParameters.sliceInfo[key.split('.')[0]]?.sliceColors?.slice0 ||
+            'black'
+          }
         />
       );
     }
@@ -255,8 +304,12 @@ function buildLines(chartParameters, plotMat, direction, yaxisInfo) {
         secondaryKey = key.split('.')[1];
 
         if (primaryKey in chartParameters.sliceInfo) {
-          if (secondaryKey in chartParameters.sliceInfo[primaryKey].sliceColors) {
-            color = chartParameters.sliceInfo[primaryKey].sliceColors[secondaryKey] || 'black';
+          if (
+            secondaryKey in chartParameters.sliceInfo[primaryKey].sliceColors
+          ) {
+            color =
+              chartParameters.sliceInfo[primaryKey].sliceColors[secondaryKey] ||
+              'black';
           }
         }
       } else {
@@ -268,7 +321,11 @@ function buildLines(chartParameters, plotMat, direction, yaxisInfo) {
         primaryKey in chartParameters.lineStyle &&
         chartParameters.lineStyle[primaryKey] === 'dots';
 
-      if (!yaxisInfo[key] || yaxisInfo[key].min === Infinity || yaxisInfo[key].max === -Infinity) {
+      if (
+        !yaxisInfo[key] ||
+        yaxisInfo[key].min === Infinity ||
+        yaxisInfo[key].max === -Infinity
+      ) {
         return null;
       }
       let yDirection = yaxisInfo[key].orientation || 'left';

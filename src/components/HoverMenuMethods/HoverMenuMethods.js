@@ -3,12 +3,9 @@ import React, { useEffect, useRef, useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import './hoverMenuMethods.css';
 import { useSelector } from 'react-redux';
-import useWindowSize from 'customHooks/useWindowSize';
 import { getVector } from 'vectors/registry';
 
 const HoverMenuMethods = ({ mainDivRef, onClose }) => {
-  const webApp = useWindowSize(); // still here if you need responsive behavior
-
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const menuRef = useRef();
 

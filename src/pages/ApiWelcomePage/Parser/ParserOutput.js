@@ -1,7 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import "./ParserOutput.css";
 import { useEffect } from "react";
-import { useState } from "react";
 import { setBlinkers } from "store";
 function ParserOutput() {
 	const blinkers = useSelector((state) => state.dashboard.blinkers);

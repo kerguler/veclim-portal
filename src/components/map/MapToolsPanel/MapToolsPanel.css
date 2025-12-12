@@ -1,0 +1,36 @@
+/* MapToolsPanel.css */
+.map-tools-panel {
+  min-width: 220px;
+  font-size: 0.95rem;
+  color: #fff;
+}
+
+.map-tools-panel__title {
+  font-weight: 700;
+  font-size: 0.9rem;
+  opacity: 0.9;
+  margin-bottom: 10px;
+  letter-spacing: 0.2px;
+}
+
+.map-tools-panel__button {
+  user-select: none;
+  cursor: pointer;
+  padding: 10px 12px;
+  border-radius: 10px;
+  margin-top: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  transition: transform 120ms ease, background 120ms ease,
+    border-color 120ms ease;
+}
+
+.map-tools-panel__button:hover {
+  transform: translateY(-1px);
+  background: rgba(255, 255, 255, 0.14);
+  border-color: rgba(255, 255, 255, 0.22);
+}
+
+.map-tools-panel__button:active {
+  transform: translateY(0px) scale(0.98);
+}

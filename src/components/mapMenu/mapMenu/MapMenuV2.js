@@ -1,6 +1,5 @@
 import './mapMenuV2.css';
 import classNames from 'classnames';
-import useDirectorFun from 'customHooks/useDirectorFun';
 import useWindowSize from 'customHooks/useWindowSize';
 import { useEffect, useRef, useState } from 'react';
 function MapMenuV2({ menuDirection, direction, children, level }) {

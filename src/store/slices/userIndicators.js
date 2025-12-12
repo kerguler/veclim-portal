@@ -1,5 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { useFetchCoordinateDataQuery } from "../apis/coordinatesApi";
 const user =createSlice({
     name : "users",
     initialState: {

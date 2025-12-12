@@ -1,5 +1,4 @@
 import { useSelector } from "react-redux";
-import { useEffect } from "react";
 function SliderMarker({ direction }) {
 	let displayedValue;
     const range=useSelector(state=>state.slider.range)

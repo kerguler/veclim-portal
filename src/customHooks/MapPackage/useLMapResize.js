@@ -1,6 +1,4 @@
-import PackageMapServices from 'components/map/mapPackage/PackageMapServices';
 import { useEffect } from 'react';
-import { useSelector } from 'react-redux';
 import { useLocation } from 'react-router';
 function useLMapResize(mapParRef) {
   const location = useLocation();

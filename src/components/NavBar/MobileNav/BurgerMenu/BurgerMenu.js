@@ -1,7 +1,6 @@
 import HoverMenuMethods from "components/HoverMenuMethods/HoverMenuMethods";
 import { Link } from "react-router-dom";
 import "./BurgerMenu.css";
-import { useState } from "react";
 function BurgerMenu({ mainDivRef, linkText, handleMapBounds, handleMenu }) {
 	const handleMenuClose = () => {
 		handleMenu(false);

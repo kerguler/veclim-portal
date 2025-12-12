@@ -1,16 +1,14 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import "../../styles/charts/plotScaleY.css";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import {
 	setBackgroundColor,
 	setForegroundColor,
 	setRefPoint,
-	setForeGroundDrag,
 	setLimits,
 	setRange,
-	setOffsetValue,
 } from "../../store";
-import { setInitialSize, setPadPositions, setIsDragging } from "../../store";
+import { setInitialSize } from "../../store";
 import SliderForeGround from "./SliderForeGround";
 import BrushHandle from "./BrushHandle";
 

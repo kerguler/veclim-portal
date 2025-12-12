@@ -1,4 +1,4 @@
-// useMapBasicEvents.js
+// customHooks/MapPackage/useMapBasicEvents.js
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { setDirectInitError } from 'store';
@@ -7,18 +7,13 @@ import PackageMapServices from 'components/map/mapPackage/PackageMapServices';
 import { useAlboData } from 'context/AlboDataContext';
 import useDirectorFun from 'customHooks/useDirectorFun';
 
-import { buildMapPermalink } from 'utils/mapPermalink';
-
 function useMapBasicEvents(mapParRef, fitworld, onContextMenu) {
   const dispatch = useDispatch();
   const {
     directInitError,
     vectorName,
-    panelInterfere,
-    invalidateSimData,
-    mapPagePositionLeft: mapPagePosition,
+    mapPagePosition, // snapped cell
     lastPanelDisplayed,
-    tileIcons, // 🔹 make sure useDirectorFun returns this
     tileArray,
   } = useDirectorFun('left');
 
@@ -30,6 +25,8 @@ function useMapBasicEvents(mapParRef, fitworld, onContextMenu) {
 
     const map = p.map;
 
+    // MAP EVENTS ------------------------
+
     const handleMapClick = (e) => {
       setDataSim(null);
 
@@ -38,9 +35,8 @@ function useMapBasicEvents(mapParRef, fitworld, onContextMenu) {
         mapParRef,
         vectorName,
         dispatch,
-        null,
-        null,
-        mapPagePosition,
+        null, // directMap
+        mapPagePosition, // current mapPagePosition
         'left'
       );
     };
@@ -72,49 +68,12 @@ function useMapBasicEvents(mapParRef, fitworld, onContextMenu) {
       }
     };
 
-    // 🔹 Right-click → delegate to React via onContextMenu
     const handleContextMenu = (e) => {
       if (
         e.originalEvent &&
         typeof e.originalEvent.preventDefault === 'function'
       ) {
         e.originalEvent.preventDefault();
-      }
-
-      const center =
-        mapPagePosition &&
-        mapPagePosition.lat != null &&
-        mapPagePosition.lng != null
-          ? mapPagePosition
-          : map.getCenter();
-
-      const zoom = map.getZoom();
-
-      // 🔹 Build tile param from active tiles
-      // Adjust the property name (isActive / selected / checked) to match your tileIcons
-      const tileParam =
-        Array.isArray(tileArray) && tileArray.length > 0
-          ? tileArray.join(':')
-          : undefined;
-
-      const permalink = buildMapPermalink({
-        vectorName,
-        center: { lat: center.lat, lng: center.lng },
-        zoom,
-        panelKey: lastPanelDisplayed,
-        tileKey: tileParam, // 🔹 include tiles here
-        pathname: '/MapPage',
-      });
-
-      if (typeof onContextMenu === 'function') {
-        const containerPoint = map.latLngToContainerPoint(e.latlng);
-
-        onContextMenu({
-          latlng: e.latlng,
-          containerPoint,
-          permalink,
-          originalEvent: e.originalEvent,
-        });
       }
     };
 
@@ -123,6 +82,8 @@ function useMapBasicEvents(mapParRef, fitworld, onContextMenu) {
     map.on('resize', handleResize);
     map.on('moveend', handleMoveEnd);
     map.on('contextmenu', handleContextMenu);
+
+    // initial sync
 
     return () => {
       if (!map) return;
@@ -137,15 +98,43 @@ function useMapBasicEvents(mapParRef, fitworld, onContextMenu) {
     mapParRef,
     vectorName,
     mapPagePosition,
-    invalidateSimData,
+    lastPanelDisplayed,
+    tileArray,
     directInitError,
     setDataSim,
-    lastPanelDisplayed,
-    tileIcons, // 🔹 include so permalink updates if tiles change
     onContextMenu,
   ]);
 
-  // fit-world behaviour unchanged
+  // whenever snapped click / panel / tiles change, rebuild permalink once
+  useEffect(() => {
+    const p = mapParRef.current;
+    if (!p || !p.map || !vectorName) return;
+
+    const map = p.map;
+    const viewCenter = map.getCenter();
+    const zoom = map.getZoom();
+
+    const clickPos =
+      mapPagePosition &&
+      typeof mapPagePosition.lat === 'number' &&
+      typeof mapPagePosition.lng === 'number'
+        ? { lat: mapPagePosition.lat, lng: mapPagePosition.lng }
+        : null;
+
+    const tileKey =
+      Array.isArray(tileArray) && tileArray.length > 0
+        ? tileArray.join(':')
+        : undefined;
+  }, [
+    mapPagePosition,
+    lastPanelDisplayed,
+    tileArray,
+    vectorName,
+    mapParRef,
+    dispatch,
+  ]);
+
+  // fit world unchanged
   useEffect(() => {
     const p = mapParRef.current;
     if (!p || !p.map) return;

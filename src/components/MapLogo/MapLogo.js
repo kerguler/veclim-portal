@@ -1,11 +1,8 @@
 import { Link } from 'react-router-dom';
 import veclimLogo from 'assets/images/logos/VEClim-Icon.svg';
 import './mapLogo.css';
-import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { setMapVector } from 'store';
 import { useSelector } from 'react-redux';
-import { setDisplayedPanelID } from 'store';
 import { setOpenItems } from 'store';
 import { setPanelInterfere } from 'store';
 import { setLastPanelDisplayed } from 'store';

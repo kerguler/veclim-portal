@@ -1,13 +1,20 @@
 import './CustomTooltip.css';
 
 function CustomTooltip({ active, payload, label, parameters }) {
-  const payload1 = Array.from(new Map(payload.map((item) => [item.value, item])).values());
+  const payload1 = Array.from(
+    new Map(payload.map((item) => [item.value, item])).values()
+  );
   let preparedKeys = Object.keys(parameters.sliceInfo).flatMap((item) => {
-    let tempArray = Object.keys(parameters.sliceInfo[item].sliceLabels).map((element) => {
-      return parameters.sliceInfo[item].sliceLabels[element];
-    });
+    let tempArray = Object.keys(parameters.sliceInfo[item].sliceLabels).map(
+      (element) => {
+        return parameters.sliceInfo[item].sliceLabels[element];
+      }
+    );
     return tempArray;
   });
+
+  console.log({ preparedKeys });
+
   if (active && payload1 && payload1.length) {
     const RenderedTooltipElement = ({ entry, index }) => {
       let keyArray = entry.dataKey.split('.');
@@ -35,19 +42,19 @@ function CustomTooltip({ active, payload, label, parameters }) {
     };
 
     let renderedTooltipvalues = payload1.map((entry, index) => {
-      if (parameters.labels) {
-        return (
-          <p key={`${entry.dataKey}-${index}`} style={{ color: entry.color }}>
-            <RenderedTooltipElement index={index} entry={entry} />
-          </p>
-        );
-      } else {
-        return (
-          <p key={`${entry.dataKey}-${index}`} style={{ color: entry.color }}>
-            {`${entry.name}: ${entry.value.toFixed(2)}`}
-          </p>
-        );
-      }
+      // if (parameters.labels) {
+      return (
+        <p key={`${entry.dataKey}-${index}`} style={{ color: entry.color }}>
+          <RenderedTooltipElement index={index} entry={entry} />
+        </p>
+      );
+      // } else {
+      //   return (
+      //     <p key={`${entry.dataKey}-${index}`} style={{ color: entry.color }}>
+      //       {`${entry.name}: ${entry.value.toFixed(2)}`}
+      //     </p>
+      //   );
+      // }
     });
     return (
       <div className="custom-tooltip">

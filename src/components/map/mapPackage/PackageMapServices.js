@@ -5,8 +5,6 @@ import { getVector } from 'vectors/registry';
 import {
   setMapPagePosition,
   setPanelInterfere,
-  setPanelOpen,
-  setSwitchMap,
   setMapLoaded,
   setLeftMapLoaded,
   setRightMapLoaded,
@@ -14,7 +12,6 @@ import {
   setCurrentMapZoom,
   setVectorName,
   setTileArray,
-  setDisplayedPanelID,
   setCurrentMapBounds,
   setMapVector,
 } from 'store';
@@ -22,15 +19,11 @@ import TileLoaderService from '../../../customHooks/TileLoaderService';
 import ErrorScreenMap from 'components/map/errorScreen/ErrorScreenMap';
 import { setCurrentMaxBounds } from 'store';
 import { setDisplayReady } from 'store';
-import { setIsTsDataSet } from 'store';
 import { setInvalidateSimData } from 'store';
 import { setDataArrived } from 'store';
 import { setOpenItems } from 'store';
-import { zIndex } from 'material-ui/styles';
 import { setPlotReady } from 'store';
-import { setInvalidateTsData } from 'store';
 import {
-  setDisplaySimulationPanel,
   setLastPanelDisplayed,
 } from 'components/mapMenu/menuStore/mapMenuSlice';
 
@@ -193,7 +186,7 @@ class PackageMapServices {
   ) {
     dispatch(setInvalidateSimData(true));
     dispatch(setDataArrived({ direction: direction, value: false }));
-    this.clickMap(
+    const snappedPos= this.clickMap(
       e,
       mapParRef,
       vectorName,
@@ -211,6 +204,7 @@ class PackageMapServices {
     //   dispatch(setPanelInterfere({ direction, value: null }));
     // }
     dispatch(setPanelInterfere({ direction, value: -1 }));
+    return {snappedPos  }
   }
   static clickMap = (
     e,
@@ -229,6 +223,7 @@ class PackageMapServices {
     );
 
     newPosition = { ...newPosition, res: [0.125, 0.125] };
+    const snappedPos={ lat: newPosition.lat, lng: newPosition.lng }
     p.prevClickPointRef = newPosition;
     dispatch(
       setMapPagePosition({ lat: newPosition.lat, lng: newPosition.lng })
@@ -257,7 +252,6 @@ class PackageMapServices {
 
       p.iconMarker = null;
     });
-
     if (
       mapPagePosition &&
       newPosition.lat === mapPagePosition.lat &&
@@ -280,6 +274,7 @@ class PackageMapServices {
         vectorName,
         dispatch
       ).addTo(p.map);
+
     }
 
     if (p.map.getZoom() > switchZoom) {
@@ -287,6 +282,7 @@ class PackageMapServices {
     } else {
       p.rectMarker && p.map.removeLayer(p.rectMarker);
     }
+    return snappedPos;
   };
 
   static highlightMarkerFunc = (

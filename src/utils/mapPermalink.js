@@ -1,43 +1,32 @@
-// src/utils/mapPermalink.js
-
+// utils/mapPermalink.js
 export function buildMapPermalink({
   vectorName,
-  center,
+  viewCenter,   // {lat, lng} – camera center
+  clickPos,     // {lat, lng} – snapped grid cell (mapPagePosition)
   zoom,
   panelKey,
   tileKey,
   pathname = '/MapPage',
-
 }) {
   const params = new URLSearchParams();
 
-  // Vector/session
-  if (vectorName) {
-    params.set('session', vectorName);
+  if (vectorName) params.set('session', vectorName);
+
+  // camera
+  if (viewCenter) {
+    params.set('cLat', viewCenter.lat.toFixed(4));
+    params.set('cLon', viewCenter.lng.toFixed(4));
   }
 
-  // Center
-  if (center && center.lat != null && center.lng != null) {
-    const latNum = Number(center.lat);
-    const lngNum = Number(center.lng);
-
-    if (!Number.isNaN(latNum) && !Number.isNaN(lngNum)) {
-      params.set('lat', latNum.toFixed(4));
-      params.set('lon', lngNum.toFixed(4));
-    }
+  // clicked point (for panels)
+  if (clickPos) {
+    params.set('lat', clickPos.lat.toFixed(4));
+    params.set('lon', clickPos.lng.toFixed(4));
   }
 
-  // Zoom
-  if (typeof zoom === 'number') {
-    params.set('z', String(zoom));
-  }
-  if (panelKey) {
-    params.set('panel', panelKey);
-  }
-    if (tileKey) {
-    params.set('tile', tileKey);
-  }
-  const base = `${window.location.origin}${pathname}`;
-  const query = params.toString();
-  return query ? `${base}?${query}` : base;
+  if (typeof zoom === 'number') params.set('z', zoom.toString());
+  if (panelKey) params.set('panel', panelKey);
+  if (tileKey) params.set('tile', tileKey); // value "a:b" is fine
+
+  return `${pathname}?${params.toString()}`;
 }

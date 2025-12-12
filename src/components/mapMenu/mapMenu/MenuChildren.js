@@ -1,7 +1,6 @@
 import useDirectorFun from 'customHooks/useDirectorFun';
 import MapMenuV2 from './MapMenuV2';
 import MenuList from './MenuList';
-import classNames from 'classnames';
 function MenuChildren({ menuDirection, level, iconClassName, menuChildren, onToggle, direction }) {
   const { openItems } = useDirectorFun('left');
   const handleToggle = (key) => {

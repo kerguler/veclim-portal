@@ -7,13 +7,19 @@ import { setOpenItems } from 'store';
 
 function useDirectorFun(direction) {
   const simList = useSelector((state) => state.simulation.simList);
-
+  const isPermalinkClick = useSelector(
+    (state) => state.fetcher.fetcherStates.map.isPermalinkClick
+  );
   const shimmered = useSelector((state) => state.mapMenu[direction].shimmered);
   const albochickStatus = useSelector(
     (state) => state.simulation.albochickStatus
   );
   const displaySimulationPanel = useSelector(
     (state) => state.mapMenu[direction].displaySimulationPanel
+  );
+
+  const permalink = useSelector(
+    (state) => state.fetcher.fetcherStates.map.permalink
   );
   const lastPanelDisplayed = useSelector(
     (state) => state.mapMenu[direction].lastPanelDisplayed
@@ -93,12 +99,8 @@ function useDirectorFun(direction) {
   );
 
   // PANEL DATA
-  const {
-    panelData,
-    menuStructure,
-    simulationPanels,
-    tree,
-  } = useContext(PanelContextV2);
+  const { panelData, menuStructure, simulationPanels, tree } =
+    useContext(PanelContextV2);
   const tileArray = useSelector(
     (state) => state.fetcher.fetcherStates.tileArray
   );
@@ -177,7 +179,9 @@ function useDirectorFun(direction) {
     (state) => state.fetcher.fetcherStates.map.userPosition
   );
   return {
+    isPermalinkClick,
     userPosition,
+    permalink,
     vectorNames,
     currentMapBounds,
     currentMapCenter,

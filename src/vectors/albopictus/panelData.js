@@ -29,6 +29,7 @@ export const panelData = [
     initialOpen: true,
     selfClose: true,
   },
+
   {
     icon: info,
     key: 'location_info',

@@ -6,7 +6,6 @@ import useDirectorFun from 'customHooks/useDirectorFun';
 import { useDispatch } from 'react-redux';
 import { setDataArrived } from 'store';
 import { setInvalidateSimData } from 'store';
-import { useSelector } from 'react-redux';
 import { setAlbochickStatus } from 'store';
 function SimDataMessenger({ direction }) {
   const {

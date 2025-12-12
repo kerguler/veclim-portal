@@ -3,7 +3,6 @@ import { setRotateShow } from "store";
 import { setDisplayedArticleId } from "store";
 import { setReadMore } from "store";
 import { useSelector } from "react-redux";
-import { setTimer } from "store";
 import { clearTimer } from "store";
 const RenderedLines = () => {
 	const dispatch = useDispatch();

@@ -2,7 +2,7 @@ import "./errorScreenMap.css";
 import { useEffect, useState } from "react";
 import { useRef } from "react";
 import useOutsideClickClose from "../../../customHooks/useOutsideClickClose";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { setDirectInitError } from "store";
 import useDirectorFun from "customHooks/useDirectorFun";
 const ErrorScreenMap = () => {

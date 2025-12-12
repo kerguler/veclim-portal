@@ -4,8 +4,7 @@ import L from "leaflet";
 import { useDispatch, useSelector } from "react-redux";
 import MapAdjustmentsService from "../components/charts/services/MapAdjustmentsService";
 import useMapResize from "./useMapResize";
-import { setCurrentMapCenter, setCurrentMapBounds } from "store";
-import { current } from "@reduxjs/toolkit";
+import { setCurrentMapBounds } from "store";
 import useFetcherVariables from "./useFetcherVariables";
 function useMap(mapParRef) {
 	useMapResize();

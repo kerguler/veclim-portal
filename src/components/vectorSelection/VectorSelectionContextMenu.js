@@ -1,10 +1,7 @@
 import ContextMenu from "../map/ContextMenu";
-import albopictusIcon from "../../assets/icons/mosquito-64px.png";
 import "../../styles/vectorSelection/vectorSelectionContextMenu.css";
 import sandfly from "../../assets/icons/map-page-right-menu/png/mosquito-3-32px.png";
 import { useDispatch } from "react-redux";
-import { setTileArray, setVectorName } from "../../store/index.js";
-import { Link } from "react-router-dom";
 function VectorSelectionContextMenu({ onClick }) {
 	const dispatch = useDispatch();
 	// const handleClickOnAlbopictus = () => {

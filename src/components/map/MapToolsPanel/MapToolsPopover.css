@@ -1,0 +1,19 @@
+/* MapToolsPopover.css */
+.map-tools-popover {
+  position: fixed;              /* important: not trapped by parent stacking */
+  z-index: 120000;
+  background: var(--veclim-panel-bg, var(--primary-color1));
+  color: var(--veclim-panel-fg, #fff);
+  border-radius: 12px;
+  padding: 12px;
+  box-shadow: 0 14px 40px rgba(0,0,0,0.45);
+  border: 1px solid rgba(255,255,255,0.14);
+
+  transform-origin: var(--origin-x) var(--origin-y);
+  animation: popover-in 160ms cubic-bezier(.2,.9,.2,1) both;
+}
+
+@keyframes popover-in {
+  from { opacity: 0; transform: translate(-6px, -6px) scale(0.85); }
+  to   { opacity: 1; transform: translate(8px, 8px) scale(1); }
+}

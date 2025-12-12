@@ -1,7 +1,6 @@
-import { current } from '@reduxjs/toolkit';
 import RenderedPanelV2 from 'components/panel/SwitcherV2/RenderedPanelV2';
 import useDirectorFun from 'customHooks/useDirectorFun';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 
 import { useDispatch } from 'react-redux';
 import { setChartParameters } from 'store';

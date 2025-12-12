@@ -1,7 +1,7 @@
 import "./mobileNav.css";
 import overlayImage from "assets/images/dark_background_overlay_complete.webp";
 import worldPic from "assets/icons/009-globe-4-32px.png";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import "styles/IconMenu.css";
 import { useDispatch, useSelector } from "react-redux";

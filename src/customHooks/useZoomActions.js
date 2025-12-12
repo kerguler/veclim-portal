@@ -3,9 +3,11 @@ import { useEffect } from 'react';
 import PackageMapServices from 'components/map/mapPackage/PackageMapServices';
 import { useDispatch, useSelector } from 'react-redux';
 import useDirectorFun from './useDirectorFun';
-
+import { setPermalink } from 'store';
+import { getPermalinkFromMapRef } from 'utils/getPermalinkFromMapRef';
 function useZoomActions(mapParRef) {
-  const { vectorName, mapVector } = useDirectorFun('left');
+  const { vectorName, mapVector, lastPanelDisplayed, tileArray } =
+    useDirectorFun('left');
   const mapPagePosition = useSelector(
     (state) => state.fetcher.fetcherStates.map.mapPagePosition
   );
@@ -26,6 +28,13 @@ function useZoomActions(mapParRef) {
         dispatch,
         mapPagePosition
       );
+      let a = getPermalinkFromMapRef({
+        mapParRef,
+        vectorName,
+        lastPanelDisplayed,
+        tileArray,
+      });
+      dispatch(setPermalink(a));
     };
 
     p.map.on('zoomend', handleMarkers);

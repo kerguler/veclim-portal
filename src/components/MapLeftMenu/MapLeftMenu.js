@@ -1,21 +1,18 @@
 import "./MapLeftMenu.css";
 import menuIcon from "assets/icons/map-page-right-menu/png/menu-32px.png";
-import RenderedPanel from "components/panel/RenderedPanel";
 import { useCallback, useEffect, useState } from "react";
 import PanelContext from "context/panelsIcons";
 import { useContext } from "react";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { setPanelInterfere } from "store";
-import { setPanelOpen, setMapMenuOpen, setChartParameters } from "store";
+import { setPanelOpen, setMapMenuOpen } from "store";
 import { useRef } from "react";
 import classNames from "classnames";
 import mapMenuService from "services/LeftMenuService";
 import Switcher from "components/panel/Switcher/Switcher";
-import { setDisplayedIcons } from "store";
 import { setTwinIndex } from "store";
 import { setDirectInit } from "store";
-import { setMapPagePosition } from "store";
 import useArrangePanels from "customHooks/useArrangePanels";
 import { setDirectMap } from "store";
 

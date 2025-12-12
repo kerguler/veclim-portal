@@ -1,12 +1,8 @@
 import MapComponent2 from "components/map/MapComponent/GenericMapComponent";
-import useMap from "customHooks/useMap";
-import { useRef } from "react";
-import { useState } from "react";
 import "./PanelMap.css";
 import { useDispatch, useSelector } from "react-redux";
 import { setBlinkers } from "store";
 import { ReactComponent as BackIcon } from "assets/icons/django/back-icon.svg";
-import { setTileArray } from "store";
 
 function PanelMap() {
 	const blinkers = useSelector((state) => state.dashboard.blinkers);

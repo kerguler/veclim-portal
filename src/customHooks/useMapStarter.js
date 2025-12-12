@@ -1,7 +1,6 @@
 import { setFetcherStates } from "store";
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
-import useFetcherVariables from "./useFetcherVariables";
 import PackageMapServices from "components/map/mapPackage/PackageMapServices";
 
 import {

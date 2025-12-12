@@ -16,6 +16,8 @@ const fetcherSlice = createSlice({
       invalidateTsData: false,
       graphType: null,
       map: {
+        isPermalinkClick: false,
+        permalink: '',
         displayTileNames: { left: false, right: false, center: true },
 
         currentMapCenter: { lat: 35.1966527, lng: 33.3217152 },
@@ -42,6 +44,12 @@ const fetcherSlice = createSlice({
   },
 
   reducers: {
+    setIsPermalinkClick(state, action) {
+      state.fetcherStates.map.isPermalinkClick = action.payload;
+    },
+    setPermalink(state, action) {
+      state.fetcherStates.map.permalink = action.payload;
+    },
     setLeafletLoaded(state, action) {
       state.fetcherStates.map.leafletLoaded = !!action.payload;
     },
@@ -137,7 +145,8 @@ const fetcherSlice = createSlice({
   },
 });
 
-export const {
+export const {setIsPermalinkClick,
+  setPermalink,
   setLeafletLoaded,
   setShowVectorAbundance,
   setAvailableTiles,

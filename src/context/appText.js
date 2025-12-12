@@ -1,17 +1,6 @@
 import { createContext } from 'react';
 import mosquitoPic from '../assets/images/many-mosquitoes-sm.webp';
 import controlPic from '../assets/images/mosquito-control-sm.webp';
-import worldPic from '../assets/images/digital-world-sm.webp';
-import emiliaSurv from '../assets/images/methods-Emilia-Romagna-surv.webp';
-import emiliaTSobs from '../assets/images/methods-Emilia-Romagna-TS-obs.webp';
-import emiliaERA from '../assets/images/methods-Emilia-Romagna-ERA5.webp';
-import emiliaTSsim from '../assets/images/methods-Emilia-Romagna-TS-sim.webp';
-import emiliaTSchikv from '../assets/images/methods-Emilia-Romagna-TS-chikv.webp';
-import graphPic from '../assets/images/sample-activity-profile.webp';
-import emiliaTSrisk from '../assets/images/methods-Emilia-Romagna-TS-risk.webp';
-import methodsForecast from '../assets/images/methods-forecast-ecmwf.webp';
-import methodsForecastActivity from '../assets/images/methods-forecast-ecmwf-colegg.webp';
-import methodsFutureActivity from '../assets/images/methods-future-nasa-colegg.webp';
 
 import designPic from '../assets/images/connections-background-sm.webp';
 import mosquitoesPic from '../assets/images/lots-of-mosquitoes-sm.webp';
@@ -37,10 +26,9 @@ import imageClimateIcon from '../assets/images/front_climate.webp';
 import imageFCastIcon from '../assets/images/front_fcast.webp';
 
 import { Link } from 'react-router-dom';
-import XLink from 'components/xlink';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
-import { setDisplayedPanelID, setReadyToView } from 'store';
+import { setReadyToView } from 'store';
 import PackageMapServices from 'components/map/mapPackage/PackageMapServices';
  import { methodsPage } from 'vectors/albopictus/methodsPage';
  import { methodsPageSand } from 'vectors/sandfly/methodsPage';

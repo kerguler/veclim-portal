@@ -27,6 +27,7 @@ const moduleObj = {
       label: 'Tiger Mosquito',
     },
   },
+  
   methodsPage,
   tileIcons,
   panelData,

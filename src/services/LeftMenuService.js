@@ -1,5 +1,4 @@
 import { setChartParameters } from "store";
-import updateNestedState from "./updateNestedState";
 import { setDisplayedPanelID } from "store";
 import { setPanelOpen } from "store";
 class mapMenuService {

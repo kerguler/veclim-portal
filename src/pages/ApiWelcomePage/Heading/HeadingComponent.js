@@ -3,10 +3,8 @@ import useCsrf from "pages/LoginRegister/Services/useCsrf";
 import { useLogoutMutation } from "store";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
 import { setCsrfToken } from "store";
 import { logoutUser } from "pages/LoginRegister/Services/backEndFunctions";
-import { setBlinkers } from "store";
 import { setUser } from "store";
 import "./HeadingComponent.css";
 function HeadingComponent() {

@@ -1,5 +1,4 @@
 import classNames from "classnames";
-import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setTileArray, setVectorName } from "../../store";

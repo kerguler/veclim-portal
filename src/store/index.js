@@ -49,6 +49,8 @@ import {
   setTsData,
   setVectorName,
   fetcherReducer,
+  setPermalink,
+  setIsPermalinkClick,
 } from './slices/fetcherSlice';
 
 import {
@@ -210,6 +212,8 @@ export {
 
 export { useFetchNewsDataQuery } from './apis/newsApi';
 export {
+  setPermalink,
+  setIsPermalinkClick,
   setShimmered,
   setLeafletLoaded,
   setAlbochickStatus,

@@ -10,6 +10,8 @@ import useHandleDisabledIcons from './useHandleDisabledIcons';
 import { setPanelInterfere } from 'store';
 import { setTwinIndex } from 'store';
 import { setPanelOpen } from 'store';
+import MapToolsPopover from 'components/map/MapToolsPanel/MapToolsPopover';
+import { useRef } from 'react';
 const PanelChildren = lazy(() => import('./PanelChildren'));
 const MenuChildren = lazy(() => import('./MenuChildren'));
 
@@ -27,33 +29,40 @@ function MenuItemV2({ item, onToggle, shouldShimmer, direction }) {
     twinIndex,
     siblingCount,
   } = useDirectorFun('left');
-  let imgClassName = 'rotate0';
 
-  let className = classNames('icon');
+  const dispatch = useDispatch();
+
   const [shimmerOn, setShimmerOn] = useState(false);
   const [level, setLevel] = useState(0);
   const [style, setStyle] = useState({});
   const [imgStyle, setImgStyle] = useState({});
-
-  const dispatch = useDispatch();
+  const [showTools, setShowTools] = useState(false);
 
   const isOpen = openItems[item.key];
+
+  // For normal items, find the corresponding panel; for utility items we won't have one
   const displayedItem = Array.isArray(panelData)
     ? panelData.find((panel) => panel.key === item.key)
     : null;
 
-  // const displayedItem = panelData.filter((panel) => panel.key === item.key)[0];
+  // baseItem = the thing we use for icon/key in the DOM
+  const baseItem = displayedItem || item;
 
-  if (displayedItem && displayedItem?.rotate === 90) {
+  let imgClassName = 'rotate0';
+  let className = classNames('icon');
+
+  if (displayedItem && displayedItem.rotate === 90) {
     imgClassName = 'rotate90';
   }
+
   const panelChildren = item.children.filter((child) =>
     child.key.endsWith('_panel')
   );
   const menuChildren = item.children.filter(
     (child) => !child.key.endsWith('_panel')
   );
-  className =  useSetIconActive(
+
+  className = useSetIconActive(
     openItems,
     displayedItem,
     className,
@@ -70,6 +79,7 @@ function MenuItemV2({ item, onToggle, shouldShimmer, direction }) {
     displaySimulationPanel,
     lastPanelDisplayed
   );
+
   useHandleIconShimmer(
     shouldShimmer,
     shimmered,
@@ -78,11 +88,26 @@ function MenuItemV2({ item, onToggle, shouldShimmer, direction }) {
     direction,
     setShimmerOn
   );
+  const toolsBtnRef = useRef(null);
+  const [anchorPoint, setAnchorPoint] = useState(null);
+
   let menuDirection = displayedItem?.subMenuOpenDirection;
-  const handleToggle = (key) => {
-    panelInterfere === -1 &&
+  const handleToggle = (e, key) => {
+    // 🔹 Utility action: open tools popover, do NOT change panels
+    if (item.isUtility) {
+      const r = e.currentTarget.getBoundingClientRect();
+      setAnchorPoint({ x: r.left, y: r.bottom });
+      setShowTools((v) => !v);
+
+      return;
+    }
+
+    // Normal behaviour for real panels / menus
+    if (panelInterfere === -1) {
       dispatch(setPanelInterfere({ direction, value: 0 }));
+    }
     dispatch(setTwinIndex({ direction, value: 0 }));
+
     if (!key.endsWith('_panel')) {
       dispatch(setPanelOpen({ direction, value: false }));
     }
@@ -93,21 +118,30 @@ function MenuItemV2({ item, onToggle, shouldShimmer, direction }) {
 
   return (
     <>
-      {' '}
       <div
-        key={displayedItem?.key}
+        ref={toolsBtnRef}
+        key={baseItem.key}
         className={className}
         style={style}
-        onClick={() => handleToggle(displayedItem?.key)}
+        onClick={(e) => handleToggle(e, baseItem.key)}
       >
         <img
           style={imgStyle}
           className={imgClassName}
           alt="item icon"
-          src={displayedItem?.icon}
-        ></img>
+          src={baseItem.icon}
+        />
       </div>
-      {isOpen && (
+
+      {showTools && (
+        <MapToolsPopover
+          onClose={() => setShowTools(false)}
+          anchorPoint={anchorPoint}
+          ignoreRef={toolsBtnRef}
+        />
+      )}
+
+      {isOpen && !item.isUtility && (
         <>
           {panelChildren.length > 0 && (
             <Suspense>
@@ -137,4 +171,5 @@ function MenuItemV2({ item, onToggle, shouldShimmer, direction }) {
     </>
   );
 }
+
 export default MenuItemV2;

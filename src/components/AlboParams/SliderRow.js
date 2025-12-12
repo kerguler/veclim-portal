@@ -4,17 +4,14 @@ import {
   setAlboRequestPlot,
   setDataArrived,
   setInvalidateSimData,
-  useFetchSimStatusQuery,
 } from 'store';
 import useDirectorFun from 'customHooks/useDirectorFun';
-import useWindowSize from 'customHooks/useWindowSize';
 import {
   setSimSlider1Enabled,
   setSimulationParameterSlider1 as setSimSlider1Value,
 } from 'store';
 import { useCreateSimulationMutation } from 'store';
 import ToolTipComponent from 'components/ToolTipComponent/ToolTipComponent';
-import { setMessenger } from 'store';
 
 const SliderRow = ({ direction }) => {
   const [taskId, setTaskId] = useState(null); // Store Task ID
@@ -96,7 +93,6 @@ const SliderRow = ({ direction }) => {
     }
   }, [mapPagePosition.lat]);
 
-  const webApp = useWindowSize();
 
   return (
     <div className="slider-row">

@@ -1,9 +1,5 @@
-import useDirectorFun from 'customHooks/useDirectorFun';
-import { useEffect, useRef, useState } from 'react';
-import { useDispatch } from 'react-redux';
 import { setYaxisInfo } from 'store';
 import { setBrushDatay } from 'store';
-import { useSelector } from 'react-redux';
 function getMinMaxForKey(data, keyName) {
   const values = data
     .map((obj) => {

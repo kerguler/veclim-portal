@@ -3,8 +3,6 @@ import { useContext, useEffect, useState } from 'react';
 import { setDisplayTileNames, setSuperUser, setTileArray } from 'store';
 import { useDispatch, useSelector } from 'react-redux';
 import { useFetchColorBarsDataQuery } from 'store';
-import { iconClasses } from '@mui/material';
-import Panel from 'components/panel/Panel';
 import PanelContext from 'context/panelsIconsV2';
 import MoreText from 'components/MoreText/MoreText';
 

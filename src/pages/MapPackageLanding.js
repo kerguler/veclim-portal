@@ -7,7 +7,6 @@ import MapPackageComponent from 'components/map/mapPackage/MapPackageComponent';
 import { AlboDataProvider } from 'context/AlboDataContext';
 import MapMenuPicker from 'components/mapMenu/mapMenu/MapMenuPicker';
 import useFetcherStates from 'customHooks/fethcerStates/useFetcherStates';
-
 function MapPackageLanding() {
   useFetcherStates();
   // useMapUrlSync();

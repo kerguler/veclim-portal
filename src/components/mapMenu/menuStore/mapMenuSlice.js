@@ -1,5 +1,4 @@
 import { createSlice } from '@reduxjs/toolkit';
-import PackageMapServices from 'components/map/mapPackage/PackageMapServices';
 
 const mapMenuSlice = createSlice({
   name: 'mapMenu',

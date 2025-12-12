@@ -6,7 +6,6 @@ import MenuList from './MenuList';
 import { useDispatch } from 'react-redux';
 import { useAlboData } from 'context/AlboDataContext';
 import {
-  setDisplaySimulationPanel,
   setInterferePanelStyle,
   setDataArrived,
   setTwinIndex,
@@ -42,7 +41,6 @@ export default function MapMenuPicker({ direction }) {
       setSimResult(null);
     }
   }, [invalidateSimData]);
-  console.log({ lastPanelDisplayed });
   useEffect(() => {
     if (displaySimulationPanel) {
       handleToggle(displaySimulationPanel);

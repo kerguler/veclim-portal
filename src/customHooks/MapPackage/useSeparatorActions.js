@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import PackageMapServices from 'components/map/mapPackage/PackageMapServices';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { setDividerPosition } from 'store';
 import useDirectorFun from 'customHooks/useDirectorFun';
 function useSeparatorActions(mapParRef) {

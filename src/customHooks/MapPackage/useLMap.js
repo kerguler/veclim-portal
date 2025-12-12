@@ -3,7 +3,6 @@ import L from 'leaflet';
 
 import { useDispatch, useSelector } from 'react-redux';
 import PackageMapServices from 'components/map/mapPackage/PackageMapServices';
-import useLMapResize from './useLMapResize';
 import { setCurrentMapBounds } from 'store';
 import useDirectorFun from 'customHooks/useDirectorFun';
 function useLMap(mapParRef) {
@@ -95,6 +94,8 @@ function useLMap(mapParRef) {
       }
     }
   }, [showVectorAbundance, showMapLabels]);
+
+
 }
 
 export default useLMap;

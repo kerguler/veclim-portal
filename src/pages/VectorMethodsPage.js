@@ -2,12 +2,12 @@
 import './GenericPage/GenericPage.css';
 import 'styles/Theme1.css';
 
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { getVector } from 'vectors/registry';
-import { setMapVector, setVectorName } from 'store';
+import { setVectorName } from 'store';
 import PackageMapServices from 'components/map/mapPackage/PackageMapServices';
 import NavBarContainer from 'components/NavBar/NavBarContainer';
 import LeftPanel from 'components/LeftPanel/LeftPanel';

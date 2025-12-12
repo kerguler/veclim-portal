@@ -17,6 +17,7 @@ import useDirectorFun from 'customHooks/useDirectorFun';
 import ColorBarLabelComponent from '../ColorBarLabel/ColorBarLabelComponent';
 import { useState } from 'react';
 import MapContextMenu from '../mapContextMenu/MapContextMenu';
+import useMapPermalinkSync from 'customHooks/permalink/usePermalinkSync';
 function MapPackageComponent({ fitworld }) {
   const dispatch = useDispatch();
   const {
@@ -30,6 +31,9 @@ function MapPackageComponent({ fitworld }) {
     optionsPanel,
     directInitError,
     mapVector,
+    vectorName,
+    lastPanelDisplayed,
+    isPermalinkClick,
   } = useDirectorFun('left');
   const tileArray = useSelector(
     (state) => state.fetcher.fetcherStates.tileArray
@@ -59,6 +63,15 @@ function MapPackageComponent({ fitworld }) {
     permalink: '',
   });
   useLMap(mapParRef);
+
+  useMapPermalinkSync({
+    mapParRef,
+    vectorName,
+    mapPagePosition,
+    lastPanelDisplayed,
+    tileArray,
+    isPermalinkClick,
+  });
   useLMapCoordinateUpdate(mapParRef);
   useTileHandler(mapParRef);
   useSeparatorActions(mapParRef);
@@ -68,7 +81,6 @@ function MapPackageComponent({ fitworld }) {
       visible: true,
       x: containerPoint.x,
       y: containerPoint.y,
-      permalink,
     });
   });
 

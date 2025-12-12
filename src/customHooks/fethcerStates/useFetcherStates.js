@@ -8,7 +8,7 @@ import PackageMapServices from 'components/map/mapPackage/PackageMapServices';
 import useDirectorFun from '../useDirectorFun';
 import useSessionControl from './useSessionControl';
 import useQuery from './useQuery';
-
+import usePermalinkHydration from 'customHooks/permalink/usePermalinkHydration';
 import {
   setMapPagePosition,
   setReadyToView,
@@ -18,6 +18,7 @@ import {
   setCurrentMapBounds,
   setCurrentMaxBounds,
   setCurrentMapZoom,
+  setCurrentMapCenter,
 } from 'store';
 
 import { setLastPanelDisplayed } from 'components/mapMenu/menuStore/mapMenuSlice';
@@ -27,16 +28,24 @@ const useFetcherStates = () => {
   const direction = 'left';
   const dispatch = useDispatch();
 
-  const {
-    mapVector,
-    mapPagePosition,
-    tileIcons,
-    panelData,
-    menuStructure,
-  } = useDirectorFun(direction);
+  const { mapVector, mapPagePosition, tileIcons, panelData, menuStructure } =
+    useDirectorFun(direction);
 
-  // NOTE: now includes zoom + bounds!
-  const { tile, panel, decade, lon, lat, session, zoom, bounds } = useQuery();
+usePermalinkHydration({ mapPagePosition });
+
+  // NOTE: now includes camera center (cLat/cLon)
+  const {
+    tile,
+    panel,
+    decade,
+    lon, // clicked point
+    lat, // clicked point
+    cLon, // camera center
+    cLat, // camera center
+    session,
+    zoom,
+    bounds,
+  } = useQuery();
 
   // 0) keep session ↔ mapVector in sync (vector in URL)
   useSessionControl(session);
@@ -49,25 +58,63 @@ const useFetcherStates = () => {
       panel === null &&
       decade === null &&
       lon === null &&
-      lat === null
+      lat === null &&
+      cLon === null &&
+      cLat === null
     ) {
       return;
     }
-  }, [session, tile, panel, decade, lon, lat]);
-
-  // 2) make sure we always have a mapPagePosition
-  useEffect(() => {
-    if (!mapPagePosition || mapPagePosition.lat == null) {
-      dispatch(setMapPagePosition(PackageMapServices.defaultCypCenter));
-    }
-  }, [mapPagePosition, dispatch]);
+  }, [session, tile, panel, decade, lon, lat, cLon, cLat]);
 
   // --- 🔑 decide which vector config to use ---
   const effectiveVectorId = session || mapVector;
   const activeVector = getVector(effectiveVectorId);
   const defaultTiles = activeVector?.defaults?.tileArray || [];
 
-  // 3) default tileArray for this vector if URL doesn't specify `tile`
+  // 2) URL → mapPagePosition (clicked point, used for panels)
+  useEffect(() => {
+    if (lat && lon) {
+      // clicked cell from permalink
+      dispatch(
+        setMapPagePosition({
+          lat: parseFloat(lat),
+          lng: parseFloat(lon),
+        })
+      );
+    } else {
+      // no lat/lon in URL → leave as-is (user can click later)
+      // If you want to *clear* previous click on plain /MapPage, uncomment:
+      // dispatch(setMapPagePosition({ lat: null, lng: null }));
+    }
+  }, [lat, lon, dispatch]);
+
+  // 3) URL → camera center (what the map is looking at)
+  useEffect(() => {
+    let center = null;
+
+    if (cLat && cLon) {
+      // explicit camera center from permalink
+      center = {
+        lat: parseFloat(cLat),
+        lng: parseFloat(cLon),
+      };
+    } else if (lat && lon) {
+      // fallback: if no cLat/cLon but we *do* have a clicked point, use that
+      center = {
+        lat: parseFloat(lat),
+        lng: parseFloat(lon),
+      };
+    } else if (!mapPagePosition || mapPagePosition.lat == null) {
+      // last fallback → default
+      center = PackageMapServices.defaultCypCenter;
+    }
+
+    if (center) {
+      dispatch(setCurrentMapCenter(center));
+    }
+  }, [cLat, cLon, lat, lon, mapPagePosition, dispatch]);
+
+  // 4) default tileArray for this vector if URL doesn't specify `tile`
   useEffect(() => {
     if (
       (tile === null || tile === undefined || tile === '') &&
@@ -78,23 +125,7 @@ const useFetcherStates = () => {
     }
   }, [tile, dispatch, defaultTiles.join(',')]);
 
-  // 4) if URL has lon/lat and no center yet, use that
-  useEffect(() => {
-    if (!mapPagePosition || mapPagePosition.lat == null) {
-      if (lon && lat) {
-        dispatch(
-          setMapPagePosition({
-            lat: parseFloat(lat),
-            lng: parseFloat(lon),
-          })
-        );
-      } else {
-        dispatch(setMapPagePosition(PackageMapServices.defaultCypCenter));
-      }
-    }
-  }, [lon, lat, dispatch, mapPagePosition]);
-
-  // 🔹 NEW: apply zoom from URL if present
+  // 5) zoom from URL
   useEffect(() => {
     if (!zoom) return;
     const zNum = parseInt(zoom, 10);
@@ -103,7 +134,7 @@ const useFetcherStates = () => {
     }
   }, [zoom, dispatch]);
 
-  // 🔹 NEW: apply bounds from URL if present
+  // 6) bounds from URL
   useEffect(() => {
     if (!bounds) return;
     const parts = bounds.split(',').map((v) => parseFloat(v));
@@ -119,7 +150,7 @@ const useFetcherStates = () => {
     dispatch(setCurrentMaxBounds(boundsBox));
   }, [bounds, dispatch]);
 
-  // 5) open a panel from URL if it exists
+  // 7) open a panel from URL if it exists
   useEffect(() => {
     if (!panel) return;
     if (!Array.isArray(menuStructure)) return;
@@ -131,7 +162,7 @@ const useFetcherStates = () => {
     }
   }, [panel, menuStructure, direction, dispatch]);
 
-  // 6) fetch tiles + panels and control readyToView – unchanged
+  // 8) fetch tiles + panels and control readyToView – unchanged
   useEffect(() => {
     const iconsReady = Array.isArray(tileIcons) && tileIcons.length > 0;
     const panelsReady = Array.isArray(panelData) && panelData.length > 0;
@@ -143,9 +174,7 @@ const useFetcherStates = () => {
 
     const hasDefaultTileIcon =
       defaultTiles.length === 0 ||
-      defaultTiles.some((tKey) =>
-        tileIcons.some((icon) => icon.key === tKey)
-      );
+      defaultTiles.some((tKey) => tileIcons.some((icon) => icon.key === tKey));
 
     if (!hasDefaultTileIcon) {
       dispatch(setReadyToView(false));

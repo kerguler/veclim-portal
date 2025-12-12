@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { useRef } from "react";
 const useWindowSize = () => {
 	const [webApp, setWebApp] = useState(null);
 
