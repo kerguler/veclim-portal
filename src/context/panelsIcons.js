@@ -30,8 +30,8 @@ function PanelProvider({ children }) {
 
 	const tileBase = process.env.REACT_APP_BASE_URL;
 
-	const fcastDateRange = "2025-12-01:2026-03-01";
-	const fcastDateLabel = "December - February, 2025";
+	const fcastDateRange = "2026-03-01:2026-06-01";
+	const fcastDateLabel = "March - May, 2026";
 
 	const tileIconRowHeadings = [
 		{ row: 1, label: "2010-2020" },
