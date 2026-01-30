@@ -1,5 +1,4 @@
-import useDirectorFun from "customHooks/useDirectorFun";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { useDispatch } from "react-redux";
 import { setYaxisInfo } from "store";
 import { setBrushDatay } from "store";

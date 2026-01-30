@@ -6,8 +6,8 @@ import impact from 'assets/icons/map-page-right-menu/png/015-heart rate-32px.png
 import prpin from 'assets/icons/map-page-right-menu/png/027-pin-32px.png';
 const tileBase = process.env.REACT_APP_BASE_URL;
 
-const fcastDateRange = "2025-12-01:2026-03-01";
-const fcastDateLabel = "December - February, 2025";
+const fcastDateRange = '2026-03-01:2026-06-01';
+const fcastDateLabel = 'March-May 2026';
 
 export const tileIcons = [
   {
@@ -29,9 +29,9 @@ export const tileIcons = [
     description: (
       <>
         <p>
-          Average decadal mosquito activity in 2010-2020 as predicted by the model (assumes tiger
-          mosquito presence). The colour scale is proportional to the activity predicted in
-          Emilia-Romagna.
+          Average decadal mosquito activity in 2010-2020 as predicted by the
+          model (assumes tiger mosquito presence). The colour scale is
+          proportional to the activity predicted in Emilia-Romagna.
         </p>
       </>
     ),
@@ -55,8 +55,9 @@ export const tileIcons = [
     description: (
       <>
         <p>
-          The first calendar month when the predicted number of larva (in a typical breeding site)
-          exceeds 1. No data is shown when the number of larva is always higher or lower than 1.
+          The first calendar month when the predicted number of larva (in a
+          typical breeding site) exceeds 1. No data is shown when the number of
+          larva is always higher or lower than 1.
         </p>
       </>
     ),
@@ -74,8 +75,8 @@ export const tileIcons = [
     description: (
       <>
         <p>
-          All the grid cells that are somehow connected to an administrative polygon where the tiger
-          mosquito has been reported.
+          All the grid cells that are somehow connected to an administrative
+          polygon where the tiger mosquito has been reported.
         </p>
         <p>
           We obtained the polygons from{' '}
@@ -106,7 +107,11 @@ export const tileIcons = [
         </p>
         <p>
           We display average seasonal dynamics from{' '}
-          <a href="https://doi.org/10.5281/zenodo.11486198" target="_blank" rel="noreferrer">
+          <a
+            href="https://doi.org/10.5281/zenodo.11486198"
+            target="_blank"
+            rel="noreferrer"
+          >
             VectAbundance
           </a>
           ,{' '}
@@ -118,7 +123,11 @@ export const tileIcons = [
             AIMsurv
           </a>
           , and{' '}
-          <a href="https://vectorbase.org/vectorbase/app/" target="_blank" rel="noreferrer">
+          <a
+            href="https://vectorbase.org/vectorbase/app/"
+            target="_blank"
+            rel="noreferrer"
+          >
             VectorBase
           </a>{' '}
           surveillance datasets.
@@ -145,10 +154,10 @@ export const tileIcons = [
     description: (
       <>
         <p>
-          Decadal averages of outbreak risk in 2010-2020 measured as the likeliness of starting an
-          outbreak out of 100 independent importations in the first 60 days. The value shown
-          represents a potential derived from the model. We assume vector presence in each grid
-          cell.
+          Decadal averages of outbreak risk in 2010-2020 measured as the
+          likeliness of starting an outbreak out of 100 independent importations
+          in the first 60 days. The value shown represents a potential derived
+          from the model. We assume vector presence in each grid cell.
         </p>
       </>
     ),
@@ -172,9 +181,10 @@ export const tileIcons = [
     description: (
       <>
         <p>
-          Decadal averages (2010-2020) of the expected impact of an infectious case imported in a
-          population of 4000 susceptible individuals. The value shown represents a potential derived
-          from the model. We assume vector presence in each grid cell.
+          Decadal averages (2010-2020) of the expected impact of an infectious
+          case imported in a population of 4000 susceptible individuals. The
+          value shown represents a potential derived from the model. We assume
+          vector presence in each grid cell.
         </p>
       </>
     ),
@@ -201,8 +211,8 @@ export const tileIcons = [
     description: (
       <>
         <p>
-          Average decadal mosquito activity in {fcastDateLabel} as predicted by the model (assumes
-          tiger mosquito presence).
+          Average decadal mosquito activity in {fcastDateLabel} as predicted by
+          the model (assumes tiger mosquito presence).
         </p>
       </>
     ),
@@ -222,15 +232,17 @@ export const tileIcons = [
     ),
     icon: adult,
     tileLayer: {
-      tile: tileBase + '?v=colegg_fcast&z={z}&x={x}&y={y}&dates=' + fcastDateRange,
+      tile:
+        tileBase + '?v=colegg_fcast&z={z}&x={x}&y={y}&dates=' + fcastDateRange,
       props: { attribution: '', noWrap: true },
       displayIndex: 22,
     },
     description: (
       <>
         <p>
-          Mosquito activity in {fcastDateLabel} as predicted by the model (assumes tiger mosquito
-          presence) using low-resolution ECMWF seasonal forecasts.
+          Mosquito activity in {fcastDateLabel} as predicted by the model
+          (assumes tiger mosquito presence) using low-resolution ECMWF seasonal
+          forecasts.
         </p>
       </>
     ),
@@ -250,17 +262,18 @@ export const tileIcons = [
     ),
     icon: virus,
     tileLayer: {
-      tile: tileBase + '?v=chikv_pouts&z={z}&x={x}&y={y}&dates=' + fcastDateRange,
+      tile:
+        tileBase + '?v=chikv_pouts&z={z}&x={x}&y={y}&dates=' + fcastDateRange,
       props: { attribution: '', noWrap: true },
       displayIndex: 23,
     },
     description: (
       <>
         <p>
-          Average decadal outbreak risk in {fcastDateLabel} measured as the likeliness of starting
-          an outbreak out of 100 independent importations in the first 60 days. The value shown
-          represents a potential derived from the model. We assume vector presence in each grid
-          cell.
+          Average decadal outbreak risk in {fcastDateLabel} measured as the
+          likeliness of starting an outbreak out of 100 independent importations
+          in the first 60 days. The value shown represents a potential derived
+          from the model. We assume vector presence in each grid cell.
         </p>
       </>
     ),
@@ -280,16 +293,19 @@ export const tileIcons = [
     ),
     icon: virus,
     tileLayer: {
-      tile: tileBase + '?v=chikv_pouts_fcast&z={z}&x={x}&y={y}&dates=' + fcastDateRange,
+      tile:
+        tileBase +
+        '?v=chikv_pouts_fcast&z={z}&x={x}&y={y}&dates=' +
+        fcastDateRange,
       props: { attribution: '', noWrap: true },
       displayIndex: 24,
     },
     description: (
       <>
         <p>
-          Outbreak risk in {fcastDateLabel} measured as the likeliness of starting an outbreak out
-          of 100 independent importations in the first 60 days using low-resolution ECMWF seasonal
-          forecasts.
+          Outbreak risk in {fcastDateLabel} measured as the likeliness of
+          starting an outbreak out of 100 independent importations in the first
+          60 days using low-resolution ECMWF seasonal forecasts.
         </p>
       </>
     ),
@@ -309,16 +325,18 @@ export const tileIcons = [
     ),
     icon: impact,
     tileLayer: {
-      tile: tileBase + '?v=chikv_iouts&z={z}&x={x}&y={y}&dates=' + fcastDateRange,
+      tile:
+        tileBase + '?v=chikv_iouts&z={z}&x={x}&y={y}&dates=' + fcastDateRange,
       props: { attribution: '', noWrap: true },
       displayIndex: 25,
     },
     description: (
       <>
         <p>
-          Average decadal expected impact of an infectious case imported in {fcastDateLabel}, in a
-          population of 4000 susceptible individuals. The value shown represents a potential derived
-          from the model. We assume vector presence in each grid cell.
+          Average decadal expected impact of an infectious case imported in{' '}
+          {fcastDateLabel}, in a population of 4000 susceptible individuals. The
+          value shown represents a potential derived from the model. We assume
+          vector presence in each grid cell.
         </p>
       </>
     ),
@@ -338,15 +356,19 @@ export const tileIcons = [
     ),
     icon: impact,
     tileLayer: {
-      tile: tileBase + '?v=chikv_iouts_fcast&z={z}&x={x}&y={y}&dates=' + fcastDateRange,
+      tile:
+        tileBase +
+        '?v=chikv_iouts_fcast&z={z}&x={x}&y={y}&dates=' +
+        fcastDateRange,
       props: { attribution: '', noWrap: true },
       displayIndex: 26,
     },
     description: (
       <>
         <p>
-          Expected impact of an infectious case imported in {fcastDateLabel}, in a population of
-          4000 susceptible individuals estimated using low-resolution ECMWF seasonal forecasts.
+          Expected impact of an infectious case imported in {fcastDateLabel}, in
+          a population of 4000 susceptible individuals estimated using
+          low-resolution ECMWF seasonal forecasts.
         </p>
       </>
     ),
@@ -370,9 +392,10 @@ export const tileIcons = [
     description: (
       <>
         <p>
-          Average decadal mosquito activity in 2090-2100 as predicted by the model under the
-          optimistic (SSP 2-4.5) scenario (assumes tiger mosquito presence). The colour scale is
-          proportional to the activity predicted in Emilia-Romagna.
+          Average decadal mosquito activity in 2090-2100 as predicted by the
+          model under the optimistic (SSP 2-4.5) scenario (assumes tiger
+          mosquito presence). The colour scale is proportional to the activity
+          predicted in Emilia-Romagna.
         </p>
       </>
     ),
@@ -396,10 +419,11 @@ export const tileIcons = [
     description: (
       <>
         <p>
-          Decadal averages of outbreak risk in 2090-2100 under the optimistic SSP 2-4.5 scenario.
-          The risk is measured as the likeliness of starting an outbreak out of 100 independent
-          importations in the first 60 days. The value shown represents a potential derived from the
-          model. We assume vector presence in each grid cell.
+          Decadal averages of outbreak risk in 2090-2100 under the optimistic
+          SSP 2-4.5 scenario. The risk is measured as the likeliness of starting
+          an outbreak out of 100 independent importations in the first 60 days.
+          The value shown represents a potential derived from the model. We
+          assume vector presence in each grid cell.
         </p>
       </>
     ),
@@ -423,10 +447,11 @@ export const tileIcons = [
     description: (
       <>
         <p>
-          Decadal averages (2090-2100 under the optimistic SSP 2-4.5 scenario) of the expected
-          impact of an infectious case imported in a population of 4000 susceptible individuals. The
-          value shown represents a potential derived from the model. We assume vector presence in
-          each grid cell.
+          Decadal averages (2090-2100 under the optimistic SSP 2-4.5 scenario)
+          of the expected impact of an infectious case imported in a population
+          of 4000 susceptible individuals. The value shown represents a
+          potential derived from the model. We assume vector presence in each
+          grid cell.
         </p>
       </>
     ),
@@ -450,9 +475,10 @@ export const tileIcons = [
     description: (
       <>
         <p>
-          Average decadal mosquito activity in 2090-2100 as predicted by the model under the
-          pessimistic (SSP 5-8.5) scenario (assumes tiger mosquito presence). The colour scale is
-          proportional to the activity predicted in Emilia-Romagna.
+          Average decadal mosquito activity in 2090-2100 as predicted by the
+          model under the pessimistic (SSP 5-8.5) scenario (assumes tiger
+          mosquito presence). The colour scale is proportional to the activity
+          predicted in Emilia-Romagna.
         </p>
       </>
     ),
@@ -476,10 +502,11 @@ export const tileIcons = [
     description: (
       <>
         <p>
-          Decadal averages of outbreak risk in 2090-2100 under the pessimistic SSP 5-8.5 scenario.
-          The risk is measured as the likeliness of starting an outbreak out of 100 independent
-          importations in the first 60 days. The value shown represents a potential derived from the
-          model. We assume vector presence in each grid cell.
+          Decadal averages of outbreak risk in 2090-2100 under the pessimistic
+          SSP 5-8.5 scenario. The risk is measured as the likeliness of starting
+          an outbreak out of 100 independent importations in the first 60 days.
+          The value shown represents a potential derived from the model. We
+          assume vector presence in each grid cell.
         </p>
       </>
     ),
@@ -503,10 +530,11 @@ export const tileIcons = [
     description: (
       <>
         <p>
-          Decadal averages (2090-2100 under the pessimistic SSP 5-8.5 scenario) of the expected
-          impact of an infectious case imported in a population of 4000 susceptible individuals. The
-          value shown represents a potential derived from the model. We assume vector presence in
-          each grid cell.
+          Decadal averages (2090-2100 under the pessimistic SSP 5-8.5 scenario)
+          of the expected impact of an infectious case imported in a population
+          of 4000 susceptible individuals. The value shown represents a
+          potential derived from the model. We assume vector presence in each
+          grid cell.
         </p>
       </>
     ),
@@ -530,9 +558,9 @@ export const tileIcons = [
     description: (
       <>
         <p>
-          Average decadal mosquito activity in 1980-1990 as predicted by the model (assumes tiger
-          mosquito presence). The colour scale is proportional to the activity predicted in
-          Emilia-Romagna.
+          Average decadal mosquito activity in 1980-1990 as predicted by the
+          model (assumes tiger mosquito presence). The colour scale is
+          proportional to the activity predicted in Emilia-Romagna.
         </p>
       </>
     ),
@@ -556,10 +584,10 @@ export const tileIcons = [
     description: (
       <>
         <p>
-          Decadal averages of outbreak risk in 1980-1990 measured as the likeliness of starting an
-          outbreak out of 100 independent importations in the first 60 days. The value shown
-          represents a potential derived from the model. We assume vector presence in each grid
-          cell.
+          Decadal averages of outbreak risk in 1980-1990 measured as the
+          likeliness of starting an outbreak out of 100 independent importations
+          in the first 60 days. The value shown represents a potential derived
+          from the model. We assume vector presence in each grid cell.
         </p>
       </>
     ),
@@ -583,12 +611,12 @@ export const tileIcons = [
     description: (
       <>
         <p>
-          Decadal averages (1980-1990) of the expected impact of an infectious case imported in a
-          population of 4000 susceptible individuals. The value shown represents a potential derived
-          from the model. We assume vector presence in each grid cell.
+          Decadal averages (1980-1990) of the expected impact of an infectious
+          case imported in a population of 4000 susceptible individuals. The
+          value shown represents a potential derived from the model. We assume
+          vector presence in each grid cell.
         </p>
       </>
     ),
   },
 ];
-

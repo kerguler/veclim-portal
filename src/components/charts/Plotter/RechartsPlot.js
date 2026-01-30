@@ -58,7 +58,7 @@ function RechartsPlot({ direction, plotMat }) {
   let d = dateRef.current && dateRef.current;
   const brushDataYL = brushDatay.left;
   const brushDataYR = brushDatay.right;
-
+ 
   // const { date, ...restObj } = plotMat[0];
   // const keys = Object.keys(restObj);
   // argRef.current.keys = keys;
@@ -71,7 +71,6 @@ function RechartsPlot({ direction, plotMat }) {
     return [];
   }, [plotMat]);
 
-  console.log({ p: plotMat[0], c: chartParameters });
   useEffect(() => {
     if (argKeys.length > 0) {
       argRef.current.keys = argKeys;

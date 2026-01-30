@@ -2,16 +2,15 @@ import useDirectorFun from 'customHooks/useDirectorFun';
 import { useFetchTimeSeriesDataQuery } from 'store';
 import { useEffect, useRef } from 'react';
 import ChartCalculatorService from 'components/charts/services/ChartCalculatorService';
-import { useDispatch } from 'react-redux';
 import RechartsPlot from '../RechartsPlot';
 import useSetDefaultCoordinates from '../customPlotterHooks/useSetDefaultCoordinates';
 import ErrorComponent from '../errorComponent/ErrorComponent';
 import ErrorBoundary from 'components/errorBoundary/ErrorBoundary';
 import ChartLoadingSkeleton from 'components/skeleton/Skeleton';
-import { useSelector } from 'react-redux';
 import { setPlotReady } from 'store';
 import { setBrushRange } from 'store';
 import { setMessenger } from 'store';
+import { useDispatch } from 'react-redux';
 function TsRequest({ direction }) {
   const dispatch = useDispatch();
 
@@ -152,7 +151,7 @@ function TsRequest({ direction }) {
     );
   }
 
-  if (messenger.message) {
+  if (messenger?.message) {
     return <ErrorComponent text={messenger.message}></ErrorComponent>;
   }
   if (r.dataToPlot) {

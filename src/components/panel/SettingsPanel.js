@@ -3,7 +3,6 @@ import './settingsPanel.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { setCurrentMapCenter } from 'store';
-import { setCurrentMapBounds } from 'store';
 import { setCurrentMapZoom } from 'store';
 
 

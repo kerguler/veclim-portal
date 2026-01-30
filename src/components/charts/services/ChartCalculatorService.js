@@ -1,5 +1,5 @@
-import { parse } from "jsoneditor/dist/jsoneditor-minimalist";
-import { parseDate } from "store/apis/utils";
+import { parse } from 'jsoneditor/dist/jsoneditor-minimalist';
+import { parseDate } from 'store/apis/utils';
 
 class ChartCalculatorService {
   static handleMixedKeys(rawData, params) {
@@ -47,10 +47,11 @@ class ChartCalculatorService {
     }
 
     let error = { errorMessage: null, isError: false };
-
+    console.log({mixedKeys:chartParameters.mixedKeys})
     for (const element of chartParameters.mixedKeys) {
       const { levels } = element;
       let val = data;
+      console.log('checking levels:', val, levels);
 
       for (const v of levels) {
         if (v in val) {
@@ -88,7 +89,8 @@ class ChartCalculatorService {
           } else {
             // If there are slices, add each slice as key.slice1, key.slice2, etc.
             Object.keys(keyData.slices).forEach((sliceKey) => {
-              entry[`${key}.${sliceKey}`] = keyData.slices[sliceKey][index] || null;
+              entry[`${key}.${sliceKey}`] =
+                keyData.slices[sliceKey][index] || null;
             });
           }
         }
@@ -139,10 +141,14 @@ class ChartCalculatorService {
         r.rawDataToPlot[key].slices['slice0'] = r.rawDataToPlot[key][key];
       } else {
         r.dateInfo.dates.overlaps[key].forEach((date) => {
-          r.dateInfo.dates.sliceIndices[key].push(r.dateInfo.dateArray.total.indexOf(date));
+          r.dateInfo.dates.sliceIndices[key].push(
+            r.dateInfo.dateArray.total.indexOf(date)
+          );
         });
 
-        let sortedIndices = r.dateInfo.dates.sliceIndices[key].sort((a, b) => a - b);
+        let sortedIndices = r.dateInfo.dates.sliceIndices[key].sort(
+          (a, b) => a - b
+        );
 
         let starter = 0;
         let totalLength = r.rawDataToPlot[key][key].length; // Length of the original array
@@ -150,9 +156,11 @@ class ChartCalculatorService {
         sortedIndices.forEach((index) => {
           const slice = Array(totalLength).fill(null);
 
-          r.rawDataToPlot[key][key].slice(starter, index).forEach((value, idx) => {
-            slice[starter + idx] = value;
-          });
+          r.rawDataToPlot[key][key]
+            .slice(starter, index)
+            .forEach((value, idx) => {
+              slice[starter + idx] = value;
+            });
 
           result.push(slice);
           starter = index;
@@ -219,9 +227,15 @@ class ChartCalculatorService {
         d.dStart = new Date(plotMat[0].date);
         d.dEnd = new Date(plotMat[plotMat.length - 1].date);
       }
-      d.finalStart = Math.max(d.dStart.getTime(), new Date(plotMat[0].date).getTime());
+      d.finalStart = Math.max(
+        d.dStart.getTime(),
+        new Date(plotMat[0].date).getTime()
+      );
 
-      d.finalEnd = Math.min(d.dEnd.getTime(), new Date(plotMat[plotMat.length - 1].date).getTime());
+      d.finalEnd = Math.min(
+        d.dEnd.getTime(),
+        new Date(plotMat[plotMat.length - 1].date).getTime()
+      );
       d.index[0] = ChartCalculatorService.dateToIndex(
         ChartCalculatorService.formatDate(d.finalStart),
         plotMat
@@ -233,7 +247,13 @@ class ChartCalculatorService {
     }
   }
 
-  static handleBrushChange = (range, dispatch, plotMat, setBrushRange, direction) => {
+  static handleBrushChange = (
+    range,
+    dispatch,
+    plotMat,
+    setBrushRange,
+    direction
+  ) => {
     dispatch(
       setBrushRange({
         direction,
@@ -258,7 +278,10 @@ class ChartCalculatorService {
           if ('date' in val) {
             r.dateInfo.dates[key] = val['date'];
             r.dateInfo.dateArray[key] = [];
-            if ('date0' in r.dateInfo.dates[key] && 'date1' in r.dateInfo.dates[key]) {
+            if (
+              'date0' in r.dateInfo.dates[key] &&
+              'date1' in r.dateInfo.dates[key]
+            ) {
               let date0 = new Date(r.dateInfo.dates[key].date0);
               let date1 = new Date(r.dateInfo.dates[key].date1);
               let currentDate = new Date(date0);
@@ -282,12 +305,17 @@ class ChartCalculatorService {
 
     let tempDatesArray = [];
     Object.keys(r.dateInfo.dates).forEach((key) => {
-      if ('date0' in r.dateInfo.dates[key] && 'date1' in r.dateInfo.dates[key]) {
+      if (
+        'date0' in r.dateInfo.dates[key] &&
+        'date1' in r.dateInfo.dates[key]
+      ) {
         tempDatesArray.push(new Date(r.dateInfo.dates[key].date0).getTime());
         tempDatesArray.push(new Date(r.dateInfo.dates[key].date1).getTime());
       } else {
         tempDatesArray.push(parseDate(r.dateInfo.dates[key][0]));
-        tempDatesArray.push(parseDate(r.dateInfo.dates[key][r.dateInfo.dates[key].length - 1]));
+        tempDatesArray.push(
+          parseDate(r.dateInfo.dates[key][r.dateInfo.dates[key].length - 1])
+        );
       }
     });
     r.dateInfo.dateArray['total'] = [];
@@ -327,7 +355,13 @@ class ChartCalculatorService {
     }
   };
 
-  static handleBrushChangeY(range, scrlRef, dispatch, setBrushDatay, direction) {
+  static handleBrushChangeY(
+    range,
+    scrlRef,
+    dispatch,
+    setBrushDatay,
+    direction
+  ) {
     let s = scrlRef.current && scrlRef.current;
     if (scrlRef.current) {
       s.brushDataY = {
@@ -335,14 +369,16 @@ class ChartCalculatorService {
           s.minmax.min +
           (s.minmax.max - s.minmax.min) *
             Math.pow(
-              (s.minmaxId.max - range.endIndex) / (s.minmaxId.max - s.minmaxId.min),
+              (s.minmaxId.max - range.endIndex) /
+                (s.minmaxId.max - s.minmaxId.min),
               s.scrollScl
             ),
         max:
           s.minmax.min +
           (s.minmax.max - s.minmax.min) *
             Math.pow(
-              (s.minmaxId.max - range.startIndex) / (s.minmaxId.max - s.minmaxId.min),
+              (s.minmaxId.max - range.startIndex) /
+                (s.minmaxId.max - s.minmaxId.min),
               s.scrollScl
             ),
       };
@@ -354,14 +390,16 @@ class ChartCalculatorService {
               s.minmax.min +
               (s.minmax.max - s.minmax.min) *
                 Math.pow(
-                  (s.minmaxId.max - range.endIndex) / (s.minmaxId.max - s.minmaxId.min),
+                  (s.minmaxId.max - range.endIndex) /
+                    (s.minmaxId.max - s.minmaxId.min),
                   s.scrollScl
                 ),
             max:
               s.minmax.min +
               (s.minmax.max - s.minmax.min) *
                 Math.pow(
-                  (s.minmaxId.max - range.startIndex) / (s.minmaxId.max - s.minmaxId.min),
+                  (s.minmaxId.max - range.startIndex) /
+                    (s.minmaxId.max - s.minmaxId.min),
                   s.scrollScl
                 ),
           },

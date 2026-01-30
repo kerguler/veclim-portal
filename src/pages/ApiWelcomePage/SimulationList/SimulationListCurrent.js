@@ -8,9 +8,9 @@ import useCsrf from 'pages/LoginRegister/Services/useCsrf';
 function SimulationListCurrent({ direction }) {
   const dispatch = useDispatch();
   useCsrf(); // Initialize CSRF token for API requests
-  const {
-    data: fetchedSimList,
-  } = useGetSimulationListQuery({ return_results: false });
+  const { data: fetchedSimList } = useGetSimulationListQuery({
+    return_results: false,
+  });
 
   useEffect(() => {
     if (!fetchedSimList) return;
@@ -26,14 +26,13 @@ function SimulationListCurrent({ direction }) {
   } else {
     renderedSimulationList = (
       <div>
-        <p>somethingg terrible happened</p>
+        <p>Waiting for data</p>
       </div>
     );
   }
 
   return (
     <div className="simlist-container  ">
-
       <div className="title-simulations ">
         <p>Current Simulations</p>{' '}
       </div>

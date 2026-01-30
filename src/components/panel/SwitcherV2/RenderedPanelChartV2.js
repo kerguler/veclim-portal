@@ -1,7 +1,7 @@
 import ErrorBoundary from 'components/errorBoundary/ErrorBoundary';
 import rightArrow from 'assets/icons/arrow-teal-16px.png';
 import useDirectorFun from 'customHooks/useDirectorFun';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useState } from 'react';
 import { useRef } from 'react';
 import { useEffect } from 'react';

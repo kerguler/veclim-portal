@@ -8,7 +8,6 @@ import {
 	setUsername,
 	setPassword,
 	setRememberLogin,
-	setCsrfToken,
 } from "store/slices/loginSlice";
 import { Link } from "react-router-dom";
 import { useLoginMutation } from "store";

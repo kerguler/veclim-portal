@@ -23,7 +23,6 @@ function useHandleInitialOpen(
     }
 
     if (displayedItem?.key === displaySimulationPanel) {
-      console.log({ current_DisplayedITEM: displayedItem });
       dispatch(setDisplaySimulationPanel({ direction, value: null }));
     }
   }, [displayedItem?.initialOpen, displaySimulationPanel]);

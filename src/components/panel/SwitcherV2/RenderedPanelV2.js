@@ -53,7 +53,7 @@ const RenderedPanelV2 = ({
   let displayedPanel;
   if (panelChart) {
     if (showCoordinateWarning) {
-      <div>You need to pick a coordinate for the graphics to work</div>;
+      displayedPanel = <div>You need to pick a coordinate for the graphics to work</div>;
     } else {
       displayedPanel = (
         <RenderedPanelChartV2

@@ -1,4 +1,5 @@
 import { setDisplaySimulationPanel } from 'store';
+import { setMessenger } from 'store';
 import { setPanelInterfere } from 'store';
 import { setDataArrived } from 'store';
 import { setInvalidateSimData } from 'store';
@@ -20,20 +21,28 @@ class simTileHelpers {
   };
 
   static handleDeleteSimulation = async (deleteSimulation, id) => {
-    console.log('delete', id);
+    console.log('delete', id, );
     try {
       const response = deleteSimulation({ id: id });
     } catch (err) {
-      console.log(err);
+      console.log('error while deleting simulation:', err);
     }
   };
 
   static handleViewSimulationResults = async (
     results,
     setSimResult,
+    setErrorSim,
     dispatch,
     direction
   ) => {
+    dispatch(
+      setMessenger({
+        direction,
+        value: null,
+      })
+    );
+    setErrorSim(null);
     setSimResult(results);
     dispatch(setInvalidateSimData(false));
     dispatch(setDataArrived({ direction: direction, value: true }));

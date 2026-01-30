@@ -54,7 +54,7 @@ const SliderRow = ({ direction }) => {
         /* Latitude                             */ mapPagePosition.lat,
         /* Human population size                */ 4000.0,
         /* Days to run transmission             */ 60.0,
-        /* Number of repetitions                */ 10000.0,
+        /* Number of repetitions                */ 100.0,
         /* Vec/human scaling (0.01x-100x)       */ simSlider1Value / 100,
         /* Personal protection (0, 1-100)       */ 0.0,
         /* Vector control delay (-1:no_control) */ -1.0,
@@ -74,13 +74,11 @@ const SliderRow = ({ direction }) => {
     if (response?.data && 'task_id' in response.data) {
       setTaskId(response.data.task_id);
       localStorage.setItem('task_id', response.data.task_id);
-      console.log(`Received Task ID: ${response.data.task_id}`);
       setIsLoadingSim(true); // Update context state
     }
 
     if ('error' in response) {
       // dispatch(setMessenger("response"))
-      console.log('Error:', response.error);
       setErrorSim(response.error);
     }
   };
@@ -92,7 +90,6 @@ const SliderRow = ({ direction }) => {
       dispatch(setInvalidateSimData(true));
     }
   }, [mapPagePosition.lat]);
-
 
   return (
     <div className="slider-row">

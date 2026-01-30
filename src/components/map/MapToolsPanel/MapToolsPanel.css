@@ -1,7 +1,7 @@
 /* MapToolsPanel.css */
 .map-tools-panel {
-  min-width: 220px;
-  font-size: 0.95rem;
+  /* min-width: 220px; */
+  font-size: 0.9rem;
   color: #fff;
 }
 
@@ -16,7 +16,7 @@
 .map-tools-panel__button {
   user-select: none;
   cursor: pointer;
-  padding: 10px 12px;
+  padding: 5px 6px;
   border-radius: 10px;
   margin-top: 8px;
   background: rgba(255, 255, 255, 0.1);

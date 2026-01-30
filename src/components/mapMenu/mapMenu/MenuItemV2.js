@@ -96,7 +96,28 @@ function MenuItemV2({ item, onToggle, shouldShimmer, direction }) {
     // 🔹 Utility action: open tools popover, do NOT change panels
     if (item.isUtility) {
       const r = e.currentTarget.getBoundingClientRect();
-      setAnchorPoint({ x: r.left, y: r.bottom });
+      const vw = window.innerWidth;
+      const vh = window.innerHeight;
+
+      // estimated popover size (or make these match your CSS)
+      const POP_W = 280;
+      const POP_H = 260;
+      const M = 10;
+
+      // Try below first, but if it would go off-screen, place above.
+      const spaceBelow = vh - r.bottom;
+      const preferAbove = spaceBelow < POP_H + M;
+
+      let x = r.left;
+      let y = preferAbove ? r.top - M : r.bottom + M;
+
+      // Clamp horizontally
+      x = Math.max(M, Math.min(x, vw - POP_W - M));
+
+      // Clamp vertically
+      y = Math.max(M, Math.min(y, vh - POP_H - M));
+
+      setAnchorPoint({ x, y, preferAbove });
       setShowTools((v) => !v);
 
       return;
@@ -134,11 +155,13 @@ function MenuItemV2({ item, onToggle, shouldShimmer, direction }) {
       </div>
 
       {showTools && (
-        <MapToolsPopover
-          onClose={() => setShowTools(false)}
-          anchorPoint={anchorPoint}
-          ignoreRef={toolsBtnRef}
-        />
+        <div className="map-tools-container" style={{position:"relative"}}>
+          <MapToolsPopover
+            onClose={() => setShowTools(false)}
+            anchorPoint={anchorPoint}
+            ignoreRef={toolsBtnRef}
+          />
+        </div>
       )}
 
       {isOpen && !item.isUtility && (

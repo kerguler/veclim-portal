@@ -94,6 +94,7 @@ const mapMenuSlice = createSlice({
     },
     setPanelTop(state, action) {
       const { direction, value } = action.payload;
+      if (state[direction].panel.panelTop === value) return;
       state[direction].panel.panelTop = value;
     },
 

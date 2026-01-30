@@ -12,7 +12,7 @@ import { useAlboData } from 'context/AlboDataContext';
 import useSimTileFunctions from './useSimTileFunctions';
 import { setShimmered } from 'store';
 import ToolTipComponent from 'components/ToolTipComponent/ToolTipComponent';
-import { useEffect } from 'react';
+
 function SimTile({ sim, direction, shimmerList }) {
   const dispatch = useDispatch();
 
@@ -20,7 +20,7 @@ function SimTile({ sim, direction, shimmerList }) {
 
   const [deleteSimulation] = useDeleteSimulationMutation();
   const [triggerFetch] = useLazyGetSimulationListQuery();
-
+const setErrorSim = useAlboData().setErrorSim;
   const levelData = useSelector((state) => state.mapMenu.left.panelLevel);
 
   const { setSimResult, setIsLoadingSim } = useAlboData();
@@ -48,7 +48,7 @@ function SimTile({ sim, direction, shimmerList }) {
 
       simTileHelpers.handleViewSimulationResults(
         results,
-        setSimResult,
+        setSimResult, setErrorSim,
         dispatch,
         direction,
         levelData,

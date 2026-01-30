@@ -3,22 +3,21 @@ import { getCookie } from './utils';
 const simulationApi = createApi({
   reducerPath: 'simulationApi',
   baseQuery: fetchBaseQuery({
-  baseUrl: process.env.REACT_APP_DEV_URL, 
-    credentials: "include",
+    baseUrl: process.env.REACT_APP_DEV_URL,
+    credentials: 'include',
 
-  prepareHeaders: (headers,{getState}) => {
-
-    headers.set("Content-Type", "application/json");
-    const state=getState()
-    const fromRedux = state.login.csrfToken
-    const fromCookie=getCookie("csrftoken")
-    const token = fromRedux || fromCookie
-    if (token) {
-      headers.set("X-CSRFToken", token);
-    }
-    return headers;
-  },
-}),
+    prepareHeaders: (headers, { getState }) => {
+      headers.set('Content-Type', 'application/json');
+      const state = getState();
+      const fromRedux = state.login.csrfToken;
+      const fromCookie = getCookie('csrftoken');
+      const token = fromRedux || fromCookie;
+      if (token) {
+        headers.set('X-CSRFToken', token);
+      }
+      return headers;
+    },
+  }),
   tagTypes: ['Simulation List'],
   endpoints(builder) {
     return {

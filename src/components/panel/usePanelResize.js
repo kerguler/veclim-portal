@@ -1,46 +1,34 @@
-import useDirectorFun from 'customHooks/useDirectorFun';
-import { useEffect } from 'react';
+import { useEffect, useCallback, useRef } from 'react';
 import { useDispatch } from 'react-redux';
+import useDirectorFun from 'customHooks/useDirectorFun';
 
 function usePanelResize({ panelRef, direction, setPanelTop }) {
-	const dispatch = useDispatch();
+  const dispatch = useDispatch();
+  const { panelOpen } = useDirectorFun(direction);
 
-	const { panelOpen } = useDirectorFun(direction);
+  const lastTopRef = useRef(null);
 
-	useEffect(() => {
-		const handleResize = () => {
-			if (window.innerWidth <= 499 && panelRef.current) {
-				dispatch(
-					setPanelTop({
-						direction,
-						value: panelRef.current.getBoundingClientRect().top,
-					}),
-				);
-			} else {
-				panelRef.current &&
-					dispatch(
-						setPanelTop({
-							direction,
-							value: panelRef.current.getBoundingClientRect().top,
-						}),
-					);
-			}
-		};
-		handleResize();
-		window.addEventListener('resize', handleResize);
+  const measureAndStoreTop = useCallback(() => {
+    const el = panelRef.current;
+    if (!el) return;
 
-		return () => window.removeEventListener('resize', handleResize);
-	}, [panelOpen, dispatch]);
-	useEffect(() => {
-		if (panelRef.current) {
-			dispatch(
-				setPanelTop({
-					direction,
-					value: panelRef.current.getBoundingClientRect().top,
-				}),
-			);
-		}
-	});
+    const top = el.getBoundingClientRect().top;
+
+    // 🔥 critical: don't dispatch if unchanged
+    if (lastTopRef.current === top) return;
+    lastTopRef.current = top;
+
+    // // // dispatch(setPanelTop({ direction, value: top }));
+  }, [dispatch, direction, setPanelTop, panelRef]);
+
+  useEffect(() => {
+    measureAndStoreTop();
+
+    window.addEventListener('resize', measureAndStoreTop);
+    return () => window.removeEventListener('resize', measureAndStoreTop);
+  }, [measureAndStoreTop, panelOpen]);
+
+
 }
 
 export default usePanelResize;
