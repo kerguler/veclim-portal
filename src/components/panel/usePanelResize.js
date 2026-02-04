@@ -18,7 +18,7 @@ function usePanelResize({ panelRef, direction, setPanelTop }) {
     if (lastTopRef.current === top) return;
     lastTopRef.current = top;
 
-    // // // dispatch(setPanelTop({ direction, value: top }));
+    dispatch(setPanelTop({ direction, value: top }));
   }, [dispatch, direction, setPanelTop, panelRef]);
 
   useEffect(() => {
@@ -27,8 +27,6 @@ function usePanelResize({ panelRef, direction, setPanelTop }) {
     window.addEventListener('resize', measureAndStoreTop);
     return () => window.removeEventListener('resize', measureAndStoreTop);
   }, [measureAndStoreTop, panelOpen]);
-
-
 }
 
 export default usePanelResize;

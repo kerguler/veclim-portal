@@ -20,7 +20,7 @@ function SimTile({ sim, direction, shimmerList }) {
 
   const [deleteSimulation] = useDeleteSimulationMutation();
   const [triggerFetch] = useLazyGetSimulationListQuery();
-const setErrorSim = useAlboData().setErrorSim;
+  const setErrorSim = useAlboData().setErrorSim;
   const levelData = useSelector((state) => state.mapMenu.left.panelLevel);
 
   const { setSimResult, setIsLoadingSim } = useAlboData();
@@ -48,7 +48,8 @@ const setErrorSim = useAlboData().setErrorSim;
 
       simTileHelpers.handleViewSimulationResults(
         results,
-        setSimResult, setErrorSim,
+        setSimResult,
+        setErrorSim,
         dispatch,
         direction,
         levelData,

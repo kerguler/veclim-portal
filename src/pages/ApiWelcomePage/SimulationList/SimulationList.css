@@ -15,7 +15,7 @@
   gap: 5px;
   justify-content: flex-start;
   align-items: stretch;
-  width: 90%;
+  width: 100%;
 }
 .tile {
   width: 100%;
@@ -47,7 +47,7 @@
     gap: 10px;
     justify-content: flex-start;
     align-items: stretch;
-    width: 90%;
+    width: 100%;
   }
 
   .scrollable-list.fixed {
@@ -59,7 +59,7 @@
     gap: 10px;
     justify-content: flex-start;
     align-items: stretch;
-    width: 90%;
+    width: 100%;
   }
 
   .tile {

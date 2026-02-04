@@ -5,12 +5,12 @@ export default function useColorBarResize(
   leftRef,
   rightRef,
   panelOpen,
-  panelTop,
+  panelTop1,
   times,
   setStyle,
   ready
 ) {
-  const { openItems } = useDirectorFun('left');
+  const { openItems,panelTop} = useDirectorFun('left');
   const secondaryMenuOpen = Object.prototype.hasOwnProperty.call(
     openItems,
     'secondary_menu_icon'
@@ -24,6 +24,13 @@ export default function useColorBarResize(
       const vh = window.visualViewport?.height || window.innerHeight;
       const leftH = leftRef.current?.getBoundingClientRect().height || 0;
       const rightH = rightRef.current?.getBoundingClientRect().height || 0;
+      console.log({
+        innerWidth: window.innerWidth,
+        panelOpen,
+        panelTop,
+        leftH,
+        computed: panelTop - leftH - 20,
+      });
 
       let topL, topR;
       if (window.innerWidth <= 499) {
