@@ -30,16 +30,36 @@ function SimDataMessenger({ direction }) {
       dispatch(setAlbochickStatus(null));
     }
   }, []);
+  console.log({ simList });
   useEffect(() => {
+    if (simList.length >= 10) {
+      setMessage(
+        'You have reached the maximum number of simulations, please delete some simulations to run new ones'
+      );
+      return;
+    }
     if (mapPagePosition.lat) {
       if (invalidateSimData) {
         dispatch(setDataArrived({ direction, value: false }));
         setDataSim(null);
         dispatch(setAlbochickStatus(null));
-        setMessage('Ready to run simulation with new coordinates');
+        if (simList.length < 10) {
+          setMessage('Ready to run simulation with new coordinates');
+        } else {
+          setMessage(
+            'You have reached the maximum number of simulations, please delete some simulations to run new ones'
+          );
+        }
       } else {
         if (!albochickStatus) {
-          setMessage('  ready to simulate');
+          if (simList.length < 10) {
+            console.log({ l: simList.length });
+            setMessage('  ready to simulate');
+          } else {
+            setMessage(
+              'you have reached the maximum number of simulations, please delete some simulations to run new ones'
+            );
+          }
         }
         if (
           albochickStatus === 'pending' ||
@@ -79,6 +99,7 @@ function SimDataMessenger({ direction }) {
     errorSim,
     invalidateSimData,
     albochickStatus,
+    simList.length,
   ]);
 
   return (

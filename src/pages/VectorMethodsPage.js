@@ -52,20 +52,23 @@ function VectorMethodsPage() {
     return <div>Unknown vector: {activeVectorId}</div>;
   }
 
+  // Fallback to albopictus if no methodsPage
+  let vectorToUse = vector;
+
   if (!vector.methodsPage) {
-    return (
-      <div>
-        No methods page defined for{' '}
-        {vector.meta?.methods?.label || activeVectorId}
-      </div>
-    );
+    const fallback = getVector('albopictus');
+
+    if (!fallback?.methodsPage) {
+      return <div>Albopictus methods page not found.</div>;
+    }
+
+    vectorToUse = fallback;
   }
 
   return (
-    <TextProvider pageOverride={vector.methodsPage}>
+    <TextProvider pageOverride={vectorToUse.methodsPage}>
       <>
         <NavBarContainer />
-        {/* LeftPanel uses vectorName from Redux; selector drives everything */}
         <LeftPanel page="home" displayContent displayNews />
         <DesktopContentWrapper />
       </>
