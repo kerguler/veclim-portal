@@ -23,6 +23,7 @@ import { setBrushRange } from 'store';
 import useSetBrushInfo from './useSetBrushInfo';
 import { useMemo } from 'react';
 import handleAxisAdjustments from './handleAxisAdjustments';
+import { useState } from 'react';
 function RechartsPlot({ direction, plotMat }) {
   const args = {
     years: { firstYear: null, lastYear: null },
@@ -54,11 +55,18 @@ function RechartsPlot({ direction, plotMat }) {
     yaxisInfo,
     openItems,
   } = useDirectorFun(direction);
-
+  const [activeKeys, setActiveKeys] = useState(() => {
+    // start with everything active
+    return Object.keys(chartParameters.sliceInfo).flatMap((gid) =>
+      Object.keys(chartParameters.sliceInfo[gid].sliceLabels).map(
+        (sliceKey) => `${gid}.${sliceKey}`
+      )
+    );
+  });
   let d = dateRef.current && dateRef.current;
   const brushDataYL = brushDatay.left;
   const brushDataYR = brushDatay.right;
- 
+
   // const { date, ...restObj } = plotMat[0];
   // const keys = Object.keys(restObj);
   // argRef.current.keys = keys;
@@ -132,7 +140,37 @@ function RechartsPlot({ direction, plotMat }) {
     brushDatay,
     yaxisInfo
   );
+
+  const handleLegendToggle = (key) => {
+    const sliceInfo = chartParameters.sliceInfo;
+    console.log(key.split('.')[0]);
+    // find group of clicked label
+    console.log({ ObjectKeys: Object.keys(sliceInfo) });
+    const groupId = key?.split('.')[0];
+    console.log({ groupId });
+    if (!groupId) return;
+
+    const groupKeys = Object.keys(sliceInfo[groupId].sliceLabels).map(
+      (sliceKey) => `${groupId}.${sliceKey}`
+    );
+
+    setActiveKeys((prev) => {
+      const isActive = groupKeys.every((k) => prev.includes(k));
+
+      if (isActive) {
+        // deactivate entire group
+        return prev.filter((k) => !groupKeys.includes(k));
+      } else {
+        // activate entire group
+        return [...new Set([...prev, ...groupKeys])];
+      }
+    });
+
+    console.log('WITHIN LEGEND TOGGLE', { activeKeys });
+  };
+
   const renderedLines = buildLines(
+    activeKeys,
     chartParameters,
     plotMat,
     direction,
@@ -208,6 +246,8 @@ function RechartsPlot({ direction, plotMat }) {
               keys={argRef.current.keys}
               key={'customLegend'}
               direction={direction}
+              legendButtonClick={handleLegendToggle}
+              activeKeys={activeKeys}
             />
           }
         />
@@ -282,7 +322,13 @@ function buildAxes(plotMat, chartParameters, brushDatay, yaxisInfo) {
   return renderedAxes;
 }
 
-function buildLines(chartParameters, plotMat, direction, yaxisInfo) {
+function buildLines(
+  activeKeys,
+  chartParameters,
+  plotMat,
+  direction,
+  yaxisInfo
+) {
   if (yaxisInfo === undefined) {
     return null;
   }
@@ -328,9 +374,11 @@ function buildLines(chartParameters, plotMat, direction, yaxisInfo) {
         return null;
       }
       let yDirection = yaxisInfo[key].orientation || 'left';
-
+      console.log({ activeKeys });
+      console.log({ primaryKey, secondaryKey, key });
       return (
         <Line
+          hide={!activeKeys.includes(key)}
           id={uniqueKey}
           key={uniqueKey}
           yAxisId={yDirection}

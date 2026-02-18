@@ -1,11 +1,21 @@
 import './CustomLegend.css';
 import useDirectorFun from 'customHooks/useDirectorFun';
-const CustomLegend = ({ payload, keys, direction }) => {
+const CustomLegend = ({
+  payload,
+  keys,
+  direction,
+  legendButtonClick,
+  activeKeys,
+}) => {
   const { chartParameters } = useDirectorFun(direction);
-  const payload1 = Array.from(new Map(payload.map((item) => [item.value, item])).values());
+  const payload1 = Array.from(
+    new Map(payload.map((item) => [item.value, item])).values()
+  );
 
   let preparedKeys = Object.keys(chartParameters.sliceInfo).flatMap((item) => {
-    let tempArray = Object.keys(chartParameters.sliceInfo[item].sliceLabels).map((element) => {
+    let tempArray = Object.keys(
+      chartParameters.sliceInfo[item].sliceLabels
+    ).map((element) => {
       return chartParameters.sliceInfo[item].sliceLabels[element];
     });
     return tempArray;
@@ -15,6 +25,11 @@ const CustomLegend = ({ payload, keys, direction }) => {
     // 	return chartParameters.sliceInfo[temp[0]].sliceLabels[temp[1]];
     // }
   });
+  const handleLegendButtonClick = (key) => {
+    console.log(key);
+    legendButtonClick(key);
+  };
+
   if (preparedKeys.length > 0) {
     return (
       <>
@@ -24,14 +39,18 @@ const CustomLegend = ({ payload, keys, direction }) => {
               return (
                 <li className="legend-list" key={index}>
                   <span
+                    onClick={(event) => handleLegendButtonClick(entry.value)}
                     style={{
                       color: entry.color,
                       paddingRight: '2px',
+                      opacity: activeKeys.includes(entry.value) ? 1 : 0.5,
                     }}
                   >
                     ●
                   </span>
-                  <span style={{ paddingRight: '8px' }}>{preparedKeys[index]}</span>
+                  <span style={{ paddingRight: '8px' }}>
+                    {preparedKeys[index]}
+                  </span>
                 </li>
               );
             }
@@ -45,7 +64,12 @@ const CustomLegend = ({ payload, keys, direction }) => {
       <ul>
         {payload1.map((entry, index) => (
           <li key={index}>
-            <span style={{ color: entry.color, paddingRight: '8px' }}>●</span>
+            <span
+              onClick={handleLegendButtonClick(entry.value)}
+              style={{ color: entry.color, paddingRight: '8px' }}
+            >
+              ●
+            </span>
             {entry.value}
           </li>
         ))}

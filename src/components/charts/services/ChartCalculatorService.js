@@ -47,11 +47,9 @@ class ChartCalculatorService {
     }
 
     let error = { errorMessage: null, isError: false };
-    console.log({mixedKeys:chartParameters.mixedKeys})
     for (const element of chartParameters.mixedKeys) {
       const { levels } = element;
       let val = data;
-      console.log('checking levels:', val, levels);
 
       for (const v of levels) {
         if (v in val) {

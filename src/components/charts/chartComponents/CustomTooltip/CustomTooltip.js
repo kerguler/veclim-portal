@@ -13,8 +13,6 @@ function CustomTooltip({ active, payload, label, parameters }) {
     return tempArray;
   });
 
-  console.log({ preparedKeys });
-
   if (active && payload1 && payload1.length) {
     const RenderedTooltipElement = ({ entry, index }) => {
       let keyArray = entry.dataKey.split('.');
