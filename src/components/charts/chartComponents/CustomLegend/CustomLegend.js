@@ -8,8 +8,19 @@ const CustomLegend = ({
   activeKeys,
 }) => {
   const { chartParameters } = useDirectorFun(direction);
+
+  const labelByDataKey = Object.entries(chartParameters.sliceInfo).reduce(
+    (acc, [gid, info]) => {
+      Object.entries(info.sliceLabels).forEach(([sliceKey, label]) => {
+        acc[`${gid}.${sliceKey}`] = label; // "g1.slice0" -> "This year"
+      });
+      return acc;
+    },
+    {}
+  );
+
   const payload1 = Array.from(
-    new Map(payload.map((item) => [item.value, item])).values()
+    new Map(payload.map((item) => [item.dataKey, item])).values()
   );
 
   let preparedKeys = Object.keys(chartParameters.sliceInfo).flatMap((item) => {
@@ -29,51 +40,29 @@ const CustomLegend = ({
     console.log(key);
     legendButtonClick(key);
   };
-
-  if (preparedKeys.length > 0) {
+  {
     return (
-      <>
-        <div className="horizontal-legend">
-          {payload1.map((entry, index) => {
-            if (entry.dataKey.split('.')[0] in chartParameters.sliceInfo) {
-              return (
-                <li className="legend-list" key={index}>
-                  <span
-                    onClick={(event) => handleLegendButtonClick(entry.value)}
-                    style={{
-                      color: entry.color,
-                      paddingRight: '2px',
-                      opacity: activeKeys.includes(entry.value) ? 1 : 0.5,
-                    }}
-                  >
-                    ●
-                  </span>
-                  <span style={{ paddingRight: '8px' }}>
-                    {preparedKeys[index]}
-                  </span>
-                </li>
-              );
-            }
-            return null;
-          })}
-        </div>
-      </>
-    );
-  } else {
-    return (
-      <ul>
-        {payload1.map((entry, index) => (
-          <li key={index}>
+      <div className="horizontal-legend">
+        {payload1.map((entry) => (
+          <li className="legend-list" key={entry.dataKey}>
             <span
-              onClick={handleLegendButtonClick(entry.value)}
-              style={{ color: entry.color, paddingRight: '8px' }}
+              onClick={() => legendButtonClick(entry.dataKey)}
+              style={{
+                color: entry.color,
+                paddingRight: '2px',
+                opacity: activeKeys.includes(entry.dataKey) ? 1 : 0.5,
+                cursor: 'pointer',
+              }}
             >
               ●
             </span>
-            {entry.value}
+
+            <span style={{ paddingRight: '8px' }}>
+              {labelByDataKey[entry.dataKey] ?? entry.value}
+            </span>
           </li>
         ))}
-      </ul>
+      </div>
     );
   }
 };

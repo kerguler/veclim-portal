@@ -63,6 +63,7 @@ function RechartsPlot({ direction, plotMat }) {
       )
     );
   });
+  console.log({ activeKeys });
   let d = dateRef.current && dateRef.current;
   const brushDataYL = brushDatay.left;
   const brushDataYR = brushDatay.right;
