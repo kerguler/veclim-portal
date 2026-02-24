@@ -57,7 +57,10 @@ const CustomLegend = ({
               ●
             </span>
 
-            <span style={{ paddingRight: '8px' }}>
+            <span
+              style={{ paddingRight: '8px' }}
+              onClick={() => legendButtonClick(entry.dataKey)}
+            >
               {labelByDataKey[entry.dataKey] ?? entry.value}
             </span>
           </li>
