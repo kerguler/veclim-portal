@@ -44,12 +44,41 @@ const CustomLegend = ({
     return (
       <div className="horizontal-legend">
         {payload1.map((entry) => (
-          <li className="legend-list" key={entry.dataKey}>
+          <li
+            className="legend-list"
+            key={entry.dataKey}
+            style={{
+              listStyle: 'none',
+              padding: '1px 2px',
+              marginRight: '2px',
+              marginBottom: '2px',
+              borderRadius: '5px',
+              background: '#f0f0f0',
+              transition: 'all 0.2s ease',
+              userSelect: 'none',
+              display: 'flex',
+              alignItems: 'center',
+              ...(activeKeys.includes(entry.dataKey)
+                ? {
+                    // 🟢 Elevated
+                    boxShadow:
+                      '4px 4px 8px rgba(0,0,0,0.25), -2px -2px 6px rgba(255,255,255,0.7)',
+                    transform: 'translateY(0px)',
+                  }
+                : {
+                    // 🔴 Pressed / sunk
+                    boxShadow:
+                      'inset 3px 3px 6px rgba(0,0,0,0.25), inset -2px -2px 6px rgba(255,255,255,0.7)',
+                    transform: 'translateY(1px)',
+                  }),
+            }}
+          >
             <span
               onClick={() => legendButtonClick(entry.dataKey)}
               style={{
                 color: entry.color,
                 paddingRight: '2px',
+                paddingLeft: '2px',
                 opacity: activeKeys.includes(entry.dataKey) ? 1 : 0.5,
                 cursor: 'pointer',
               }}
@@ -58,7 +87,7 @@ const CustomLegend = ({
             </span>
 
             <span
-              style={{ paddingRight: '8px' }}
+              style={{ paddingRight: '8px', cursor: 'pointer' }}
               onClick={() => legendButtonClick(entry.dataKey)}
             >
               {labelByDataKey[entry.dataKey] ?? entry.value}
