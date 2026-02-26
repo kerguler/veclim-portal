@@ -1,101 +1,67 @@
-import './CustomLegend.css';
+import React from 'react';
+import { createPortal } from 'react-dom';
 import useDirectorFun from 'customHooks/useDirectorFun';
-const CustomLegend = ({
-  payload,
-  keys,
+import './CustomLegend.css';
+
+export default function CustomLegend({
+  payload = [],
   direction,
   legendButtonClick,
-  activeKeys,
-}) => {
+  activeKeys = [],
+  isOpen,
+  onToggle,
+
+  // ✅ add this
+  portalTargetRef,
+}) {
   const { chartParameters } = useDirectorFun(direction);
 
-  const labelByDataKey = Object.entries(chartParameters.sliceInfo).reduce(
-    (acc, [gid, info]) => {
-      Object.entries(info.sliceLabels).forEach(([sliceKey, label]) => {
-        acc[`${gid}.${sliceKey}`] = label; // "g1.slice0" -> "This year"
-      });
-      return acc;
-    },
-    {}
-  );
-
-  const payload1 = Array.from(
-    new Map(payload.map((item) => [item.dataKey, item])).values()
-  );
-
-  let preparedKeys = Object.keys(chartParameters.sliceInfo).flatMap((item) => {
-    let tempArray = Object.keys(
-      chartParameters.sliceInfo[item].sliceLabels
-    ).map((element) => {
-      return chartParameters.sliceInfo[item].sliceLabels[element];
+  const labelByDataKey = Object.entries(
+    chartParameters?.sliceInfo ?? {}
+  ).reduce((acc, [gid, info]) => {
+    Object.entries(info?.sliceLabels ?? {}).forEach(([sliceKey, label]) => {
+      acc[`${gid}.${sliceKey}`] = label;
     });
-    return tempArray;
-    // if (temp.length === 1) {
-    // 	return chartParameters.sliceInfo[temp[0]].sliceLabels["slice0"];
-    // } else {
-    // 	return chartParameters.sliceInfo[temp[0]].sliceLabels[temp[1]];
-    // }
-  });
-  const handleLegendButtonClick = (key) => {
-    console.log(key);
-    legendButtonClick(key);
-  };
-  {
-    return (
-      <div className="horizontal-legend">
-        {payload1.map((entry) => (
-          <li
-            className="legend-list"
-            key={entry.dataKey}
-            style={{
-              listStyle: 'none',
-              padding: '1px 2px',
-              marginRight: '2px',
-              marginBottom: '2px',
-              borderRadius: '5px',
-              background: '#f0f0f0',
-              transition: 'all 0.2s ease',
-              userSelect: 'none',
-              display: 'flex',
-              alignItems: 'center',
-              ...(activeKeys.includes(entry.dataKey)
-                ? {
-                    // 🟢 Elevated
-                    boxShadow:
-                      '4px 4px 8px rgba(0,0,0,0.25), -2px -2px 6px rgba(255,255,255,0.7)',
-                    transform: 'translateY(0px)',
-                  }
-                : {
-                    // 🔴 Pressed / sunk
-                    boxShadow:
-                      'inset 3px 3px 6px rgba(0,0,0,0.25), inset -2px -2px 6px rgba(255,255,255,0.7)',
-                    transform: 'translateY(1px)',
-                  }),
-            }}
-          >
-            <span
-              onClick={() => legendButtonClick(entry.dataKey)}
-              style={{
-                color: entry.color,
-                paddingRight: '2px',
-                paddingLeft: '2px',
-                opacity: activeKeys.includes(entry.dataKey) ? 1 : 0.5,
-                cursor: 'pointer',
-              }}
-            >
-              ●
-            </span>
+    return acc;
+  }, {});
 
-            <span
-              style={{ paddingRight: '8px', cursor: 'pointer' }}
-              onClick={() => legendButtonClick(entry.dataKey)}
-            >
-              {labelByDataKey[entry.dataKey] ?? entry.value}
-            </span>
-          </li>
-        ))}
-      </div>
-    );
-  }
-};
-export default CustomLegend;
+  const items = Array.from(
+    new Map(payload.map((it) => [it.dataKey, it])).values()
+  );
+
+  const legendUI = (
+    <div className={`vl ${isOpen ? 'vl--open' : ''}`}>
+      <button type="button" className="vl__toggle" onClick={onToggle}>
+        <span className="vl__title">Legend</span>
+        <span className="vl__count">{items.length}</span>
+        <span className="vl__caret">{isOpen ? '▴' : '▾'}</span>
+      </button>
+
+      {isOpen && (
+        <div className="vl__body">
+          {items.map((entry) => {
+            const active = activeKeys.includes(entry.dataKey);
+            const label = labelByDataKey[entry.dataKey] ?? entry.value;
+
+            return (
+              <button
+                key={entry.dataKey}
+                type="button"
+                className={`vl__chip ${active ? 'isActive' : 'isInactive'}`}
+                onClick={() => legendButtonClick(entry.dataKey)}
+                title={String(label)}
+              >
+                <span className="vl__dot" style={{ background: entry.color }} />
+                <span className="vl__label">{label}</span>
+              </button>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  );
+
+  // ✅ portal if host exists
+  const target = portalTargetRef?.current;
+  return target ? createPortal(legendUI, target) : legendUI;
+}

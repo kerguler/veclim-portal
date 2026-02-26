@@ -1,50 +1,112 @@
-.legend-list {
-  list-style-type: none;
-  font-size: 1.1rem;
+/* IMPORTANT: give recharts legend wrapper a width it can wrap inside */
+.recharts-legend-wrapper {
+  width: 100% !important;
+  max-width: 100% !important;
 }
 
-.horizontal-legend {
+/* Panel */
+.vl {
+  width: 100%;
+  max-width: 100%;
+  background: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.18);
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+/* Header */
+.vl__toggle {
+  width: 100%;
   display: flex;
-  flex-wrap: wrap;
-
-  /* flex-direction: column; */
-  /* width: 100px; */
-}
-.horizontal-legend p {
-  font-size: 0.8rem;
-  padding: 0;
-  margin: 0;
-}
-.horizontal-legend span {
-  font-size: 1rem;
-  padding: 0;
-  margin: 0;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  font: inherit;
+  box-sizing: border-box;
 }
 
-/* .horizontal-legend li {
-  margin-right: 2px;
-  margin-bottom: 2px;
-  border-radius: 5px;
-} */
-@media (min-width: 500px) {
-  .legend-list {
-    list-style-type: none;
-    font-size: unset;
-  }
-  .horizontal-legend {
-    display: flex;
-    flex-direction: row;
-  }
-  .horizontal-legend span {
-    font-size: 1.2rem;
-    padding: 0;
-    margin-top: 2px;
-    margin-bottom: 2px;
-  }
+.vl__title {
+  font-weight: 600;
+  color: var(--primary-color1);
+  font-family: 'Inter', sans-serif;
+  font-size: 10px;
 }
-@media (max-width: 280px) {
-  .horizontal-legend {
-    /* flex-direction: column;  */
-    flex-wrap: wrap;
+.vl__count {
+  margin-left: auto;
+  font-size: 10px;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.06);
+  font-family: 'Inter', sans-serif;
+}
+.vl__caret {
+  opacity: 0.75;
+}
+
+/* Body (THIS is where wrapping happens) */
+.vl__body {
+  display: flex;
+  flex-wrap: wrap; /* ✅ next line when it doesn't fit */
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px 10px;
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+
+  /* optional clamp if it gets too tall */
+  max-height: 120px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+/* Chips */
+.vl__chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(0, 0, 0, 0.14);
+  background: #fff;
+  cursor: pointer;
+  max-width: 100%;
+
+  /* allow chip to shrink instead of forcing overflow */
+  min-width: 0;
+}
+
+.vl__chip.isInactive {
+  opacity: 0.45;
+}
+
+.vl__dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+  flex: 0 0 auto;
+}
+
+/* label ellipsis inside a shrinkable chip */
+.vl__label {
+  font-size: 10px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+  font-family: 'Inter', sans-serif;
+}
+
+/* Mobile: still wrap (per your ask). If you ever want horizontal scroll instead, I can swap this. */
+@media (max-width: 600px) {
+  .vl__body {
+    max-height: 160px;
   }
 }

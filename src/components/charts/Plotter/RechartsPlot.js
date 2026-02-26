@@ -63,7 +63,10 @@ function RechartsPlot({ direction, plotMat }) {
       )
     );
   });
-  console.log({ activeKeys });
+
+  const legendHostRef = useRef(null);
+  const [legendOpen, setLegendOpen] = useState(false);
+
   let d = dateRef.current && dateRef.current;
   const brushDataYL = brushDatay.left;
   const brushDataYR = brushDatay.right;
@@ -179,81 +182,87 @@ function RechartsPlot({ direction, plotMat }) {
   );
 
   return (
-    <ResponsiveContainer>
-      <LineChart
-        id="line-chart"
-        key={`line-chart`}
-        className="chart"
-        width={500}
-        height={400}
-        data={plotMat}
-        //  margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+    <>
+      <div
+        ref={legendHostRef}
+        className="legend-host"
+        style={{ width: '100%', margin: '6px 0 10px' }}
+      />
 
-        margin={{ top: 5, right: 0, left: 20, bottom: 5 }}
-      >
-        {renderedLines}
-        <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
-        <XAxis
-          dataKey="date"
-          tick={
-            <CustomXAxisTick
-              // key={`${direction}`}
-              direction={direction}
-              brushData={brushData}
-              argRef={argRef}
-            />
-          }
-        />
-
-        {renderedAxes}
-        <Brush
-          key={`brushx`}
-          className="myBrush"
-          dataKey="date"
-          height={15}
+      <ResponsiveContainer>
+        <LineChart
+          id="line-chart"
+          key={`line-chart`}
+          className="chart"
+          width={500}
+          height={400}
           data={plotMat}
-          onChange={handleBrushChange}
-          startIndex={d.index[0]}
-          endIndex={d.index[1]}
-          //  startIndex={brushRange.startIndex}
-          //  endIndex={brushRange.endIndex}
-        />
-        <Tooltip
-          contentStyle={{ margin: '20px' }}
-          content={
-            <CustomTooltip
-              keys={argRef.current.keys}
-              parameters={chartParameters}
-            />
-          }
-        />
-        <Legend
-          key={'legend'}
-          wrapperStyle={{
-            top: '-10px',
-            right: 0,
-            left: '20px',
-            border: '1px solid black',
-            borderRadius: '0.5rem',
-            background: 'white',
-            padding: '0rem',
-          }}
-          className="myLegend"
-          layout="box"
-          align="top"
-          margin={10}
-          content={
-            <CustomLegend
-              keys={argRef.current.keys}
-              key={'customLegend'}
-              direction={direction}
-              legendButtonClick={handleLegendToggle}
-              activeKeys={activeKeys}
-            />
-          }
-        />
-      </LineChart>
-    </ResponsiveContainer>
+          //  margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+
+          margin={{ top: 5, right: 0, left: 20, bottom: 5 }}
+        >
+          {renderedLines}
+          <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
+          <XAxis
+            dataKey="date"
+            tick={
+              <CustomXAxisTick
+                // key={`${direction}`}
+                direction={direction}
+                brushData={brushData}
+                argRef={argRef}
+              />
+            }
+          />
+
+          {renderedAxes}
+          <Brush
+            key={`brushx`}
+            className="myBrush"
+            dataKey="date"
+            height={15}
+            data={plotMat}
+            onChange={handleBrushChange}
+            startIndex={d.index[0]}
+            endIndex={d.index[1]}
+            //  startIndex={brushRange.startIndex}
+            //  endIndex={brushRange.endIndex}
+          />
+          <Tooltip
+            contentStyle={{ margin: '20px' }}
+            content={
+              <CustomTooltip
+                keys={argRef.current.keys}
+                parameters={chartParameters}
+              />
+            }
+          />
+
+          <Legend
+            key={'legend'}
+            wrapperStyle={{
+              display: 'none',
+            }}
+            className="myLegend"
+            layout="box"
+            align="top"
+            margin={10}
+            content={
+              <CustomLegend
+                keys={argRef.current.keys}
+                key={'customLegend'}
+                direction={direction}
+                legendButtonClick={handleLegendToggle}
+                activeKeys={activeKeys}
+                portalTargetRef={legendHostRef}
+                isOpen={legendOpen}
+                onToggle={() => setLegendOpen((prev) => !prev)}
+              />
+            }
+          />
+        </LineChart>
+      </ResponsiveContainer>
+    </>
   );
 }
 
