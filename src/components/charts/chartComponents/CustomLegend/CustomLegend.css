@@ -29,7 +29,34 @@
   font: inherit;
   box-sizing: border-box;
 }
+/* Multi-slice swatch inside the same oval chip */
+.vl__swatchBar {
+  display: inline-flex;
+  overflow: hidden;
+  border-radius: 6px;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  flex: 0 0 auto;
+}
+.vl__chip--combined {
+  display: inline-flex;
+  align-items: center;
+  gap: 16px; /* space between mini chips */
+  padding: 6px 14px;
+}
 
+.vl__mini {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.vl__miniLabel {
+  font-size: 12px;
+}
+.vl__swatchSeg {
+  width: 10px; /* make 12 if you want more visible */
+  height: 10px;
+}
 .vl__title {
   font-weight: 600;
   color: var(--primary-color1);

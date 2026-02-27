@@ -42,6 +42,7 @@ function RechartsPlot({ direction, plotMat }) {
     index: [],
   });
   const argRef = useRef(args);
+
   const dispatch = useDispatch();
 
   const {
@@ -384,8 +385,6 @@ function buildLines(
         return null;
       }
       let yDirection = yaxisInfo[key].orientation || 'left';
-      console.log({ activeKeys });
-      console.log({ primaryKey, secondaryKey, key });
       return (
         <Line
           hide={!activeKeys.includes(key)}
