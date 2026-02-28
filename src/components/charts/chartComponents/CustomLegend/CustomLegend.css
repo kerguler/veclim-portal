@@ -51,7 +51,8 @@
 }
 
 .vl__miniLabel {
-  font-size: 12px;
+  font-size: 10px;
+  font-family: 'Inter', sans-serif;
 }
 .vl__swatchSeg {
   width: 10px; /* make 12 if you want more visible */
@@ -75,7 +76,6 @@
   opacity: 0.75;
 }
 
-/* Body (THIS is where wrapping happens) */
 .vl__body {
   display: flex;
   flex-wrap: wrap; /* ✅ next line when it doesn't fit */

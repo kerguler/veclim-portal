@@ -76,7 +76,6 @@ export default function CustomLegend({
     <div className={`vl ${isOpen ? 'vl--open' : ''}`}>
       <button type="button" className="vl__toggle" onClick={onToggle}>
         <span className="vl__title">Legend</span>
-        {/* show number of CHIPS after grouping */}
         <span className="vl__count">{grouped.length}</span>
         <span className="vl__caret">{isOpen ? '▴' : '▾'}</span>
       </button>
@@ -84,7 +83,6 @@ export default function CustomLegend({
       {isOpen && (
         <div className="vl__body">
           {grouped.map(([gid, entries]) => {
-            // --- single slice: keep your original chip exactly ---
             if (entries.length === 1) {
               const entry = entries[0];
               const active = activeKeys.includes(entry.dataKey);
@@ -107,19 +105,16 @@ export default function CustomLegend({
               );
             }
 
-            // --- multi-slice: one big oval with multiple colors ---
             const anyActive = entries.some((e) =>
               activeKeys.includes(e.dataKey)
             );
 
-            // label: prefer gid.slice0 label, else first
             const label =
               labelByDataKey[`${gid}.slice0`] ??
               labelByDataKey[entries[0].dataKey] ??
               entries[0].value ??
               gid;
 
-            // click any slice key; your handler toggles by gid anyway
             const clickKey = entries[0].dataKey;
 
             return (
@@ -155,71 +150,3 @@ export default function CustomLegend({
   const target = portalTargetRef?.current;
   return target ? createPortal(legendUI, target) : legendUI;
 }
-
-// import React from 'react';
-// import { createPortal } from 'react-dom';
-// import useDirectorFun from 'customHooks/useDirectorFun';
-// import './CustomLegend.css';
-
-// export default function CustomLegend({
-//   payload = [],
-//   direction,
-//   legendButtonClick,
-//   activeKeys = [],
-//   isOpen,
-//   onToggle,
-
-//   // ✅ add this
-//   portalTargetRef,
-// }) {
-//   const { chartParameters } = useDirectorFun(direction);
-
-//   const labelByDataKey = Object.entries(
-//     chartParameters?.sliceInfo ?? {}
-//   ).reduce((acc, [gid, info]) => {
-//     Object.entries(info?.sliceLabels ?? {}).forEach(([sliceKey, label]) => {
-//       acc[`${gid}.${sliceKey}`] = label;
-//     });
-//     return acc;
-//   }, {});
-
-//   const items = Array.from(
-//     new Map(payload.map((it) => [it.dataKey, it])).values()
-//   );
-
-//   const legendUI = (
-//     <div className={`vl ${isOpen ? 'vl--open' : ''}`}>
-//       <button type="button" className="vl__toggle" onClick={onToggle}>
-//         <span className="vl__title">Legend</span>
-//         <span className="vl__count">{items.length}</span>
-//         <span className="vl__caret">{isOpen ? '▴' : '▾'}</span>
-//       </button>
-
-//       {isOpen && (
-//         <div className="vl__body">
-//           {items.map((entry) => {
-//             const active = activeKeys.includes(entry.dataKey);
-//             const label = labelByDataKey[entry.dataKey] ?? entry.value;
-
-//             return (
-//               <button
-//                 key={entry.dataKey}
-//                 type="button"
-//                 className={`vl__chip ${active ? 'isActive' : 'isInactive'}`}
-//                 onClick={() => legendButtonClick(entry.dataKey)}
-//                 title={String(label)}
-//               >
-//                 <span className="vl__dot" style={{ background: entry.color }} />
-//                 <span className="vl__label">{label}</span>
-//               </button>
-//             );
-//           })}
-//         </div>
-//       )}
-//     </div>
-//   );
-
-//   // ✅ portal if host exists
-//   const target = portalTargetRef?.current;
-//   return target ? createPortal(legendUI, target) : legendUI;
-// }
