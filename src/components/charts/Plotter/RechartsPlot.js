@@ -44,6 +44,7 @@ function RechartsPlot({ direction, plotMat }) {
   const argRef = useRef(args);
 
   const dispatch = useDispatch();
+  let d = dateRef.current && dateRef.current;
 
   const {
     brushData,
@@ -64,11 +65,73 @@ function RechartsPlot({ direction, plotMat }) {
       )
     );
   });
+  const visibleBrushDomains = useMemo(() => {
+    if (!plotMat?.length || !activeKeys?.length || !yaxisInfo) {
+      return {
+        left: { min: 'auto', max: 'auto' },
+        right: { min: 'auto', max: 'auto' },
+      };
+    }
 
+    const start = Number.isFinite(brushData?.index?.[0])
+      ? brushData.index[0]
+      : 0;
+    const end = Number.isFinite(brushData?.index?.[1])
+      ? brushData.index[1]
+      : plotMat.length - 1;
+    const windowData = plotMat.slice(start, end + 1);
+
+    let lMin = Infinity,
+      lMax = -Infinity;
+    let rMin = Infinity,
+      rMax = -Infinity;
+
+    for (const row of windowData) {
+      for (const key of activeKeys) {
+        const axis = yaxisInfo[key]?.orientation || 'left';
+        const v = row?.[key];
+        if (v === null || v === undefined || Number.isNaN(v)) continue;
+
+        if (axis === 'right') {
+          if (v < rMin) rMin = v;
+          if (v > rMax) rMax = v;
+        } else {
+          if (v < lMin) lMin = v;
+          if (v > lMax) lMax = v;
+        }
+      }
+    }
+
+    // fallback if no values found
+    const left =
+      lMin === Infinity || lMax === -Infinity
+        ? { min: 'auto', max: 'auto' }
+        : { min: lMin, max: lMax };
+
+    const right =
+      rMin === Infinity || rMax === -Infinity
+        ? { min: 'auto', max: 'auto' }
+        : { min: rMin, max: rMax };
+
+    // small padding so the line doesn't touch chart edges
+    const pad = (min, max) => {
+      if (min === 'auto' || max === 'auto') return [min, max];
+      if (min === max) return [min * 0.9, max * 1.1];
+      const p = (max - min) * 0.05;
+      return [min - p, max + p];
+    };
+
+    const [l0, l1] = pad(left.min, left.max);
+    const [r0, r1] = pad(right.min, right.max);
+
+    return {
+      left: { min: l0, max: l1 },
+      right: { min: r0, max: r1 },
+    };
+  }, [plotMat, activeKeys, yaxisInfo, d?.index]);
   const legendHostRef = useRef(null);
   const [legendOpen, setLegendOpen] = useState(false);
 
-  let d = dateRef.current && dateRef.current;
   const brushDataYL = brushDatay.left;
   const brushDataYR = brushDatay.right;
 
@@ -132,19 +195,27 @@ function RechartsPlot({ direction, plotMat }) {
   if (!plotMat || plotMat.length === 0) {
     return <div>Loading data...</div>;
   }
-
+  const renderedAxes = buildAxes(
+    plotMat,
+    chartParameters,
+    {
+      left: visibleBrushDomains.left,
+      right: visibleBrushDomains.right,
+    },
+    yaxisInfo
+  );
   const formatYAxisTick = (value) => {
     if (typeof value === 'number') {
       return value.toFixed(2);
     }
     return value; // If not a number, return it as is
   };
-  const renderedAxes = buildAxes(
-    plotMat,
-    chartParameters,
-    brushDatay,
-    yaxisInfo
-  );
+  // const renderedAxes = buildAxes(
+  //   plotMat,
+  //   chartParameters,
+  //   brushDatay,
+  //   yaxisInfo
+  // );
 
   const handleLegendToggle = (key) => {
     const sliceInfo = chartParameters.sliceInfo;
