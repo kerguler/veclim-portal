@@ -74,11 +74,11 @@ export default function CustomLegend({
 
   const legendUI = (
     <div className={`vl ${isOpen ? 'vl--open' : ''}`}>
-      <button type="button" className="vl__toggle" onClick={onToggle}>
+      <div onPointerDown={onToggle} className="vl__toggle">
         <span className="vl__title">Legend</span>
         <span className="vl__count">{grouped.length}</span>
         <span className="vl__caret">{isOpen ? '▴' : '▾'}</span>
-      </button>
+      </div>
 
       {isOpen && (
         <div className="vl__body">

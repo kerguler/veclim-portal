@@ -1,17 +1,15 @@
-import ErrorBoundary from 'components/errorBoundary/ErrorBoundary';
-import rightArrow from 'assets/icons/arrow-teal-16px.png';
 import useDirectorFun from 'customHooks/useDirectorFun';
 import { useDispatch } from 'react-redux';
 import { useState } from 'react';
 import { useRef } from 'react';
 import { useEffect } from 'react';
-import { lazy, Suspense } from 'react';
-import UnifiedRechartPlotterV2 from 'components/charts/Plotter/plotterV2/UnifiedRechartPlotterV2';
+import rightArrow from 'assets/icons/arrow-teal-16px.png';
 import { setPlotReady } from 'store';
 import { setTwinIndex } from 'store';
 
-const RenderedPanelChartV2 = ({ direction, siblingCount }) => {
-  const { twinIndex } = useDirectorFun(direction);
+function SwitcherArrows({ direction }) {
+  const { twinIndex, siblingCount } = useDirectorFun(direction);
+
   const dispatch = useDispatch();
   const [showSwitcherArrows, setShowSwitcherArrows] = useState({
     left: false,
@@ -53,10 +51,14 @@ const RenderedPanelChartV2 = ({ direction, siblingCount }) => {
   };
   let pointerRight, pointerLeft;
 
-  showSwitcherArrows.left === false ? (pointerLeft = 'default') : (pointerLeft = 'pointer');
-  showSwitcherArrows.right === false ? (pointerRight = 'default') : (pointerRight = 'pointer');
+  showSwitcherArrows.left === false
+    ? (pointerLeft = 'default')
+    : (pointerLeft = 'pointer');
+  showSwitcherArrows.right === false
+    ? (pointerRight = 'default')
+    : (pointerRight = 'pointer');
   return (
-    <div className="panel-content chart">
+    <>
       {' '}
       <div ref={switcherRefLeft} className="switcher-arrows left">
         {showSwitcherArrows.left && (
@@ -80,12 +82,7 @@ const RenderedPanelChartV2 = ({ direction, siblingCount }) => {
           />
         )}
       </div>
-      <ErrorBoundary>
-        <Suspense fallback={<div>Loading...</div>}>
-          <UnifiedRechartPlotterV2 direction={direction} />
-        </Suspense>
-      </ErrorBoundary>
-    </div>
+    </>
   );
-};
-export default RenderedPanelChartV2;
+}
+export default SwitcherArrows;

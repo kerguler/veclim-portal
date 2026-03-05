@@ -5,18 +5,18 @@ import { setPanelTop } from 'store';
 import 'components/panel/Switcher/Switcher.css';
 import useDirectorFun from 'customHooks/useDirectorFun';
 import usePanelResize from '../usePanelResize';
-import RenderedPanelChartV2 from './RenderedPanelChartV2';
 import { useEffect } from 'react';
 import { useState } from 'react';
 import { setOpenItems } from 'store';
 import { setPanelLevel } from 'store';
+import ErrorBoundary from 'components/errorBoundary/ErrorBoundary';
+import UnifiedRechartPlotterV2 from 'components/charts/Plotter/plotterV2/UnifiedRechartPlotterV2';
+import { Suspense } from 'react';
 const RenderedPanelV2 = ({
   panel,
   panelChart,
   panelClassName,
   direction,
-  siblingCount,
-  level,
   passedKey,
 }) => {
   const dispatch = useDispatch();
@@ -53,13 +53,18 @@ const RenderedPanelV2 = ({
   let displayedPanel;
   if (panelChart) {
     if (showCoordinateWarning) {
-      displayedPanel = <div>You need to pick a coordinate for the graphics to work</div>;
+      displayedPanel = (
+        <div>You need to pick a coordinate for the graphics to work</div>
+      );
     } else {
       displayedPanel = (
-        <RenderedPanelChartV2
-          siblingCount={siblingCount}
-          direction={direction}
-        />
+        <div className="panel-content chart">
+          <ErrorBoundary>
+            <Suspense fallback={<div>Loading...</div>}>
+              <UnifiedRechartPlotterV2 direction={direction} />
+            </Suspense>
+          </ErrorBoundary>
+        </div>
       );
     }
   }

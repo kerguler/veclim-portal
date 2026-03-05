@@ -67,6 +67,7 @@
   align-items: center;
   justify-content: space-evenly;
   height: fit-content;
+
   /* height:fit-content; */
 }
 .panel-content.chart {
@@ -74,6 +75,7 @@
   margin: 1rem;
   height: 200px;
   width: 85vw;
+  
 }
 @media (max-width: 280px) {
   .panel-container {
@@ -183,6 +185,7 @@
     z-index: 3002;
     margin: 1rem;
     width: 100%;
+    min-height: max-content;
   }
   .panel-content .icons-area {
     width: 100%;
