@@ -47,7 +47,7 @@ const moduleObj = {
     },
   },
   defaults: {
-    tileArray: ['papatasi_V2511A'],
+    tileArray: ['papatasi_V2511A_PRT_newegg'],
     firstPanelKey: 'location_info_panel',
   },
 };

@@ -52,39 +52,32 @@ export const panelDataSand = [
       years: 'ISMED-CLIM',
       mixedKeys: [
         {
-          key: 'g3',
-          levels: ['sim-ts', 'V2511A', 'simL'],
+          key: 'g1',
+          levels: ['sim-ts', 'V2511A_PRT', 'newegg'],
         },
         {
           key: 'g2',
-          levels: ['sim-ts', 'V2511A', 'simM'],
-        },
-        {
-          key: 'g1',
-          levels: ['sim-ts', 'V2511A', 'simH'],
-        },
+          levels: ['risk-ts', 'V2511A_PRT', 'risk']
+        }
       ],
       sliceInfo: {
-        g3: {
-          sliceLabels: { slice0: 'Q1: 25%' },
+        g1: {
+          sliceLabels: { slice0: 'New egg' },
           sliceColors: { slice0: '#167997' },
         },
         g2: {
-          sliceLabels: { slice0: 'Median' },
-          sliceColors: { slice0: '#1B3958' },
-        },
-        g1: {
-          sliceLabels: { slice0: 'Q3: 75%' },
-          sliceColors: { slice0: '#167997' },
+          sliceLabels: { slice0: 'Risk' },
+          sliceColors: { slice0: '#972516ff' },
         },
       },
       horizontalAxis: 'date',
       chartType: 'rechart',
       initialSetting: 'sim-ts',
-      plottedKeys: ['simL', 'simM', 'simH'],
+      orientation: { g2: 'right' },
+      plottedKeys: ['newegg', 'risk'],
       colors: ['#167997', '#1B3958', '#167997'],
-      labels: ['Q1: 25%', 'Median', 'Q3: 75%'],
-      lineStyle: { g1: 'dots', g3: 'dots' },
+      labels: ['New eggs', 'Category'],
+      lineStyle: {},
       lineSlice: [],
     },
 
