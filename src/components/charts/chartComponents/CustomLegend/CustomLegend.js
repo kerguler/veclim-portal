@@ -31,7 +31,6 @@ export default function CustomLegend({
     return Array.from(new Map(payload.map((it) => [it.dataKey, it])).values());
   }, [payload]);
 
-  // ✅ group by primary key (gid) => g1.slice0, g1.slice1 grouped together
   const grouped = useMemo(() => {
     const groups = new Map();
 

@@ -75,7 +75,6 @@
   margin: 1rem;
   height: 200px;
   width: 85vw;
-  
 }
 @media (max-width: 280px) {
   .panel-container {
@@ -186,6 +185,7 @@
     margin: 1rem;
     width: 100%;
     min-height: max-content;
+    max-height: 90vh;
   }
   .panel-content .icons-area {
     width: 100%;

@@ -86,73 +86,12 @@ function RechartsPlot({ direction, plotMat }) {
       if (obj.min === obj.max)
         return { min: obj.min * 0.9, max: obj.max * 1.1 };
       const p = (obj.max - obj.min) * 0.05;
-      return { min: obj.min - p, max: obj.max + p };
+      return { min: obj.min , max: obj.max + p };
     };
 
     return { left: fix(left), right: fix(right) };
   }, [activeKeys, yaxisInfo]);
-  const visibleBrushDomains = useMemo(() => {
-    if (!plotMat?.length || !activeKeys?.length || !yaxisInfo) {
-      return {
-        left: { min: 'auto', max: 'auto' },
-        right: { min: 'auto', max: 'auto' },
-      };
-    }
-
-    const start = Number.isFinite(brushData?.index?.[0])
-      ? brushData.index[0]
-      : 0;
-    const end = Number.isFinite(brushData?.index?.[1])
-      ? brushData.index[1]
-      : plotMat.length - 1;
-    const windowData = plotMat.slice(start, end + 1);
-
-    let lMin = Infinity,
-      lMax = -Infinity;
-    let rMin = Infinity,
-      rMax = -Infinity;
-
-    for (const row of windowData) {
-      for (const key of activeKeys) {
-        const axis = yaxisInfo[key]?.orientation || 'left';
-        const v = row?.[key];
-        if (v === null || v === undefined || Number.isNaN(v)) continue;
-
-        if (axis === 'right') {
-          if (v < rMin) rMin = v;
-          if (v > rMax) rMax = v;
-        } else {
-          if (v < lMin) lMin = v;
-          if (v > lMax) lMax = v;
-        }
-      }
-    }
-
-    const left =
-      lMin === Infinity || lMax === -Infinity
-        ? { min: 'auto', max: 'auto' }
-        : { min: lMin, max: lMax };
-
-    const right =
-      rMin === Infinity || rMax === -Infinity
-        ? { min: 'auto', max: 'auto' }
-        : { min: rMin, max: rMax };
-
-    const pad = (min, max) => {
-      if (min === 'auto' || max === 'auto') return [min, max];
-      if (min === max) return [min * 0.9, max * 1.1];
-      const p = (max - min) * 0.05;
-      return [min - p, max + p];
-    };
-
-    const [l0, l1] = pad(left.min, left.max);
-    const [r0, r1] = pad(right.min, right.max);
-
-    return {
-      left: { min: l0, max: l1 },
-      right: { min: r0, max: r1 },
-    };
-  }, [plotMat, activeKeys, yaxisInfo, d?.index]);
+  
   const legendHostRef = useRef(null);
   const [legendOpen, setLegendOpen] = useState(false);
 
