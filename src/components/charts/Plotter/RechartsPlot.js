@@ -86,12 +86,12 @@ function RechartsPlot({ direction, plotMat }) {
       if (obj.min === obj.max)
         return { min: obj.min * 0.9, max: obj.max * 1.1 };
       const p = (obj.max - obj.min) * 0.05;
-      return { min: obj.min , max: obj.max + p };
+      return { min: obj.min, max: obj.max + p };
     };
 
     return { left: fix(left), right: fix(right) };
   }, [activeKeys, yaxisInfo]);
-  
+
   const legendHostRef = useRef(null);
   const [legendOpen, setLegendOpen] = useState(false);
 
@@ -279,18 +279,17 @@ function RechartsPlot({ direction, plotMat }) {
 }
 
 export default RechartsPlot;
-
 function buildAxes(
   plotMat,
   chartParameters,
-  brushDatay,
+  axisDomain,
   yaxisInfo,
   activeKeys,
   brushData
 ) {
-  const brushDataYL = brushDatay.left;
-  const brushDataYR = brushDatay.right;
-  console.log({ yaxisInfo });
+  const leftDomain = axisDomain.left;
+  const rightDomain = axisDomain.right;
+
   const formatYAxisTick = (value) =>
     typeof value === 'number' ? value.toFixed(2) : value;
 
@@ -334,10 +333,20 @@ function buildAxes(
 
   const leftKey = pickAxisKey('left');
   const rightKey = pickAxisKey('right');
+
   const leftStroke = getColorForKey(leftKey);
   const rightStroke = getColorForKey(rightKey);
 
+  const hasLeftActive = activeKeys.some((k) => {
+    const orientation = yaxisInfo?.[k]?.orientation || 'left';
+    return orientation !== 'right';
+  });
+
   const hasRightAxis = Object.keys(yaxisInfo || {}).some(
+    (k) => yaxisInfo?.[k]?.orientation === 'right'
+  );
+
+  const hasRightActive = activeKeys.some(
     (k) => yaxisInfo?.[k]?.orientation === 'right'
   );
 
@@ -345,30 +354,33 @@ function buildAxes(
     <YAxis
       yAxisId="left"
       key="left-axis"
-      domain={[brushDataYL.min, brushDataYL.max]}
+      domain={[leftDomain.min, leftDomain.max]}
       allowDataOverflow
+      width={40}
       tickFormatter={formatYAxisTick}
       stroke={leftStroke}
-      axisLine={{ stroke: leftStroke }}
-      tick={{ fill: leftStroke }}
-      hide={!leftKey}
+      axisLine={hasLeftActive ? { stroke: leftStroke } : false}
+      tick={hasLeftActive ? { fill: leftStroke } : false}
+      tickLine={hasLeftActive}
     />,
     hasRightAxis ? (
       <YAxis
         yAxisId="right"
         key="right-axis"
-        domain={[brushDataYR.min, brushDataYR.max]}
+        orientation="right"
+        domain={[rightDomain.min, rightDomain.max]}
         allowDataOverflow
+        width={40}
         tickFormatter={formatYAxisTick}
         stroke={rightStroke}
-        axisLine={{ stroke: rightStroke }}
-        tick={{ fill: rightStroke }}
-        orientation="right"
-        hide={!rightKey}
+        axisLine={hasRightActive ? { stroke: rightStroke } : false}
+        tick={hasRightActive ? { fill: rightStroke } : false}
+        tickLine={hasRightActive}
       />
     ) : null,
   ];
 }
+
 function buildLines(
   activeKeys,
   chartParameters,
