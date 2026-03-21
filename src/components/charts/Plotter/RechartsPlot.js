@@ -433,23 +433,41 @@ function buildLines(
         return null;
       }
       let yDirection = yaxisInfo[key].orientation || 'left';
-      return (
+      if (dotted) {
+        return (
         <Line
           hide={!activeKeys.includes(key)}
           id={uniqueKey}
           key={uniqueKey}
           yAxisId={yDirection}
-          type={dotted ? 'linear' : 'monotone'}
+          type="linear"
           dataKey={key}
           stroke={color}
-          strokeWidth={dotted ? '2.5' : '1.5'}
-          strokeDasharray={dotted ? '5 5' : '0'}
+          strokeWidth={0}
+          dot={{ r: 3, fill: color }}
+          connectNulls={false}
+        >
+          {' '}
+        </Line>
+        )
+      } else {
+        return (
+        <Line
+          hide={!activeKeys.includes(key)}
+          id={uniqueKey}
+          key={uniqueKey}
+          yAxisId={yDirection}
+          type="monotone"
+          dataKey={key}
+          stroke={color}
+          strokeWidth="1.5"
           dot={false}
           connectNulls={false}
         >
           {' '}
         </Line>
-      );
+        )
+      }
     })
   );
 }
