@@ -1,7 +1,7 @@
 import adult from 'assets/icons/map-page-right-menu/png/adult-32px.png';
 import model from 'assets/icons/map-page-right-menu/png/019-refresh-32px.png';
 import info from 'assets/icons/map-page-right-menu/png/008-files-32px.png';
-import  ChartIndicators  from 'components/ChartIndicators/CharterIndicators';
+import ChartIndicators from 'components/ChartIndicators/CharterIndicators';
 import TileSelector from '../../components/TileSelector/TileSelector';
 import suser from 'assets/icons/map-page-right-menu/png/007-arrows-32px.png';
 import menuIcon from 'assets/icons/map-page-right-menu/png/menu-32px.png';
@@ -29,6 +29,7 @@ export const panelDataSand = [
     key: 'location_info',
   },
   {
+    label: 'Location Information',
     key: 'location_info_panel',
     chartParameters: {},
     icon: info,
@@ -48,6 +49,7 @@ export const panelDataSand = [
   },
   {
     key: 'sandfly_population_panel',
+    label: 'Sandfly Population',
     chartParameters: {
       years: 'Bologna2024',
       mixedKeys: [
@@ -121,9 +123,36 @@ export const panelDataSand = [
       horizontalAxis: 'date',
       chartType: 'rechart',
       initialSetting: 'sim-ts',
-      plottedKeys: ['VectAbundance (2019-2022)', 'albopictus (sPop)', 'ArboCartoR', 'dynamAedes', 'Metelmann et al. (2019)', 'VECTRI', 'AedesDDE', 'Stacked Machine Learning'],
-      colors: ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b', '#e377c2', '#bcbd22'],
-      labels: ['VectAbundance (2019-2022)', 'albopictus (sPop)', 'ArboCartoR', 'dynamAedes', 'Metelmann et al. (2019)', 'VECTRI', 'AedesDDE', 'Stacked Machine Learning'],
+      plottedKeys: [
+        'VectAbundance (2019-2022)',
+        'albopictus (sPop)',
+        'ArboCartoR',
+        'dynamAedes',
+        'Metelmann et al. (2019)',
+        'VECTRI',
+        'AedesDDE',
+        'Stacked Machine Learning',
+      ],
+      colors: [
+        '#1f77b4',
+        '#ff7f0e',
+        '#2ca02c',
+        '#d62728',
+        '#9467bd',
+        '#8c564b',
+        '#e377c2',
+        '#bcbd22',
+      ],
+      labels: [
+        'VectAbundance (2019-2022)',
+        'albopictus (sPop)',
+        'ArboCartoR',
+        'dynamAedes',
+        'Metelmann et al. (2019)',
+        'VECTRI',
+        'AedesDDE',
+        'Stacked Machine Learning',
+      ],
       lineStyle: { g1: 'dots' },
       lineSlice: [],
     },
@@ -135,7 +164,11 @@ export const panelDataSand = [
           <p>
             Daily number of eggs laid by the Asian tiger mosquito as a proxy to
             biting activity as predicted by the 7 climate-sensitive models.
-            These models have been presented during the <XLink href="https://www.vectormodelling.com/Bologna2024/">Bologna 2024 Workshop</XLink>.
+            These models have been presented during the{' '}
+            <XLink href="https://www.vectormodelling.com/Bologna2024/">
+              Bologna 2024 Workshop
+            </XLink>
+            .
           </p>
         </div>
       </div>
@@ -148,6 +181,7 @@ export const panelDataSand = [
     icon: suser,
   },
   {
+    label: 'Tile Selector',
     key: 'sandfly_tile_selector_panel',
     forgetOpen: true,
 
@@ -161,6 +195,7 @@ export const panelDataSand = [
     icon: model,
   },
   {
+    label: 'Vector Selector',
     key: 'sandfly_vector_selector_panel',
     forgetOpen: true,
 

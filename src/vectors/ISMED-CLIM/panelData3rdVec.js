@@ -1,7 +1,7 @@
 import adultsandfly from 'assets/icons/map-page-right-menu/png/mosquito-3-32px.png';
 import model from 'assets/icons/map-page-right-menu/png/019-refresh-32px.png';
 import info from 'assets/icons/map-page-right-menu/png/008-files-32px.png';
-import  ChartIndicators  from 'components/ChartIndicators/CharterIndicators';
+import ChartIndicators from 'components/ChartIndicators/CharterIndicators';
 import TileSelector from '../../components/TileSelector/TileSelector';
 import suser from 'assets/icons/map-page-right-menu/png/007-arrows-32px.png';
 import menuIcon from 'assets/icons/map-page-right-menu/png/menu-32px.png';
@@ -29,6 +29,7 @@ export const panelDataSand = [
     key: 'location_info',
   },
   {
+    label: 'Location Information',
     key: 'location_info_panel',
     chartParameters: {},
     icon: info,
@@ -48,6 +49,7 @@ export const panelDataSand = [
   },
   {
     key: 'sandfly_population_panel',
+    label: 'Sandfly Population',
     chartParameters: {
       years: 'ISMED-CLIM',
       mixedKeys: [
@@ -57,12 +59,12 @@ export const panelDataSand = [
         },
         {
           key: 'g2',
-          levels: ['risk-ts', 'V2511A_PRT', 'risk']
+          levels: ['risk-ts', 'V2511A_PRT', 'risk'],
         },
         {
           key: 'g3',
-          levels: ['surv-ts', 'adult_norm']
-        }
+          levels: ['surv-ts', 'adult_norm'],
+        },
       ],
       sliceInfo: {
         g1: {
@@ -96,7 +98,9 @@ export const panelDataSand = [
           <p>
             The number of <i>Phlebotomus papatasi</i> females averaged over the
             time period: 2011-2015. The dotted lines mark the 50% range of the
-            V2511A model output. This work has been developed in the framework of the <XLink href="https://ismed-clim.eu/">ISMED-CLIM</XLink> project.
+            V2511A model output. This work has been developed in the framework
+            of the <XLink href="https://ismed-clim.eu/">ISMED-CLIM</XLink>{' '}
+            project.
           </p>
         </div>
       </div>
@@ -110,6 +114,7 @@ export const panelDataSand = [
   },
   {
     key: 'sandfly_tile_selector_panel',
+    label: 'Tile Selector',
     forgetOpen: true,
 
     chartParameters: {},
@@ -123,6 +128,7 @@ export const panelDataSand = [
   },
   {
     key: 'sandfly_vector_selector_panel',
+    label: 'Vector Selector',
     forgetOpen: true,
 
     chartParameters: {},

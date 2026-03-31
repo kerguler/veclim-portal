@@ -56,6 +56,7 @@ export const panelData = [
     key: 'activity_forecast',
   },
   {
+    label: 'Location Information',
     key: 'location_info_panel',
     content: (
       <div className="text-area">
@@ -68,6 +69,7 @@ export const panelData = [
   },
   {
     key: 'seasonal_profile_panel',
+    label: 'Seasonal Profile',
     chartParameters: {
       chartType: 'rechart',
       initialSetting: 'meteo-ts',
@@ -128,6 +130,7 @@ export const panelData = [
   },
   {
     key: 'larva_forecast_panel',
+    label: 'Larva Forecast',
     chartParameters: {
       mixedKeys: [
         {

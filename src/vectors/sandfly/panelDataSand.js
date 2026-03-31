@@ -28,6 +28,7 @@ export const panelDataSand = [
     key: 'location_info',
   },
   {
+    label: 'Location Information',
     key: 'location_info_panel',
     chartParameters: {},
     icon: info,
@@ -46,6 +47,7 @@ export const panelDataSand = [
     icon: adultsandfly,
   },
   {
+    label: 'Population Size',
     key: 'sandfly_population_panel',
     chartParameters: {
       years: '2015',
@@ -105,6 +107,7 @@ export const panelDataSand = [
     icon: suser,
   },
   {
+    label: 'Tile Selector',
     key: 'sandfly_tile_selector_panel',
     forgetOpen: true,
 
@@ -119,6 +122,7 @@ export const panelDataSand = [
   },
   {
     key: 'sandfly_vector_selector_panel',
+    label: 'Vector Selector',
     forgetOpen: true,
 
     chartParameters: {},
