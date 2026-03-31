@@ -58,6 +58,10 @@ export const panelDataSand = [
         {
           key: 'g2',
           levels: ['risk-ts', 'V2511A_PRT', 'risk']
+        },
+        {
+          key: 'g3',
+          levels: ['surv-ts', 'adult_norm']
         }
       ],
       sliceInfo: {
@@ -69,15 +73,19 @@ export const panelDataSand = [
           sliceLabels: { slice0: 'Risk' },
           sliceColors: { slice0: '#972516ff' },
         },
+        g3: {
+          sliceLabels: { slice0: 'Data' },
+          sliceColors: { slice0: '#0d540aff' },
+        },
       },
       horizontalAxis: 'date',
       chartType: 'rechart',
       initialSetting: 'sim-ts',
-      orientation: { g2: 'right' },
-      plottedKeys: ['newegg', 'risk'],
-      colors: ['#167997', '#1B3958', '#167997'],
-      labels: ['New eggs', 'Category'],
-      lineStyle: {},
+      orientation: { g2: 'right', g3: 'right' },
+      plottedKeys: ['newegg', 'risk', 'adult_norm'],
+      colors: ['#167997', '#1B3958', '#0d540a'],
+      labels: ['New eggs', 'Category', 'Data'],
+      lineStyle: { g3: 'dots' },
       lineSlice: [],
     },
 
