@@ -30,7 +30,6 @@ function SimDataMessenger({ direction }) {
       dispatch(setAlbochickStatus(null));
     }
   }, []);
-  console.log({ simList });
   useEffect(() => {
     if (simList.length >= 10) {
       setMessage(

@@ -83,6 +83,7 @@ import {
   setShimmered,
   setSimSlider1Enabled,
   setSimulationParameterSlider1,
+  setSimulationFieldValue,
   setYaxisInfo,
   appendToColorsChartParameters,
   appendToLabelsChartParameters,
@@ -212,6 +213,7 @@ export {
 
 export { useFetchNewsDataQuery } from './apis/newsApi';
 export {
+  setSimulationFieldValue,
   setPermalink,
   setIsPermalinkClick,
   setShimmered,

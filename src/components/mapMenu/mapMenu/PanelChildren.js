@@ -8,6 +8,8 @@ import { setGraphType } from 'store';
 import { setLastPanelDisplayed, setPanelOpen } from '../menuStore/mapMenuSlice';
 import { setSiblingCount } from 'store';
 import { setTwinIndex } from 'store';
+import { Tab } from 'material-ui';
+import { TabView } from 'components/TabView/TabView';
 function PanelChildren({ displayedItem, level, direction }) {
   const dispatch = useDispatch();
   const {
@@ -129,9 +131,10 @@ function PanelChildren({ displayedItem, level, direction }) {
   useEffect(() => {
     dispatch(setChartParameters({ direction, value: chartParameters }));
   }, [displayedPanelDetails]);
-
+  console.log({ panelChildren });
   return (
     <RenderedPanelV2
+      panelChildren={panelChildren}
       siblingCount={siblingCount}
       direction="left"
       panelClassName={'no-anim'}

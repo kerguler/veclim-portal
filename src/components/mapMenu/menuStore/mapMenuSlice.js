@@ -22,7 +22,6 @@ const mapMenuSlice = createSlice({
         dates: { first: null, last: null },
         plotReady: false,
         requestPlot: false,
-        sliders: { slider1: { enabled: true, value: 50 } },
         brush: {
           brushRange: { startIndex: null, endIndex: null },
           brushDatay: { min: 0, max: 0 },
@@ -61,6 +60,54 @@ const mapMenuSlice = createSlice({
         },
         sliders: { slider1: { enabled: true, value: 50 } },
 
+        simulationFields: {
+          vecHumanScaling: {
+            label: 'vec/human scaling',
+            enabled: true,
+            value: 50,
+            type: 'slider',
+            min: 0,
+            max: 100,
+            step: 1,
+          },
+          personalProtection: {
+            label: 'personal protection',
+            enabled: false,
+            value: 0,
+            type: 'slider',
+            min: 0,
+            max: 100,
+            step: 1,
+          },
+          vectorControlDelay: {
+            label: 'vector control delay',
+            enabled: false,
+            value: -1,
+            type: 'slider',
+            min: -1,
+            max: 30,
+            step: 1,
+          },
+          humanPopulationSize: {
+            label: 'human population size',
+            enabled: false,
+            value: 1000,
+            type: 'input',
+          },
+          daysToRunTransmission: {
+            label: 'days to run transmission',
+            enabled: false,
+            value: 60,
+            type: 'input',
+          },
+          numberOfRepetitions: {
+            label: 'number of repetitions',
+            enabled: false,
+            value: 100,
+            type: 'input',
+          },
+        },
+
         dates: { first: null, last: null },
         plotReady: false,
         messenger: { message: null, id: null, isError: false },
@@ -69,6 +116,10 @@ const mapMenuSlice = createSlice({
   },
 
   reducers: {
+    setSimulationFieldValue: (state, action) => {
+      const { direction, key, value } = action.payload;
+      state[direction].chart.simulationFields[key].value = value;
+    },
     setLastPanelDisplayed(state, action) {
       const { direction, value } = action.payload;
       state[direction].lastPanelDisplayed = value;
@@ -224,6 +275,7 @@ const mapMenuSlice = createSlice({
 });
 
 export const {
+  setSimulationFieldValue,
   setAlboRequestPlot,
   setBrushData,
   setBrushDatay,

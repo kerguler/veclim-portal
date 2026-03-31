@@ -6,6 +6,9 @@ import PanelContextV2 from 'context/panelsIconsV2';
 import { setOpenItems } from 'store';
 
 function useDirectorFun(direction) {
+  const simulationFieldValues = useSelector(
+    (state) => state.mapMenu[direction].chart.simulationFields
+  );
   const simList = useSelector((state) => state.simulation.simList);
   const isPermalinkClick = useSelector(
     (state) => state.fetcher.fetcherStates.map.isPermalinkClick
@@ -33,9 +36,7 @@ function useDirectorFun(direction) {
   const shimmerIcons = useSelector(
     (state) => state.mapMenu[direction].chart.shimmer
   );
-  const simSlider1Value = useSelector(
-    (state) => state.mapMenu[direction].chart.sliders.slider1.value
-  );
+
   const panelTop = useSelector(
     (state) => state.mapMenu[direction].panel.panelTop
   );
@@ -190,7 +191,6 @@ function useDirectorFun(direction) {
     tree,
     simSlider1Enabled,
     shimmerIcons,
-    simSlider1Value,
     simulationPanels,
     setOpenItems,
     menuStructure,
@@ -237,6 +237,7 @@ function useDirectorFun(direction) {
     panelTop,
     siblingCount,
     albochickStatus,
+    simulationFieldValues,
   };
 }
 function directorFun(direction, dataleft, dataright) {

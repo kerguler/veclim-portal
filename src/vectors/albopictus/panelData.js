@@ -15,6 +15,9 @@ import ChangeMapPanel from '../../components/vectorSelection/ChangeMapPanel/Chan
 import SettingsPanel from 'components/panel/SettingsPanel';
 import { tileIcons } from './tileIcons';
 import AlboParams from 'components/AlboParams/AlboParams';
+import { SimulationParametersTab } from 'components/AlboParams/SimulationParametersTab';
+import SimulationListCurrent from 'pages/ApiWelcomePage/SimulationList/SimulationListCurrent';
+import { TabView } from 'components/TabView/TabView';
 export const panelData = [
   {
     key: 'menu_icon',
@@ -170,6 +173,7 @@ export const panelData = [
   },
   {
     key: 'activity_forecast_panel',
+    label: 'Activity Forecast',
 
     chartParameters: {
       mixedKeys: [
@@ -245,6 +249,8 @@ export const panelData = [
   },
   // SIMULATION   ACTIVITY
   {
+    label: 'Simulation',
+
     key: 'simulation_activity_graph_panel',
     simulation: true,
     chartParameters: {
@@ -296,6 +302,8 @@ export const panelData = [
     ),
   },
   {
+    label: 'Activity Projections',
+
     decade: '2090-2100',
     key: 'activity_projections_panel',
     chartParameters: {
@@ -356,6 +364,8 @@ export const panelData = [
     icon: virus,
   },
   {
+    label: 'Outbreak Forecast',
+
     key: 'outbreak_forecast_panel',
     icon: virus,
     chartParameters: {
@@ -418,6 +428,7 @@ export const panelData = [
   // SIMULATION OUTBREAK
   {
     key: 'simulation_outbreak_graph_panel',
+    label: 'Albochick',
     simulation: true,
     chartParameters: {
       mixedKeys: [
@@ -469,6 +480,7 @@ export const panelData = [
   },
 
   {
+    label: 'Outbreak Projections',
     key: 'outbreak_projections_panel',
     chartParameters: {
       mixedKeys: [
@@ -528,7 +540,7 @@ export const panelData = [
   },
   {
     key: 'impact_forecast_panel',
-
+    label: 'Impact Forecast',
     chartParameters: {
       xinit: { date0: 15, date1: 125 },
       mixedKeys: [
@@ -586,6 +598,7 @@ export const panelData = [
   },
   {
     key: 'simulation_impact_graph_panel',
+    label: 'Impact Simulation',
     simulation: true,
     chartParameters: {
       mixedKeys: [
@@ -636,6 +649,7 @@ export const panelData = [
     ),
   },
   {
+    label: 'Impact Projections',
     key: 'impact_projections_panel',
     chartParameters: {
       mixedKeys: [
@@ -696,6 +710,7 @@ export const panelData = [
     icon: suser,
   },
   {
+    label: 'Tile Selector',
     key: 'tile_selector_panel',
     forgetOpen: true,
     content: <TileSelector tileIcons={tileIcons}></TileSelector>,
@@ -705,6 +720,7 @@ export const panelData = [
     icon: model,
   },
   {
+    label: 'Vector Selector',
     key: 'vector_selector_panel',
     forgetOpen: true,
 
@@ -721,6 +737,7 @@ export const panelData = [
   },
 
   {
+    label: 'Settings',
     key: 'settings_adjustment_panel',
     forgetOpen: true,
 
@@ -740,11 +757,22 @@ export const panelData = [
 
   {
     key: 'simulation_adjustment_panel',
-
+    label: 'Simulation Adjustment Panel',
     content: (
       <div className="text-area">
         <div>
-          <AlboParams />
+          <SimulationParametersTab direction="left" />
+        </div>
+      </div>
+    ),
+  },
+  {
+    key: 'simulation_list_panel',
+    label: 'List Panel',
+    content: (
+      <div className="text-area">
+        <div>
+          <SimulationListCurrent direction="left" />
         </div>
       </div>
     ),

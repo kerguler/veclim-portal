@@ -12,7 +12,8 @@ import {
 } from 'store';
 import { useCreateSimulationMutation } from 'store';
 import ToolTipComponent from 'components/ToolTipComponent/ToolTipComponent';
-
+import { setSimulationFieldValue } from 'store';
+import SwitcherArrows from 'components/panel/SwitcherArrows';
 const SliderRow = ({ direction }) => {
   const [taskId, setTaskId] = useState(null); // Store Task ID
   const [shouldCheck, setShouldCheck] = useState(true);
@@ -20,7 +21,8 @@ const SliderRow = ({ direction }) => {
     mapPagePosition,
     simList,
     invalidateSimData,
-    simSlider1Value,
+    simulationFieldValues,
+    simSlider1Enabled: slider1Enabled,
     dispatch,
   } = useDirectorFun(direction);
   const { setDataSim, setIsLoadingSim, setErrorSim } = useAlboData();
@@ -35,33 +37,37 @@ const SliderRow = ({ direction }) => {
     }
   }, [simList]);
   // Handle Slider Change
-  const handleSliderChange = (e) => {
-    dispatch(
-      setSimSlider1Value({ direction: direction, value: e.target.value })
-    );
-  };
+  // const handleSliderChange = (e) => {
+  //   dispatch(
+  //     setSimSlider1Value({ direction: direction, value: e.target.value })
+  //   );
+  // };
 
+  const f = simulationFieldValues;
+  const toInt = (value, fallback) => {
+    if (value === '' || value === null || value === undefined) return fallback;
+    const parsed = parseInt(value, 10);
+    return Number.isNaN(parsed) ? fallback : parsed;
+  };
   const simulationData = {
     model_type: 'model_albochik',
-    title: '',
+    title: 'Albochik',
     description: '',
     return_method: 'file',
     model_data: {
       envir: [],
       pr: [
-        /* 0:production 1:test_local_data       */ 0.0,
-        /* Longitude                            */ mapPagePosition.lng,
-        /* Latitude                             */ mapPagePosition.lat,
-        /* Human population size                */ 4000.0,
-        /* Days to run transmission             */ 60.0,
-        /* Number of repetitions                */ 100.0,
-        /* Vec/human scaling (0.01x-100x)       */ simSlider1Value / 100,
-        /* Personal protection (0, 1-100)       */ 0.0,
-        /* Vector control delay (-1:no_control) */ -1.0,
+        0.0,
+        mapPagePosition.lng,
+        mapPagePosition.lat,
+        toInt(f.humanPopulationSize.value || 1000),
+        toInt(f.daysToRunTransmission.value || 60),
+        toInt(f.numberOfRepetitions.value || 100),
+        Number(f.vecHumanScaling.value || 50) / 100,
+        Number(f.personalProtection.value || 0),
+        Number(f.vectorControlDelay.value || -1),
       ],
     },
-
-    title: 'Albochik',
   };
 
   const handleConfirm = async () => {
@@ -93,18 +99,54 @@ const SliderRow = ({ direction }) => {
 
   return (
     <div className="slider-row">
-      <div className="albo-params">
-        <input
-          type="range"
-          min="0"
-          max="100"
-          onChange={handleSliderChange}
-          value={simSlider1Value}
-          disabled={!enableSlider}
-        />
-      </div>
 
-      <div className="slider-value">{simSlider1Value}</div>
+      <div className="albo-params">
+        {Object.entries(simulationFieldValues).map(([key, field]) => (
+          <div key={key}>
+            <label>{field.label}</label>
+
+            {field.type === 'slider' ? (
+              <input
+                type="range"
+                min={field.min}
+                max={field.max}
+                step={field.step ?? 1}
+                value={field.value}
+                disabled={!slider1Enabled}
+                onChange={(e) =>
+                  dispatch(
+                    setSimulationFieldValue({
+                      direction,
+                      key,
+                      value: Number(e.target.value),
+                    })
+                  )
+                }
+              />
+            ) : (
+              <input
+                type="text"
+                inputMode="numeric"
+                value={field.value}
+                disabled={!slider1Enabled}
+                onChange={(e) => {
+                  const nextValue = e.target.value;
+
+                  if (/^\d*$/.test(nextValue)) {
+                    dispatch(
+                      setSimulationFieldValue({
+                        direction,
+                        key,
+                        value: nextValue,
+                      })
+                    );
+                  }
+                }}
+              />
+            )}
+          </div>
+        ))}
+      </div>
 
       <button
         type="button"

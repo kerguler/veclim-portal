@@ -12,12 +12,14 @@ import { setPanelLevel } from 'store';
 import ErrorBoundary from 'components/errorBoundary/ErrorBoundary';
 import UnifiedRechartPlotterV2 from 'components/charts/Plotter/plotterV2/UnifiedRechartPlotterV2';
 import { Suspense } from 'react';
+import SwitcherArrows from '../SwitcherArrows';
 const RenderedPanelV2 = ({
   panel,
   panelChart,
   panelClassName,
   direction,
   passedKey,
+  panelChildren,
 }) => {
   const dispatch = useDispatch();
   const {
@@ -40,7 +42,6 @@ const RenderedPanelV2 = ({
       })
     );
   };
-
   const [showCoordinateWarning, setShowCoordinateWarning] = useState(false);
   useEffect(() => {
     if (mapPagePosition.lat === null) {
@@ -68,7 +69,6 @@ const RenderedPanelV2 = ({
       );
     }
   }
-
   return (
     <span
       className={`panel-restrictive-wrapper ${direction}`}
@@ -76,6 +76,8 @@ const RenderedPanelV2 = ({
     >
       <div ref={panelRef} style={interferePanelStyle}>
         <Panel
+          tabs={panelChildren}
+          passedKey={passedKey}
           direction={direction}
           className={panelClassName}
           onClosed={(key) => handlePanelClosed(key)}

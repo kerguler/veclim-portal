@@ -25,7 +25,14 @@
   width: 100%;
   min-width: 0;
 }
-
+.albo-params input[type='text'] {
+  width: 100%;
+  min-width: 0;
+  border: 1px solid var(--neutral-color1);
+  border-radius: 4px;
+  padding: 0.25rem 0.5rem;
+  
+}
 /* numeric value next to slider */
 .slider-value {
   font-variant-numeric: tabular-nums;

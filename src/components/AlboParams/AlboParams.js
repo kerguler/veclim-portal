@@ -10,6 +10,8 @@ import SimulationListCurrent from 'pages/ApiWelcomePage/SimulationList/Simulatio
 import { useLogoutMutation } from 'store';
 import { setApiRegisterResponse, setPassword } from 'store';
 import useCsrf from 'pages/LoginRegister/Services/useCsrf';
+import { SimulationParametersTab } from './SimulationParametersTab';
+import { TabView } from 'components/TabView/TabView';
 
 function AlboParams() {
   const dispatch = useDispatch();
@@ -29,20 +31,26 @@ function AlboParams() {
 
   const handleLogout = async () => {
     try {
-      await logout().unwrap();          // server clears session cookie
+      await logout().unwrap(); // server clears session cookie
     } catch (e) {
       console.error('Logout failed (continuing cleanup):', e);
     }
     // local cleanup
-    dispatch(setApiRegisterResponse({
-      response: null, status: null, message: null, userName: null, userId: null,
-    }));
-    dispatch(setPassword(''));          
-    localStorage.removeItem('id');      
-    await refresh();                    
+    dispatch(
+      setApiRegisterResponse({
+        response: null,
+        status: null,
+        message: null,
+        userName: null,
+        userId: null,
+      })
+    );
+    dispatch(setPassword(''));
+    localStorage.removeItem('id');
+    await refresh();
   };
 
-return showPanel ? (
+  return showPanel ? (
     <div className="albo-params-container">
       <div className="albo-header">
         <span className="albo-user">
@@ -58,10 +66,13 @@ return showPanel ? (
           {loggingOut ? 'Logging out…' : 'Log out'}
         </button>
       </div>
-
-      <SliderRow direction={direction} />
-      <SimDataMessenger direction={direction} />
-      <SimulationListCurrent direction={direction} />
+      <TabView
+        direction={direction}
+        siblings={[
+          <SimulationParametersTab direction={direction} />,
+          <SimulationListCurrent direction={direction} />,
+        ]}
+      />
     </div>
   ) : (
     <div className="albo-params-container">
@@ -71,8 +82,6 @@ return showPanel ? (
 }
 
 export default AlboParams;
-
-
 
 // import './alboParams.css';
 // import { useEffect, useState } from 'react';
@@ -92,7 +101,7 @@ export default AlboParams;
 //   useEffect(() => {
 //     if (userID) {
 //       setShowPanel(true);
-//     } 
+//     }
 //     // else {
 //     //   console.log('No user ID found', userID);
 //     // }
