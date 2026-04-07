@@ -1,7 +1,7 @@
 import { Bologna2024_MENU } from './menu';
-import { tileIconsSand as tileIcons } from './tileIcons3rdVec';
-import { panelDataSand as panelData } from './panelData3rdVec';
-import { tileIconRowHeadingsSand as tileIconRowHeadings } from './tileIconRowHeadings';
+import { tileIcons } from './tileIcons';
+import { panelData } from './panelData';
+import { tileIconRowHeadings } from './tileIconRowHeadings';
 import tileIconFly from 'assets/icons/map-page-right-menu/png/mosquito-3-32px.png';
 import { indicators } from './indicators';
 import { timeseries } from './timeSeries';

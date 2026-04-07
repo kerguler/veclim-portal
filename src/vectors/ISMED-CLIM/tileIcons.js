@@ -2,7 +2,7 @@ import adultsandfly from 'assets/icons/map-page-right-menu/png/mosquito-3-32px.p
 import XLink from 'components/xlink';
 const tileBase = process.env.REACT_APP_BASE_URL;
 
-export const tileIconsSand = [
+export const tileIcons = [
   {
     key: 'papatasi_V2511A_PRT_surv',
     colkey: 'papatasi_V2511A_PRT_surv',
@@ -17,12 +17,15 @@ export const tileIconsSand = [
     description: (
       <>
         <p>
-          Average number of <i>Phlebotomus papatasi</i> females (2011-2015) simulated by using the V2511A model. 
-          This work has been developed in the framework of the <XLink href="https://ismed-clim.eu/">ISMED-CLIM</XLink> project.
+          Average number of <i>Phlebotomus papatasi</i> females (2011-2015)
+          simulated by using the V2511A model. This work has been developed in
+          the framework of the{' '}
+          <XLink href="https://ismed-clim.eu/">ISMED-CLIM</XLink> project.
         </p>
       </>
     ),
-  },{
+  },
+  {
     key: 'papatasi_V2511A_PRT_newegg',
     colkey: 'papatasi_V2511A_PRT_newegg',
 
@@ -36,12 +39,15 @@ export const tileIconsSand = [
     description: (
       <>
         <p>
-          Average number of <i>Phlebotomus papatasi</i> females (2011-2015) simulated by using the V2511A model. 
-          This work has been developed in the framework of the <XLink href="https://ismed-clim.eu/">ISMED-CLIM</XLink> project.
+          Average number of <i>Phlebotomus papatasi</i> females (2011-2015)
+          simulated by using the V2511A model. This work has been developed in
+          the framework of the{' '}
+          <XLink href="https://ismed-clim.eu/">ISMED-CLIM</XLink> project.
         </p>
       </>
     ),
-  },{
+  },
+  {
     key: 'papatasi_V2511A_PRT_season_length',
     colkey: 'papatasi_V2511A_PRT_season_length',
 
@@ -55,12 +61,15 @@ export const tileIconsSand = [
     description: (
       <>
         <p>
-          Average number of <i>Phlebotomus papatasi</i> females (2011-2015) simulated by using the V2511A model. 
-          This work has been developed in the framework of the <XLink href="https://ismed-clim.eu/">ISMED-CLIM</XLink> project.
+          Average number of <i>Phlebotomus papatasi</i> females (2011-2015)
+          simulated by using the V2511A model. This work has been developed in
+          the framework of the{' '}
+          <XLink href="https://ismed-clim.eu/">ISMED-CLIM</XLink> project.
         </p>
       </>
     ),
-  },{
+  },
+  {
     key: 'papatasi_V2511A_PRT_season_num',
     colkey: 'papatasi_V2511A_PRT_season_num',
 
@@ -74,12 +83,15 @@ export const tileIconsSand = [
     description: (
       <>
         <p>
-          Average number of <i>Phlebotomus papatasi</i> females (2011-2015) simulated by using the V2511A model. 
-          This work has been developed in the framework of the <XLink href="https://ismed-clim.eu/">ISMED-CLIM</XLink> project.
+          Average number of <i>Phlebotomus papatasi</i> females (2011-2015)
+          simulated by using the V2511A model. This work has been developed in
+          the framework of the{' '}
+          <XLink href="https://ismed-clim.eu/">ISMED-CLIM</XLink> project.
         </p>
       </>
     ),
-  },{
+  },
+  {
     key: 'papatasi_V2511A_PRT_peak_num',
     colkey: 'papatasi_V2511A_PRT_peak_num',
 
@@ -93,12 +105,15 @@ export const tileIconsSand = [
     description: (
       <>
         <p>
-          Average number of <i>Phlebotomus papatasi</i> females (2011-2015) simulated by using the V2511A model. 
-          This work has been developed in the framework of the <XLink href="https://ismed-clim.eu/">ISMED-CLIM</XLink> project.
+          Average number of <i>Phlebotomus papatasi</i> females (2011-2015)
+          simulated by using the V2511A model. This work has been developed in
+          the framework of the{' '}
+          <XLink href="https://ismed-clim.eu/">ISMED-CLIM</XLink> project.
         </p>
       </>
     ),
-  },{
+  },
+  {
     key: 'papatasi_V2511A_PRT_season',
     colkey: 'papatasi_V2511A_PRT_season',
 
@@ -112,12 +127,15 @@ export const tileIconsSand = [
     description: (
       <>
         <p>
-          Average number of <i>Phlebotomus papatasi</i> females (2011-2015) simulated by using the V2511A model. 
-          This work has been developed in the framework of the <XLink href="https://ismed-clim.eu/">ISMED-CLIM</XLink> project.
+          Average number of <i>Phlebotomus papatasi</i> females (2011-2015)
+          simulated by using the V2511A model. This work has been developed in
+          the framework of the{' '}
+          <XLink href="https://ismed-clim.eu/">ISMED-CLIM</XLink> project.
         </p>
       </>
     ),
-  },{
+  },
+  {
     key: 'papatasi_V2511A_PRT_peak',
     colkey: 'papatasi_V2511A_PRT_peak',
 
@@ -131,10 +149,12 @@ export const tileIconsSand = [
     description: (
       <>
         <p>
-          Average number of <i>Phlebotomus papatasi</i> females (2011-2015) simulated by using the V2511A model. 
-          This work has been developed in the framework of the <XLink href="https://ismed-clim.eu/">ISMED-CLIM</XLink> project.
+          Average number of <i>Phlebotomus papatasi</i> females (2011-2015)
+          simulated by using the V2511A model. This work has been developed in
+          the framework of the{' '}
+          <XLink href="https://ismed-clim.eu/">ISMED-CLIM</XLink> project.
         </p>
       </>
     ),
-  }
+  },
 ];

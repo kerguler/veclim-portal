@@ -2,18 +2,13 @@ import './alboParams.css';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import SliderRow from './SliderRow';
-import SimDataMessenger from './SimDataMessenger';
 import LoginComponent from 'pages/LoginRegister/LoginComponent/LoginComponent';
-import SimulationListCurrent from 'pages/ApiWelcomePage/SimulationList/SimulationListCurrent';
 
 import { useLogoutMutation } from 'store';
 import { setApiRegisterResponse, setPassword } from 'store';
 import useCsrf from 'pages/LoginRegister/Services/useCsrf';
-import { SimulationParametersTab } from './SimulationParametersTab';
-import { TabView } from 'components/TabView/TabView';
 
-function AlboParams() {
+function AlboParams({ children }) {
   const dispatch = useDispatch();
   const { refresh } = useCsrf();
 
@@ -66,13 +61,7 @@ function AlboParams() {
           {loggingOut ? 'Logging out…' : 'Log out'}
         </button>
       </div>
-      <TabView
-        direction={direction}
-        siblings={[
-          <SimulationParametersTab direction={direction} />,
-          <SimulationListCurrent direction={direction} />,
-        ]}
-      />
+      {children}
     </div>
   ) : (
     <div className="albo-params-container">

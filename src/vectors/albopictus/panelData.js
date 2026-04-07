@@ -764,7 +764,9 @@ export const panelData = [
     content: (
       <div className="text-area">
         <div>
-          <SimulationParametersTab direction="left" />
+          <AlboParams>
+            <SimulationParametersTab direction="left" />
+          </AlboParams>
         </div>
       </div>
     ),
@@ -775,7 +777,9 @@ export const panelData = [
     content: (
       <div className="text-area">
         <div>
-          <SimulationListCurrent direction="left" />
+          <AlboParams>
+            <SimulationListCurrent direction="left" />
+          </AlboParams>
         </div>
       </div>
     ),

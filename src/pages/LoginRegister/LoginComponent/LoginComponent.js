@@ -93,7 +93,6 @@ function LoginComponent() {
   return (
     <div className="login-base">
       <div className="login-card">
-        <h2 className="login-title">Simulation Data</h2>
         <p className="login-sub">You must be logged in to run parameters</p>
 
         <form

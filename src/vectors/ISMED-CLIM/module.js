@@ -1,7 +1,7 @@
-import { SAND_MENU } from './menu';
-import { tileIconsSand as tileIcons } from './tileIcons3rdVec';
-import { panelDataSand as panelData } from './panelData3rdVec';
-import { tileIconRowHeadingsSand as tileIconRowHeadings } from './tileIconRowHeadings';
+import { menu } from './menu';
+import { tileIcons } from './tileIcons';
+import { panelData } from './panelData';
+import { tileIconRowHeadings } from './tileIconRowHeadings';
 import tileIconFly from 'assets/icons/map-page-right-menu/png/mosquito-3-32px.png';
 import { indicators } from './indicators';
 import { timeseries } from './timeSeries';
@@ -14,7 +14,9 @@ const moduleObj = {
   id: 'ISMED-CLIM',
   meta: {
     icon: tileIconFly,
-    description: <p>Zoonotic disease risk assessment for the ISMED-CLIM project</p>,
+    description: (
+      <p>Zoonotic disease risk assessment for the ISMED-CLIM project</p>
+    ),
     // this one still uses the session param
     route: '/MapPage?session=ISMED-CLIM',
     session: 'ISMED-CLIM',
@@ -26,7 +28,7 @@ const moduleObj = {
   tileIcons,
   indicators,
   panelData,
-  menu: SAND_MENU,
+  menu: menu,
   tileIconRowHeadings,
   colorKeys,
   timeseries,

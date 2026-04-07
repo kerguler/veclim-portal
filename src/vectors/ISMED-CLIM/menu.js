@@ -1,4 +1,4 @@
-export const SAND_MENU = [
+export const menu = [
   { key: 'menu_icon', parent: null },
   { key: 'location_info', parent: 'menu_icon' },
   { key: 'location_info_panel', parent: 'location_info' },

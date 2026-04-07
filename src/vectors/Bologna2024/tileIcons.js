@@ -9,7 +9,7 @@ import stackedml from 'assets/icons/map-page-right-menu/png/stackedml-32px.png';
 import XLink from 'components/xlink';
 const tileBase = process.env.REACT_APP_BASE_URL;
 
-export const tileIconsSand = [
+export const tileIcons = [
   {
     key: 'Bologna2024_vabun',
     colkey: 'Bologna2024_vabun',
@@ -24,7 +24,12 @@ export const tileIconsSand = [
     description: (
       <>
         <p>
-          Number of years with ovitraps containing <i>Ae. albopictus </i> eggs from the <XLink href="https://www.nature.com/articles/s41597-024-03482-y">VectAbundance</XLink> dataset in 2019-2022
+          Number of years with ovitraps containing <i>Ae. albopictus </i> eggs
+          from the{' '}
+          <XLink href="https://www.nature.com/articles/s41597-024-03482-y">
+            VectAbundance
+          </XLink>{' '}
+          dataset in 2019-2022
         </p>
       </>
     ),
@@ -42,9 +47,7 @@ export const tileIconsSand = [
     },
     description: (
       <>
-        <p>
-          Structured population model (sPop - albopictus) of VEClim
-        </p>
+        <p>Structured population model (sPop - albopictus) of VEClim</p>
       </>
     ),
   },
@@ -61,9 +64,7 @@ export const tileIconsSand = [
     },
     description: (
       <>
-        <p>
-          ODE model of the Asian tiger mosquito (ArboCartoR)
-        </p>
+        <p>ODE model of the Asian tiger mosquito (ArboCartoR)</p>
       </>
     ),
   },
@@ -81,7 +82,8 @@ export const tileIconsSand = [
     description: (
       <>
         <p>
-          Stochastic spatiotemporal model of the Asian tiger mosquito (dynamAedes)
+          Stochastic spatiotemporal model of the Asian tiger mosquito
+          (dynamAedes)
         </p>
       </>
     ),
@@ -99,9 +101,7 @@ export const tileIconsSand = [
     },
     description: (
       <>
-        <p>
-          ODE model of the Asian tiger mosquito (Metelmann et al. 2019)
-        </p>
+        <p>ODE model of the Asian tiger mosquito (Metelmann et al. 2019)</p>
       </>
     ),
   },
@@ -137,9 +137,7 @@ export const tileIconsSand = [
     },
     description: (
       <>
-        <p>
-          DDE model of the Asian tiger mosquito (AedesDDE)
-        </p>
+        <p>DDE model of the Asian tiger mosquito (AedesDDE)</p>
       </>
     ),
   },
@@ -157,9 +155,10 @@ export const tileIconsSand = [
     description: (
       <>
         <p>
-          Ensemble machine learning model of the Asian tiger mosquito (Stacked Machine Learning)
+          Ensemble machine learning model of the Asian tiger mosquito (Stacked
+          Machine Learning)
         </p>
       </>
     ),
-  }
+  },
 ];
