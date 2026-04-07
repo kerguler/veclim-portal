@@ -1,5 +1,5 @@
 // components/map/MapToolsPanel/MapToolsPanel.js
-import React from 'react';
+import React, { useState } from 'react';
 import useDirectorFun from 'customHooks/useDirectorFun';
 import './MapToolsPanel.css';
 import { useFetchCoordinateDataQuery } from 'store';
@@ -8,6 +8,7 @@ import { useFetchTimeSeriesDataQuery } from 'store';
 const MapToolsPanel = () => {
   const { mapPagePosition, mapVector, dateArray } = useDirectorFun('left');
   const { permalink } = useDirectorFun('left');
+  const [showTooltip, setShowTooltip] = useState({ state: false, message: '' });
 
   // ---- helpers -----------------------------------------------------
 
@@ -26,13 +27,14 @@ const MapToolsPanel = () => {
     a.remove();
     URL.revokeObjectURL(url);
   };
-
   const handleShareClick = async () => {
     if (!permalink) return;
 
     try {
       const absolute = window.location.origin + permalink;
       await navigator.clipboard.writeText(absolute);
+      setShowTooltip({ state: true, message: 'Link copied to clipboard!' });
+      setTimeout(() => setShowTooltip({ state: false, message: '' }), 2000);
     } catch (err) {
       window.prompt('Copy this link:', permalink);
     }
@@ -48,6 +50,8 @@ const MapToolsPanel = () => {
 
     const filename = `timeseries_${mapVector}_${Date.now()}.json`;
     downloadJson(data, filename);
+    setShowTooltip({ state: true, message: 'TS data downloaded!' });
+    setTimeout(() => setShowTooltip({ state: false, message: '' }), 2000);
   };
 
   return (
@@ -61,6 +65,9 @@ const MapToolsPanel = () => {
       <div className="map-tools-panel__button" onClick={handleShareClick}>
         Share link
       </div>
+      {showTooltip.state && (
+        <div className="tooltip-temp">{showTooltip.message}</div>
+      )}
     </div>
   );
 };

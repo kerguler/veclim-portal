@@ -6,14 +6,10 @@ import {
   setInvalidateSimData,
 } from 'store';
 import useDirectorFun from 'customHooks/useDirectorFun';
-import {
-  setSimSlider1Enabled,
-  setSimulationParameterSlider1 as setSimSlider1Value,
-} from 'store';
+import { setSimSlider1Enabled } from 'store';
 import { useCreateSimulationMutation } from 'store';
 import ToolTipComponent from 'components/ToolTipComponent/ToolTipComponent';
 import { setSimulationFieldValue } from 'store';
-import SwitcherArrows from 'components/panel/SwitcherArrows';
 const SliderRow = ({ direction }) => {
   const [taskId, setTaskId] = useState(null); // Store Task ID
   const [shouldCheck, setShouldCheck] = useState(true);
@@ -36,12 +32,6 @@ const SliderRow = ({ direction }) => {
       setEnableSlider(true);
     }
   }, [simList]);
-  // Handle Slider Change
-  // const handleSliderChange = (e) => {
-  //   dispatch(
-  //     setSimSlider1Value({ direction: direction, value: e.target.value })
-  //   );
-  // };
 
   const f = simulationFieldValues;
   const toInt = (value, fallback) => {
@@ -99,7 +89,6 @@ const SliderRow = ({ direction }) => {
 
   return (
     <div className="slider-row">
-
       <div className="albo-params">
         {Object.entries(simulationFieldValues).map(([key, field]) => (
           <div key={key}>

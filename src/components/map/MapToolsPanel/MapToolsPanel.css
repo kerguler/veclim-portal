@@ -1,6 +1,7 @@
 /* MapToolsPanel.css */
 .map-tools-panel {
   /* min-width: 220px; */
+  position: relative;
   font-size: 0.9rem;
   color: #fff;
 }
@@ -21,7 +22,9 @@
   margin-top: 8px;
   background: rgba(255, 255, 255, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.16);
-  transition: transform 120ms ease, background 120ms ease,
+  transition:
+    transform 120ms ease,
+    background 120ms ease,
     border-color 120ms ease;
 }
 
@@ -33,4 +36,59 @@
 
 .map-tools-panel__button:active {
   transform: translateY(0px) scale(0.98);
+}
+
+ .tooltip-temp {
+    position: absolute;
+    top: 95px;
+    left: 50%;
+    transform: translateX(-50%);
+    transition:
+      transform 200ms ease,
+      opacity 200ms ease;
+    background: rgba(0, 0, 0, 0.8);
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    opacity: 0.9;
+    width: 120px;
+  }
+
+@media (min-width: 500px) {
+  .tooltip-temp {
+    position: absolute;
+    top: 80px;
+    left: 230%;
+    transform: translateX(-50%);
+    transition:
+      transform 200ms ease,
+      opacity 200ms ease;
+    background: rgba(0, 0, 0, 0.8);
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    opacity: 0.9;
+    width: 120px;
+  }
+}
+
+@media (max-width: 300px) {
+  .tooltip-temp {
+    position: absolute;
+    top: 95px;
+    left: 50%;
+    transform: translateX(-50%);
+    transition:
+      transform 200ms ease,
+      opacity 200ms ease;
+    background: rgba(0, 0, 0, 0.8);
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    opacity: 0.9;
+    width: 120px;
+  }
 }
