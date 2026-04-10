@@ -12,7 +12,7 @@ The user can create a directory in vectors and add the following files.
 
 ![alt text](image-6.png)
 
-In this case we have simply copied and paster the sandfly folder, and changed names accordingly. the script will find the `module.js` and register the vector according to a system.
+In this case we have simply copied and pasted the sandfly folder, and changed names accordingly. the script will find the `module.js` and register the vector according to a system.
 
 ### The Module file
 
@@ -23,7 +23,7 @@ const moduleObj = {
   // this is the name of the vector we will be adding to our system
   id: 'albopictus',
   meta: {
-    // in the vector selsction menu the icon and description we will be using is defined here.
+    // in the vector selection menu the icon and description we will be using are defined here.
     icon: tileIconMoz,
     description: (
       <p>

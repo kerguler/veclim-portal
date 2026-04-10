@@ -723,13 +723,23 @@ export const panelData = [
     icon: model,
   },
   {
-    label: 'Vector Selector',
-    key: 'vector_selector_panel',
+    label: 'Models',
+    key: 'model_selector_panel',
     forgetOpen: true,
 
     content: (
       <>
         <ChangeMapPanel></ChangeMapPanel>
+      </>
+    ),
+  },
+  {
+    label: 'Options',
+    key: 'options_selector_panel',
+    forgetOpen: true,
+
+    content: (
+      <>
         <OptionsPanel></OptionsPanel>
       </>
     ),
