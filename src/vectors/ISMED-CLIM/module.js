@@ -12,8 +12,10 @@ const colorKeys = Object.fromEntries(
 
 const moduleObj = {
   id: 'ISMED-CLIM',
+  displayOrder: 4,
   meta: {
     icon: tileIconFly,
+    
     description: (
       <p>Zoonotic disease risk assessment for the ISMED-CLIM project</p>
     ),

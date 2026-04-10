@@ -10,6 +10,7 @@ import { timeseries } from './timeSeries';
 import AlbopictusLeftPanel from './LeftPanel';
 const moduleObj = {
   id: 'albopictus',
+  displayOrder:1,
   meta: {
     icon: tileIconMoz,
     description: (

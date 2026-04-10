@@ -13,6 +13,7 @@ const colorKeys = Object.fromEntries(
 
 const moduleObj = {
   id: 'papatasi',
+  displayOrder: 2,
   meta: {
     icon: tileIconFly,
     description: (

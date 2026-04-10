@@ -12,6 +12,7 @@ const colorKeys = Object.fromEntries(
 
 const moduleObj = {
   id: 'Bologna2024',
+  displayOrder: 3,
   meta: {
     icon: tileIconFly,
     description: <p>CSVD Bologna Workshop (September 2024)</p>,
