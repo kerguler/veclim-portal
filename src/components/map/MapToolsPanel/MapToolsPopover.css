@@ -1,6 +1,6 @@
 .map-tools-popover {
   position: absolute;
-  top: -135px;
+  top: -145px;
   left: -100px;
   z-index: 120000;
   background: var(--veclim-panel-bg, var(--primary-color1));
