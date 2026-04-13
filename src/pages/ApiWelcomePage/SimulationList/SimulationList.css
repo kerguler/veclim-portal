@@ -4,7 +4,8 @@
   width: 100%;
   height: 100%;
   min-height: 0;
-  border: 1px 1px 1px 1px solid var(--neutral-color1);
+  border: 1px solid var(--neutral-color1);
+  border-radius: 10px 10px 0px 0px;
 }
 
 .scrollable-list.fixed {
@@ -31,6 +32,7 @@
   text-align: center;
   border-radius: 10px 10px 0px 0px;
 }
+
 @media (min-width: 500px) {
   .simlist-container {
     display: flex;
@@ -39,6 +41,7 @@
     height: 100%;
     min-height: 0;
   }
+
   .scrollable-list {
     flex: 1 1 auto;
     min-height: 0;

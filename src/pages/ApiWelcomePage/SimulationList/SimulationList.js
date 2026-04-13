@@ -53,8 +53,7 @@ function SimulationList({ direction }) {
       <div className="title-simulations ">
         <h3>Current Simulations</h3>{' '}
       </div>
-
-      <div className="scrollable-list  ">{renderedSimulationList}</div>
+        <div className="scrollable-list  ">{renderedSimulationList}</div>
     </div>
   );
 }
