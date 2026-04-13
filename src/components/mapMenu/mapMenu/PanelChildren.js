@@ -41,6 +41,12 @@ function PanelChildren({ displayedItem, level, direction }) {
       }
     }
   });
+
+  const safeTwinIndex =
+    panelChildren.length === 0
+      ? 0
+      : Math.min(twinIndex, panelChildren.length - 1);
+
   useEffect(() => {
     const parents = menuStructure
       .map((menuItem) => {
@@ -53,9 +59,9 @@ function PanelChildren({ displayedItem, level, direction }) {
   });
 
   useEffect(() => {
-    if (panelChildren && panelChildren[twinIndex]) {
+    if (panelChildren && panelChildren[safeTwinIndex]) {
       let panel = panelData.filter(
-        (panel) => panel.key === panelChildren[twinIndex].key
+        (panel) => panel.key === panelChildren[safeTwinIndex].key
       )[0];
 
       if (
@@ -71,12 +77,14 @@ function PanelChildren({ displayedItem, level, direction }) {
 
       if (
         panelData.filter(
-          (panel) => panel.key === panelChildren[twinIndex].key
+          (panel) => panel.key === panelChildren[safeTwinIndex].key
         )[0].simulation
       ) {
         dispatch(setGraphType('sim'));
       } else {
         dispatch(setGraphType('ts'));
+        twinIndex > panelChildren.length &&
+          dispatch(setTwinIndex({ direction, value: 0 }));
       }
     }
   }, [
@@ -87,7 +95,7 @@ function PanelChildren({ displayedItem, level, direction }) {
     panelChildren,
     panelData,
     setOpenItems,
-    twinIndex,
+    safeTwinIndex,
   ]);
   useEffect(() => {
     dispatch(setSiblingCount({ direction, value: panelChildren.length }));
@@ -98,9 +106,6 @@ function PanelChildren({ displayedItem, level, direction }) {
     }
   }, [panelChildren.length, twinIndex]);
 
-  // const siblingCount = panelChildren.length;
-
-  // dispatch(setSiblingCount({ direction, value: siblingCount }));
   useEffect(() => {
     if (panelChildren.length === 1) {
       twinIndex > 0 && dispatch(setTwinIndex({ direction, value: 0 }));
@@ -108,7 +113,8 @@ function PanelChildren({ displayedItem, level, direction }) {
   }, [panelChildren.length]);
 
   const displayedPanel =
-    panelChildren?.length > 1 ? panelChildren[twinIndex] : panelChildren[0];
+    panelChildren?.length > 1 ? panelChildren[safeTwinIndex] : panelChildren[0];
+
   useEffect(() => {
     let forgetOpen = panelData.filter(
       (panel) => panel.key === displayedPanel.key
@@ -118,11 +124,11 @@ function PanelChildren({ displayedItem, level, direction }) {
       dispatch(
         setLastPanelDisplayed({
           direction: 'left',
-          value: panelChildren[twinIndex].key,
+          value: panelChildren[safeTwinIndex].key,
         })
       );
     }
-  }, [displayedPanel, lastPanelDisplayed, mapPagePosition, twinIndex]);
+  }, [displayedPanel, lastPanelDisplayed, mapPagePosition, safeTwinIndex]);
   const displayedPanelDetails = panelData.filter(
     (panel) => panel.key === displayedPanel.key
   )[0];
@@ -131,7 +137,6 @@ function PanelChildren({ displayedItem, level, direction }) {
   useEffect(() => {
     dispatch(setChartParameters({ direction, value: chartParameters }));
   }, [displayedPanelDetails]);
-  console.log({ panelChildren });
   return (
     <RenderedPanelV2
       panelChildren={panelChildren}
@@ -140,7 +145,7 @@ function PanelChildren({ displayedItem, level, direction }) {
       panelClassName={'no-anim'}
       panel={content}
       level={level}
-      passedKey={panelChildren[twinIndex]}
+      passedKey={panelChildren[safeTwinIndex]}
       panelChart={
         chartParameters && Object.keys(chartParameters).length > 0
           ? true

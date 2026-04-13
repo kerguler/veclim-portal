@@ -175,6 +175,59 @@ export const panelData = [
     ),
   },
   {
+    label: 'Simulation',
+
+    key: 'simulation_activity_graph_panel',
+    simulation: true,
+    chartParameters: {
+      mixedKeys: [
+        {
+          key: 'g1',
+          levels: ['fcast-ts', 'ecmwf', 'colegg'],
+        },
+        {
+          key: 'g2',
+          levels: ['ts', 'fcast-ts', 'ecmwf', 'colegg'],
+        },
+      ],
+
+      sliceInfo: {
+        g1: {
+          sliceLabels: {
+            slice0: 'This year (sim)',
+            slice1: 'Overlap (sim) ',
+            slice2: 'Forecast (sim)',
+          },
+          sliceColors: {
+            slice0: '#1c2833',
+            slice1: '#af7ac5',
+            slice2: '#d98880',
+          },
+        },
+        g2: {
+          sliceLabels: {
+            slice0: 'This year',
+            slice1: 'Overlap',
+            slice2: 'Forecast',
+          },
+          sliceColors: {
+            slice0: '#50C0AD',
+            slice1: 'orange',
+            slice2: '#F15A48',
+          },
+        },
+      },
+    },
+    content: (
+      <div className="text-area">
+        <h1>Activity Simulation Data </h1>
+        <div>
+          <p>Here we will display simulation graphics</p>{' '}
+        </div>
+      </div>
+    ),
+  },
+  {
     key: 'activity_forecast_panel',
     label: 'Activity Forecast',
 
@@ -251,59 +304,7 @@ export const panelData = [
     ),
   },
   // SIMULATION   ACTIVITY
-  {
-    label: 'Simulation',
 
-    key: 'simulation_activity_graph_panel',
-    simulation: true,
-    chartParameters: {
-      mixedKeys: [
-        {
-          key: 'g1',
-          levels: ['fcast-ts', 'ecmwf', 'colegg'],
-        },
-        {
-          key: 'g2',
-          levels: ['ts', 'fcast-ts', 'ecmwf', 'colegg'],
-        },
-      ],
-
-      sliceInfo: {
-        g1: {
-          sliceLabels: {
-            slice0: 'This year (sim)',
-            slice1: 'Overlap (sim) ',
-            slice2: 'Forecast (sim)',
-          },
-          sliceColors: {
-            slice0: '#1c2833',
-            slice1: '#af7ac5',
-            slice2: '#d98880',
-          },
-        },
-        g2: {
-          sliceLabels: {
-            slice0: 'This year',
-            slice1: 'Overlap',
-            slice2: 'Forecast',
-          },
-          sliceColors: {
-            slice0: '#50C0AD',
-            slice1: 'orange',
-            slice2: '#F15A48',
-          },
-        },
-      },
-    },
-    content: (
-      <div className="text-area">
-        <h1>Activity Simulation Data </h1>
-        <div>
-          <p>Here we will display simulation graphics</p>{' '}
-        </div>
-      </div>
-    ),
-  },
   {
     label: 'Activity Projections',
 

@@ -8,12 +8,12 @@ import SimulationTiles from './SimulationTiles/SimulationTiles';
 import { useNavigate } from 'react-router-dom';
 import useCsrf from 'pages/LoginRegister/Services/useCsrf';
 
-function SimulationList({direction}) {
+function SimulationList({ direction }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const id = localStorage.getItem('id');
   const userDetails = useSelector((state) => state.login.apiRegisterResponse);
-  	const simList = useSelector((state) => state.simulation.simList);
+  const simList = useSelector((state) => state.simulation.simList);
 
   console.log('userDetails', userDetails);
   let userId = userDetails.userId ? userDetails.userId : id;
@@ -26,13 +26,13 @@ function SimulationList({direction}) {
     data: simData,
     isFetching: isSimListFetching,
     error: simListError,
-  } = useGetSimulationListQuery({  return_results: false });
+  } = useGetSimulationListQuery({ return_results: false });
 
- useEffect(() => {
-		if (!simData) return;
-		dispatch(setSimList(simData));
-		console.log("SimList updated", simData);
-	}, [simData, simList, dispatch]);
+  useEffect(() => {
+    if (!simData) return;
+    dispatch(setSimList(simData));
+    console.log('SimList updated', simData);
+  }, [simData, simList, dispatch]);
 
   let renderedSimulationList = null;
   if (isSimListFetching) {
@@ -41,7 +41,9 @@ function SimulationList({direction}) {
   } else if (simData) {
     // console.log(SimData);
     // dispatch(setSimList(SimData.simulations));
-    renderedSimulationList = <SimulationTiles SimData={simData} direction={direction} />;
+    renderedSimulationList = (
+      <SimulationTiles SimData={simData} direction={direction} />
+    );
   }
 
   return (

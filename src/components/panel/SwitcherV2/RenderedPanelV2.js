@@ -13,6 +13,8 @@ import ErrorBoundary from 'components/errorBoundary/ErrorBoundary';
 import UnifiedRechartPlotterV2 from 'components/charts/Plotter/plotterV2/UnifiedRechartPlotterV2';
 import { Suspense } from 'react';
 import SwitcherArrows from '../SwitcherArrows';
+import { setTwinIndex } from 'store';
+import { setSiblingCount } from 'store';
 const RenderedPanelV2 = ({
   panel,
   panelChart,
@@ -26,7 +28,7 @@ const RenderedPanelV2 = ({
     openItems,
     panelLevelLeft: levelData,
     mapPagePosition,
-    interferePanelStyleRight: interferePanelStyle,
+    interferePanelStyleRight: interferePanelStyle,twinArray,twinIndex,
   } = useDirectorFun(direction);
   const panelRef = useRef(null);
   usePanelResize({ panelRef, direction, setPanelTop });
@@ -42,7 +44,10 @@ const RenderedPanelV2 = ({
       })
     );
   };
+
   const [showCoordinateWarning, setShowCoordinateWarning] = useState(false);
+  
+  
   useEffect(() => {
     if (mapPagePosition.lat === null) {
       setShowCoordinateWarning(true);
@@ -50,6 +55,16 @@ const RenderedPanelV2 = ({
       setShowCoordinateWarning(false);
     }
   }, [mapPagePosition.lat]);
+  
+  
+  useEffect(() => {
+    dispatch(setSiblingCount({ direction, value: panelChildren.length }));
+
+    // Clamp twinIndex if it's out of bounds
+    if (twinIndex >= panelChildren.length) {
+      dispatch(setTwinIndex({ direction, value: 0 }));
+    }
+  }, [panelChildren.length, twinIndex]);
 
   let displayedPanel;
   if (panelChart) {

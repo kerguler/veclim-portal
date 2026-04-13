@@ -7,6 +7,7 @@
   background-color: white;
   gap: 0.5rem;
   width: 100%;
+  height: 100%;
 }
 
 /* row: slider | value | button (stacks on small screens) */
@@ -31,7 +32,6 @@
   border: 1px solid var(--neutral-color1);
   border-radius: 4px;
   padding: 0.25rem 0.5rem;
-  
 }
 /* numeric value next to slider */
 .slider-value {

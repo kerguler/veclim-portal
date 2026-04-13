@@ -22,14 +22,23 @@ function Panel({ onClosed, children, className, direction, passedKey, tabs }) {
   const outerClassNames = classNames('panel-container', className);
   const tabKeys = tabs.map((t) => t.key);
   const result = panelData.filter((item) => tabKeys.includes(item.key));
-  console.log({ result });
-  const handleHeadingClick = (key) => {
-    let twinno = result.findIndex((item) => item.key === key);
-    console.log({ twinno });
+  const orderedTabs = tabs
+    .map((tab, index) => {
+      const panelItem = panelData.find((item) => item.key === tab.key);
+      if (!panelItem) return null;
 
-    dispatch(setTwinIndex({ direction, value: twinno }));
+      return {
+        ...panelItem,
+        tabIndex: index,
+      };
+    })
+    .filter(Boolean);
+
+  const handleHeadingClick = (tabIndex) => {
+    dispatch(setTwinIndex({ direction, value: tabIndex }));
   };
-  let displayedTabs = result.map((item) => {
+  let displayedTabs = orderedTabs.map((item) => {
+    console.log({ item, passedKey });
     const isActive = item.key === passedKey?.key;
 
     return (
@@ -37,7 +46,7 @@ function Panel({ onClosed, children, className, direction, passedKey, tabs }) {
         key={item.key}
         className={classNames('tab-heading', { 'is-active': isActive })}
         onClick={() => {
-          handleHeadingClick(item.key);
+          handleHeadingClick(item.tabIndex);
         }}
       >
         <h3>{item?.label}</h3>
@@ -48,14 +57,11 @@ function Panel({ onClosed, children, className, direction, passedKey, tabs }) {
   return (
     <div className={outerClassNames} style={interferePanelStyle}>
       {/* <SwitcherArrows direction={direction} passedKey={passedKey} /> */}
-	  <div className="panel-close-button" onClick={handleClick}>
-          <img alt="close-button" src={closeIcon} />
-        </div>
-      <div className="tab-list"> {displayedTabs}</div>
-      <div className="panel-inner-box">
-        
-        {children}
+      <div className="panel-close-button" onClick={handleClick}>
+        <img alt="close-button" src={closeIcon} />
       </div>
+      <div className="tab-list"> {displayedTabs}</div>
+      <div className="panel-inner-box">{children}</div>
     </div>
   );
 }
