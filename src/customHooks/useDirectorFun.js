@@ -6,6 +6,9 @@ import PanelContextV2 from 'context/panelsIconsV2';
 import { setOpenItems } from 'store';
 
 function useDirectorFun(direction) {
+  const persistPointer = useSelector(
+    (state) => state.mapMenu[direction].persistPointer
+  );
   const simulationFieldValues = useSelector(
     (state) => state.mapMenu[direction].chart.simulationFields
   );
@@ -180,6 +183,7 @@ function useDirectorFun(direction) {
     (state) => state.fetcher.fetcherStates.map.userPosition
   );
   return {
+    persistPointer,
     isPermalinkClick,
     userPosition,
     permalink,

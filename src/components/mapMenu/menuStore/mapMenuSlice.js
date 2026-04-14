@@ -38,6 +38,7 @@ const mapMenuSlice = createSlice({
       panel: { panelInterfere: 0, panelTop: 0 },
       shimmered: {},
       directInit: false,
+      persistPointer: true,
       panelOpen: false,
       mapMenuOpen: false,
       interferePanelStyle: {},
@@ -116,6 +117,10 @@ const mapMenuSlice = createSlice({
   },
 
   reducers: {
+    setPersistPointer(state, action) {
+      const { direction, value } = action.payload;
+      state[direction].persistPointer = value;
+    },
     setSimulationFieldValue: (state, action) => {
       const { direction, key, value } = action.payload;
       state[direction].chart.simulationFields[key].value = value;
@@ -275,6 +280,7 @@ const mapMenuSlice = createSlice({
 });
 
 export const {
+  setPersistPointer,
   setSimulationFieldValue,
   setAlboRequestPlot,
   setBrushData,

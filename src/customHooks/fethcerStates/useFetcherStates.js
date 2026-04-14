@@ -33,7 +33,6 @@ const useFetcherStates = () => {
 
 usePermalinkHydration({ mapPagePosition });
 
-  // NOTE: now includes camera center (cLat/cLon)
   const {
     tile,
     panel,
@@ -47,10 +46,10 @@ usePermalinkHydration({ mapPagePosition });
     bounds,
   } = useQuery();
 
-  // 0) keep session ↔ mapVector in sync (vector in URL)
+
   useSessionControl(session);
 
-  // 1) initial short-circuit — unchanged
+
   useEffect(() => {
     if (
       session === null &&
@@ -66,7 +65,7 @@ usePermalinkHydration({ mapPagePosition });
     }
   }, [session, tile, panel, decade, lon, lat, cLon, cLat]);
 
-  // --- 🔑 decide which vector config to use ---
+
   const effectiveVectorId = session || mapVector;
   const activeVector = getVector(effectiveVectorId);
   const defaultTiles = activeVector?.defaults?.tileArray || [];

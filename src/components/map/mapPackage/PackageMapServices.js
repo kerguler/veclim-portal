@@ -23,9 +23,7 @@ import { setInvalidateSimData } from 'store';
 import { setDataArrived } from 'store';
 import { setOpenItems } from 'store';
 import { setPlotReady } from 'store';
-import {
-  setLastPanelDisplayed,
-} from 'components/mapMenu/menuStore/mapMenuSlice';
+import { setLastPanelDisplayed } from 'components/mapMenu/menuStore/mapMenuSlice';
 
 class PackageMapServices {
   static BOUNDS = {
@@ -99,8 +97,8 @@ class PackageMapServices {
 
   static handleToMapPageTransition(dispatch, vectorName, mapVector) {
     const vec = getVector(mapVector);
-    const boundsBox = this.resolveBounds(vec?.map?.defaultBounds);
-    dispatch(setCurrentMapBounds(boundsBox));
+    // const boundsBox = this.resolveBounds(vec?.map?.defaultBounds);
+    // dispatch(setCurrentMapBounds(boundsBox));
     dispatch(setVectorName(vec.id));
     dispatch(setMapVector(vec.id));
   }
@@ -186,7 +184,7 @@ class PackageMapServices {
   ) {
     dispatch(setInvalidateSimData(true));
     dispatch(setDataArrived({ direction: direction, value: false }));
-    const snappedPos= this.clickMap(
+    const snappedPos = this.clickMap(
       e,
       mapParRef,
       vectorName,
@@ -204,7 +202,7 @@ class PackageMapServices {
     //   dispatch(setPanelInterfere({ direction, value: null }));
     // }
     dispatch(setPanelInterfere({ direction, value: -1 }));
-    return {snappedPos  }
+    return { snappedPos };
   }
   static clickMap = (
     e,
@@ -223,7 +221,7 @@ class PackageMapServices {
     );
 
     newPosition = { ...newPosition, res: [0.125, 0.125] };
-    const snappedPos={ lat: newPosition.lat, lng: newPosition.lng }
+    const snappedPos = { lat: newPosition.lat, lng: newPosition.lng };
     p.prevClickPointRef = newPosition;
     dispatch(
       setMapPagePosition({ lat: newPosition.lat, lng: newPosition.lng })
@@ -274,7 +272,6 @@ class PackageMapServices {
         vectorName,
         dispatch
       ).addTo(p.map);
-
     }
 
     if (p.map.getZoom() > switchZoom) {

@@ -34,6 +34,7 @@ function MapPackageComponent({ fitworld }) {
     vectorName,
     lastPanelDisplayed,
     isPermalinkClick,
+    persistPointer,
   } = useDirectorFun('left');
   const tileArray = useSelector(
     (state) => state.fetcher.fetcherStates.tileArray
@@ -88,6 +89,19 @@ function MapPackageComponent({ fitworld }) {
 
   useLMapResize(mapParRef);
 
+  useEffect(() => {
+    if (persistPointer) {
+      console.log('Persisting pointer for permalink click');
+      PackageMapServices.clickMap(
+        { latlng: { lat: mapPagePosition.lat, lng: mapPagePosition.lng } },
+        mapParRef,
+        vectorName,
+        dispatch,
+        null,
+        'left'
+      );
+    }
+  }, []);
   useEffect(() => {
     if (
       (mapPagePosition &&

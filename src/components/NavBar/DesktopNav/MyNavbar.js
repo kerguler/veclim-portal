@@ -7,20 +7,31 @@ import { useEffect, useMemo } from 'react';
 import { setReadyToView, setPanelOpen } from 'store';
 import PackageMapServices from 'components/map/mapPackage/PackageMapServices';
 import { getVector } from 'vectors/registry';
+import { setMapPagePosition } from 'store';
+import useDirectorFun from 'customHooks/useDirectorFun';
+import usePermalinkHydration from 'customHooks/permalink/usePermalinkHydration';
+import { setPersistPointer } from 'store';
 
 function MyNavbar({ style }) {
   const panelInterfere = useSelector(
     (state) => state.mapMenu.left.panel.panelInterfere
   );
   const openItems = useSelector((state) => state.mapMenu.left.openItems);
-
   const vectorName = useSelector(
     (state) => state.fetcher.fetcherStates.vectorName
   );
   const mapVector = useSelector(
     (state) => state.fetcher.fetcherStates.mapVector
   );
-
+  const persistPointer = useSelector(
+    (state) => state.mapMenu.left.persistPointer
+  );
+  const position = useSelector((state) => {
+    return state.fetcher.fetcherStates.map.globalPosition;
+  });
+  const mapPagePosition = useSelector(
+    (state) => state.fetcher.fetcherStates.map.mapPagePosition
+  );
   const dispatch = useDispatch();
 
   // Decide which vector to use for map routing (prefer mapVector, fall back to vectorName)
@@ -39,6 +50,19 @@ function MyNavbar({ style }) {
       currentVectorId,
       currentVectorId
     );
+    // PackageMapServices.highlightMarkerFunc(
+    //   position.lat,
+    //   position.lng,
+    //   'blue',
+    //   'blue',
+    //   vectorName,
+    //   dispatch
+    // );
+    console.log({ position, persistPointer });
+    if (position && !persistPointer) {
+      dispatch(setMapPagePosition({ lat: position.lat, lng: position.lng })); // Reset map position to trigger any necessary updates
+      dispatch(setPersistPointer({ direction: 'left', value: true }));
+    }
     dispatch(setPanelOpen({ direction: 'left', value: false }));
     dispatch(setReadyToView(false));
   };

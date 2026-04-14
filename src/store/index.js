@@ -53,7 +53,7 @@ import {
   setIsPermalinkClick,
 } from './slices/fetcherSlice';
 
-import {
+import {setPersistPointer,
   setLastPanelDisplayed,
   mapMenuReducer,
   setAlboRequestPlot,
@@ -212,7 +212,7 @@ export {
 } from './apis/simulationApi';
 
 export { useFetchNewsDataQuery } from './apis/newsApi';
-export {
+export {setPersistPointer,
   setSimulationFieldValue,
   setPermalink,
   setIsPermalinkClick,

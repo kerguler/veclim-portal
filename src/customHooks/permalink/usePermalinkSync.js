@@ -4,6 +4,8 @@ import { useDispatch } from 'react-redux';
 import PackageMapServices from 'components/map/mapPackage/PackageMapServices';
 import { buildMapPermalink } from 'utils/mapPermalink';
 import { setPermalink, setIsPermalinkClick } from 'store';
+import { setPersistPointer } from 'store';
+import useDirectorFun from 'customHooks/useDirectorFun';
 
 function hasValidPos(pos) {
   return pos && typeof pos.lat === 'number' && typeof pos.lng === 'number';
@@ -15,14 +17,14 @@ export default function useMapPermalinkSync({
   mapPagePosition,
   lastPanelDisplayed,
   tileArray,
-  isPermalinkClick, // MUST be real from store (selector or directorFun)
+  isPermalinkClick,
+  
 }) {
   const dispatch = useDispatch();
 
   const buildLink = useCallback(() => {
     const p = mapParRef.current;
     if (!p?.map || !vectorName) return '';
-
     const map = p.map;
     const viewCenter = map.getCenter();
     const zoom = map.getZoom();
@@ -98,7 +100,7 @@ export default function useMapPermalinkSync({
 
       const iconOnMap = p.iconMarker && p.map.hasLayer(p.iconMarker);
       const rectOnMap = p.rectMarker && p.map.hasLayer(p.rectMarker);
-
+   
       if (!iconOnMap && !rectOnMap) {
         // null prevents toggle-off
         PackageMapServices.clickMap(
