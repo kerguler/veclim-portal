@@ -1,15 +1,23 @@
 import useDirectorFun from 'customHooks/useDirectorFun';
 import { useEffect } from 'react';
-
+import { useDispatch } from 'react-redux';
+import { setOpenItems } from 'store';
+import { setPanelOpen } from 'store';
 function useHandleDisabledIcons(setStyle, setImgStyle, panelChildren) {
+  const dispatch = useDispatch();
   const { panelData, mapPagePosition, openItems } = useDirectorFun('left');
 
   useEffect(() => {
     panelChildren.forEach((panel) => {
-      let myPanel = panelData.filter((panelData) => panelData.key === panel.key)[0];
+      let myPanel = panelData.filter(
+        (panelData) => panelData.key === panel.key
+      )[0];
       if (mapPagePosition.lat === null) {
+      
         if (
-          (myPanel && myPanel.chartParameters && Object.keys(myPanel.chartParameters).length > 0) ||
+          (myPanel &&
+            myPanel.chartParameters &&
+            Object.keys(myPanel.chartParameters).length > 0) ||
           myPanel.positionDependent
         ) {
           setStyle({

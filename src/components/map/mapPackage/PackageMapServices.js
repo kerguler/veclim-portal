@@ -170,7 +170,8 @@ class PackageMapServices {
     dispatch(setOpenItems({}));
 
     const firstPanel = vec.defaults?.firstPanelKey || 'location_info_panel';
-    dispatch(setLastPanelDisplayed({ direction: 'left', value: firstPanel }));
+      dispatch(setLastPanelDisplayed({ direction: 'left', value: firstPanel }));
+    
   }
 
   static handleMapClick(

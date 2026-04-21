@@ -13,6 +13,7 @@ import { setPanelOpen } from 'store';
 import MapToolsPopover from 'components/map/MapToolsPanel/MapToolsPopover';
 import { useRef } from 'react';
 import { TabView } from 'components/TabView/TabView';
+import { setOpenItems } from 'store';
 const PanelChildren = lazy(() => import('./PanelChildren'));
 const MenuChildren = lazy(() => import('./MenuChildren'));
 
@@ -137,6 +138,7 @@ function MenuItemV2({ item, onToggle, shouldShimmer, direction }) {
   };
 
   useHandleDisabledIcons(setStyle, setImgStyle, panelChildren);
+
   return (
     <>
       <div
@@ -166,12 +168,12 @@ function MenuItemV2({ item, onToggle, shouldShimmer, direction }) {
         <>
           {panelChildren.length > 0 && (
             <Suspense>
-                {/* PANEL CHILDREN WILL DISPLAY THE PANEL ACCORDING TO TWIN INDEX */}
-                <PanelChildren
-                  level={level}
-                  displayedItem={displayedItem}
-                  direction={direction}
-                />
+              {/* PANEL CHILDREN WILL DISPLAY THE PANEL ACCORDING TO TWIN INDEX */}
+              <PanelChildren
+                level={level}
+                displayedItem={displayedItem}
+                direction={direction}
+              />
             </Suspense>
           )}
 

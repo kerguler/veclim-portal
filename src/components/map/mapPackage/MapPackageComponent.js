@@ -18,6 +18,7 @@ import ColorBarLabelComponent from '../ColorBarLabel/ColorBarLabelComponent';
 import { useState } from 'react';
 import MapContextMenu from '../mapContextMenu/MapContextMenu';
 import useMapPermalinkSync from 'customHooks/permalink/usePermalinkSync';
+import { setLastPanelDisplayed } from 'store';
 function MapPackageComponent({ fitworld }) {
   const dispatch = useDispatch();
   const {
@@ -84,6 +85,12 @@ function MapPackageComponent({ fitworld }) {
       y: containerPoint.y,
     });
   });
+
+  // useEffect(() => {
+  //   if (!mapPagePosition.lat) {
+  //     dispatch(setLastPanelDisplayed({ direction: 'left', value: null }));
+  //   }
+  // }, [mapPagePosition.lat]);
 
   const closeContextMenu = () => setCtxMenu((s) => ({ ...s, visible: false }));
 

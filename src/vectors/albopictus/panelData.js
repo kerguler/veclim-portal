@@ -57,6 +57,7 @@ export const panelData = [
   },
   {
     label: 'Location Information',
+    positionDependent: true,
     key: 'location_info_panel',
     content: (
       <div className="text-area">
