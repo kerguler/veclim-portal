@@ -7,9 +7,9 @@ import suser from 'assets/icons/map-page-right-menu/png/007-arrows-32px.png';
 import menuIcon from 'assets/icons/map-page-right-menu/png/menu-32px.png';
 import OptionsPanel from 'components/optionsPanel/OptionsPanel';
 import ChangeMapPanel from '../../components/vectorSelection/ChangeMapPanel/ChangeMapPanel';
-import { tileIconsSand } from './tileIconsSand';
+import { tileIcons } from './tileIcons';
 
-export const panelDataSand = [
+export const panelData = [
   {
     id: [1, 1],
     key: 'menu_icon',
@@ -30,6 +30,7 @@ export const panelDataSand = [
   {
     label: 'Location Information',
     key: 'location_info_panel',
+    positionDependent: true,
     chartParameters: {},
     icon: info,
     content: (
@@ -112,7 +113,7 @@ export const panelDataSand = [
     forgetOpen: true,
 
     chartParameters: {},
-    content: <TileSelector tileIcons={tileIconsSand}></TileSelector>,
+    content: <TileSelector tileIcons={tileIcons}></TileSelector>,
   },
   {
     id: 3,

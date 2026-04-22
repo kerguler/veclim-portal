@@ -31,6 +31,8 @@ export const panelData = [
   {
     label: 'Location Information',
     key: 'location_info_panel',
+    positionDependent: true,
+
     chartParameters: {},
     icon: info,
     content: (
@@ -49,6 +51,8 @@ export const panelData = [
   },
   {
     key: 'sandfly_population_panel',
+    positionDependent: true,
+
     label: 'Sandfly Population',
     chartParameters: {
       years: 'ISMED-CLIM',

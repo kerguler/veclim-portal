@@ -1,7 +1,7 @@
 import { SAND_MENU } from './menu';
-import { tileIconsSand as tileIcons } from './tileIconsSand';
-import { panelDataSand as panelData } from './panelDataSand';
-import { tileIconRowHeadingsSand as tileIconRowHeadings } from './tileIconRowHeadings';
+import { tileIcons } from './tileIcons';
+import { panelData } from './panelData';
+import { tileIconRowHeadings } from './tileIconRowHeadings';
 import tileIconFly from 'assets/icons/map-page-right-menu/png/mosquito-3-32px.png';
 import { methodsPageSand as methodsPage } from './methodsPage';
 import { indicators } from './indicators';

@@ -31,6 +31,8 @@ export const panelData = [
   {
     label: 'Location Information',
     key: 'location_info_panel',
+    positionDependent: true,
+
     chartParameters: {},
     icon: info,
     content: (

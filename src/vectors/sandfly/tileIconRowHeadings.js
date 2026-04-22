@@ -1,1 +1,1 @@
-export const tileIconRowHeadingsSand = [{ row: 1, label: '2015' }];
+export const tileIconRowHeadings = [{ row: 1, label: '2015' }];

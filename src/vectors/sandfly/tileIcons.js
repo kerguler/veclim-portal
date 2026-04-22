@@ -4,7 +4,7 @@ import adultsandfly3 from 'assets/icons/map-page-right-menu/png/mosquito-3-julse
 import adultsandfly4 from 'assets/icons/map-page-right-menu/png/mosquito-3-octdec-32px.png';
 const tileBase = process.env.REACT_APP_BASE_URL;
 
-export const tileIconsSand = [
+export const tileIcons = [
   {
     key: 'papatasi_aprdec',
     colkey: 'papatasi_aprdec',
