@@ -38,7 +38,6 @@ function Panel({ onClosed, children, className, direction, passedKey, tabs }) {
     dispatch(setTwinIndex({ direction, value: tabIndex }));
   };
   let displayedTabs = orderedTabs.map((item) => {
-    console.log({ item, passedKey });
     const isActive = item.key === passedKey?.key;
 
     return (

@@ -1,37 +1,60 @@
 import { useEffect } from 'react';
 import { setShimmered } from 'store';
 import useDirectorFun from 'customHooks/useDirectorFun';
-function useHandleIconShimmer(shouldShimmer, shimmered, item, dispatch, direction, setShimmerOn) {
+
+function useHandleIconShimmer(
+  shouldShimmer,
+  shimmered,
+  item,
+  dispatch,
+  direction,
+  setShimmerOn
+) {
   const { openItems } = useDirectorFun('left');
+  const itemKey = item?.key;
+  const isMenuClosed = Object.keys(openItems || {}).length === 0;
+  const hasAlreadyShimmered = !!shimmered?.[itemKey];
 
   useEffect(() => {
-    if (Object.keys(openItems).length !== 0) {
-      setShimmerOn(false);
-    } else {
-      setShimmerOn(true);
-    }
-  }, [openItems]);
+    setShimmerOn((prev) => {
+      const next = isMenuClosed;
+      return prev === next ? prev : next;
+    });
+  }, [isMenuClosed, setShimmerOn]);
 
   useEffect(() => {
-    if (shouldShimmer && !shimmered[item.key]) {
-      setShimmerOn(true);
+    if (!itemKey) return;
+    if (!shouldShimmer) return;
+    if (hasAlreadyShimmered) return;
+    if (!isMenuClosed) return;
 
-      const timeout = setTimeout(() => {
-        setShimmerOn(false);
-        let key = item['key'];
+    setShimmerOn((prev) => (prev === true ? prev : true));
 
-        dispatch(
-          setShimmered({
-            direction,
-            value: { ...shimmered, [key]: true },
-          })
-        );
-      }, 3000);
+    const timeout = setTimeout(() => {
+      setShimmerOn((prev) => (prev === false ? prev : false));
 
-      return () => clearTimeout(timeout);
-    }
-  }, [shouldShimmer, shimmered, openItems]);
-  //   className = classNames(className, shimmerOn ? 'shimmer-on' : 'shimmer-off');
+      dispatch(
+        setShimmered({
+          direction,
+          value: {
+            ...(shimmered || {}),
+            [itemKey]: true,
+          },
+        })
+      );
+    }, 3000);
+
+    return () => clearTimeout(timeout);
+  }, [
+    itemKey,
+    shouldShimmer,
+    hasAlreadyShimmered,
+    isMenuClosed,
+    shimmered,
+    dispatch,
+    direction,
+    setShimmerOn,
+  ]);
 }
 
 export default useHandleIconShimmer;

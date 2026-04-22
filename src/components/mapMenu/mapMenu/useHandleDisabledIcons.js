@@ -1,52 +1,52 @@
 import useDirectorFun from 'customHooks/useDirectorFun';
-import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { setOpenItems } from 'store';
-import { setPanelOpen } from 'store';
-function useHandleDisabledIcons(setStyle, setImgStyle, panelChildren) {
-  const dispatch = useDispatch();
-  const { panelData, mapPagePosition, openItems } = useDirectorFun('left');
+import { useMemo } from 'react';
 
-  useEffect(() => {
-    panelChildren.forEach((panel) => {
-      let myPanel = panelData.filter(
-        (panelData) => panelData.key === panel.key
-      )[0];
-      if (mapPagePosition.lat === null) {
-      
-        if (
-          (myPanel &&
-            myPanel.chartParameters &&
-            Object.keys(myPanel.chartParameters).length > 0) ||
-          myPanel.positionDependent
-        ) {
-          setStyle({
-            backgroundColor: 'var(--neutral-color1)',
-            pointerEvents: 'none',
-            cursor: 'not-allowed',
-          });
-          setImgStyle({
-            color: 'grey',
-            //width: "20px",
-            // height: "20px",
-          });
-        } else {
-          setStyle({ color: 'white', pointerEvents: 'all' });
-          setImgStyle({
-            color: 'grey',
-            // width: webApp ? "20px" : "2px",
-            // height: webApp ? "20px" : "32px",
-          });
-        }
-      } else {
-        setStyle({ color: 'white', pointerEvents: 'all' });
-        setImgStyle({
-          color: 'grey',
-          // width: webApp ? "20px" : "32px",
-          // height: webApp ? "20px" : "32px",
-        });
-      }
+function useHandleDisabledIcons(panelChildren) {
+  const { panelData, mapPagePosition } = useDirectorFun('left');
+
+  const hasValidPosition =
+    mapPagePosition?.lat !== null &&
+    mapPagePosition?.lat !== undefined &&
+    mapPagePosition?.lng !== null &&
+    mapPagePosition?.lng !== undefined;
+
+  const shouldDisable = useMemo(() => {
+    if (hasValidPosition) return false;
+
+    return (panelChildren || []).some((panel) => {
+      const myPanel = panelData.find((panelItem) => panelItem.key === panel.key);
+      if (!myPanel) return false;
+
+      const hasChartParameters =
+        myPanel.chartParameters &&
+        Object.keys(myPanel.chartParameters).length > 0;
+
+      return hasChartParameters || myPanel.positionDependent;
     });
-  }, [mapPagePosition.lat, openItems]);
+  }, [panelChildren, panelData, hasValidPosition]);
+
+  const style = useMemo(() => {
+    if (shouldDisable) {
+      return {
+        backgroundColor: 'var(--neutral-color1)',
+        pointerEvents: 'none',
+        cursor: 'not-allowed',
+      };
+    }
+
+    return {
+      color: 'white',
+      pointerEvents: 'all',
+    };
+  }, [shouldDisable]);
+
+  const imgStyle = useMemo(() => {
+    return {
+      color: 'grey',
+    };
+  }, []);
+
+  return { style, imgStyle, shouldDisable };
 }
+
 export default useHandleDisabledIcons;

@@ -110,33 +110,33 @@ function MapPackageComponent({ fitworld }) {
     }
   }, []);
   useEffect(() => {
-    if (
-      (mapPagePosition &&
-        directMap.display !== -2 &&
-        directMap.display !== null) ||
-      (directMap.display !== -2 && directMap.display !== null)
-    ) {
-      let e = {
-        latlng: {
-          lat: directMap.lat,
-          lng: directMap.lon,
-        },
-      };
+    if (directMap?.display === -2 || directMap?.display == null) return;
+    if (!Number.isFinite(directMap?.lat) || !Number.isFinite(directMap?.lon))
+      return;
 
-      PackageMapServices.handleMapClick(
-        e,
-        mapParRef,
-        mapVector,
-        dispatch,
-        directMap,
+    const e = {
+      latlng: {
+        lat: directMap.lat,
+        lng: directMap.lon,
+      },
+    };
 
-        mapPagePosition,
-        'left'
-      );
-    }
-
-    return () => {};
-  }, [directMap, dispatch, mapVector, tileArray, mapPagePosition, switchMap]);
+    PackageMapServices.handleMapClick(
+      e,
+      mapParRef,
+      mapVector,
+      dispatch,
+      directMap,
+      mapPagePosition,
+      'left',
+      {
+        invalidateSimData: false,
+        allowSamePointToggleOff: false,
+        isProgrammatic: true,
+        resetDataArrived: false,
+      }
+    );
+  }, [directMap, mapVector, dispatch]);
 
   return (
     <>

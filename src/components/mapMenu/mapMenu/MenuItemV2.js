@@ -36,8 +36,8 @@ function MenuItemV2({ item, onToggle, shouldShimmer, direction }) {
 
   const [shimmerOn, setShimmerOn] = useState(false);
   const [level, setLevel] = useState(0);
-  const [style, setStyle] = useState({});
-  const [imgStyle, setImgStyle] = useState({});
+  // const [style, setStyle] = useState({});
+  // const [imgStyle, setImgStyle] = useState({});
   const [showTools, setShowTools] = useState(false);
 
   const isOpen = openItems[item.key];
@@ -84,8 +84,8 @@ function MenuItemV2({ item, onToggle, shouldShimmer, direction }) {
 
   useHandleIconShimmer(
     shouldShimmer,
-    shimmered,
-    item,
+    shimmered?.[item.key],
+    item.key,
     dispatch,
     direction,
     setShimmerOn
@@ -137,7 +137,8 @@ function MenuItemV2({ item, onToggle, shouldShimmer, direction }) {
     onToggle(key);
   };
 
-  useHandleDisabledIcons(setStyle, setImgStyle, panelChildren);
+  const { style, imgStyle, shouldDisable } =
+    useHandleDisabledIcons(panelChildren);
 
   return (
     <>

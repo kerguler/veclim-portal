@@ -180,17 +180,27 @@ class PackageMapServices {
     dispatch,
     directMap,
     mapPagePosition,
-    direction
+    direction,
+    clickOptions = {
+      isProgrammatic: false,
+      invalidateSimData: true,
+      resetDataArrived: true,
+      allowSamePointToggleOff: true,
+    }
   ) {
-    dispatch(setInvalidateSimData(true));
-    dispatch(setDataArrived({ direction: direction, value: false }));
+    clickOptions.invalidateSimData && dispatch(setInvalidateSimData(true));
+
+    clickOptions.resetDataArrived &&
+      dispatch(setDataArrived({ direction: direction, value: false }));
+
     const snappedPos = this.clickMap(
       e,
       mapParRef,
       vectorName,
       dispatch,
       mapPagePosition,
-      direction
+      direction,
+      clickOptions
     );
 
     // if (directMap) {
@@ -210,7 +220,13 @@ class PackageMapServices {
     vectorName,
     dispatch,
     mapPagePosition,
-    direction
+    direction,
+    clickOptions = {
+      isProgrammatic: false,
+      invalidateSimData: true,
+      resetDataArrived: true,
+      allowSamePointToggleOff: true,
+    }
   ) => {
     let p = mapParRef.current;
     const switchZoom = 4;
@@ -244,25 +260,32 @@ class PackageMapServices {
       // Remove this marker from the map
       p.iconMarker.remove();
       p.map.removeLayer(p.iconMarker);
-      dispatch(setMapPagePosition({ lat: null, lng: null }));
-      dispatch(setInvalidateSimData(true));
-      dispatch(setDataArrived({ direction: direction, value: false }));
+      clickOptions.allowSamePointToggleOff &&
+        dispatch(setMapPagePosition({ lat: null, lng: null }));
+      clickOptions.invalidateSimData && dispatch(setInvalidateSimData(true));
+      clickOptions.resetDataArrived &&
+        dispatch(setDataArrived({ direction: direction, value: false }));
 
       p.iconMarker = null;
     });
-    if (
+
+    const isSamePosition =
       mapPagePosition &&
       newPosition.lat === mapPagePosition.lat &&
-      newPosition.lng === mapPagePosition.lng
-    ) {
+      newPosition.lng === mapPagePosition.lng;
+
+    if (isSamePosition && !clickOptions.isProgrammatic) {
       p.rectMarker && p.map.removeLayer(p.rectMarker);
       p.iconMarker && p.map.removeLayer(p.iconMarker);
       p.iconMarker = null;
       p.rectMarker = null;
-      dispatch(setMapPagePosition({ lat: null, lng: null }));
-      dispatch(setInvalidateSimData(true));
-      dispatch(setDataArrived({ direction, value: false }));
+      clickOptions.allowSamePointToggleOff &&
+        dispatch(setMapPagePosition({ lat: null, lng: null }));
+      clickOptions.invalidateSimData && dispatch(setInvalidateSimData(true));
+      clickOptions.resetDataArrived &&
+        dispatch(setDataArrived({ direction, value: false }));
     } else {
+      p.rectMarker && p.map.removeLayer(p.rectMarker);
       p.rectMarker = this.highlightMarkerFunc(
         newPosition.lat,
         newPosition.lng,

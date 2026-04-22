@@ -12,6 +12,8 @@ import { useAlboData } from 'context/AlboDataContext';
 import useSimTileFunctions from './useSimTileFunctions';
 import { setShimmered } from 'store';
 import ToolTipComponent from 'components/ToolTipComponent/ToolTipComponent';
+import { setMapPagePosition } from 'store';
+import { setDirectMap, setCurrentMapCenter, setCurrentMapZoom } from 'store';
 
 function SimTile({ sim, direction, shimmerList }) {
   const dispatch = useDispatch();
@@ -42,9 +44,32 @@ function SimTile({ sim, direction, shimmerList }) {
 
   const handleViewSimulationResults = async (id) => {
     dispatch(setShimmered({ direction, value: shimmerList }));
+
     try {
       const payload = await triggerFetch({ id, return_results: true }).unwrap();
       const results = payload?.results ?? payload;
+
+      const lon = Number(payload?.model_data?.pr?.[1]);
+      const lat = Number(payload?.model_data?.pr?.[2]);
+
+      if (!Number.isFinite(lat) || !Number.isFinite(lon)) {
+        console.error('Invalid simulation coordinates', { lat, lon, payload });
+        return;
+      }
+
+      dispatch(setCurrentMapCenter({ lat, lng: lon }));
+      dispatch(setCurrentMapZoom(5));
+
+      dispatch(
+        setDirectMap({
+          direction,
+          value: {
+            lat,
+            lon,
+            display: 1,
+          },
+        })
+      );
 
       simTileHelpers.handleViewSimulationResults(
         results,

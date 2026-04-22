@@ -22,15 +22,24 @@ function CustomSimulationChart({ direction }) {
 
   const { isLoadingSim, errorSim, simResult } = useAlboData();
 
+  const hasValidPosition =
+    Number.isFinite(mapPagePosition?.lat) &&
+    Number.isFinite(mapPagePosition?.lng);
+
   const {
     data: dataTs,
     error: errorTs,
     isFetching: isLoadingTs,
-  } = useFetchTimeSeriesDataQuery({
-    position: mapPagePosition,
-    vectorName,
-    dateArray,
-  });
+  } = useFetchTimeSeriesDataQuery(
+    {
+      position: mapPagePosition,
+      vectorName,
+      dateArray,
+    },
+    {
+      skip: !hasValidPosition,
+    }
+  );
 
   const [alboDataArrived, setAlboDataArrived] = useState(false);
 
