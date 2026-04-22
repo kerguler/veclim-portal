@@ -66,15 +66,6 @@ const timeSeriesApi = createApi({
 
           const opr = tsCfg.opr || 'ts';
 
-          console.log('fetchTimeSeriesData', {
-            vectorName,
-            vecParam,
-            lat,
-            lng,
-            dates,
-            opr,
-          });
-
           const params = {
             vec: vecParam,
             dates,

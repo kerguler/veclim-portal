@@ -53,6 +53,7 @@ function useMapBasicEvents(mapParRef, fitworld, onContextMenu) {
     };
 
     const handleResize = () => {
+      console.log('resizing map');
       try {
         PackageMapServices.resizeMap(mapParRef, vectorName, dispatch);
       } catch (error) {

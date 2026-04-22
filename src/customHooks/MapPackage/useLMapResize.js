@@ -1,40 +1,29 @@
 import { useEffect } from 'react';
-import { useLocation } from 'react-router';
+
 function useLMapResize(mapParRef) {
-  const location = useLocation();
-  // const vectorName = useSelector(
-  // 	(state) => state.fetcher.fetcherStates.vectorName,
-  // );
   useEffect(() => {
-    if (
-      location.pathname === '/MapPage' ||
-      location.pathname === '/MapPage/' ||
-      location.pathname === '/MapPage/SandFly/' ||
-      location.pathname === '/MapPage/SandFly' /* your map route */
-    ) {
-      require('leaflet/dist/leaflet.css');
-      require('components/LeftPanel/MapWithDate/MyMap/MyMap.css');
-    }
-  }, [location]);
+    require('leaflet/dist/leaflet.css');
+    require('components/LeftPanel/MapWithDate/MyMap/MyMap.css');
+  }, []);
 
   useEffect(() => {
     function handleResize() {
-      // if (mapParRef && mapParRef.current.map) {
-      // 	if (mapParRef.current.map.getZoom() < 3) {
-      // 		PackageMapServices.setMinZoom(mapParRef, vectorName);
-      // 	}
-      // }
       const mapElement = document.getElementById('map1');
       if (mapElement) {
         mapElement.style.height = `${window.innerHeight}px`;
         mapElement.style.width = `${window.innerWidth}px`;
       }
+
+      if (mapParRef?.current?.map) {
+        mapParRef.current.map.invalidateSize();
+      }
     }
+
     handleResize();
 
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
-  });
+  }, [mapParRef]);
 }
 
 export default useLMapResize;

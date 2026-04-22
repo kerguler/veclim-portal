@@ -173,6 +173,13 @@ class PackageMapServices {
     dispatch(setLastPanelDisplayed({ direction: 'left', value: firstPanel }));
   }
 
+  static defaultClickOptions = {
+    isProgrammatic: false,
+    invalidateSimData: true,
+    resetDataArrived: true,
+    allowSamePointToggleOff: true,
+  };
+
   static handleMapClick(
     e,
     mapParRef,
@@ -181,17 +188,17 @@ class PackageMapServices {
     directMap,
     mapPagePosition,
     direction,
-    clickOptions = {
-      isProgrammatic: false,
-      invalidateSimData: true,
-      resetDataArrived: true,
-      allowSamePointToggleOff: true,
-    }
+    clickOptions = {}
   ) {
-    clickOptions.invalidateSimData && dispatch(setInvalidateSimData(true));
+    const opts = { ...this.defaultClickOptions, ...clickOptions };
 
-    clickOptions.resetDataArrived &&
-      dispatch(setDataArrived({ direction: direction, value: false }));
+    if (opts.invalidateSimData) {
+      dispatch(setInvalidateSimData(true));
+    }
+
+    if (opts.resetDataArrived) {
+      dispatch(setDataArrived({ direction, value: false }));
+    }
 
     const snappedPos = this.clickMap(
       e,
@@ -200,20 +207,13 @@ class PackageMapServices {
       dispatch,
       mapPagePosition,
       direction,
-      clickOptions
+      opts
     );
 
-    // if (directMap) {
-    //   if (directMap.display === -2) dispatch(setPanelInterfere({ direction, value: -1 }));
-    // } else {
-    //   dispatch(setPanelInterfere({ direction, value: -1 }));
-    // }
-    // if (directMap) {
-    //   dispatch(setPanelInterfere({ direction, value: null }));
-    // }
     dispatch(setPanelInterfere({ direction, value: -1 }));
     return { snappedPos };
   }
+
   static clickMap = (
     e,
     mapParRef,
@@ -221,15 +221,13 @@ class PackageMapServices {
     dispatch,
     mapPagePosition,
     direction,
-    clickOptions = {
-      isProgrammatic: false,
-      invalidateSimData: true,
-      resetDataArrived: true,
-      allowSamePointToggleOff: true,
-    }
+    clickOptions = {}
   ) => {
+    const opts = { ...this.defaultClickOptions, ...clickOptions };
+
     let p = mapParRef.current;
     const switchZoom = 4;
+
     let newPosition = this.roundPosition(
       vectorName,
       e.latlng.lat,
@@ -238,33 +236,42 @@ class PackageMapServices {
 
     newPosition = { ...newPosition, res: [0.125, 0.125] };
     const snappedPos = { lat: newPosition.lat, lng: newPosition.lng };
+
     p.prevClickPointRef = newPosition;
-    dispatch(
-      setMapPagePosition({ lat: newPosition.lat, lng: newPosition.lng })
-    );
+
+    dispatch(setMapPagePosition(snappedPos));
     dispatch(setPlotReady({ direction: 'left', value: false }));
+
     p.highlightMarker && p.map.removeLayer(p.highlightMarker);
     p.iconMarker && p.map.removeLayer(p.iconMarker);
     p.rectMarker && p.map.removeLayer(p.rectMarker);
+
     const { res, ...newPosition1 } = newPosition;
 
     p.iconMarker = L.marker(newPosition1, { icon: this.icon1 }).addTo(p.map);
+
     p.iconMarker.on('click', (markerEvent) => {
       if (markerEvent.originalEvent) {
         markerEvent.originalEvent.preventDefault();
         markerEvent.originalEvent.stopPropagation();
       }
-      markerEvent.originalEvent.stopPropagation();
-      console.log('marker clicked');
+
       p.prevClickPointRef = null;
-      // Remove this marker from the map
-      p.iconMarker.remove();
-      p.map.removeLayer(p.iconMarker);
-      clickOptions.allowSamePointToggleOff &&
+
+      p.iconMarker?.remove();
+      p.iconMarker && p.map.removeLayer(p.iconMarker);
+
+      if (opts.allowSamePointToggleOff) {
         dispatch(setMapPagePosition({ lat: null, lng: null }));
-      clickOptions.invalidateSimData && dispatch(setInvalidateSimData(true));
-      clickOptions.resetDataArrived &&
-        dispatch(setDataArrived({ direction: direction, value: false }));
+      }
+
+      if (opts.invalidateSimData) {
+        dispatch(setInvalidateSimData(true));
+      }
+
+      if (opts.resetDataArrived) {
+        dispatch(setDataArrived({ direction, value: false }));
+      }
 
       p.iconMarker = null;
     });
@@ -274,16 +281,21 @@ class PackageMapServices {
       newPosition.lat === mapPagePosition.lat &&
       newPosition.lng === mapPagePosition.lng;
 
-    if (isSamePosition && !clickOptions.isProgrammatic) {
+    if (isSamePosition && opts.allowSamePointToggleOff) {
       p.rectMarker && p.map.removeLayer(p.rectMarker);
       p.iconMarker && p.map.removeLayer(p.iconMarker);
       p.iconMarker = null;
       p.rectMarker = null;
-      clickOptions.allowSamePointToggleOff &&
-        dispatch(setMapPagePosition({ lat: null, lng: null }));
-      clickOptions.invalidateSimData && dispatch(setInvalidateSimData(true));
-      clickOptions.resetDataArrived &&
+
+      dispatch(setMapPagePosition({ lat: null, lng: null }));
+
+      if (opts.invalidateSimData) {
+        dispatch(setInvalidateSimData(true));
+      }
+
+      if (opts.resetDataArrived) {
         dispatch(setDataArrived({ direction, value: false }));
+      }
     } else {
       p.rectMarker && p.map.removeLayer(p.rectMarker);
       p.rectMarker = this.highlightMarkerFunc(
@@ -302,9 +314,9 @@ class PackageMapServices {
     } else {
       p.rectMarker && p.map.removeLayer(p.rectMarker);
     }
+
     return snappedPos;
   };
-
   static highlightMarkerFunc = (
     lat,
     lng,
