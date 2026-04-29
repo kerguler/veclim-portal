@@ -6,7 +6,11 @@ import { setDirectInitError } from 'store';
 import PackageMapServices from 'components/map/mapPackage/PackageMapServices';
 import { useAlboData } from 'context/AlboDataContext';
 import useDirectorFun from 'customHooks/useDirectorFun';
-
+import {
+  setCurrentMapCenter,
+  setCurrentMapZoom,
+} from 'store/slices/searchLocationSlice';
+import { syncReduxFromLeaflet } from 'utils/syncReduxFromLeaflet';
 function useMapBasicEvents(mapParRef, fitworld, onContextMenu) {
   const dispatch = useDispatch();
   const {
@@ -42,10 +46,7 @@ function useMapBasicEvents(mapParRef, fitworld, onContextMenu) {
     };
 
     const handleMoveEnd = () => {
-      const tempC = map.getCenter();
-      const tempZ = map.getZoom();
-      p.zoom = tempZ;
-      p.center = [tempC.lat, tempC.lng];
+      syncReduxFromLeaflet(mapParRef, dispatch);
     };
 
     const handleMouseOut = () => {
@@ -53,7 +54,7 @@ function useMapBasicEvents(mapParRef, fitworld, onContextMenu) {
     };
 
     const handleResize = () => {
-      console.log('resizing map');
+
       try {
         PackageMapServices.resizeMap(mapParRef, vectorName, dispatch);
       } catch (error) {
@@ -83,6 +84,7 @@ function useMapBasicEvents(mapParRef, fitworld, onContextMenu) {
     map.on('resize', handleResize);
     map.on('moveend', handleMoveEnd);
     map.on('contextmenu', handleContextMenu);
+    map.on('zoomend', handleMoveEnd);
 
     // initial sync
 
@@ -93,6 +95,7 @@ function useMapBasicEvents(mapParRef, fitworld, onContextMenu) {
       map.off('resize', handleResize);
       map.off('moveend', handleMoveEnd);
       map.off('contextmenu', handleContextMenu);
+      map.off('zoomend', handleMoveEnd);
     };
   }, [
     dispatch,

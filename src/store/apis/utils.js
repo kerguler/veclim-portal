@@ -3,6 +3,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setUserPosition } from 'store';
 import { useCookies } from 'react-cookie';
 import { setLocationRequested, setGlobalPosition } from 'store';
+import PackageMapServices from 'components/map/mapPackage/PackageMapServices';
+import { getVector } from 'vectors/registry';
+import useDirectorFun from 'customHooks/useDirectorFun';
 
 export function parseDate(dstr) {
   // Trim whitespace just in case
@@ -78,8 +81,12 @@ export function useUserLocation() {
   const locationRequested = useSelector(
     (state) => state.location.locationRequested
   );
+  const vectorName = useSelector(
+    (state) => state.fetcher.fetcherStates.vectorName
+  );
   const dispatch = useDispatch();
-
+  const vec = getVector(vectorName);
+  console.log('Using vector', vectorName, vec.map.defaultCenter);
   const handleLocationFound = useCallback(
     (position) => {
       const { latitude, longitude } = position.coords;
@@ -91,7 +98,12 @@ export function useUserLocation() {
   );
 
   const handleLocationError = (error) => {
-    dispatch(setGlobalPosition({ lat: 35.1966527, lng: 33.3217152 }));
+    dispatch(
+      setGlobalPosition({
+        lat: vec.map.defaultCenter.lat,
+        lng: vec.map.defaultCenter.lng,
+      })
+    );
     // console.log(error);
   };
 
@@ -109,8 +121,19 @@ export function useUserLocation() {
     navigator.permissions.query({ name: 'geolocation' }).then((result) => {
       if (result.state === 'denied' && locationRequested) {
         // window.confirm("Location Permission is required for this action");
-        dispatch(setGlobalPosition({ lat: 35.1966527, lng: 33.3217152 }));
-        dispatch(setUserPosition({ lat: 35.1966527, lng: 33.3217152 }));
+        
+        dispatch(
+          setGlobalPosition({
+            lat: vec.map.defaultCenter.lat,
+            lng: vec.map.defaultCenter.lng,
+          })
+        );
+        dispatch(
+          setUserPosition({
+            lat: vec.map.defaultCenter.lat,
+            lng: vec.map.defaultCenter.lng,
+          })
+        );
         dispatch(setLocationRequested(false));
       }
     });

@@ -97,6 +97,18 @@ function PanelChildren({ displayedItem, level, direction }) {
     setOpenItems,
     safeTwinIndex,
   ]);
+
+  useEffect(() => {
+    const posDependence = panelData.filter(
+      (panel) => panel.key === displayedItem.key
+    )[0]?.positionDependent;
+    if (mapPagePosition.lat === null && posDependence) {
+      const tempOpenItems = { ...openItems };
+      delete tempOpenItems[displayedItem.key];
+      dispatch(setOpenItems(tempOpenItems));
+    }
+  });
+
   useEffect(() => {
     dispatch(setSiblingCount({ direction, value: panelChildren.length }));
 

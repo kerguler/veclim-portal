@@ -1,6 +1,6 @@
 // customHooks/permalink/usePermalinkHydration.js
 import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import useQuery from 'customHooks/fethcerStates/useQuery';
 import PackageMapServices from 'components/map/mapPackage/PackageMapServices';
 import {
@@ -11,11 +11,16 @@ import {
   setCurrentMaxBounds,
   setIsPermalinkClick, // you already added this
 } from 'store';
+import { getVector } from 'vectors/registry';
 
 export default function usePermalinkHydration({ mapPagePosition }) {
   const dispatch = useDispatch();
 
   const { lon, lat, cLon, cLat, zoom, bounds } = useQuery();
+  const vectorName = useSelector(
+    (state) => state.fetcher.fetcherStates.vectorName
+  );
+  const vec = getVector(vectorName);
 
   // clicked point
   useEffect(() => {
@@ -46,8 +51,8 @@ export default function usePermalinkHydration({ mapPagePosition }) {
       center = { lat: parseFloat(cLat), lng: parseFloat(cLon) };
     } else if (hasClick) {
       center = { lat: parseFloat(lat), lng: parseFloat(lon) };
-    } else if (!mapPagePosition || mapPagePosition.lat == null) {
-      center = PackageMapServices.defaultCypCenter;
+    } else {
+      center = vec.map.defaultCenter;
     }
 
     if (center) dispatch(setCurrentMapCenter(center));

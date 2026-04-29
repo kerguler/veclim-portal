@@ -5,46 +5,111 @@ import { useDispatch, useSelector } from 'react-redux';
 import useDirectorFun from './useDirectorFun';
 import { setPermalink } from 'store';
 import { getPermalinkFromMapRef } from 'utils/getPermalinkFromMapRef';
+import { setCurrentMapZoom } from 'store';
+import { setCurrentMapCenter } from 'store';
+import { syncReduxFromLeaflet } from 'utils/syncReduxFromLeaflet';
+import { getVector } from 'vectors/registry';
 function useZoomActions(mapParRef) {
   const { vectorName, mapVector, lastPanelDisplayed, tileArray } =
     useDirectorFun('left');
+
   const mapPagePosition = useSelector(
     (state) => state.fetcher.fetcherStates.map.mapPagePosition
   );
-  const switchMap = useSelector(
-    (state) => state.fetcher.fetcherStates.map.switchMap
-  );
+
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const p = mapParRef.current;
-    if (!p || !p.map) return;
+    const map = mapParRef?.current?.map;
+    if (!map) return;
 
     const handleMarkers = () => {
+      const p = mapParRef?.current;
+      if (!p?.map) return;
+      syncReduxFromLeaflet(mapParRef, dispatch);
+
       PackageMapServices.markerHandler(
         mapParRef,
-        4,
+        getVector(vectorName)?.map?.switchZoom ?? 4,
         mapVector,
         dispatch,
         mapPagePosition
       );
-      let a = getPermalinkFromMapRef({
-        mapParRef,
-        vectorName,
-        lastPanelDisplayed,
-        tileArray,
-      });
-      dispatch(setPermalink(a));
+
+      dispatch(
+        setPermalink(
+          getPermalinkFromMapRef({
+            mapParRef,
+            vectorName,
+            lastPanelDisplayed,
+            tileArray,
+          })
+        )
+      );
     };
 
-    p.map.on('zoomend', handleMarkers);
-    // initial positioning of markers
-    handleMarkers();
+    map.on('zoomend', handleMarkers);
 
     return () => {
-      p.map.off('zoomend', handleMarkers);
+      map.off('zoomend', handleMarkers);
     };
-  }, [mapVector, dispatch, mapParRef, switchMap, mapPagePosition]);
+  }, [mapParRef, dispatch]);
 }
-
 export default useZoomActions;
+
+// function useZoomActions(mapParRef) {
+//   const { vectorName, mapVector, lastPanelDisplayed, tileArray } =
+//     useDirectorFun('left');
+
+//   const mapPagePosition = useSelector(
+//     (state) => state.fetcher.fetcherStates.map.mapPagePosition
+//   );
+
+//   const dispatch = useDispatch();
+
+//   useEffect(() => {
+//     const map = mapParRef?.current?.map;
+//     if (!map) return;
+
+//     const handleMarkers = () => {
+//       const currentMap = mapParRef?.current?.map;
+//       if (!currentMap) return;
+
+//       PackageMapServices.markerHandler(
+//         mapParRef,
+//         4,
+//         mapVector,
+//         dispatch,
+//         mapPagePosition
+//       );
+
+//       const permalink = getPermalinkFromMapRef({
+//         mapParRef,
+//         vectorName,
+//         lastPanelDisplayed,
+//         tileArray,
+//       });
+
+//       dispatch(setPermalink(permalink));
+//     };
+
+//     map.on('zoomend', handleMarkers);
+
+//     // Only run initial marker positioning if map still exists
+//     handleMarkers();
+
+//     return () => {
+//       map.off('zoomend', handleMarkers);
+//     };
+//   }, [
+//     mapParRef,
+//     mapVector,
+//     mapPagePosition,
+//     vectorName,
+//     lastPanelDisplayed,
+//     tileArray,
+//     dispatch,
+//   ]);
+// }
+
+// export default useZoomActions;

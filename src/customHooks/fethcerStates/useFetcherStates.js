@@ -31,7 +31,7 @@ const useFetcherStates = () => {
   const { mapVector, mapPagePosition, tileIcons, panelData, menuStructure } =
     useDirectorFun(direction);
 
-usePermalinkHydration({ mapPagePosition });
+  usePermalinkHydration({ mapPagePosition });
 
   const {
     tile,
@@ -46,9 +46,7 @@ usePermalinkHydration({ mapPagePosition });
     bounds,
   } = useQuery();
 
-
   useSessionControl(session);
-
 
   useEffect(() => {
     if (
@@ -64,7 +62,6 @@ usePermalinkHydration({ mapPagePosition });
       return;
     }
   }, [session, tile, panel, decade, lon, lat, cLon, cLat]);
-
 
   const effectiveVectorId = session || mapVector;
   const activeVector = getVector(effectiveVectorId);
@@ -103,12 +100,14 @@ usePermalinkHydration({ mapPagePosition });
         lat: parseFloat(lat),
         lng: parseFloat(lon),
       };
-    } else if (!mapPagePosition || mapPagePosition.lat == null) {
+    } else if (!mapPagePosition || mapPagePosition.lat === null) {
       // last fallback → default
-      center = PackageMapServices.defaultCypCenter;
+      center = activeVector?.map?.defaultCenter || { lat: 0, lng: 0 };
+    
     }
 
     if (center) {
+      // console.log('I AM HERE IN CENTER SETTING', { center });
       dispatch(setCurrentMapCenter(center));
     }
   }, [cLat, cLon, lat, lon, mapPagePosition, dispatch]);

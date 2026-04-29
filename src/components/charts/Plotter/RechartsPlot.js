@@ -205,7 +205,7 @@ function RechartsPlot({ direction, plotMat }) {
       />
 
       <ResponsiveContainer>
-        <SwitcherArrows direction={direction} />
+        {/* <SwitcherArrows direction={direction} /> */}
 
         <LineChart
           id="line-chart"
@@ -435,38 +435,38 @@ function buildLines(
       let yDirection = yaxisInfo[key].orientation || 'left';
       if (dotted) {
         return (
-        <Line
-          hide={!activeKeys.includes(key)}
-          id={uniqueKey}
-          key={uniqueKey}
-          yAxisId={yDirection}
-          type="linear"
-          dataKey={key}
-          stroke={color}
-          strokeWidth={0}
-          dot={{ r: 3, fill: color }}
-          connectNulls={false}
-        >
-          {' '}
-        </Line>
-        )
+          <Line
+            hide={!activeKeys.includes(key)}
+            id={uniqueKey}
+            key={uniqueKey}
+            yAxisId={yDirection}
+            type="linear"
+            dataKey={key}
+            stroke={color}
+            strokeWidth={0}
+            dot={{ r: 3, fill: color }}
+            connectNulls={false}
+          >
+            {' '}
+          </Line>
+        );
       } else {
         return (
-        <Line
-          hide={!activeKeys.includes(key)}
-          id={uniqueKey}
-          key={uniqueKey}
-          yAxisId={yDirection}
-          type="monotone"
-          dataKey={key}
-          stroke={color}
-          strokeWidth="1.5"
-          dot={false}
-          connectNulls={false}
-        >
-          {' '}
-        </Line>
-        )
+          <Line
+            hide={!activeKeys.includes(key)}
+            id={uniqueKey}
+            key={uniqueKey}
+            yAxisId={yDirection}
+            type="monotone"
+            dataKey={key}
+            stroke={color}
+            strokeWidth="1.5"
+            dot={false}
+            connectNulls={false}
+          >
+            {' '}
+          </Line>
+        );
       }
     })
   );

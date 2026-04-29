@@ -49,7 +49,6 @@ const RenderedNewsContent = () => {
           (item) => item.id === displayedArticleId
         );
         const nextIndex = currentIndex < news.length - 1 ? currentIndex + 1 : 0;
-        console.log(news);
         dispatch(setDisplayedArticleId(news[nextIndex].id));
       };
 

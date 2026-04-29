@@ -8,9 +8,10 @@ import { methodsPage } from './methodsPage';
 import { indicators } from './indicators';
 import { timeseries } from './timeSeries';
 import AlbopictusLeftPanel from './LeftPanel';
+import PackageMapServices from 'components/map/mapPackage/PackageMapServices';
 const moduleObj = {
   id: 'albopictus',
-  displayOrder:1,
+  displayOrder: 1,
   meta: {
     icon: tileIconMoz,
     description: (
@@ -28,7 +29,7 @@ const moduleObj = {
       label: 'Tiger Mosquito',
     },
   },
-  
+
   methodsPage,
   tileIcons,
   panelData,
@@ -38,12 +39,12 @@ const moduleObj = {
   timeseries,
   ui: { LeftPanelComponent: AlbopictusLeftPanel },
   map: {
-    defaultBounds: 'world',
-    switchBounds: 'cyprus',
-    defaultCenter: { lat: 0, lng: 0 },
+    defaultBounds: PackageMapServices.worldBounds,
+    switchBounds: PackageMapServices.cyprusBounds,
+    defaultCenter: { lat: 35.1, lng: 33.1 },
     defaultZoom: 1,
     switchCenter: { lat: 0, lng: 0 },
-    switchZoom: 1,
+    switchZoom: 4,
   },
   transition(
     fromId,

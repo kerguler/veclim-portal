@@ -59,8 +59,8 @@ function MyNavbar({ style }) {
     //   dispatch
     // );
     console.log({ position, persistPointer });
-    if (position && !persistPointer) {
-      dispatch(setMapPagePosition({ lat: position.lat, lng: position.lng })); // Reset map position to trigger any necessary updates
+    if (mapPagePosition && !persistPointer) {
+      // dispatch(setMapPagePosition({ lat: mapPage.lat, lng: position.lng })); // Reset map position to trigger any necessary updates
       dispatch(setPersistPointer({ direction: 'left', value: true }));
     }
     dispatch(setPanelOpen({ direction: 'left', value: false }));

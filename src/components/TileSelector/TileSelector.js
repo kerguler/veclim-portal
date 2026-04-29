@@ -7,7 +7,9 @@ import PanelContext from 'context/panelsIconsV2';
 import MoreText from 'components/MoreText/MoreText';
 
 function TileSelector({ tileIcons }) {
-  const selectedTiles = useSelector((state) => state.fetcher.fetcherStates.tileArray);
+  const selectedTiles = useSelector(
+    (state) => state.fetcher.fetcherStates.tileArray
+  );
   const { data, error, isFetching } = useFetchColorBarsDataQuery();
 
   const [displayWarning, setDisplayWarning] = useState(false);
@@ -16,7 +18,9 @@ function TileSelector({ tileIcons }) {
 
   const isItLinked = (item) => {
     let linked = tileIcons
-      .filter((elm) => elm.key === item && 'linked' in elm && elm.linked !== elm.key)
+      .filter(
+        (elm) => elm.key === item && 'linked' in elm && elm.linked !== elm.key
+      )
       .map((elm) => elm.linked);
     return linked.length == 1 ? linked[0] : false;
   };
@@ -61,10 +65,6 @@ function TileSelector({ tileIcons }) {
       })
     );
   };
-  useEffect(() => {
-    console.log('TileSelector: selectedTiles changed', selectedTiles);
-  }, [selectedTiles]);
-  
 
   useEffect(() => {
     setTimeout(() => {
@@ -82,9 +82,14 @@ function TileSelector({ tileIcons }) {
         handleIconClick={handleIconClick}
       />
       {displayWarning && (
-        <div className="icons-area warning"> you can select a maximum of 2 tiles </div>
+        <div className="icons-area warning">
+          {' '}
+          you can select a maximum of 2 tiles{' '}
+        </div>
       )}
-      {displayNoTileWarning && <div className="icons-area warning"> you have to have 1 tile </div>}
+      {displayNoTileWarning && (
+        <div className="icons-area warning"> you have to have 1 tile </div>
+      )}
       {/* <div className="tile-select-button"> <p>Submit</p></div> */}
     </div>
   );
@@ -121,28 +126,42 @@ const IconGrid = ({ icons }) => {
         const rowIcons = groupedIcons[row];
         const emptySlots = columnsPerRow - rowIcons.length;
         return (
-          <div className="icon-row-container" key={`id-icon-row-container-${row}`}>
+          <div
+            className="icon-row-container"
+            key={`id-icon-row-container-${row}`}
+          >
             <div className="icon-row-label" key={`id-icon-row-label-${row}`}>
-              {tileIconsRowHeadings.filter((heading) => heading.row === parseInt(row))[0].label}
+              {
+                tileIconsRowHeadings.filter(
+                  (heading) => heading.row === parseInt(row)
+                )[0].label
+              }
             </div>
             <div
               key={`id-icon-row-${row}`}
               className="icon-row"
               style={{
-                gridTemplateColumns: 'repeat(' + rowIcons.length + ', minmax(50px, 1fr))',
+                gridTemplateColumns:
+                  'repeat(' + rowIcons.length + ', minmax(50px, 1fr))',
               }}
             >
               {rowIcons
                 .sort((a, b) => (a.id % 10) - (b.id % 10))
                 .map((icon) => {
                   return (
-                    <div key={`id-icon-row-${row}-${icon.key}`} className="icon-item">
+                    <div
+                      key={`id-icon-row-${row}-${icon.key}`}
+                      className="icon-item"
+                    >
                       {icon}
                     </div>
                   );
                 })}
               {Array.from({ length: emptySlots }).map((_, idx) => (
-                <div key={`empty-${row}-${idx}`} className="icon-item empty"></div>
+                <div
+                  key={`empty-${row}-${idx}`}
+                  className="icon-item empty"
+                ></div>
               ))}
             </div>
           </div>
@@ -170,7 +189,9 @@ const RenderedContent = ({ tileIcons, selectedTiles, handleIconClick }) => {
     .filter((item, index) => !('hidden' in item && item.hidden))
     .map((item, index) => {
       let internalClassName;
-      const filteredArray = selectedTiles.filter((element) => element === item.key);
+      const filteredArray = selectedTiles.filter(
+        (element) => element === item.key
+      );
       const exists = filteredArray.length > 0;
       if (exists) {
         internalClassName = 'panel-content icons-area  active';

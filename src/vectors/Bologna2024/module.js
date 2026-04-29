@@ -6,10 +6,14 @@ import tileIconFly from 'assets/icons/map-page-right-menu/png/mosquito-3-32px.pn
 import { indicators } from './indicators';
 import { timeseries } from './timeSeries';
 import Bologna2024LeftPanel from './LeftPanel';
+import PackageMapServices from 'components/map/mapPackage/PackageMapServices';
 const colorKeys = Object.fromEntries(
   (tileIcons || []).map((t) => [t.key, t.colkey])
 );
-
+const BOLOGNA_BOUNDS = [
+  [27.87, -8.83],
+  [57.47, 31.42],
+];
 const moduleObj = {
   id: 'Bologna2024',
   displayOrder: 3,
@@ -33,8 +37,16 @@ const moduleObj = {
   timeseries,
   ui: { LeftPanelComponent: Bologna2024LeftPanel },
   map: {
-    defaultBounds: 'italy',
-    switchBounds: 'italy',
+    defaultBounds: BOLOGNA_BOUNDS,
+    switchBounds: PackageMapServices.worldBounds,
+    maxBounds: PackageMapServices.worldBounds,
+    // maxBounds: [
+    //   [34.25, 31.5],
+    //   [36, 35],
+    // ],
+
+    minZoomBounds: PackageMapServices.worldBounds,
+    minZoomInside: false,
     defaultCenter: { lat: 44.5, lng: 11.3 },
     defaultZoom: 5,
     switchCenter: { lat: 44.5, lng: 11.3 },

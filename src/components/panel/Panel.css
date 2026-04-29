@@ -253,7 +253,7 @@
     z-index: 3001;
     background: var(--primary-color1);
     padding-bottom: 1rem;
-    margin-bottom: 5rem;
+    /* margin-bottom: 5rem; */
     justify-content: center;
     align-items: center;
     animation: panel-open-from-left 0.5s ease-out;

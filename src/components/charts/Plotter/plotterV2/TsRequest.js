@@ -3,7 +3,6 @@ import { useFetchTimeSeriesDataQuery } from 'store';
 import { useEffect, useRef } from 'react';
 import ChartCalculatorService from 'components/charts/services/ChartCalculatorService';
 import RechartsPlot from '../RechartsPlot';
-import useSetDefaultCoordinates from '../customPlotterHooks/useSetDefaultCoordinates';
 import ErrorComponent from '../errorComponent/ErrorComponent';
 import ErrorBoundary from 'components/errorBoundary/ErrorBoundary';
 import ChartLoadingSkeleton from 'components/skeleton/Skeleton';
@@ -22,7 +21,6 @@ function TsRequest({ direction }) {
   let r = rawData.current;
   // This side effect arrangtes the map centers to default values
   // in case the mapVector changes
-  useSetDefaultCoordinates(direction);
 
   const {
     mapPagePosition,

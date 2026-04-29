@@ -1,7 +1,7 @@
 // ChangeMapPanel.js
 import React, { useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import { setPageTransition } from 'store';
 import PackageMapServices from 'components/map/mapPackage/PackageMapServices';
@@ -9,13 +9,24 @@ import { getVector, ALL_VECTORS } from 'vectors/registry';
 import useDirectorFun from 'customHooks/useDirectorFun';
 
 import './ChangeMapPanel.css';
+import {
+  setMapPagePosition,
+  setPersistPointer,
+  setPanelOpen,
+  setReadyToView,
+} from 'store';
 
 function ChangeMapPanel() {
   const dispatch = useDispatch();
-
+  const navigate = useNavigate();
   // current map/vector state
-  const { vectorName, currentMapCenter, currentMapZoom } =
-    useDirectorFun('left');
+  const {
+    vectorName,
+    currentMapCenter,
+    currentMapZoom,
+    mapPagePosition,
+    persistPointer,
+  } = useDirectorFun('left');
 
   // whatever is in Redux (may contain duplicates)
   const vectorNamesFromStore = useSelector((state) => state.vector.vectorNames);
@@ -33,14 +44,21 @@ function ChangeMapPanel() {
   }, [vectorNamesFromStore]);
 
   const handleChangeTile = (desiredVectorId) => {
-    PackageMapServices.handleMapSwitch(
+    const vec = getVector(desiredVectorId);
+    if (!vec) return;
+    PackageMapServices.handleToMapPageTransition(
       dispatch,
-      vectorName, // current vector
-      desiredVectorId, // target vector
-      currentMapCenter,
-      currentMapZoom
+      vectorName,
+      desiredVectorId
     );
-    dispatch(setPageTransition(false));
+    PackageMapServices.handleMapSwitch(dispatch, vectorName, desiredVectorId);
+    if (mapPagePosition && !persistPointer) {
+      // dispatch(setMapPagePosition({ lat: mapPage.lat, lng: position.lng })); // Reset map position to trigger any necessary updates
+      dispatch(setPersistPointer({ direction: 'left', value: true }));
+    }
+    dispatch(setPanelOpen({ direction: 'left', value: false }));
+    dispatch(setReadyToView(false));
+    navigate(vec?.meta?.route || `/MapPage?session=${desiredVectorId}`);
   };
 
   const listVectors = vectorIds.map((id) => {
@@ -65,7 +83,10 @@ function ChangeMapPanel() {
         <div>
           <Link
             to={route}
-            onClick={() => handleChangeTile(id)}
+            onClick={(e) => {
+              e.preventDefault();
+              handleChangeTile(id);
+            }}
             className={className}
           >
             {icon && <img alt={`${id}-icon`} src={icon} />}

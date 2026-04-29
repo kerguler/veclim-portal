@@ -1,101 +1,149 @@
 import { useEffect } from 'react';
 import L from 'leaflet';
-
 import { useDispatch, useSelector } from 'react-redux';
 import PackageMapServices from 'components/map/mapPackage/PackageMapServices';
 import { setCurrentMapBounds } from 'store';
 import useDirectorFun from 'customHooks/useDirectorFun';
+
 function useLMap(mapParRef) {
-  // useLMapResize(mapParRef);
   const dispatch = useDispatch();
+  const { permalinkClick } = useDirectorFun('left');
   const mapOptions = useSelector(
     (state) => state.fetcher.fetcherStates.map.optionsPanel
   );
-  const { showVectorAbundance, tileOpacity, showMapLabels } = mapOptions;
-  const pageTransition = useSelector((state) => state.location.pageTransition);
-  let p = mapParRef.current;
+  const { showVectorAbundance, showMapLabels } = mapOptions;
 
-  const {
-    vectorName,
-    switchMap,
-    currentMapCenter,
-    currentMapZoom,
-    mapVector,
-    panelInterfere,
-  } = useDirectorFun('left');
+  const { vectorName, currentMapCenter, currentMapZoom, currentMaxBounds } =
+    useDirectorFun('left');
 
+  // 1) Create map once
   useEffect(() => {
-    p.map = L.map('map1', {
-      maxBoundsViscosity: 1,
+    const p = mapParRef.current;
+    if (!p || p.map) return;
+
+    const map = L.map('map1', {
+      maxBoundsViscosity: 0,
       maxBounds: PackageMapServices.worldBounds,
       zoomControl: false,
       minZoom: 3,
     });
 
-    p.map.setView({ lat: p.center.lat, lng: p.center.lng }, p.zoom);
+    p.map = map;
 
-    let bounds = p.map ? p.map.getBounds() : null;
-    const boundsArray = [
-      [bounds._southWest.lat, bounds._southWest.lng], // South West corner
-      [bounds._northEast.lat, bounds._northEast.lng], // North East corner
-    ];
-    bounds && dispatch(setCurrentMapBounds(boundsArray));
-    return () => {
-      p.map && p.map.remove();
-    };
-  }, [p]);
-
-  useEffect(() => {
-    if (!p.map) return;
-
-    // always sync to Redux center/zoom
     if (currentMapCenter && typeof currentMapZoom === 'number') {
       p.map.setView(
         { lat: currentMapCenter.lat, lng: currentMapCenter.lng },
         currentMapZoom
       );
     }
-    PackageMapServices.mapBounds(
-      mapParRef,
-      vectorName,
 
-      dispatch
-    );
-  }, [dispatch, vectorName, currentMapCenter, currentMapZoom]);
+    const bounds = map.getBounds();
+    if (bounds) {
+      dispatch(
+        setCurrentMapBounds([
+          [bounds.getSouthWest().lat, bounds.getSouthWest().lng],
+          [bounds.getNorthEast().lat, bounds.getNorthEast().lng],
+        ])
+      );
+    }
+
+    return () => {
+      if (p.map) {
+        p.map.remove();
+        p.map = null;
+      }
+    };
+  }, [mapParRef, dispatch]);
+
+  // 2) Apply vector max bounds / constraints only when vector changes
+  useEffect(() => {
+    const p = mapParRef.current;
+    if (!p?.map || !vectorName) return;
+
+    PackageMapServices.mapBounds(mapParRef, vectorName, dispatch);
+  }, [mapParRef, vectorName, dispatch]);
+
+  // 3) Keep Leaflet maxBounds synced if Redux maxBounds changes
 
   useEffect(() => {
+    const p = mapParRef.current;
+    if (!p?.map) return;
+
+    const map = p.map;
+
+    if (!currentMaxBounds) {
+      map.setMaxBounds(null);
+      return;
+    }
+
+    const maxBounds = PackageMapServices.calculateBounds(currentMaxBounds);
+    map.setMaxBounds(maxBounds);
+  }, [mapParRef, currentMaxBounds]);
+
+  // 4) Sync Redux center/zoom into Leaflet only when actually different
+  useEffect(() => {
+    const p = mapParRef.current;
+    if (!p?.map) return;
+    if (!currentMapCenter || typeof currentMapZoom !== 'number') return;
+
+    const map = p.map;
+    const leafletCenter = map.getCenter();
+    const leafletZoom = map.getZoom();
+
+    const sameCenter =
+      Math.abs(leafletCenter.lat - currentMapCenter.lat) < 1e-9 &&
+      Math.abs(leafletCenter.lng - currentMapCenter.lng) < 1e-9;
+
+    const sameZoom = leafletZoom === currentMapZoom;
+
+    if (!sameCenter || !sameZoom) {
+      console.log('I SET YUOU UO HERE');
+      // map.setView(
+      //   { lat: currentMapCenter.lat, lng: currentMapCenter.lng },
+      //   currentMapZoom,
+      //   { animate: false }
+      // );
+    }
+  }, [mapParRef, currentMapCenter, currentMapZoom]);
+
+  // 5) Base/data/label layers
+  useEffect(() => {
+    const p = mapParRef.current;
+    if (!p?.map) return;
+    const map = p.map;
+
     const baseLayer = PackageMapServices.baseLayer;
     const baseLayerOSM = PackageMapServices.baseLayerOSM;
     const dataLayer = PackageMapServices.dataLayer;
-    const labelLayer = PackageMapServices.labelLayer;
-    baseLayer.addTo(p.map);
+
+    if (!map.hasLayer(baseLayer) && !map.hasLayer(baseLayerOSM)) {
+      baseLayer.addTo(map);
+    }
+
     if (showVectorAbundance) {
-      if (!p.map.hasLayer(dataLayer)) {
-        dataLayer.addTo(p.map);
+      if (!map.hasLayer(dataLayer)) {
+        dataLayer.addTo(map);
       }
-    } else {
-      if (p.map.hasLayer(dataLayer)) {
-        p.map.removeLayer(dataLayer);
-      }
+    } else if (map.hasLayer(dataLayer)) {
+      map.removeLayer(dataLayer);
     }
+
     if (showMapLabels) {
-      if (!p.map.hasLayer(baseLayerOSM)) {
-        baseLayerOSM.addTo(p.map);
+      if (!map.hasLayer(baseLayerOSM)) {
+        baseLayerOSM.addTo(map);
       }
-      if (p.map.hasLayer(baseLayer)) {
-        p.map.removeLayer(baseLayer);
+      if (map.hasLayer(baseLayer)) {
+        map.removeLayer(baseLayer);
       }
     } else {
-      if (!p.map.hasLayer(baseLayer)) {
-        baseLayer.addTo(p.map);
+      if (!map.hasLayer(baseLayer)) {
+        baseLayer.addTo(map);
       }
-      if (p.map.hasLayer(baseLayerOSM)) {
-        p.map.removeLayer(baseLayerOSM);
+      if (map.hasLayer(baseLayerOSM)) {
+        map.removeLayer(baseLayerOSM);
       }
     }
-  }, [showVectorAbundance, showMapLabels]);
-
-
+  }, [mapParRef, showVectorAbundance, showMapLabels]);
 }
 
 export default useLMap;

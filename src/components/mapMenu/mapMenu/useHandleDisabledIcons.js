@@ -14,7 +14,9 @@ function useHandleDisabledIcons(panelChildren) {
     if (hasValidPosition) return false;
 
     return (panelChildren || []).some((panel) => {
-      const myPanel = panelData.find((panelItem) => panelItem.key === panel.key);
+      const myPanel = panelData.find(
+        (panelItem) => panelItem.key === panel.key
+      );
       if (!myPanel) return false;
 
       const hasChartParameters =
@@ -28,23 +30,40 @@ function useHandleDisabledIcons(panelChildren) {
   const style = useMemo(() => {
     if (shouldDisable) {
       return {
-        backgroundColor: 'var(--neutral-color1)',
         pointerEvents: 'none',
         cursor: 'not-allowed',
+
+        opacity: 0.45,
+        filter: 'grayscale(60%)',
+
+        backdropFilter: 'blur(4px)', // modern glass feel
+        backgroundColor: 'rgba(255,255,255,0.03)',
+
+        border: '1px solid rgba(255,255,255,0.05)',
+        transition: 'all 0.2s ease',
+        // display: 'none'
       };
     }
 
     return {
-      color: 'white',
       pointerEvents: 'all',
+      opacity: 1,
+      filter: 'none',
+      transition: 'all 0.2s ease',
     };
   }, [shouldDisable]);
 
   const imgStyle = useMemo(() => {
-    return {
-      color: 'grey',
-    };
-  }, []);
+    return shouldDisable
+      ? {
+          opacity: 0.5,
+          transform: 'scale(0.95)',
+        }
+      : {
+          opacity: 1,
+          transform: 'scale(1)',
+        };
+  }, [shouldDisable]);
 
   return { style, imgStyle, shouldDisable };
 }

@@ -20,7 +20,7 @@ const fetcherSlice = createSlice({
         permalink: '',
         displayTileNames: { left: false, right: false, center: true },
 
-        currentMapCenter: { lat: 35.1966527, lng: 33.3217152 },
+        currentMapCenter: { lat: null, lng: null },
         currentMapZoom: 2,
         mapLoaded: false,
         leftMapLoaded: false,
@@ -36,7 +36,7 @@ const fetcherSlice = createSlice({
         currentMaxBounds: PackageMapServices.worldBounds,
         userPosition: { lat: null, lng: null },
         globalPosition: { lat: null, lng: null },
-        mapPagePosition: { lat: 35.1966527, lng: 33.3217152 },
+        mapPagePosition: { lat: null, lng: null },
       },
     },
     fetcherError: null,
@@ -145,7 +145,8 @@ const fetcherSlice = createSlice({
   },
 });
 
-export const {setIsPermalinkClick,
+export const {
+  setIsPermalinkClick,
   setPermalink,
   setLeafletLoaded,
   setShowVectorAbundance,

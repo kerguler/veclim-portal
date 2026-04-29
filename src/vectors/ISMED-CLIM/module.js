@@ -15,7 +15,7 @@ const moduleObj = {
   displayOrder: 4,
   meta: {
     icon: tileIconFly,
-    
+
     description: (
       <p>Zoonotic disease risk assessment for the ISMED-CLIM project</p>
     ),
@@ -36,8 +36,14 @@ const moduleObj = {
   timeseries,
   ui: { LeftPanelComponent: IsmedClimLeftPanel },
   map: {
-    defaultBounds: 'portugal',
-    switchBounds: 'portugal',
+    defaultBounds: [
+      [30.71, -15.73],
+      [45.0, 5.0],
+    ],
+    switchBounds: [
+      [30.71, -15.73],
+      [45.0, 5.0],
+    ],
     defaultCenter: { lat: 39.0, lng: -8.0 },
     defaultZoom: 6,
     switchCenter: { lat: 39.0, lng: -8.0 },

@@ -18,7 +18,6 @@ export default function useMapPermalinkSync({
   lastPanelDisplayed,
   tileArray,
   isPermalinkClick,
-  
 }) {
   const dispatch = useDispatch();
 
@@ -52,7 +51,6 @@ export default function useMapPermalinkSync({
     if (link) dispatch(setPermalink(link));
   }, [buildLink, dispatch]);
 
-  // 1) attach map events that should update permalink
   useEffect(() => {
     const p = mapParRef.current;
     if (!p?.map) return;
@@ -60,7 +58,7 @@ export default function useMapPermalinkSync({
     const map = p.map;
 
     const onMoveEnd = () => sync();
-    const onZoomEnd = () => sync(); // optional if you want explicit
+    const onZoomEnd = () => sync(); 
     const onResize = () => sync();
 
     map.on('moveend', onMoveEnd);
@@ -88,7 +86,8 @@ export default function useMapPermalinkSync({
     let tries = 0;
 
     const run = () => {
-      const p = mapParRef.current;
+      const p = mapParRef?.current;
+      if (!p?.map) return;
       if (!p?.map) {
         if (tries++ < 40) timeoutId = setTimeout(run, 50);
         return;
@@ -100,7 +99,7 @@ export default function useMapPermalinkSync({
 
       const iconOnMap = p.iconMarker && p.map.hasLayer(p.iconMarker);
       const rectOnMap = p.rectMarker && p.map.hasLayer(p.rectMarker);
-   
+
       if (!iconOnMap && !rectOnMap) {
         // null prevents toggle-off
         PackageMapServices.clickMap(
@@ -110,6 +109,7 @@ export default function useMapPermalinkSync({
           dispatch,
           null,
           'left'
+        
         );
       }
 

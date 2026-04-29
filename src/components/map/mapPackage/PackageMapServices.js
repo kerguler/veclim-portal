@@ -29,13 +29,23 @@ class PackageMapServices {
   static BOUNDS = {
     world: PackageMapServices.worldBounds,
     cyprus: PackageMapServices.cyprusBounds,
+    italy: [
+      [27.87, -8.83],
+      [57.47, 31.42],
+    ],
   };
 
-  static resolveBounds(boundsKeyOrBox) {
-    if (!boundsKeyOrBox) return this.worldBounds;
-    if (typeof boundsKeyOrBox === 'string')
-      return this.BOUNDS[boundsKeyOrBox] || this.worldBounds;
-    return boundsKeyOrBox; // assume [[sw],[ne]]
+  static resolveBounds(boundsBox) {
+    if (
+      Array.isArray(boundsBox) &&
+      boundsBox.length === 2 &&
+      Array.isArray(boundsBox[0]) &&
+      Array.isArray(boundsBox[1])
+    ) {
+      return boundsBox;
+    }
+
+    return this.worldBounds;
   }
 
   static baseLayer = L.tileLayer(
@@ -118,12 +128,17 @@ class PackageMapServices {
     const cfg = vec.map || {};
 
     // --- 1) default behaviour for entering this vector ---
-    let boundsKey = cfg.switchBounds || cfg.defaultBounds || 'world';
+    let boundsKey = cfg.defaultBounds || 'world';
 
-    let center = cfg.switchCenter || cfg.defaultCenter || this.defaultCypCenter;
+    let center = cfg.defaultCenter || this.defaultCypCenter;
 
-    let zoom = cfg.switchZoom ?? cfg.defaultZoom ?? 8;
-
+    let zoom = cfg.defaultZoom ?? 8;
+    dispatch(
+      setMapPagePosition({
+        lat: cfg.defaultCenter?.lat,
+        lng: cfg.defaultCenter?.lng,
+      })
+    );
     // --- 2) let cfg.transition tweak this if present ---
     if (typeof cfg.transition === 'function') {
       const tRes = cfg.transition(currentVectorId, {
@@ -226,7 +241,7 @@ class PackageMapServices {
     const opts = { ...this.defaultClickOptions, ...clickOptions };
 
     let p = mapParRef.current;
-    const switchZoom = 4;
+    const switchZoom = getVector(vectorName)?.map?.switchZoom ?? 6;
 
     let newPosition = this.roundPosition(
       vectorName,
@@ -255,6 +270,10 @@ class PackageMapServices {
         markerEvent.originalEvent.preventDefault();
         markerEvent.originalEvent.stopPropagation();
       }
+      const c = p.map.getCenter();
+      const z = p.map.getZoom();
+      // dispatch(setCurrentMapCenter({ lat: c.lat, lng: c.lng }));
+      // dispatch(setCurrentMapZoom(z));
 
       p.prevClickPointRef = null;
 
@@ -398,36 +417,47 @@ class PackageMapServices {
 
   static mapBounds(mapParRef, vectorName, dispatch) {
     const p = mapParRef.current;
-    if (!p || !p.map) return;
+    if (!p?.map) return;
 
     const vec = getVector(vectorName);
     const cfg = vec?.map || {};
 
-    // use defaultBounds for the constraint box
-    const boundsKey = cfg.defaultBounds || 'world';
-    const rawBounds = this.resolveBounds(boundsKey);
-    const maxBounds = this.calculateBounds(rawBounds);
+    if (!cfg.maxBounds) {
+      p.maxBounds = null;
+      p.map.setMaxBounds(null);
+      dispatch(setCurrentMaxBounds(null));
+      return;
+    }
+
+    const maxBounds = this.calculateBounds(cfg.maxBounds);
 
     p.maxBounds = maxBounds;
     p.map.setMaxBounds(maxBounds);
-    dispatch(setCurrentMaxBounds(rawBounds));
+    dispatch(setCurrentMaxBounds(cfg.maxBounds));
   }
 
   static setMinZoom(mapParRef, vectorName) {
-    let p = mapParRef.current;
+    const p = mapParRef.current;
+    if (!p?.map) return;
 
-    let newMinZoom = 2;
-    if (vectorName === 'albopictus') {
-      newMinZoom = p.map.getBoundsZoom(this.worldBounds, true);
-    } else {
-      newMinZoom = p.map.getBoundsZoom(this.cyprusBounds, false);
-    }
-    if (p.map.getZoom() < newMinZoom) {
-      p.map.setZoom(newMinZoom);
-    }
+    const vec = getVector(vectorName);
+    const cfg = vec?.map || {};
+
+    const rawBounds =
+      cfg.minZoomBounds ||
+      cfg.maxBounds ||
+      cfg.defaultBounds ||
+      this.worldBounds;
+
+    const minZoomBounds = this.calculateBounds(rawBounds);
+
+    const newMinZoom = p.map.getBoundsZoom(
+      minZoomBounds,
+      cfg.minZoomInside ?? true
+    );
+
     p.map.setMinZoom(newMinZoom);
 
-    p.minZoom = newMinZoom;
     return newMinZoom;
   }
   static calculateZoomForBounds(mapParRef, bounds) {
@@ -557,14 +587,9 @@ class PackageMapServices {
     dispatch,
     mapPagePosition
   ) => {
-    let p = mapParRef.current;
-    if (p) {
-      p.zoom = p.map.getZoom();
-      p.center = {
-        lat: p.map.getCenter().lat,
-        lng: p.map.getCenter().lng,
-      };
+    let p = mapParRef?.current;
 
+    if (p) {
       if (p.prevClickPointRef) {
         p.iconMarker && p.map.removeLayer(p.iconMarker);
         p.rectMarker && p.map.removeLayer(p.rectMarker);
