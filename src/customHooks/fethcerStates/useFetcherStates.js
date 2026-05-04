@@ -21,7 +21,10 @@ import {
   setCurrentMapCenter,
 } from 'store';
 
-import { setLastPanelDisplayed } from 'components/mapMenu/menuStore/mapMenuSlice';
+import {
+  setLastPanelDisplayed,
+  setPersistPointer,
+} from 'components/mapMenu/menuStore/mapMenuSlice';
 import { getVector } from 'vectors/registry';
 
 const useFetcherStates = () => {
@@ -68,50 +71,101 @@ const useFetcherStates = () => {
   const defaultTiles = activeVector?.defaults?.tileArray || [];
 
   // 2) URL → mapPagePosition (clicked point, used for panels)
+
+  const urlLat = lat == null ? null : parseFloat(lat);
+  const urlLon = lon == null ? null : parseFloat(lon);
+
+  const hasUrlClick = Number.isFinite(urlLat) && Number.isFinite(urlLon);
   useEffect(() => {
-    if (lat && lon) {
-      // clicked cell from permalink
+    if (hasUrlClick) {
       dispatch(
         setMapPagePosition({
-          lat: parseFloat(lat),
-          lng: parseFloat(lon),
+          lat: urlLat,
+          lng: urlLon,
         })
       );
-    } else {
-      // no lat/lon in URL → leave as-is (user can click later)
-      // If you want to *clear* previous click on plain /MapPage, uncomment:
-      // dispatch(setMapPagePosition({ lat: null, lng: null }));
+
+      dispatch(setPersistPointer({ direction: 'left', value: true }));
+      return;
     }
-  }, [lat, lon, dispatch]);
+
+    // UR  const pointerDisabled =
+    const pointerDisabled =
+      mapPagePosition?.lat === null || mapPagePosition?.lng === null;
+
+    const hasExistingPosition =
+      Number.isFinite(mapPagePosition?.lat) &&
+      Number.isFinite(mapPagePosition?.lng);
+
+    if (pointerDisabled) {
+      dispatch(setPersistPointer({ direction: 'left', value: false }));
+      return;
+    }
+
+    if (hasExistingPosition) {
+      dispatch(setPersistPointer({ direction: 'left', value: true }));
+    }
+  }, [hasUrlClick, urlLat, urlLon, dispatch]);
 
   // 3) URL → camera center (what the map is looking at)
+  // useEffect(() => {
+  //   let center = null;
+
+  //   if (cLat && cLon) {
+  //     // explicit camera center from permalink
+  //     center = {
+  //       lat: parseFloat(cLat),
+  //       lng: parseFloat(cLon),
+  //     };
+  //   } else if (hasUrlClick) {
+  //     // fallback: if no cLat/cLon but we *do* have a clicked point, use that
+  //     center = {
+  //       lat: urlLat,
+  //       lng: urlLon,
+  //     };
+  //   } else if (!mapPagePosition || mapPagePosition.lat === null) {
+  //     // last fallback → default
+  //     center = activeVector?.map?.defaultCenter || { lat: 0, lng: 0 };
+  //   }
+
+  //   if (center) {
+  //     // console.log('I AM HERE IN CENTER SETTING', { center });
+  //     dispatch(setCurrentMapCenter(center));
+  //   }
+  // }, [cLat, cLon, lat, lon, mapPagePosition, dispatch]);
   useEffect(() => {
     let center = null;
 
-    if (cLat && cLon) {
-      // explicit camera center from permalink
+    const hasUrlCamera =
+      Number.isFinite(parseFloat(cLat)) && Number.isFinite(parseFloat(cLon));
+
+    if (hasUrlCamera) {
       center = {
         lat: parseFloat(cLat),
         lng: parseFloat(cLon),
       };
-    } else if (lat && lon) {
-      // fallback: if no cLat/cLon but we *do* have a clicked point, use that
+    } else if (hasUrlClick) {
       center = {
-        lat: parseFloat(lat),
-        lng: parseFloat(lon),
+        lat: urlLat,
+        lng: urlLon,
       };
     } else if (!mapPagePosition || mapPagePosition.lat === null) {
-      // last fallback → default
       center = activeVector?.map?.defaultCenter || { lat: 0, lng: 0 };
-    
     }
 
     if (center) {
-      // console.log('I AM HERE IN CENTER SETTING', { center });
       dispatch(setCurrentMapCenter(center));
     }
-  }, [cLat, cLon, lat, lon, mapPagePosition, dispatch]);
-
+  }, [
+    cLat,
+    cLon,
+    hasUrlClick,
+    urlLat,
+    urlLon,
+    mapPagePosition?.lat,
+    activeVector?.id,
+    dispatch,
+  ]);
   // 4) default tileArray for this vector if URL doesn't specify `tile`
   useEffect(() => {
     if (
@@ -119,6 +173,7 @@ const useFetcherStates = () => {
       defaultTiles.length > 0
     ) {
       dispatch(setTileArray(defaultTiles));
+
       dispatch(setReadyToView(false));
     }
   }, [tile, dispatch, defaultTiles.join(',')]);

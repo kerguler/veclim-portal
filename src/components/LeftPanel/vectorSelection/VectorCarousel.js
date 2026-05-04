@@ -7,6 +7,7 @@ import { VECTORS, ALL_VECTORS, getVector } from 'vectors/registry';
 import PackageMapServices from 'components/map/mapPackage/PackageMapServices';
 
 import './VectorCarousel.css';
+import useDirectorFun from 'customHooks/useDirectorFun';
 
 const VectorCarousel = ({ className = '', onChange }) => {
   const dispatch = useDispatch();
@@ -16,7 +17,15 @@ const VectorCarousel = ({ className = '', onChange }) => {
   const currentVectorId = useSelector(
     (state) => state.fetcher.fetcherStates.vectorName
   );
-
+  const mapPagePosition = useSelector(
+    (state) => state.fetcher.fetcherStates.map.mapPagePosition
+  );
+  const currentMapZoom = useSelector(
+    (state) => state.fetcher.fetcherStates.map.currentMapZoom
+  );
+  const currentMapCenter = useSelector(
+    (state) => state.fetcher.fetcherStates.map.currentMapCenter
+  );
   // Order of vectors (deduped, but stable)
   const vectorOrder = useMemo(() => {
     const seen = new Set();
@@ -41,7 +50,14 @@ const VectorCarousel = ({ className = '', onChange }) => {
   const switchTo = (nextId) => {
     if (!nextId || nextId === currentVectorId) return;
 
-    PackageMapServices.handleMapSwitch(dispatch, currentVectorId, nextId);
+    PackageMapServices.handleMapSwitch(
+      dispatch,
+      currentVectorId,
+      nextId,
+      currentMapCenter,
+      currentMapZoom,
+      mapPagePosition
+    );
 
     const vec = getVector(nextId);
 
@@ -49,12 +65,12 @@ const VectorCarousel = ({ className = '', onChange }) => {
     if (location.pathname.startsWith('/Methods')) {
       route = vec?.meta?.methods?.route || `/Methods/${nextId}`;
     } else {
-      route = vec?.map?.routePath;
+      route = vec?.meta?.route || `/MapPage?session=${nextId}`;
     }
 
-    if (route && route !== location.pathname) {
-      navigate(route);
-    }
+    // if (route && route !== location.pathname) {
+    //   navigate(route);
+    // }
 
     if (typeof onChange === 'function') {
       onChange(nextId, vec);

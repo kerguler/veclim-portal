@@ -43,24 +43,58 @@ function ChangeMapPanel() {
     return Array.from(new Set(baseIds));
   }, [vectorNamesFromStore]);
 
+  // const handleChangeTile = (desiredVectorId) => {
+  //   const vec = getVector(desiredVectorId);
+  //   if (!vec) return;
+  //   // PackageMapServices.handleToMapPageTransition(
+  //   //   dispatch,
+  //   //   vectorName,
+  //   //   desiredVectorId
+  //   // );
+  //   PackageMapServices.handleMapSwitch(
+  //     dispatch,
+  //     vectorName,
+  //     desiredVectorId,
+  //     currentMapCenter,
+  //     currentMapZoom,
+  //     mapPagePosition
+  //   );
+  //   if (mapPagePosition && !persistPointer) {
+  //     // dispatch(setMapPagePosition({ lat: mapPage.lat, lng: position.lng })); // Reset map position to trigger any necessary updates
+  //     dispatch(setPersistPointer({ direction: 'left', value: true }));
+  //   }
+  //   dispatch(setPanelOpen({ direction: 'left', value: false }));
+  //   dispatch(setReadyToView(false));
+  //   navigate(vec?.meta?.route || `/MapPage?session=${desiredVectorId}`);
+  // };
   const handleChangeTile = (desiredVectorId) => {
     const vec = getVector(desiredVectorId);
     if (!vec) return;
-    PackageMapServices.handleToMapPageTransition(
+
+    PackageMapServices.handleMapSwitch(
       dispatch,
       vectorName,
-      desiredVectorId
+      desiredVectorId,
+      currentMapCenter,
+      currentMapZoom,
+      mapPagePosition
     );
-    PackageMapServices.handleMapSwitch(dispatch, vectorName, desiredVectorId);
-    if (mapPagePosition && !persistPointer) {
-      // dispatch(setMapPagePosition({ lat: mapPage.lat, lng: position.lng })); // Reset map position to trigger any necessary updates
+
+    const hasValidPosition =
+      Number.isFinite(mapPagePosition?.lat) &&
+      Number.isFinite(mapPagePosition?.lng);
+
+    if (hasValidPosition) {
       dispatch(setPersistPointer({ direction: 'left', value: true }));
+    } else {
+      dispatch(setPersistPointer({ direction: 'left', value: false }));
     }
+
     dispatch(setPanelOpen({ direction: 'left', value: false }));
     dispatch(setReadyToView(false));
+
     navigate(vec?.meta?.route || `/MapPage?session=${desiredVectorId}`);
   };
-
   const listVectors = vectorIds.map((id) => {
     const vec = getVector(id);
     if (!vec) return null;

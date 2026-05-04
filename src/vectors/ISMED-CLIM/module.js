@@ -10,8 +10,14 @@ const colorKeys = Object.fromEntries(
   (tileIcons || []).map((t) => [t.key, t.colkey])
 );
 
+const PORTUGAL_BOUNDS = [
+  [36.5, -10.0], // southwest
+  [42.5, -6.0], // northeast
+];
+
 const moduleObj = {
   id: 'ISMED-CLIM',
+
   displayOrder: 4,
   meta: {
     icon: tileIconFly,
@@ -36,14 +42,8 @@ const moduleObj = {
   timeseries,
   ui: { LeftPanelComponent: IsmedClimLeftPanel },
   map: {
-    defaultBounds: [
-      [30.71, -15.73],
-      [45.0, 5.0],
-    ],
-    switchBounds: [
-      [30.71, -15.73],
-      [45.0, 5.0],
-    ],
+    defaultBounds: PORTUGAL_BOUNDS,
+    switchBounds: PORTUGAL_BOUNDS,
     defaultCenter: { lat: 39.0, lng: -8.0 },
     defaultZoom: 6,
     switchCenter: { lat: 39.0, lng: -8.0 },

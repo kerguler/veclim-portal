@@ -7,6 +7,7 @@ import { methodsPageSand as methodsPage } from './methodsPage';
 import { indicators } from './indicators';
 import { timeseries } from './timeSeries';
 import PapatasiLeftPanel from './LeftPanel';
+import PackageMapServices from 'components/map/mapPackage/PackageMapServices';
 const colorKeys = Object.fromEntries(
   (tileIcons || []).map((t) => [t.key, t.colkey])
 );
@@ -38,8 +39,8 @@ const moduleObj = {
   colorKeys,
   timeseries,
   map: {
-    defaultBounds: 'cyprus',
-    switchBounds: 'cyprus',
+    defaultBounds: PackageMapServices.cyprusBounds,
+    switchBounds: PackageMapServices.cyprusBounds,
     defaultCenter: { lat: 35.1, lng: 33.33 },
     defaultZoom: 8,
     switchCenter: { lat: 35.1, lng: 33.33 },

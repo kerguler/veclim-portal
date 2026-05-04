@@ -11,8 +11,8 @@ const colorKeys = Object.fromEntries(
   (tileIcons || []).map((t) => [t.key, t.colkey])
 );
 const BOLOGNA_BOUNDS = [
-  [27.87, -8.83],
-  [57.47, 31.42],
+  [35.0, 6],
+  [48.5, 19.5],
 ];
 const moduleObj = {
   id: 'Bologna2024',

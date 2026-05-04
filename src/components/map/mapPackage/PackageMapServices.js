@@ -23,7 +23,10 @@ import { setInvalidateSimData } from 'store';
 import { setDataArrived } from 'store';
 import { setOpenItems } from 'store';
 import { setPlotReady } from 'store';
-import { setLastPanelDisplayed } from 'components/mapMenu/menuStore/mapMenuSlice';
+import {
+  setLastPanelDisplayed,
+  setPersistPointer,
+} from 'components/mapMenu/menuStore/mapMenuSlice';
 
 class PackageMapServices {
   static BOUNDS = {
@@ -118,7 +121,8 @@ class PackageMapServices {
     currentVectorId,
     desiredVectorId,
     currentMapCenter,
-    currentMapZoom
+    currentMapZoom,
+    mapPagePosition
   ) {
     if (desiredVectorId === currentVectorId) return;
 
@@ -133,12 +137,43 @@ class PackageMapServices {
     let center = cfg.defaultCenter || this.defaultCypCenter;
 
     let zoom = cfg.defaultZoom ?? 8;
-    dispatch(
-      setMapPagePosition({
-        lat: cfg.defaultCenter?.lat,
-        lng: cfg.defaultCenter?.lng,
-      })
-    );
+
+    const pointerDisabled =
+      mapPagePosition?.lat === null || mapPagePosition?.lng === null;
+
+    const hasPosition =
+      !pointerDisabled &&
+      Number.isFinite(mapPagePosition?.lat) &&
+      Number.isFinite(mapPagePosition?.lng);
+
+    if (hasPosition) {
+      const validBounds = cfg.validBounds || cfg.defaultBounds;
+
+      if (validBounds) {
+        const [[minLat, minLng], [maxLat, maxLng]] = validBounds;
+
+        const inside =
+          mapPagePosition.lat >= minLat &&
+          mapPagePosition.lat <= maxLat &&
+          mapPagePosition.lng >= minLng &&
+          mapPagePosition.lng <= maxLng;
+
+        if (!inside) {
+          const fallbackPoint = cfg.defaultClickPosition || cfg.defaultCenter;
+
+          if (fallbackPoint) {
+            dispatch(
+              setMapPagePosition({
+                lat: fallbackPoint.lat,
+                lng: fallbackPoint.lng,
+              })
+            );
+
+            dispatch(setPersistPointer({ direction: 'left', value: true }));
+          }
+        }
+      }
+    }
     // --- 2) let cfg.transition tweak this if present ---
     if (typeof cfg.transition === 'function') {
       const tRes = cfg.transition(currentVectorId, {
@@ -307,7 +342,7 @@ class PackageMapServices {
       p.rectMarker = null;
 
       dispatch(setMapPagePosition({ lat: null, lng: null }));
-
+      dispatch(setPersistPointer({ direction: 'left', value: false }));
       if (opts.invalidateSimData) {
         dispatch(setInvalidateSimData(true));
       }
@@ -588,7 +623,21 @@ class PackageMapServices {
     mapPagePosition
   ) => {
     let p = mapParRef?.current;
+    const pointerExplicitlyDisabled =
+      mapPagePosition?.lat === null || mapPagePosition?.lng === null;
 
+    if (pointerExplicitlyDisabled) {
+      p.iconMarker && p.map.removeLayer(p.iconMarker);
+      p.rectMarker && p.map.removeLayer(p.rectMarker);
+      p.highlightMarker && p.map.removeLayer(p.highlightMarker);
+
+      p.iconMarker = null;
+      p.rectMarker = null;
+      p.highlightMarker = null;
+      p.prevClickPointRef = null;
+
+      return;
+    }
     if (p) {
       if (p.prevClickPointRef) {
         p.iconMarker && p.map.removeLayer(p.iconMarker);

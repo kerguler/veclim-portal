@@ -12,30 +12,19 @@ import useSeparatorActions from 'customHooks/MapPackage/useSeparatorActions';
 import useZoomActions from 'customHooks/useZoomActions';
 import useMapBasicEvents from 'customHooks/MapPackage/useMapBasicEvents';
 import useLMapResize from 'customHooks/MapPackage/useLMapResize';
-import { useSelector } from 'react-redux';
 import useDirectorFun from 'customHooks/useDirectorFun';
 import ColorBarLabelComponent from '../ColorBarLabel/ColorBarLabelComponent';
 import { useState } from 'react';
 import MapContextMenu from '../mapContextMenu/MapContextMenu';
 import useMapPermalinkSync from 'customHooks/permalink/usePermalinkSync';
-import { setLastPanelDisplayed } from 'store';
 import { setDirectMap } from 'store';
 import { setPersistPointer } from 'store';
-import { setCurrentMapCenter } from 'store';
-import { setCurrentMapZoom } from 'store';
 import { syncReduxFromLeaflet } from 'utils/syncReduxFromLeaflet';
-import { getVector } from 'vectors/registry';
 function MapPackageComponent({ fitworld }) {
   const dispatch = useDispatch();
   const {
-    currentMapBounds,
-    currentMaxBounds,
-    currentMapZoom,
     mapPagePosition,
-    currentMapCenter,
     directMap,
-    switchMap,
-    optionsPanel,
     directInitError,
     mapVector,
     vectorName,
@@ -96,40 +85,53 @@ function MapPackageComponent({ fitworld }) {
   const closeContextMenu = () => setCtxMenu((s) => ({ ...s, visible: false }));
 
   useLMapResize(mapParRef);
-  const vec = getVector(vectorName);
+
   useEffect(() => {
     if (!persistPointer) return;
-    if (persistPointer) {
-      console.log('Persisting pointer for permalink click', mapPagePosition);
 
-      PackageMapServices.clickMap(
-        {
-          latlng: {
-            lat: mapPagePosition.lat || vec.map.defaultCenter.lat,
-            lng: mapPagePosition.lng || vec.map.defaultCenter.lng,
-          },
-        },
-        mapParRef,
-        vectorName,
-        dispatch,
-        null,
-        'left',
-        {
-          isProgrammatic: true,
-          invalidateSimData: false,
-          resetDataArrived: false,
-          allowSamePointToggleOff: false,
-        }
-      );
+    const pointerDisabled =
+      mapPagePosition?.lat === null || mapPagePosition?.lng === null;
 
-      const map = mapParRef.current?.map;
-      if (map) {
-        syncReduxFromLeaflet(mapParRef, dispatch);
-      }
+    if (pointerDisabled) {
+      dispatch(setPersistPointer({ direction: 'left', value: false }));
+      return;
     }
+    const hasValidPosition =
+      Number.isFinite(mapPagePosition?.lat) &&
+      Number.isFinite(mapPagePosition?.lng);
+
+    if (!hasValidPosition) return;
+    PackageMapServices.clickMap(
+      {
+        latlng: {
+          lat: mapPagePosition.lat,
+          lng: mapPagePosition.lng,
+        },
+      },
+      mapParRef,
+      vectorName,
+      dispatch,
+      null,
+      'left',
+      {
+        isProgrammatic: true,
+        invalidateSimData: false,
+        resetDataArrived: false,
+        allowSamePointToggleOff: false,
+      }
+    );
+
+    syncReduxFromLeaflet(mapParRef, dispatch);
 
     dispatch(setPersistPointer({ direction: 'left', value: false }));
-  }, []);
+  }, [
+    persistPointer,
+    mapPagePosition?.lat,
+    mapPagePosition?.lng,
+    vectorName,
+    dispatch,
+  ]);
+
   const consumedDirectMapRef = useRef(null);
 
   useEffect(() => {
@@ -182,7 +184,7 @@ function MapPackageComponent({ fitworld }) {
         },
       })
     );
-  }, [directMap, mapVector, dispatch]);
+  }, [directMap, mapVector, dispatch, mapPagePosition]);
 
   return (
     <>
