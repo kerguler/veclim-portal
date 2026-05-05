@@ -1,7 +1,14 @@
 import { createSlice } from '@reduxjs/toolkit';
-
+const defaultDirectMap = {
+  lon: null,
+  lat: null,
+  display: -2,
+  center: null,
+  zoom: null,
+};
 const mapMenuSlice = createSlice({
   name: 'mapMenu',
+
   initialState: {
     right: {
       directInit: false,
@@ -12,7 +19,13 @@ const mapMenuSlice = createSlice({
       displaySimulationPanel: null,
       shimmered: false,
 
-      directMap: { lon: null, lat: null, display: -2 },
+      directMap: {
+        lon: null,
+        lat: null,
+        display: -2,
+        center: null,
+        zoom: null,
+      },
       directInitError: { isError: false, message: '', type: '' },
       panel: { panelInterfere: 0, panelTop: 0 },
       chart: {
@@ -43,7 +56,14 @@ const mapMenuSlice = createSlice({
       mapMenuOpen: false,
       interferePanelStyle: {},
       displayedPanelID: 0,
-      directMap: { lon: null, lat: null, display: -2 },
+      directMap: {
+        lon: null,
+        lat: null,
+        display: -2,
+        center: null,
+        zoom: null,
+      },
+
       directInitError: { isError: false, message: '', type: '' },
       openItems: { menu_icon: true },
       chart: {
@@ -254,7 +274,12 @@ const mapMenuSlice = createSlice({
 
     setDirectMap(state, action) {
       const { direction, value } = action.payload;
-      state[direction].directMap = value;
+
+      state[direction].directMap = {
+        ...defaultDirectMap,
+        ...state[direction].directMap,
+        ...value,
+      };
     },
     setDirectInit(state, action) {
       const { direction, value } = action.payload;

@@ -1,5 +1,6 @@
 import { setDisplaySimulationPanel } from 'store';
 import { setMessenger } from 'store';
+import { setTwinIndex } from 'store';
 import { setPanelInterfere } from 'store';
 import { setDataArrived } from 'store';
 import { setInvalidateSimData } from 'store';
@@ -21,7 +22,7 @@ class simTileHelpers {
   };
 
   static handleDeleteSimulation = async (deleteSimulation, id) => {
-    console.log('delete', id, );
+    console.log('delete', id);
     try {
       const response = deleteSimulation({ id: id });
     } catch (err) {
@@ -53,7 +54,9 @@ class simTileHelpers {
         value: 'activity_forecast',
       })
     );
+    dispatch(setTwinIndex({ direction: direction, value: 0 }));
     dispatch(setPanelInterfere({ direction, value: -1 }));
   };
 }
+
 export default simTileHelpers;

@@ -14,6 +14,8 @@ import { setShimmered } from 'store';
 import ToolTipComponent from 'components/ToolTipComponent/ToolTipComponent';
 import { setMapPagePosition } from 'store';
 import { setDirectMap, setCurrentMapCenter, setCurrentMapZoom } from 'store';
+import PackageMapServices from 'components/map/mapPackage/PackageMapServices';
+import useDirectorFun from 'customHooks/useDirectorFun';
 
 function SimTile({ sim, direction, shimmerList }) {
   const dispatch = useDispatch();
@@ -27,7 +29,8 @@ function SimTile({ sim, direction, shimmerList }) {
 
   const { setSimResult, setIsLoadingSim } = useAlboData();
   const { simRecord, isAlboChik, displayViewIcon } = useSimTileFunctions(sim);
-
+  const { currentMapCenter, currentMapZoom, vectorName } =
+    useDirectorFun('left');
   const handleDeleteSimulation = (id) => {
     simTileHelpers.handleDeleteSimulation(deleteSimulation, id);
   };
@@ -56,17 +59,19 @@ function SimTile({ sim, direction, shimmerList }) {
         console.error('Invalid simulation coordinates', { lat, lon, payload });
         return;
       }
-
-      dispatch(setCurrentMapCenter({ lat, lng: lon }));
-      dispatch(setCurrentMapZoom(5));
+      // // PackageMapServices.handleMapSwitch(dispatch,
+      // dispatch(setCurrentMapCenter({ lat: lat, lng: lon }));
+      // dispatch(setCurrentMapZoom(5));
 
       dispatch(
         setDirectMap({
           direction,
           value: {
-            lat,
-            lon,
+            lat: lat,
+            lon: lon,
             display: 1,
+            center: { lat: lat + 5, lng: lon },
+            zoom: 5,
           },
         })
       );

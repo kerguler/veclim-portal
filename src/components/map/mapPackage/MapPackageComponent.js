@@ -20,6 +20,10 @@ import useMapPermalinkSync from 'customHooks/permalink/usePermalinkSync';
 import { setDirectMap } from 'store';
 import { setPersistPointer } from 'store';
 import { syncReduxFromLeaflet } from 'utils/syncReduxFromLeaflet';
+import { setCurrentMapCenter, setCurentMapZoom } from 'store';
+import { setCurrentMapZoom } from 'store';
+import useConsumeDirectMap from 'customHooks/MapPackage/useConsumeDirectMap';
+
 function MapPackageComponent({ fitworld }) {
   const dispatch = useDispatch();
   const {
@@ -133,59 +137,7 @@ function MapPackageComponent({ fitworld }) {
   ]);
 
   const consumedDirectMapRef = useRef(null);
-
-  useEffect(() => {
-    const isActive =
-      directMap?.display !== -2 &&
-      directMap?.display != null &&
-      Number.isFinite(directMap?.lat) &&
-      Number.isFinite(directMap?.lon);
-
-    if (!isActive) return;
-
-    const key = `${directMap.lat}:${directMap.lon}:${directMap.display}`;
-    if (consumedDirectMapRef.current === key) return;
-    consumedDirectMapRef.current = key;
-
-    const e = {
-      latlng: {
-        lat: directMap.lat,
-        lng: directMap.lon,
-      },
-    };
-    console.log('Processing directMap change', {
-      directMap,
-      key,
-      mapPagePosition,
-    });
-    PackageMapServices.handleMapClick(
-      e,
-      mapParRef,
-      mapVector,
-      dispatch,
-      directMap,
-      mapPagePosition,
-      'left',
-      {
-        invalidateSimData: false,
-        allowSamePointToggleOff: false,
-        isProgrammatic: true,
-        resetDataArrived: false,
-      }
-    );
-
-    dispatch(
-      setDirectMap({
-        direction: 'left',
-        value: {
-          lat: null,
-          lon: null,
-          display: -2,
-        },
-      })
-    );
-  }, [directMap, mapVector, dispatch, mapPagePosition]);
-
+  useConsumeDirectMap(consumedDirectMapRef, mapParRef);
   return (
     <>
       {directInitError.isError && <ErrorScreenMap />} <MapCircularProgressBar />
