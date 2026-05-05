@@ -6,6 +6,7 @@ import { setLocationRequested, setGlobalPosition } from 'store';
 import PackageMapServices from 'components/map/mapPackage/PackageMapServices';
 import { getVector } from 'vectors/registry';
 import useDirectorFun from 'customHooks/useDirectorFun';
+import { setMapPagePosition } from 'store/slices/fetcherSlice';
 
 export function parseDate(dstr) {
   // Trim whitespace just in case
@@ -93,6 +94,7 @@ export function useUserLocation() {
       const updatedPosition = { lat: latitude, lng: longitude };
       // dispatch(setUserPosition(updatedPosition));
       dispatch(setGlobalPosition(updatedPosition));
+      dispatch(setMapPagePosition(updatedPosition));
     },
     [dispatch]
   );
