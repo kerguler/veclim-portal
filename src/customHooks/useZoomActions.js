@@ -53,7 +53,7 @@ function useZoomActions(mapParRef) {
     return () => {
       map.off('zoomend', handleMarkers);
     };
-  }, [mapParRef, dispatch]);
+  }, [mapParRef, dispatch, mapPagePosition]);
 }
 export default useZoomActions;
 

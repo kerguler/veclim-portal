@@ -10,7 +10,7 @@ export default function useColorBarResize(
   setStyle,
   ready
 ) {
-  const { openItems, panelTop } = useDirectorFun('left');
+  const { openItems, panelTop,plotReady } = useDirectorFun('left');
   const secondaryMenuOpen = Object.prototype.hasOwnProperty.call(
     openItems,
     'secondary_menu_icon'
@@ -101,6 +101,6 @@ export default function useColorBarResize(
     times,
     leftRef,
     rightRef,
-    setStyle,
+    setStyle,plotReady
   ]);
 }

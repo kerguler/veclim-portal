@@ -16,6 +16,7 @@ import { setMapPagePosition } from 'store';
 import { setDirectMap, setCurrentMapCenter, setCurrentMapZoom } from 'store';
 import PackageMapServices from 'components/map/mapPackage/PackageMapServices';
 import useDirectorFun from 'customHooks/useDirectorFun';
+import useWindowSize from 'customHooks/useWindowSize';
 
 function SimTile({ sim, direction, shimmerList }) {
   const dispatch = useDispatch();
@@ -45,6 +46,8 @@ function SimTile({ sim, direction, shimmerList }) {
     }
   };
 
+  const webapp = useWindowSize();
+
   const handleViewSimulationResults = async (id) => {
     dispatch(setShimmered({ direction, value: shimmerList }));
 
@@ -70,7 +73,10 @@ function SimTile({ sim, direction, shimmerList }) {
             lat: lat,
             lon: lon,
             display: 1,
-            center: { lat: lat + 5, lng: lon },
+            center: {
+              lat: lat + (webapp ? 0 : 5),
+              lng: lon + (webapp ? 5 : 0),
+            },
             zoom: 5,
           },
         })

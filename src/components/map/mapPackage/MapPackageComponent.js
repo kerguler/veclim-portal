@@ -115,7 +115,7 @@ function MapPackageComponent({ fitworld }) {
       mapParRef,
       vectorName,
       dispatch,
-      null,
+      mapPagePosition,
       'left',
       {
         isProgrammatic: true,

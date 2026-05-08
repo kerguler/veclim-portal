@@ -10,6 +10,7 @@ import { setSimSlider1Enabled } from 'store';
 import { useCreateSimulationMutation } from 'store';
 import ToolTipComponent from 'components/ToolTipComponent/ToolTipComponent';
 import { setSimulationFieldValue } from 'store';
+import { map } from 'leaflet';
 const SliderRow = ({ direction }) => {
   const [taskId, setTaskId] = useState(null); // Store Task ID
   const [shouldCheck, setShouldCheck] = useState(true);
@@ -32,6 +33,12 @@ const SliderRow = ({ direction }) => {
       setEnableSlider(true);
     }
   }, [simList]);
+
+  // useEffect(() => {
+  //   if (mapPagePosition.lat !== null || mapPagePosition.lng !== null) {
+  //     setEnableSlider(false);
+  //   }
+  // }, [mapPagePosition.lat, mapPagePosition.lng]);
 
   const f = simulationFieldValues;
   const toInt = (value, fallback) => {
@@ -84,6 +91,9 @@ const SliderRow = ({ direction }) => {
       setDataSim(null);
       dispatch(setDataArrived({ direction, value: false }));
       dispatch(setInvalidateSimData(true));
+      setEnableSlider(false);
+    } else {
+      // setEnableSlider(true);
     }
   }, [mapPagePosition.lat]);
 

@@ -18,7 +18,7 @@ function useMapBasicEvents(mapParRef, fitworld, onContextMenu) {
     vectorName,
     mapPagePosition, // snapped cell
     lastPanelDisplayed,
-    tileArray,
+    tileArray,openItems
   } = useDirectorFun('left');
 
   const { setDataSim } = useAlboData();
@@ -41,7 +41,8 @@ function useMapBasicEvents(mapParRef, fitworld, onContextMenu) {
         dispatch,
         null, // directMap
         mapPagePosition, // current mapPagePosition
-        'left'
+        'left',
+   
       );
     };
 
@@ -54,7 +55,6 @@ function useMapBasicEvents(mapParRef, fitworld, onContextMenu) {
     };
 
     const handleResize = () => {
-
       try {
         PackageMapServices.resizeMap(mapParRef, vectorName, dispatch);
       } catch (error) {
@@ -106,7 +106,7 @@ function useMapBasicEvents(mapParRef, fitworld, onContextMenu) {
     tileArray,
     directInitError,
     setDataSim,
-    onContextMenu,
+    onContextMenu,openItems
   ]);
 
   // whenever snapped click / panel / tiles change, rebuild permalink once
