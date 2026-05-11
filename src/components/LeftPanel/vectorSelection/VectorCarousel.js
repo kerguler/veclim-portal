@@ -67,10 +67,11 @@ const VectorCarousel = ({ className = '', onChange }) => {
     } else {
       route = vec?.meta?.route || `/MapPage?session=${nextId}`;
     }
+    const currentFullPath = `${location.pathname}${location.search}`;
 
-    // if (route && route !== location.pathname) {
-    //   navigate(route);
-    // }
+    if (route && route !== currentFullPath) {
+      navigate(route);
+    }
 
     if (typeof onChange === 'function') {
       onChange(nextId, vec);

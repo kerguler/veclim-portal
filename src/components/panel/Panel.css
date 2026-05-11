@@ -51,7 +51,7 @@
   justify-content: center;
 
   background-color: #e9edf2;
-  color: var(--secondary-color1);
+  color: var(--primary-color1);
 
   border: 1px solid #bcc7d3;
   border-bottom: none;
@@ -71,9 +71,10 @@
 }
 
 .tab-heading h3 {
+  --he-fsize: clamp(0.82rem, 0.6vw + 0.85rem, 1.45rem);
   margin: 0;
-  font-size: clamp(0.82rem, 0.6vw + 0.65rem, 1rem);
-  line-height: 1.2;
+  font-size: var(--he-fsize);
+  line-height: calc(var(--he-fsize) * 1.2);
   font-weight: 600;
 }
 
@@ -119,7 +120,7 @@
 /* ---------------- TEXT ---------------- */
 
 .panel-inner-box h1 {
-  color: var(--secondary-color1);
+  color: var(--primary-color1);
   font-size: 1.6rem;
   line-height: 1.7rem;
 }
@@ -197,17 +198,17 @@
     border-radius: 0 0.75rem 0.75rem 0.75rem;
     min-height: unset;
     overflow-y: scroll;
-    height:95vw;
+    height: clamp(300px, 80vw, 600px);
   }
 
   .panel-inner-box h1 {
-    font-size: 1.35rem;
-    line-height: 1.45rem;
+    font-size: clamp(1.35rem, 2vw + 5rem, 1.6rem);
+    line-height: clamp(1.45rem, 1.3vw + 0.5rem, 1.7rem);
   }
 
   .panel-inner-box p {
-    font-size: 0.9rem;
-    line-height: 1.25rem;
+    font-size: var(--fsize);
+    line-height: calc(var(--fsize) * 1.2);
   }
 
   .panel-close-button {
@@ -229,8 +230,9 @@
   }
 
   .tab-heading h3 {
-    font-size: 0.8rem;
-    line-height: 1.15;
+    --fsize: clamp(1rem, 0.7vw + 0.5rem, 1.2rem);
+    font-size: var(--fsize);
+    line-height: calc(var(--fsize) * 1.2);
   }
 }
 
