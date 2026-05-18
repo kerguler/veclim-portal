@@ -97,7 +97,6 @@ function useLMap(mapParRef) {
     const sameZoom = leafletZoom === currentMapZoom;
 
     if (!sameCenter || !sameZoom) {
-      console.log('I SET YUOU UO HERE');
       // map.setView(
       //   { lat: currentMapCenter.lat, lng: currentMapCenter.lng },
       //   currentMapZoom,

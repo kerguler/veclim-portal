@@ -23,12 +23,15 @@ function PanelChildren({ displayedItem, level, direction }) {
     interferePanelStyleRight: interferePanelStyle,
     lastPanelDisplayed,
     panelOpen,
+    persistPointer,
     siblingCount,
   } = useDirectorFun(direction);
   const panelRef = useRef(null);
   let p = panelRef.current;
+  const safeDisplayedItem = displayedItem || {};
+
   const panelChildren = menuStructure.filter((child) => {
-    if (child.parent === displayedItem.key) {
+    if (child.parent === safeDisplayedItem.key) {
       const desiredPanel = panelData.filter(
         (panel) => panel.key === child.key
       )[0];
@@ -50,7 +53,7 @@ function PanelChildren({ displayedItem, level, direction }) {
   useEffect(() => {
     const parents = menuStructure
       .map((menuItem) => {
-        if (menuItem.key === displayedItem.key) {
+        if (menuItem.key === safeDisplayedItem.key) {
           return menuItem.parent;
         }
       })
@@ -70,7 +73,7 @@ function PanelChildren({ displayedItem, level, direction }) {
       ) {
         if (mapPagePosition.lat === null) {
           const tempOpenItems = { ...openItems };
-          delete tempOpenItems[displayedItem.key];
+          delete tempOpenItems[safeDisplayedItem.key];
           dispatch(setOpenItems(tempOpenItems));
         }
       }
@@ -89,7 +92,7 @@ function PanelChildren({ displayedItem, level, direction }) {
     }
   }, [
     dispatch,
-    displayedItem.key,
+    safeDisplayedItem.key,
     mapPagePosition.lat,
     openItems,
     panelChildren,
@@ -100,11 +103,11 @@ function PanelChildren({ displayedItem, level, direction }) {
 
   useEffect(() => {
     const posDependence = panelData.filter(
-      (panel) => panel.key === displayedItem.key
+      (panel) => panel.key === safeDisplayedItem.key
     )[0]?.positionDependent;
     if (mapPagePosition.lat === null && posDependence) {
       const tempOpenItems = { ...openItems };
-      delete tempOpenItems[displayedItem.key];
+      delete tempOpenItems[safeDisplayedItem.key];
       dispatch(setOpenItems(tempOpenItems));
     }
   });
@@ -126,29 +129,57 @@ function PanelChildren({ displayedItem, level, direction }) {
 
   const displayedPanel =
     panelChildren?.length > 1 ? panelChildren[safeTwinIndex] : panelChildren[0];
+  const safeDisplayedPanel = displayedPanel || {};
 
   useEffect(() => {
-    let forgetOpen = panelData.filter(
-      (panel) => panel.key === displayedPanel.key
-    )[0]?.forgetOpen;
+    const activePanelChild = panelChildren[safeTwinIndex];
+    if (persistPointer) return;
+    if (!activePanelChild) return;
+
+    let forgetOpen = panelData.find(
+      (panel) => panel.key === safeDisplayedPanel.key
+    )?.forgetOpen;
+
     dispatch(setPanelOpen({ direction, value: true }));
-    if (lastPanelDisplayed !== displayedPanel.key && !forgetOpen) {
+
+    if (lastPanelDisplayed !== safeDisplayedPanel.key && !forgetOpen) {
       dispatch(
         setLastPanelDisplayed({
           direction: 'left',
-          value: panelChildren[safeTwinIndex].key,
+          value: activePanelChild.key,
         })
       );
     }
-  }, [displayedPanel, lastPanelDisplayed, mapPagePosition, safeTwinIndex]);
-  const displayedPanelDetails = panelData.filter(
-    (panel) => panel.key === displayedPanel.key
-  )[0];
-  const { content, chartParameters } = displayedPanelDetails;
+  }, [
+    safeDisplayedPanel,
+    lastPanelDisplayed,
+    mapPagePosition,
+    safeTwinIndex,
+    panelChildren,
+    panelData,
+  ]);
+  // const displayedPanelDetails = panelData.filter(
+  //   (panel) => panel.key === safeDisplayedPanel.key
+  // )[0];
+  const displayedPanelDetails = panelData.find(
+    (panel) => panel.key === safeDisplayedPanel.key
+  );
+
+  const content = displayedPanelDetails?.content;
+
+  const chartParameters = displayedPanelDetails?.chartParameters || {};
 
   useEffect(() => {
-    dispatch(setChartParameters({ direction, value: chartParameters }));
+    dispatch(
+      setChartParameters({
+        direction,
+        value: chartParameters,
+      })
+    );
   }, [displayedPanelDetails]);
+
+  if (!safeDisplayedItem || !displayedPanelDetails) return null;
+
   return (
     <RenderedPanelV2
       panelChildren={panelChildren}

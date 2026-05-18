@@ -146,3 +146,8 @@ build/
 .DS_Store
 
 package-lock.json*
+/test-results
+playwright.config.js
+/playwright-report/
+/playwright-output
+/playwright-tests

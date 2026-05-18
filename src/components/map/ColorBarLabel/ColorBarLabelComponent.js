@@ -1,32 +1,25 @@
 import './ColorBarLabelComponent.css';
 import { setDisplayTileNames, useFetchColorBarsDataQuery } from 'store';
 
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useContext, useEffect } from 'react';
-import { useState } from 'react';
-import { useRef } from 'react';
 
-import PanelContextV2 from 'context/panelsIconsV2';
 import useDirectorFun from 'customHooks/useDirectorFun';
 import useColorBarResize from '../ColorBar/useColorBarResize';
+import { getVector } from 'vectors/registry';
 
-function TileNameDisplay({ side, tiles }) {
-  const { tileIcons } = useContext(PanelContextV2);
-
+function TileNameDisplay({ side, tiles = [], tileIcons = [] }) {
   const [faded, setFaded] = useState(false);
 
   useEffect(() => {
     setFaded(false);
-    const timer = setTimeout(() => {
-      setFaded(true);
-    }, 10000); // fade after 3 seconds
+    const timer = setTimeout(() => setFaded(true), 10000);
     return () => clearTimeout(timer);
   }, [side, tiles]);
 
-  const tileLabels = tiles.map((tile, index) => {
-    let selectedTile = tileIcons.find((tileIcon) => tileIcon.key === tile);
-    return selectedTile ? selectedTile.label : null;
-  });
+  const labelIndex = side === 'left' ? 0 : 1;
+  const tileKey = tiles[labelIndex];
+  const selectedTile = tileIcons.find((tileIcon) => tileIcon.key === tileKey);
 
   return (
     <div
@@ -34,34 +27,67 @@ function TileNameDisplay({ side, tiles }) {
       className={`tile-name-wrapper ${faded ? 'faded' : 'visible'}`}
     >
       <div className={side}>
-        {' '}
-        <p>{tileLabels[side == 'left' ? 0 : 1]}</p>
+        <p>{selectedTile?.label || tileKey || ''}</p>
       </div>
     </div>
   );
 }
 
 function ColorBarLabelComponent({ times }) {
-  const colorBarRef = useRef();
-  const { panelOpen, panelTop, tileArray, tileIcons, mapVector } =
-    useDirectorFun('left');
-  const [extractedTile, setExtractedTile] = useState([]);
-  const [style, setStyle] = useState([]);
+  const dispatch = useDispatch();
 
-  const { colorKeys } = useContext(PanelContextV2);
+  const {
+    panelOpen,
+    panelTop,
+    tileArray = [],
+    mapVector,
+  } = useDirectorFun('left');
 
-  const { data, error, isFetching } = useFetchColorBarsDataQuery();
   const selectedTiles = useSelector(
     (state) => state.fetcher.fetcherStates.tileArray
   );
 
-  const leftBarRef = useRef(),
-    rightBarRef = useRef();
+  const activeVector = getVector(mapVector);
 
-  const [webApp, setWebApp] = useState(null);
-  const dispatch = useDispatch();
+  const tileIcons = useMemo(() => {
+    return (
+      activeVector?.tiles ||
+      activeVector?.tileIcons ||
+      activeVector?.map?.tiles ||
+      []
+    );
+  }, [activeVector]);
 
-  const handleDisplayTiles = (e, direction) => {
+  const [style, setStyle] = useState([]);
+
+  const { data, error, isFetching } = useFetchColorBarsDataQuery();
+
+  const leftBarRef = useRef(null);
+  const rightBarRef = useRef(null);
+
+  const extractedTile = useMemo(() => {
+    return tileArray
+      ?.map((tile) => {
+        const found = tileIcons.find((icon) => icon.key === tile);
+        return found?.colkey;
+      })
+      .filter(Boolean);
+  }, [tileArray, tileIcons]);
+
+  const barsReady =
+    !!data && !isFetching && extractedTile && extractedTile.length > 0;
+
+  useColorBarResize(
+    leftBarRef,
+    rightBarRef,
+    panelOpen,
+    panelTop,
+    times,
+    setStyle,
+    barsReady
+  );
+
+  const handleDisplayTiles = (direction) => {
     if (direction === 'left') {
       dispatch(
         setDisplayTileNames({ center: false, left: true, right: false })
@@ -77,160 +103,101 @@ function ColorBarLabelComponent({ times }) {
     }
   };
 
-  const barsReady =
-    !!data && !isFetching && extractedTile && extractedTile.length > 0;
+  const renderColors = (colors = []) => {
+    const transColor = '#00000000';
 
-  useColorBarResize(
-    leftBarRef,
-    rightBarRef,
-    panelOpen,
-    panelTop,
-    times,
-    setStyle,
-    barsReady
-  );
-  let colors, labels;
-  useEffect(() => {
-    if (data) {
-      const extractedTile1 = tileArray
-        ?.map((tile) => {
-          const found = tileIcons?.find((icon) => icon.key === tile);
-          return found?.colkey;
-        })
-        .filter(Boolean);
-      setExtractedTile(extractedTile1);
-    }
-  }, [data, tileArray, mapVector, isFetching, error]);
+    return colors.map((_, index) => {
+      const color = colors[colors.length - index - 1];
 
-  if (isFetching) {
-    return <div></div>;
-  } else if (error) {
-    return <div></div>;
-  } else {
-    if (!extractedTile || extractedTile.length === 0) return <div></div>;
-    if (tileArray.length === 0) return <div></div>;
-    if (!data) return <div></div>;
-
-    const key0 = extractedTile[0];
-    const entry0 = key0 && data ? data[key0] : null;
-    if (!entry0) return <div></div>;
-
-    colors = entry0.colors || [];
-    labels = entry0.labels || [];
-
-    let renderedDivs2, renderedLabels2;
-    let transColor = '#00000000';
-
-    const renderedDivs = colors.map((color, index) => {
       return (
         <div
           onContextMenu={(e) => e.preventDefault()}
           key={index}
           className="color-bar-rect"
           style={{
-            backgroundColor: `${
-              colors[colors.length - index - 1] === transColor
-                ? '#FFFFFF'
-                : colors[colors.length - index - 1]
-            }`,
-            backgroundColor: `${
-              colors[colors.length - index - 1] === transColor
-                ? '#FFFFFF'
-                : colors[colors.length - index - 1]
-            }`,
+            backgroundColor: color === transColor ? '#FFFFFF' : color,
           }}
-        ></div>
+        />
       );
     });
-    const renderedLabels = labels.map((label, index) => {
+  };
+
+  const renderLabels = (labels = []) => {
+    return labels.map((_, index) => {
+      const label = labels[labels.length - index - 1];
+
       return (
         <div
           onContextMenu={(e) => e.preventDefault()}
           key={index}
           className="color-bar-p"
         >
-          <p>{labels[labels.length - index - 1]}</p>
+          <p>{label}</p>
         </div>
       );
     });
-    if (extractedTile.length === 2) {
-      const key1 = extractedTile[1];
-      const entry1 = key1 && data ? data[key1] : null;
+  };
 
-      let colors2 = entry1.colors || [];
-      let labels2 = entry1.labels || [];
-      if (colors2.length !== 0) {
-        renderedDivs2 = colors2.map((color, index) => {
-          return (
-            <div
-              onContextMenu={(e) => e.preventDefault()}
-              key={index}
-              className="color-bar-rect"
-              style={{
-                backgroundColor: `${
-                  colors2[colors2.length - index - 1] === transColor
-                    ? '#FFFFFF'
-                    : colors2[colors2.length - index - 1]
-                }`,
-              }}
-            ></div>
-          );
-        });
+  if (isFetching || error) return <div />;
+  if (!data || !tileArray.length || !extractedTile.length) return <div />;
 
-        renderedLabels2 = labels2.map((label, index) => {
-          return (
-            <div
-              onContextMenu={(e) => e.preventDefault()}
-              key={index}
-              className="color-bar-p"
-            >
-              <p>{labels2[labels2.length - index - 1]}</p>
-            </div>
-          );
-        });
-      } else {
-        // renderedLabels2 = renderedLabels;
-        // renderedDivs2 = renderedDivs;
-      }
-    }
+  const entry0 = data[extractedTile[0]];
+  if (!entry0) return <div />;
 
-    return (
-      <div onContextMenu={(e) => e.preventDefault()}>
+  const entry1 = extractedTile[1] ? data[extractedTile[1]] : null;
+
+  return (
+    <div onContextMenu={(e) => e.preventDefault()}>
+      <div
+        onMouseOver={() =>
+          handleDisplayTiles(selectedTiles.length === 2 ? 'left' : 'center')
+        }
+        ref={leftBarRef}
+        className="color-bar left"
+        style={style[0]}
+      >
+        <div className="color-bar-wrapper">
+          <div className="color-bar-colors">
+            {renderColors(entry0.colors || [])}
+          </div>
+          <div className="color-bar-texts">
+            {renderLabels(entry0.labels || [])}
+          </div>
+        </div>
+
+        <TileNameDisplay
+          side="left"
+          tiles={selectedTiles}
+          tileIcons={tileIcons}
+        />
+      </div>
+
+      {times === 2 && entry1 && (
         <div
-          onMouseOver={(e) =>
-            handleDisplayTiles(
-              e,
-              selectedTiles.length === 2 ? 'left' : 'center'
-            )
-          }
-          ref={leftBarRef}
-          className="color-bar left"
-          style={style[0]}
+          onContextMenu={(e) => e.preventDefault()}
+          onMouseOver={() => handleDisplayTiles('right')}
+          ref={rightBarRef}
+          className="color-bar right"
+          style={style[1]}
         >
           <div className="color-bar-wrapper">
-            <div className="color-bar-colors">{renderedDivs}</div>
-            <div className="color-bar-texts">{renderedLabels}</div>
-          </div>
-          <TileNameDisplay side="left" tiles={selectedTiles} />
-        </div>
-        {times === 2 && (
-          <div
-            onContextMenu={(e) => e.preventDefault()}
-            onMouseOver={(e) => handleDisplayTiles(e, 'right')}
-            ref={rightBarRef}
-            className="color-bar right"
-            style={style[1]}
-          >
-            <div className="color-bar-wrapper">
-              <div className="color-bar-texts">{renderedLabels2}</div>
-              <div className="color-bar-colors">{renderedDivs2}</div>
+            <div className="color-bar-texts">
+              {renderLabels(entry1.labels || [])}
             </div>
-            <TileNameDisplay side="right" tiles={selectedTiles} />
+            <div className="color-bar-colors">
+              {renderColors(entry1.colors || [])}
+            </div>
           </div>
-        )}
-      </div>
-    );
-  }
+
+          <TileNameDisplay
+            side="right"
+            tiles={selectedTiles}
+            tileIcons={tileIcons}
+          />
+        </div>
+      )}
+    </div>
+  );
 }
 
 export default ColorBarLabelComponent;

@@ -43,42 +43,11 @@ function ChangeMapPanel() {
     return Array.from(new Set(baseIds));
   }, [vectorNamesFromStore]);
 
-  // const handleChangeTile = (desiredVectorId) => {
-  //   const vec = getVector(desiredVectorId);
-  //   if (!vec) return;
-  //   // PackageMapServices.handleToMapPageTransition(
-  //   //   dispatch,
-  //   //   vectorName,
-  //   //   desiredVectorId
-  //   // );
-  //   PackageMapServices.handleMapSwitch(
-  //     dispatch,
-  //     vectorName,
-  //     desiredVectorId,
-  //     currentMapCenter,
-  //     currentMapZoom,
-  //     mapPagePosition
-  //   );
-  //   if (mapPagePosition && !persistPointer) {
-  //     // dispatch(setMapPagePosition({ lat: mapPage.lat, lng: position.lng })); // Reset map position to trigger any necessary updates
-  //     dispatch(setPersistPointer({ direction: 'left', value: true }));
-  //   }
-  //   dispatch(setPanelOpen({ direction: 'left', value: false }));
-  //   dispatch(setReadyToView(false));
-  //   navigate(vec?.meta?.route || `/MapPage?session=${desiredVectorId}`);
-  // };
   const handleChangeTile = (desiredVectorId) => {
     const vec = getVector(desiredVectorId);
     if (!vec) return;
+    PackageMapServices.setActiveVector(dispatch, vec);
 
-    PackageMapServices.handleMapSwitch(
-      dispatch,
-      vectorName,
-      desiredVectorId,
-      currentMapCenter,
-      currentMapZoom,
-      mapPagePosition
-    );
 
     const hasValidPosition =
       Number.isFinite(mapPagePosition?.lat) &&
@@ -90,8 +59,8 @@ function ChangeMapPanel() {
       dispatch(setPersistPointer({ direction: 'left', value: false }));
     }
 
-    dispatch(setPanelOpen({ direction: 'left', value: false }));
     dispatch(setReadyToView(false));
+    dispatch(setPanelOpen({ direction: 'left', value: false }));
 
     navigate(vec?.meta?.route || `/MapPage?session=${desiredVectorId}`);
   };

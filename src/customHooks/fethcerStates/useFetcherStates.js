@@ -33,6 +33,7 @@ const useFetcherStates = () => {
 
   const { mapVector, mapPagePosition, tileIcons, panelData, menuStructure } =
     useDirectorFun(direction);
+  const { currentMapCenter, currentMapZoom } = useDirectorFun(direction);
 
   usePermalinkHydration({ mapPagePosition });
 
@@ -76,7 +77,34 @@ const useFetcherStates = () => {
   const urlLon = lon == null ? null : parseFloat(lon);
 
   const hasUrlClick = Number.isFinite(urlLat) && Number.isFinite(urlLon);
+
   useEffect(() => {
+    if (!session) return;
+
+    if (mapVector !== session) {
+      PackageMapServices.setActiveVector(dispatch, session);
+
+      // PackageMapServices.applyVectorToMapState(
+      //   dispatch,
+      //   mapVector,
+      //   session,
+      //   currentMapCenter, // currentMapCenter
+      //   currentMapZoom, // currentMapZoom
+      //   mapPagePosition
+      // );
+    }
+  }, [
+    session,
+    mapVector,
+    mapPagePosition,
+    currentMapCenter,
+    currentMapZoom,
+    dispatch,
+  ]);
+
+  useEffect(() => {
+    if (session && mapVector !== session) return;
+
     if (hasUrlClick) {
       dispatch(
         setMapPagePosition({
@@ -105,7 +133,7 @@ const useFetcherStates = () => {
     if (hasExistingPosition) {
       dispatch(setPersistPointer({ direction: 'left', value: true }));
     }
-  }, [hasUrlClick, urlLat, urlLon, dispatch]);
+  }, [hasUrlClick, urlLat, urlLon, dispatch, mapVector, session]);
 
   // 3) URL → camera center (what the map is looking at)
   // useEffect(() => {

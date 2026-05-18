@@ -27,6 +27,7 @@ import {
   setLastPanelDisplayed,
   setPersistPointer,
 } from 'components/mapMenu/menuStore/mapMenuSlice';
+import { setPanelOpen } from 'store/slices/panelSlice';
 
 class PackageMapServices {
   static BOUNDS = {
@@ -115,68 +116,113 @@ class PackageMapServices {
     dispatch(setVectorName(vec.id));
     dispatch(setMapVector(vec.id));
   }
-
-  static handleMapSwitch(
-    dispatch,
-    currentVectorId,
-    desiredVectorId,
-    currentMapCenter,
-    currentMapZoom,
-    mapPagePosition
-  ) {
-    if (desiredVectorId === currentVectorId) return;
-
-    const vec = getVector(desiredVectorId);
+  static setActiveVector(dispatch, vectorId) {
+    const vec = getVector(vectorId);
     if (!vec) return;
 
     const cfg = vec.map || {};
 
-    // --- 1) default behaviour for entering this vector ---
-    let boundsKey = cfg.defaultBounds || 'world';
+    dispatch(setVectorName(vec.id));
+    dispatch(setMapVector(vec.id));
+    dispatch(setTileArray(vec.defaults?.tileArray || []));
 
-    let center = cfg.defaultCenter || this.defaultCypCenter;
+    // dispatch(
+    //   setCurrentMapBounds(this.resolveBounds(cfg.defaultBounds || 'world'))
+    // );
 
-    let zoom = cfg.defaultZoom ?? 8;
+    // dispatch(
+    //   setCurrentMaxBounds(this.resolveBounds(cfg.defaultBounds || 'world'))
+    // );
 
-    const pointerDisabled =
-      mapPagePosition?.lat === null || mapPagePosition?.lng === null;
+    dispatch(setDisplayReady(false));
+    dispatch(setPanelOpen({ direction: 'left', value: false }));
+    const firstPanel = vec.defaults?.firstPanelKey || 'location_info_panel';
+    dispatch(setOpenItems({ direction: 'left', value: {} }));
+    dispatch(
+      setLastPanelDisplayed({
+        direction: 'left',
+        value: firstPanel,
+      })
+    );
+  }
+  static applyVectorToMapState({
+    dispatch,
+    mapParRef,
+    vectorId,
+    currentMapCenter,
+    currentMapZoom,
+    mapPagePosition,
+  }) {
+    const vec = getVector(vectorId);
+    if (!vec) return;
+
+    const cfg = vec.map || {};
+
+    // ---------------------------------------------------
+    // 1. Resolve bounds
+    // ---------------------------------------------------
+
+    const boundsKey = cfg.defaultBounds || 'world';
+    const boundsBox = this.resolveBounds(boundsKey);
+
+    let center = cfg.defaultCenter || currentMapCenter || this.defaultCypCenter;
+
+    let zoom = cfg.defaultZoom ?? currentMapZoom ?? 8;
+
+    // ---------------------------------------------------
+    // 4. Validate pointer
+    // ---------------------------------------------------
 
     const hasPosition =
-      !pointerDisabled &&
       Number.isFinite(mapPagePosition?.lat) &&
       Number.isFinite(mapPagePosition?.lng);
 
     if (hasPosition) {
-      const validBounds = cfg.validBounds || cfg.defaultBounds;
+      const validBounds = cfg.validBounds || boundsBox;
 
-      if (validBounds) {
-        const [[minLat, minLng], [maxLat, maxLng]] = validBounds;
+      const [[minLat, minLng], [maxLat, maxLng]] = validBounds;
 
-        const inside =
-          mapPagePosition.lat >= minLat &&
-          mapPagePosition.lat <= maxLat &&
-          mapPagePosition.lng >= minLng &&
-          mapPagePosition.lng <= maxLng;
+      const inside =
+        mapPagePosition.lat >= minLat &&
+        mapPagePosition.lat <= maxLat &&
+        mapPagePosition.lng >= minLng &&
+        mapPagePosition.lng <= maxLng;
 
-        if (!inside) {
-          const fallbackPoint = cfg.defaultClickPosition || cfg.defaultCenter;
+      if (!inside) {
+        const fallbackPoint = cfg.defaultClickPosition || cfg.defaultCenter;
 
-          if (fallbackPoint) {
-            dispatch(
-              setMapPagePosition({
-                lat: fallbackPoint.lat,
-                lng: fallbackPoint.lng,
-              })
-            );
+        if (fallbackPoint) {
+          dispatch(
+            setMapPagePosition({
+              lat: fallbackPoint.lat,
+              lng: fallbackPoint.lng,
+            })
+          );
 
-            dispatch(setPersistPointer({ direction: 'left', value: true }));
-          }
+          dispatch(
+            setPersistPointer({
+              direction: 'left',
+              value: true,
+            })
+          );
+        } else {
+          dispatch(
+            setMapPagePosition({
+              lat: null,
+              lng: null,
+            })
+          );
         }
       }
     }
-    // --- 2) let cfg.transition tweak this if present ---
+    dispatch(setPanelOpen({ direction: 'left', value: false }));
+
+    // ---------------------------------------------------
+    // 5. Apply transition override
+    // ---------------------------------------------------
+
     if (typeof cfg.transition === 'function') {
-      const tRes = cfg.transition(currentVectorId, {
+      const tRes = cfg.transition(vectorId, {
         currentCenter: currentMapCenter,
         currentZoom: currentMapZoom,
         defaultCenter: center,
@@ -186,43 +232,36 @@ class PackageMapServices {
       });
 
       if (tRes) {
-        // a) start from current view if keepView
-        if (tRes.keepView) {
-          if (currentMapCenter) {
-            center = currentMapCenter;
-          }
-          if (typeof currentMapZoom === 'number') {
-            zoom = currentMapZoom;
-          }
-        }
-        // b) explicit overrides win
         if (tRes.center) center = tRes.center;
-        if (typeof tRes.zoom === 'number') zoom = tRes.zoom;
-        if (tRes.boundsKey) boundsKey = tRes.boundsKey;
+        if (typeof tRes.zoom === 'number') {
+          zoom = tRes.zoom;
+        }
       }
     }
 
-    const boundsBox = this.resolveBounds(boundsKey);
+    // ---------------------------------------------------
+    // 6. Apply final map state
+    // ---------------------------------------------------
 
-    // --- 3) dispatch final state ---
-    dispatch(setVectorName(vec.id));
-    dispatch(setMapVector(vec.id));
-    dispatch(setTileArray(vec.defaults?.tileArray || []));
-
-    dispatch(setCurrentMapCenter(center));
     dispatch(setCurrentMapBounds(boundsBox));
     dispatch(setCurrentMaxBounds(boundsBox));
+
+    dispatch(setCurrentMapCenter(center));
     dispatch(setCurrentMapZoom(zoom));
+    const map = mapParRef?.current?.map;
 
+    if (map) {
+      console.log('SETVIEW', {
+        center,
+        zoom,
+        mapExists: !!map,
+      });
+      map.setView(center, zoom, {
+        animate: false,
+      });
+    }
     dispatch(setDisplayReady(false));
-    dispatch(setInvalidateSimData(false));
-    dispatch(setPanelInterfere({ direction: 'left', value: 0 }));
-    dispatch(setOpenItems({}));
-
-    const firstPanel = vec.defaults?.firstPanelKey || 'location_info_panel';
-    dispatch(setLastPanelDisplayed({ direction: 'left', value: firstPanel }));
   }
-
   static defaultClickOptions = {
     isProgrammatic: false,
     invalidateSimData: true,

@@ -49,25 +49,26 @@ const VectorCarousel = ({ className = '', onChange }) => {
 
   const switchTo = (nextId) => {
     if (!nextId || nextId === currentVectorId) return;
+    PackageMapServices.setActiveVector(dispatch, nextId);
 
-    PackageMapServices.handleMapSwitch(
-      dispatch,
-      currentVectorId,
-      nextId,
-      currentMapCenter,
-      currentMapZoom,
-      mapPagePosition
-    );
+    // PackageMapServices.applyVectorToMapState(
+    //   dispatch,
+    //   currentVectorId,
+    //   nextId,
+    //   currentMapCenter,
+    //   currentMapZoom,
+    //   mapPagePosition
+    // );
 
     const vec = getVector(nextId);
+    const currentFullPath = `${location.pathname}${location.search}`;
 
     let route;
     if (location.pathname.startsWith('/Methods')) {
       route = vec?.meta?.methods?.route || `/Methods/${nextId}`;
-    } else {
+    } else if (location.pathname.startsWith('/MapPage')) {
       route = vec?.meta?.route || `/MapPage?session=${nextId}`;
     }
-    const currentFullPath = `${location.pathname}${location.search}`;
 
     if (route && route !== currentFullPath) {
       navigate(route);

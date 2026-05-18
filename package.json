@@ -81,5 +81,8 @@
         "lines": 80
       }
     }
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.60.0"
   }
 }

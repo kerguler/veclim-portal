@@ -36,6 +36,8 @@ function MapPackageComponent({ fitworld }) {
     isPermalinkClick,
     persistPointer,
     tileArray,
+    currentMapCenter,
+    currentMapZoom,
   } = useDirectorFun('left');
 
   const mapParameters = {
@@ -135,6 +137,22 @@ function MapPackageComponent({ fitworld }) {
     vectorName,
     dispatch,
   ]);
+
+  useEffect(() => {
+    const map = mapParRef.current?.map;
+
+    if (!map) return;
+    if (!mapVector) return;
+
+    PackageMapServices.applyVectorToMapState({
+      dispatch,
+      mapParRef,
+      vectorId: mapVector,
+      mapPagePosition,
+      currentMapCenter,
+      currentMapZoom,
+    });
+  }, [mapVector, dispatch]);
 
   const consumedDirectMapRef = useRef(null);
   useConsumeDirectMap(consumedDirectMapRef, mapParRef);

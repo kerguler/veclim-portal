@@ -33,14 +33,18 @@ function VectorMethodsPage() {
   useEffect(() => {
     if (!vecId) return;
 
-    // bootstrap vector from URL
-    PackageMapServices.handleMapSwitch(
-      dispatch,
-      currentVectorName,
-      vecId,
-      currentMapCenter,
-      currentMapZoom
-    );
+    PackageMapServices.setActiveVector(dispatch, vecId);
+    // // bootstrap vector from URL
+
+    PackageMapServices.setActiveVector(dispatch, vecId);
+
+    // PackageMapServices.applyVectorToMapState(
+    //   dispatch,
+    //   currentVectorName,
+    //   vecId,
+    //   currentMapCenter,
+    //   currentMapZoom
+    // );
   }, [vecId, dispatch, currentMapCenter, currentMapZoom, currentVectorName]);
 
   // Which vector's methods do we show?

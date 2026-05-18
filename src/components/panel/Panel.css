@@ -71,7 +71,7 @@
 }
 
 .tab-heading h3 {
-  --he-fsize: clamp(0.82rem, 0.6vw + 0.85rem, 1.45rem);
+  --he-fsize: clamp(0.82rem, 0.6vw + 0.85rem, 1.25rem);
   margin: 0;
   font-size: var(--he-fsize);
   line-height: calc(var(--he-fsize) * 1.2);

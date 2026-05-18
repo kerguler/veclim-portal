@@ -43,7 +43,9 @@ function useSessionControl(session) {
     //    If the current map vector is different, ask PackageMapServices
     //    to do a full switch based on the vector's module config.
     if (mapVector !== session) {
-      PackageMapServices.handleMapSwitch(dispatch, mapVector, session);
+      PackageMapServices.setActiveVector(dispatch, session);
+
+      // PackageMapServices.applyVectorToMapState(dispatch, mapVector, session);
     } else {
       // Already on this vector (e.g. user changed query params manually),
       // just make sure names are correct.
