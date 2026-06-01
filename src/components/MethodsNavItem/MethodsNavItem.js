@@ -23,11 +23,7 @@ const MethodsNavItem = ({ onClose }) => {
 
   return (
     <div className="hover-menu-wrapper">
-      <div
-        type="button"
-        className="navbar-link" style={{cursor:"pointer"}} // whatever class you use for other items
-        onClick={handleClick}
-      >
+      <div className="navbar-link" onClick={handleClick}>
         METHODS
       </div>
     </div>

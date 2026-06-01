@@ -1,44 +1,63 @@
 .hover-menu-wrapper {
-	position: relative;
-	justify-self: center;
-	align-self: center;
-	background-color: transparent;
-	padding: 0.5rem 1.5rem 0.4rem 1.5rem;
-	/* background: white; */
-	font-family: "Inter-Bold", sens-serif;
-	font-weight: 700;
-	font-size: 1.4rem;
-	text-decoration: none;
-	color: var(--primary-color1);
-	text-align: center;
+  position: relative;
+  align-self: center;
+  background-color: transparent;
+
+  padding: 0.45rem clamp(0.35rem, 1.4vw, 1.5rem);
+
+  font-family: Inter-Bold, sans-serif;
+  font-weight: 700;
+  font-size: clamp(0.92rem, 1.35vw, 1.4rem);
+  text-decoration: none;
+  color: var(--primary-color1);
+  text-align: center;
+  white-space: nowrap;
+  flex-shrink: 1;
+}
+
+.navbar-link {
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.navbar-links a,
+.navbar-link {
+  color: var(--primary-color1);
+}
+
+.navbar-links a:hover,
+.navbar-links a.selected,
+.navbar-link:hover,
+.navbar-link.selected {
+  color: var(--primary-color2);
 }
 
 .hover-menu {
-	position: absolute;
-	display: flex;
-	flex-direction: column;
-	top: 0rem;
-	left: 11rem;
-	background-color: #ffffffa5;
-	border-radius: 2rem;
-	align-items: center;
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  top: 2.7rem;
+  left: 0;
+  background-color: transparent;
+  border-radius: 2rem;
+  align-items: unset;
 }
 @media (min-width: 500px) {
-	.hover-menu-wrapper {
-		position: relative;
-		align-self: center;
-		background-color: transparent;
-	}
-	.hover-menu {
-		position: absolute;
-		display: flex;
-		flex-direction: column;
-		top: 2.7rem;
-		left: 0rem;
-		background-color: transparent;
-		border-radius: 2rem;
-		align-items: unset;
-	}
+  .hover-menu-wrapper {
+    position: relative;
+    align-self: center;
+    background-color: transparent;
+  }
+  .hover-menu {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    top: 2.7rem;
+    left: 0rem;
+    background-color: transparent;
+    border-radius: 2rem;
+    align-items: unset;
+  }
 }
 /* 
  .hover-menu a {
