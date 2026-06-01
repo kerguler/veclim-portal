@@ -1,42 +1,42 @@
-import HoverMenuMethods from "components/HoverMenuMethods/HoverMenuMethods";
-import { Link } from "react-router-dom";
-import "./BurgerMenu.css";
+import HoverMenuMethods from 'components/HoverMenuMethods/HoverMenuMethods';
+import { Link } from 'react-router-dom';
+import './BurgerMenu.css';
+import MethodsNavItem from 'components/MethodsNavItem/MethodsNavItem';
+import VectorCarousel from 'components/LeftPanel/vectorSelection/VectorCarousel';
 function BurgerMenu({ mainDivRef, linkText, handleMapBounds, handleMenu }) {
-	const handleMenuClose = () => {
-		handleMenu(false);
-	};
+  const handleMenuClose = () => {
+    handleMenu(false);
+  };
 
-	return (
-		<div className="nav-burger">
-			<nav>
-				<div className="nav-burger links">
-					<Link onClick={handleMenuClose} to="/">
-						HOME
-					</Link>
-					<Link onClick={handleMenuClose} to="/Project">
-						PROJECT
-					</Link>
-					<Link onClick={handleMenuClose} to="/Policy">
-						POLICY
-					</Link>
-					{/* <Link to="/MobileLandingPageMethods">METHODS</Link> */}
+  return (
+    <div className="nav-burger">
+      <div className=" links">
+        <VectorCarousel className="burger-vector-carousel" />
+        <Link onClick={handleMenuClose} to="/">
+          HOME
+        </Link>
+        <Link onClick={handleMenuClose} to="/Project">
+          PROJECT
+        </Link>
+        <Link onClick={handleMenuClose} to="/Policy">
+          POLICY
+        </Link>
 
-					<HoverMenuMethods mainDivRef={mainDivRef} onClose={handleMenuClose}>
-						{" "}
-						
-					</HoverMenuMethods>
+        <MethodsNavItem />
 
-			        <a onClick={handleMenuClose} href="/tutorials-viewer/localfile/README.ipynb">
-						TUTORIALS
-					</a>
+        <a
+          onClick={handleMenuClose}
+          href="/tutorials-viewer/localfile/README.ipynb"
+        >
+          TUTORIALS
+        </a>
 
-					<Link to={linkText} onClick={handleMapBounds} className="map">
-						MAP
-					</Link>
-				</div>
-			</nav>
-		</div>
-	);
+        <Link to={linkText} onClick={handleMapBounds} className="map">
+          MAP
+        </Link>
+      </div>
+    </div>
+  );
 }
 
 export default BurgerMenu;

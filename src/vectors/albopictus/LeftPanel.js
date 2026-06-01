@@ -38,7 +38,7 @@ function AlbopictusLeftPanel({ page, displayNews, displayContent }) {
 
           {/* Vector selector works for all vectors, but we keep it here
               because this layout is currently designed for albopictus */}
-          <VectorSelector />
+          {!webApp && <VectorSelector />}
 
           <div className="indicators-container">
             {position.lat === null ? (

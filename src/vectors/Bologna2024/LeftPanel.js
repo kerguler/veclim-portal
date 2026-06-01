@@ -23,7 +23,13 @@ function IsmedClimLeftPanel({ page, displayNews, displayContent }) {
   );
 
   const text = (
-    <p>Risk indicators from the <XLink href="https://www.vectormodelling.com/Bologna2024/"><strong>Bologna 2024 Workshop</strong></XLink> project are not yet available on <strong>VEClim</strong></p>
+    <p>
+      Risk indicators from the{' '}
+      <XLink href="https://www.vectormodelling.com/Bologna2024/">
+        <strong>Bologna 2024 Workshop</strong>
+      </XLink>{' '}
+      project are not yet available on <strong>VEClim</strong>
+    </p>
   );
 
   const home = (
@@ -41,16 +47,14 @@ function IsmedClimLeftPanel({ page, displayNews, displayContent }) {
 
           {/* Vector selector works for all vectors, but we keep it here
               because this layout is currently designed for albopictus */}
-          <VectorSelector />
+          {!webApp && <VectorSelector />}
 
           <div className="indicators-container">
             {position.lat === null ? (
               <Skeleton times={4} noBorder={true} />
             ) : (
               <div className="indicators-container inner-content">
-                <PlainInfo>
-                  {text}
-                </PlainInfo>
+                <PlainInfo>{text}</PlainInfo>
               </div>
             )}
           </div>
@@ -73,9 +77,7 @@ function IsmedClimLeftPanel({ page, displayNews, displayContent }) {
           {!webApp && (
             <div className="indicators-container">
               <div className="indicators-container inner-content">
-                <PlainInfo>
-                  {text}
-                </PlainInfo>
+                <PlainInfo>{text}</PlainInfo>
               </div>
             </div>
           )}
