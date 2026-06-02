@@ -47,7 +47,6 @@ function MenuItemV2({ item, onToggle, shouldShimmer, direction }) {
     ? panelData.find((panel) => panel.key === item.key)
     : null;
 
-  // baseItem = the thing we use for icon/key in the DOM
   const baseItem = displayedItem || item;
 
   let imgClassName = 'rotate0';

@@ -1,9 +1,12 @@
 import useDirectorFun from 'customHooks/useDirectorFun';
 import { useMemo } from 'react';
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { setOpenItems } from 'store';
 
 function useHandleDisabledIcons(panelChildren) {
   const { panelData, mapPagePosition } = useDirectorFun('left');
-
+  const dispatch = useDispatch();
   const hasValidPosition =
     mapPagePosition?.lat !== null &&
     mapPagePosition?.lat !== undefined &&
@@ -64,7 +67,11 @@ function useHandleDisabledIcons(panelChildren) {
           transform: 'scale(1)',
         };
   }, [shouldDisable]);
+  useEffect(() => {
+    if (!shouldDisable) return;
 
+    dispatch(setOpenItems({ menu_icon: true }));
+  }, [shouldDisable, dispatch]);
   return { style, imgStyle, shouldDisable };
 }
 

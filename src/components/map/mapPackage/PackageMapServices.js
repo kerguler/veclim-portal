@@ -315,6 +315,32 @@ class PackageMapServices {
     const opts = { ...this.defaultClickOptions, ...clickOptions };
 
     let p = mapParRef.current;
+
+    const clearSelectedPoint = () => {
+      p.prevClickPointRef = null;
+
+      p.iconMarker && p.map.removeLayer(p.iconMarker);
+      p.rectMarker && p.map.removeLayer(p.rectMarker);
+      p.highlightMarker && p.map.removeLayer(p.highlightMarker);
+
+      p.iconMarker = null;
+      p.rectMarker = null;
+      p.highlightMarker = null;
+
+      dispatch(setMapPagePosition({ lat: null, lng: null }));
+      dispatch(setPersistPointer({ direction, value: false }));
+      dispatch(setPlotReady({ direction, value: false }));
+
+      if (opts.invalidateSimData) {
+        dispatch(setInvalidateSimData(true));
+      }
+
+      if (opts.resetDataArrived) {
+        dispatch(setDataArrived({ direction, value: false }));
+      }
+
+      dispatch(setPanelInterfere({ direction, value: -1 }));
+    };
     const switchZoom = getVector(vectorName)?.map?.switchZoom ?? 6;
 
     let newPosition = this.roundPosition(
@@ -340,55 +366,20 @@ class PackageMapServices {
     p.iconMarker = L.marker(newPosition1, { icon: this.icon1 }).addTo(p.map);
 
     p.iconMarker.on('click', (markerEvent) => {
-      if (markerEvent.originalEvent) {
-        markerEvent.originalEvent.preventDefault();
-        markerEvent.originalEvent.stopPropagation();
-      }
-      const c = p.map.getCenter();
-      const z = p.map.getZoom();
-      // dispatch(setCurrentMapCenter({ lat: c.lat, lng: c.lng }));
-      // dispatch(setCurrentMapZoom(z));
-
-      p.prevClickPointRef = null;
-
-      p.iconMarker?.remove();
-      p.iconMarker && p.map.removeLayer(p.iconMarker);
+      markerEvent.originalEvent?.preventDefault();
+      markerEvent.originalEvent?.stopPropagation();
 
       if (opts.allowSamePointToggleOff) {
-        dispatch(setMapPagePosition({ lat: null, lng: null }));
+        clearSelectedPoint();
       }
-
-      if (opts.invalidateSimData) {
-        dispatch(setInvalidateSimData(true));
-      }
-
-      if (opts.resetDataArrived) {
-        dispatch(setDataArrived({ direction, value: false }));
-      }
-
-      p.iconMarker = null;
     });
-
     const isSamePosition =
       mapPagePosition &&
       newPosition.lat === mapPagePosition.lat &&
       newPosition.lng === mapPagePosition.lng;
 
     if (isSamePosition && opts.allowSamePointToggleOff) {
-      p.rectMarker && p.map.removeLayer(p.rectMarker);
-      p.iconMarker && p.map.removeLayer(p.iconMarker);
-      p.iconMarker = null;
-      p.rectMarker = null;
-
-      dispatch(setMapPagePosition({ lat: null, lng: null }));
-      dispatch(setPersistPointer({ direction: 'left', value: false }));
-      if (opts.invalidateSimData) {
-        dispatch(setInvalidateSimData(true));
-      }
-
-      if (opts.resetDataArrived) {
-        dispatch(setDataArrived({ direction, value: false }));
-      }
+      clearSelectedPoint();
     } else {
       p.rectMarker && p.map.removeLayer(p.rectMarker);
       p.rectMarker = this.highlightMarkerFunc(
