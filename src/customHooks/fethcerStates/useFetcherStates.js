@@ -211,6 +211,7 @@ const useFetcherStates = () => {
     if (!zoom) return;
     const zNum = parseInt(zoom, 10);
     if (!Number.isNaN(zNum)) {
+      console.log('Setting zoom from URL:', zNum);
       dispatch(setCurrentMapZoom(zNum));
     }
   }, [zoom, dispatch]);

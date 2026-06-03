@@ -10,6 +10,8 @@ import { setPlotReady } from 'store';
 import { setBrushRange } from 'store';
 import { setMessenger } from 'store';
 import { useDispatch } from 'react-redux';
+import { skipToken } from '@reduxjs/toolkit/query';
+
 function TsRequest({ direction }) {
   const dispatch = useDispatch();
 
@@ -32,11 +34,19 @@ function TsRequest({ direction }) {
     messenger,
   } = useDirectorFun(direction);
 
-  const { data, error, isFetching } = useFetchTimeSeriesDataQuery({
-    position: mapPagePosition,
-    vectorName: mapVector,
-    dateArray,
-  });
+  const hasValidPoint =
+    mapPagePosition?.lat != null && mapPagePosition?.lng != null;
+
+  const queryArg = hasValidPoint
+    ? {
+        position: { lat: mapPagePosition.lat, lng: mapPagePosition.lng },
+        vectorName: mapVector,
+        dateArray,
+      }
+    : skipToken;
+
+  const { data, error, isFetching } = useFetchTimeSeriesDataQuery(queryArg);
+
   useEffect(() => {
     plotReady && dispatch(setPlotReady({ direction, value: false }));
   }, [mapVector, dispatch, setPlotReady]);

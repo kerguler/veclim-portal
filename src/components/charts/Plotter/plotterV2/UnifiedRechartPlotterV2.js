@@ -10,12 +10,22 @@ import CustomSimulationChartV2 from './CustomSimulationChart';
 
 function UnifiedRechartPlotterV2({ direction }) {
   const { mapPagePosition, vectorName, dateArray } = useDirectorFun(direction);
+  const hasValidPoint =
+    mapPagePosition?.lat !== null &&
+    mapPagePosition?.lng !== null &&
+    mapPagePosition?.lat !== undefined &&
+    mapPagePosition?.lng !== undefined;
 
-  const { data, error, isFetching } = useFetchTimeSeriesDataQuery({
-    position: mapPagePosition,
-    vectorName,
-    dateArray,
-  });
+  const { data, error, isFetching } = useFetchTimeSeriesDataQuery(
+    {
+      position: mapPagePosition,
+      vectorName,
+      dateArray,
+    },
+    {
+      skip: !hasValidPoint,
+    }
+  );
   const { dataSim, isLoadingSim, errorSim, simResult } = useAlboData();
   const graphType = useSelector(
     (state) => state.fetcher.fetcherStates.graphType

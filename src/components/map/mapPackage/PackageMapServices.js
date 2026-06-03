@@ -165,10 +165,11 @@ class PackageMapServices {
     const boundsKey = cfg.defaultBounds || 'world';
     const boundsBox = this.resolveBounds(boundsKey);
 
-    let center = cfg.defaultCenter || currentMapCenter || this.defaultCypCenter;
+    // let center = cfg.defaultCenter || currentMapCenter || this.defaultCypCenter;
 
-    let zoom = cfg.defaultZoom ?? currentMapZoom ?? 8;
-
+    // let zoom = cfg.defaultZoom ?? currentMapZoom ?? 8;
+    let center = currentMapCenter || cfg.defaultCenter || this.defaultCypCenter;
+    let zoom = currentMapZoom ?? cfg.defaultZoom ?? 8;
     // ---------------------------------------------------
     // 4. Validate pointer
     // ---------------------------------------------------

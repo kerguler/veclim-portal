@@ -59,7 +59,7 @@ const useConsumeDirectMap = (consumedDirectMapRef, mapParRef) => {
       mapVector,
       dispatch,
       directMap,
-      mapPagePosition,
+      null,
       'left',
       {
         invalidateSimData: false,

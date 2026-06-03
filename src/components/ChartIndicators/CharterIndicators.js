@@ -8,10 +8,21 @@ import { getVector } from 'vectors/registry';
 function ChartIndicators() {
   const { mapPagePosition, vectorName, mapVector } = useDirectorFun('left');
 
-  const { data, error, isFetching } = useFetchTimeSeriesDataQuery({
-    position: JSON.stringify(mapPagePosition),
-    vectorName: mapVector, // use registry id for backend coherence
-  });
+  const hasValidPoint =
+    mapPagePosition?.lat !== null &&
+    mapPagePosition?.lng !== null &&
+    mapPagePosition?.lat !== undefined &&
+    mapPagePosition?.lng !== undefined;
+
+  const { data, error, isFetching } = useFetchTimeSeriesDataQuery(
+    {
+      position: JSON.stringify(mapPagePosition),
+      vectorName: mapVector, // use registry id for backend coherence
+    },
+    {
+      skip: !hasValidPoint,
+    }
+  );
 
   if (isFetching) {
     return (

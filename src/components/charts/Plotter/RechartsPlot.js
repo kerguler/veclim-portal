@@ -162,11 +162,7 @@ function RechartsPlot({ direction, plotMat }) {
 
   const handleLegendToggle = (key) => {
     const sliceInfo = chartParameters.sliceInfo;
-    console.log(key.split('.')[0]);
-    // find group of clicked label
-    console.log({ ObjectKeys: Object.keys(sliceInfo) });
     const groupId = key?.split('.')[0];
-    console.log({ groupId });
     if (!groupId) return;
 
     const groupKeys = Object.keys(sliceInfo[groupId].sliceLabels).map(
@@ -184,8 +180,6 @@ function RechartsPlot({ direction, plotMat }) {
         return [...new Set([...prev, ...groupKeys])];
       }
     });
-
-    console.log('WITHIN LEGEND TOGGLE', { activeKeys });
   };
 
   const renderedLines = buildLines(
