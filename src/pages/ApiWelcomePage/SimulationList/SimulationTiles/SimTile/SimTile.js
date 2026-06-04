@@ -62,11 +62,7 @@ function SimTile({ sim, direction, shimmerList }) {
         console.error('Invalid simulation coordinates', { lat, lon, payload });
         return;
       }
-      // PackageMapServices.setActiveVector(dispatch, vecId);
-
-      // // PackageMapServices.applyVectorToMapState(dispatch,
-      // dispatch(setCurrentMapCenter({ lat: lat, lng: lon }));
-      // dispatch(setCurrentMapZoom(5));
+   
 
       dispatch(
         setDirectMap({

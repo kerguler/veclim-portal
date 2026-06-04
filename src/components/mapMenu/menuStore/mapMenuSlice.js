@@ -273,17 +273,31 @@ const mapMenuSlice = createSlice({
     },
 
     setDirectMap(state, action) {
-      const { direction, value } = action.payload;
+      const { direction = 'left', value = {} } = action.payload || {};
 
-      state[direction].directMap = {
+      const nextDirectMap = {
         ...defaultDirectMap,
         ...state[direction].directMap,
         ...value,
       };
+
+      const currentDirectMap = state[direction].directMap;
+
+      const same =
+        currentDirectMap.lat === nextDirectMap.lat &&
+        currentDirectMap.lon === nextDirectMap.lon &&
+        currentDirectMap.display === nextDirectMap.display &&
+        currentDirectMap.zoom === nextDirectMap.zoom &&
+        JSON.stringify(currentDirectMap.center) ===
+          JSON.stringify(nextDirectMap.center);
+
+      if (same) return;
+
+      state[direction].directMap = nextDirectMap;
     },
     setDirectInit(state, action) {
       const { direction, value } = action.payload;
-      state[direction].directInit = value;
+      state[direction || 'left'].directInit = value;
     },
     setDirectInitError(state, action) {
       const { direction, value } = action.payload;

@@ -1,6 +1,6 @@
 import './TileSelector.css';
 import { useContext, useEffect, useState } from 'react';
-import { setDisplayTileNames, setSuperUser, setTileArray } from 'store';
+import { setDisplayTileNames, setTileArray } from 'store';
 import { useDispatch, useSelector } from 'react-redux';
 import { useFetchColorBarsDataQuery } from 'store';
 import PanelContext from 'context/panelsIconsV2';
@@ -53,7 +53,7 @@ function TileSelector({ tileIcons }) {
     setDisplayWarning(false);
     setDisplayNoTileWarning(false);
 
-    dispatch(setSuperUser(temp.length === 2 ? true : false));
+    // dispatch(setSuperUser(temp.length === 2 ? true : false));
     setTimeout(() => {
       dispatch(setTileArray(temp));
     }, 100);

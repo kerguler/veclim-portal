@@ -151,6 +151,7 @@ function MapPackageComponent({ fitworld }) {
       mapPagePosition,
       currentMapCenter,
       currentMapZoom,
+      isPermalinkClick,
     });
   }, [mapVector, dispatch]);
 

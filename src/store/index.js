@@ -53,7 +53,8 @@ import {
   setIsPermalinkClick,
 } from './slices/fetcherSlice';
 
-import {setPersistPointer,
+import {
+  setPersistPointer,
   setLastPanelDisplayed,
   mapMenuReducer,
   setAlboRequestPlot,
@@ -133,7 +134,6 @@ import {
   changeDate,
   changeSearchTermLocation,
   populateArray,
-  setSuperUser,
   setPageTransition,
   setDividerPosition,
 } from './slices/searchLocationSlice';
@@ -212,7 +212,8 @@ export {
 } from './apis/simulationApi';
 
 export { useFetchNewsDataQuery } from './apis/newsApi';
-export {setPersistPointer,
+export {
+  setPersistPointer,
   setSimulationFieldValue,
   setPermalink,
   setIsPermalinkClick,
@@ -274,7 +275,6 @@ export {setPersistPointer,
   populateArray,
   setShowSearchBar,
   toggleShowSearchBar,
-  setSuperUser,
   setChartParameters,
   appendToPlottedKeysChartParameters,
   appendToLabelsChartParameters,

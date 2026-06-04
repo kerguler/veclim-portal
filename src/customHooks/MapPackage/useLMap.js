@@ -7,7 +7,6 @@ import useDirectorFun from 'customHooks/useDirectorFun';
 
 function useLMap(mapParRef) {
   const dispatch = useDispatch();
-  const { permalinkClick } = useDirectorFun('left');
   const mapOptions = useSelector(
     (state) => state.fetcher.fetcherStates.map.optionsPanel
   );

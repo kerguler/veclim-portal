@@ -45,10 +45,7 @@ function useSessionControl(session) {
     if (mapVector !== session) {
       PackageMapServices.setActiveVector(dispatch, session);
 
-      // PackageMapServices.applyVectorToMapState(dispatch, mapVector, session);
     } else {
-      // Already on this vector (e.g. user changed query params manually),
-      // just make sure names are correct.
       dispatch(setMapVector(session));
       dispatch(setVectorName(session));
     }

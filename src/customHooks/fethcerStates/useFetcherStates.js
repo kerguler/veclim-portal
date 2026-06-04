@@ -19,8 +19,8 @@ import {
   setCurrentMaxBounds,
   setCurrentMapZoom,
   setCurrentMapCenter,
+  setDirectMap,
 } from 'store';
-
 import {
   setLastPanelDisplayed,
   setPersistPointer,
@@ -31,8 +31,14 @@ const useFetcherStates = () => {
   const direction = 'left';
   const dispatch = useDispatch();
 
-  const { mapVector, mapPagePosition, tileIcons, panelData, menuStructure } =
-    useDirectorFun(direction);
+  const {
+    mapVector,
+    mapPagePosition,
+    tileIcons,
+    panelData,
+    menuStructure,
+    directMap,
+  } = useDirectorFun(direction);
   const { currentMapCenter, currentMapZoom } = useDirectorFun(direction);
 
   usePermalinkHydration({ mapPagePosition });
@@ -50,6 +56,9 @@ const useFetcherStates = () => {
     bounds,
   } = useQuery();
 
+  useEffect(() => {
+    dispatch(setDirectMap({ ...directMap, center: { lat: cLat, lng: cLon } }));
+  });
   useSessionControl(session);
 
   useEffect(() => {
@@ -84,14 +93,7 @@ const useFetcherStates = () => {
     if (mapVector !== session) {
       PackageMapServices.setActiveVector(dispatch, session);
 
-      // PackageMapServices.applyVectorToMapState(
-      //   dispatch,
-      //   mapVector,
-      //   session,
-      //   currentMapCenter, // currentMapCenter
-      //   currentMapZoom, // currentMapZoom
-      //   mapPagePosition
-      // );
+
     }
   }, [
     session,
@@ -135,32 +137,6 @@ const useFetcherStates = () => {
     }
   }, [hasUrlClick, urlLat, urlLon, dispatch, mapVector, session]);
 
-  // 3) URL → camera center (what the map is looking at)
-  // useEffect(() => {
-  //   let center = null;
-
-  //   if (cLat && cLon) {
-  //     // explicit camera center from permalink
-  //     center = {
-  //       lat: parseFloat(cLat),
-  //       lng: parseFloat(cLon),
-  //     };
-  //   } else if (hasUrlClick) {
-  //     // fallback: if no cLat/cLon but we *do* have a clicked point, use that
-  //     center = {
-  //       lat: urlLat,
-  //       lng: urlLon,
-  //     };
-  //   } else if (!mapPagePosition || mapPagePosition.lat === null) {
-  //     // last fallback → default
-  //     center = activeVector?.map?.defaultCenter || { lat: 0, lng: 0 };
-  //   }
-
-  //   if (center) {
-  //     // console.log('I AM HERE IN CENTER SETTING', { center });
-  //     dispatch(setCurrentMapCenter(center));
-  //   }
-  // }, [cLat, cLon, lat, lon, mapPagePosition, dispatch]);
   useEffect(() => {
     let center = null;
 

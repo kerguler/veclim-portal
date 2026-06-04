@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux';
 import PanelContextV2 from 'context/panelsIconsV2';
 import { setOpenItems } from 'store';
 
-function useDirectorFun(direction) {
+function useDirectorFun(direction = 'left') {
   const persistPointer = useSelector(
     (state) => state.mapMenu[direction].persistPointer
   );
@@ -49,9 +49,7 @@ function useDirectorFun(direction) {
   const siblingCount = useSelector(
     (state) => state.graphSwitch[direction].siblingCount
   );
-  const interferePanelStyle = useSelector(
-    (state) => state.mapMenu[direction].interferePanelStyle
-  );
+
   const dispatch = useDispatch();
   const openItems = useSelector((state) => state.mapMenu.left.openItems);
   const dataArrived = useSelector(

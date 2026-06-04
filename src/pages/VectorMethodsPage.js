@@ -38,13 +38,7 @@ function VectorMethodsPage() {
 
     PackageMapServices.setActiveVector(dispatch, vecId);
 
-    // PackageMapServices.applyVectorToMapState(
-    //   dispatch,
-    //   currentVectorName,
-    //   vecId,
-    //   currentMapCenter,
-    //   currentMapZoom
-    // );
+ 
   }, [vecId, dispatch, currentMapCenter, currentMapZoom, currentVectorName]);
 
   // Which vector's methods do we show?

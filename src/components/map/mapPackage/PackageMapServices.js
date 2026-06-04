@@ -96,7 +96,7 @@ class PackageMapServices {
     let p = mapParRef.current;
     this.setMinZoom(mapParRef, vectorName);
 
-    p.map.setMaxBounds(p.maxBounds);
+    // p.map.setMaxBounds(p.maxBounds);
 
     let newZoom = this.calculateZoomForBounds(mapParRef);
     p.zoom = p.map.getZoom();
@@ -151,7 +151,7 @@ class PackageMapServices {
     vectorId,
     currentMapCenter,
     currentMapZoom,
-    mapPagePosition,
+    mapPagePosition,isPermalinkClick=false
   }) {
     const vec = getVector(vectorId);
     if (!vec) return;
@@ -164,12 +164,21 @@ class PackageMapServices {
 
     const boundsKey = cfg.defaultBounds || 'world';
     const boundsBox = this.resolveBounds(boundsKey);
+let center,zoom
+     
+    
+    if (isPermalinkClick) {
+     center = currentMapCenter || cfg.defaultCenter || this.defaultCypCenter;
+     zoom = currentMapZoom ?? cfg.defaultZoom ?? 8;
 
-    // let center = cfg.defaultCenter || currentMapCenter || this.defaultCypCenter;
 
-    // let zoom = cfg.defaultZoom ?? currentMapZoom ?? 8;
-    let center = currentMapCenter || cfg.defaultCenter || this.defaultCypCenter;
-    let zoom = currentMapZoom ?? cfg.defaultZoom ?? 8;
+    }else{
+     center = cfg.defaultCenter || currentMapCenter || this.defaultCypCenter;
+     zoom = cfg.defaultZoom ?? currentMapZoom ?? 8;
+
+
+    }
+    
     // ---------------------------------------------------
     // 4. Validate pointer
     // ---------------------------------------------------
@@ -245,7 +254,7 @@ class PackageMapServices {
     // ---------------------------------------------------
 
     dispatch(setCurrentMapBounds(boundsBox));
-    dispatch(setCurrentMaxBounds(boundsBox));
+    // dispatch(setCurrentMaxBounds(boundsBox));
 
     dispatch(setCurrentMapCenter(center));
     dispatch(setCurrentMapZoom(zoom));

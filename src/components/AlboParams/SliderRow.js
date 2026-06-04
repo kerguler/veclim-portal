@@ -68,7 +68,7 @@ const SliderRow = ({ direction }) => {
   };
 
   const handleConfirm = async () => {
-    dispatch(setSimSlider1Enabled({ direction: direction, value: false }));
+    // dispatch(setSimSlider1Enabled({ direction: direction, value: false }));
     dispatch(setAlboRequestPlot(true));
 
     const response = await createSimulation(simulationData);
@@ -93,7 +93,7 @@ const SliderRow = ({ direction }) => {
       dispatch(setInvalidateSimData(true));
       setEnableSlider(false);
     } else {
-      // setEnableSlider(true);
+       setEnableSlider(true);
     }
   }, [mapPagePosition.lat]);
 

@@ -45,6 +45,7 @@ const moduleObj = {
     defaultZoom: 8,
     switchCenter: { lat: 35.1, lng: 33.33 },
     switchZoom: 8,
+    maxBounds: PackageMapServices.worldBounds,
   },
   ui: { LeftPanelComponent: PapatasiLeftPanel },
   sampling: {
