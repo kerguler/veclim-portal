@@ -2,7 +2,7 @@ import HoverMenuMethods from 'components/HoverMenuMethods/HoverMenuMethods';
 import { Link } from 'react-router-dom';
 import './BurgerMenu.css';
 import MethodsNavItem from 'components/MethodsNavItem/MethodsNavItem';
-import VectorCarousel from 'components/LeftPanel/vectorSelection/VectorCarousel';
+import VectorCarousel from 'components/vectorSelection/Carousel/VectorCarousel';
 function BurgerMenu({ mainDivRef, linkText, handleMapBounds, handleMenu }) {
   const handleMenuClose = () => {
     handleMenu(false);

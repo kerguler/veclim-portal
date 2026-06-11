@@ -67,7 +67,7 @@
 }
 
 .color-bar.left .color-bar-texts {
-  align-items: flex-end;
+  align-items: flex-start;
 }
 
 .color-bar.right .color-bar-texts {

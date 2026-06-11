@@ -6,7 +6,13 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { VECTORS, ALL_VECTORS, getVector } from 'vectors/registry';
 import PackageMapServices from 'components/map/mapPackage/PackageMapServices';
 
+import VectorSearchModal from './VectorSearchModal';
+import VectorSearchAccordion from './VectorSearchAccordion';
+
 import './VectorCarousel.css';
+
+const VECTOR_SELECTOR_VARIANT = 'accordion';
+// const VECTOR_SELECTOR_VARIANT = 'modal';
 
 const VectorCarousel = ({ className = '', onChange }) => {
   const dispatch = useDispatch();
@@ -24,16 +30,12 @@ const VectorCarousel = ({ className = '', onChange }) => {
 
   const vectorOrder = useMemo(() => {
     const seen = new Set();
-    const ids = [];
 
-    ALL_VECTORS.forEach((v) => {
-      if (v?.id && VECTORS[v.id] && !seen.has(v.id)) {
-        seen.add(v.id);
-        ids.push(v.id);
-      }
-    });
-
-    return ids;
+    return ALL_VECTORS.filter((v) => {
+      if (!v?.id || !VECTORS[v.id] || seen.has(v.id)) return false;
+      seen.add(v.id);
+      return true;
+    }).map((v) => v.id);
   }, []);
 
   const vectorItems = useMemo(() => {
@@ -46,7 +48,6 @@ const VectorCarousel = ({ className = '', onChange }) => {
         fullLabel: vec.label || vec.shortLabel || vec.id,
         group:
           vec.meta?.group || vec.meta?.category || vec.meta?.type || 'Vectors',
-        vector: vec,
       }));
   }, [vectorOrder]);
 
@@ -60,7 +61,6 @@ const VectorCarousel = ({ className = '', onChange }) => {
 
   const filteredItems = useMemo(() => {
     const q = searchText.trim().toLowerCase();
-
     if (!q) return vectorItems;
 
     return vectorItems.filter((item) => {
@@ -81,9 +81,14 @@ const VectorCarousel = ({ className = '', onChange }) => {
     }, {});
   }, [filteredItems]);
 
+  const closeSearch = () => {
+    setIsSearchOpen(false);
+    setSearchText('');
+  };
+
   const switchTo = (nextId) => {
     if (!nextId || nextId === currentVectorId) {
-      setIsSearchOpen(false);
+      closeSearch();
       return;
     }
 
@@ -104,12 +109,9 @@ const VectorCarousel = ({ className = '', onChange }) => {
       navigate(route);
     }
 
-    if (typeof onChange === 'function') {
-      onChange(nextId, vec);
-    }
+    onChange?.(nextId, vec);
 
-    setIsSearchOpen(false);
-    setSearchText('');
+    closeSearch();
   };
 
   const goRelative = (offset) => {
@@ -117,9 +119,7 @@ const VectorCarousel = ({ className = '', onChange }) => {
 
     const len = vectorOrder.length;
     const nextIndex = (currentIndex + offset + len) % len;
-    const nextId = vectorOrder[nextIndex];
-
-    switchTo(nextId);
+    switchTo(vectorOrder[nextIndex]);
   };
 
   const handleTouchStart = (e) => {
@@ -129,15 +129,11 @@ const VectorCarousel = ({ className = '', onChange }) => {
   const handleTouchEnd = (e) => {
     if (touchStartX.current == null) return;
 
-    const endX = e.changedTouches[0].clientX;
-    const delta = endX - touchStartX.current;
+    const delta = e.changedTouches[0].clientX - touchStartX.current;
     const threshold = 40;
 
-    if (delta > threshold) {
-      goRelative(-1);
-    } else if (delta < -threshold) {
-      goRelative(1);
-    }
+    if (delta > threshold) goRelative(-1);
+    if (delta < -threshold) goRelative(1);
 
     touchStartX.current = null;
   };
@@ -147,14 +143,12 @@ const VectorCarousel = ({ className = '', onChange }) => {
 
     const handleClickOutside = (e) => {
       if (searchRef.current && !searchRef.current.contains(e.target)) {
-        setIsSearchOpen(false);
+        closeSearch();
       }
     };
 
     const handleEscape = (e) => {
-      if (e.key === 'Escape') {
-        setIsSearchOpen(false);
-      }
+      if (e.key === 'Escape') closeSearch();
     };
 
     document.addEventListener('mousedown', handleClickOutside);
@@ -167,6 +161,15 @@ const VectorCarousel = ({ className = '', onChange }) => {
   }, [isSearchOpen]);
 
   if (!vectorOrder.length) return null;
+
+  const selectorProps = {
+    groupedItems,
+    searchText,
+    setSearchText,
+    currentVectorId,
+    switchTo,
+    closeSearch,
+  };
 
   return (
     <div
@@ -219,71 +222,12 @@ const VectorCarousel = ({ className = '', onChange }) => {
         &#8250;
       </button>
 
-      {isSearchOpen && (
-        <div
-          className="vector-search-backdrop"
-          onMouseDown={() => setIsSearchOpen(false)}
-        >
-          <div
-            className="vector-search-modal"
-            onMouseDown={(e) => e.stopPropagation()}
-          >
-            <div className="vector-search-modal__header">
-              <input
-                className="vector-search-modal__input"
-                value={searchText}
-                onChange={(e) => setSearchText(e.target.value)}
-                placeholder="Search vectors..."
-                autoFocus
-              />
+      {isSearchOpen && VECTOR_SELECTOR_VARIANT === 'modal' && (
+        <VectorSearchModal {...selectorProps} />
+      )}
 
-              <button
-                type="button"
-                className="vector-search-modal__close"
-                onClick={() => setIsSearchOpen(false)}
-                aria-label="Close vector search"
-              >
-                ×
-              </button>
-            </div>
-
-            <div className="vector-search-modal__list">
-              {Object.keys(groupedItems).length === 0 && (
-                <div className="vector-search-modal__empty">
-                  No matching vectors
-                </div>
-              )}
-
-              {Object.entries(groupedItems).map(([groupName, items]) => (
-                <div className="vector-search-modal__group" key={groupName}>
-                  <div className="vector-search-modal__group-title">
-                    {groupName}
-                  </div>
-
-                  {items.map((item) => (
-                    <button
-                      type="button"
-                      key={item.id}
-                      className={`vector-search-modal__item ${
-                        item.id === currentVectorId
-                          ? 'vector-search-modal__item--active'
-                          : ''
-                      }`}
-                      onClick={() => switchTo(item.id)}
-                    >
-                      <span className="vector-search-modal__item-label">
-                        {item.label}
-                      </span>
-                      <span className="vector-search-modal__item-id">
-                        {item.id}
-                      </span>
-                    </button>
-                  ))}
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
+      {isSearchOpen && VECTOR_SELECTOR_VARIANT === 'accordion' && (
+        <VectorSearchAccordion {...selectorProps} />
       )}
     </div>
   );

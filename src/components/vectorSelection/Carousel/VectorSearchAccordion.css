@@ -1,0 +1,104 @@
+.vector-search-accordion {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(92vw, 26rem);
+  max-height: 70vh;
+  background: white;
+  border-radius: 1rem;
+  box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.2);
+  z-index: 3000;
+  overflow: hidden;
+}
+
+.vector-search-accordion__header {
+  display: flex;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  border-bottom: 1px solid #eee;
+}
+
+.vector-search-accordion__input {
+  color: var(--primary-color1);
+
+  flex: 1;
+  border: 1px solid #ddd;
+  border-radius: 999px;
+  padding: 0.5rem 0.8rem;
+  font-size: 1rem;
+}
+.vector-search-accordion__input:focus {
+  outline: none;
+  border: 0.5px solid var(--primary-color1);
+}
+
+.vector-search-accordion__close {
+  border: 0;
+  background: transparent;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.vector-search-accordion__list {
+  max-height: 58vh;
+  overflow-y: auto;
+  padding: 0.5rem;
+}
+
+/* .vector-search-accordion__group-button {
+  width: 100%;
+  border: 0;
+  background: #f4f4f4;
+  border-radius: 0.7rem;
+  padding: 0.65rem 0.8rem;
+  display: flex;
+  justify-content: space-between;
+  font-weight: 500;
+  font-size: 0.95rem;
+  cursor: pointer;
+} */
+
+.vector-search-accordion__items {
+  padding: 0.35rem 0 0.7rem;
+}
+
+.vector-search-accordion__item {
+  width: 100%;
+  border: 0;
+  background: transparent;
+  padding: 0.55rem 0.75rem;
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  border-radius: 0.6rem;
+  cursor: pointer;
+  text-align: left;
+}
+
+.vector-search-accordion__item:hover,
+.vector-search-accordion__item--active {
+  background: color-mix(
+    in srgb,
+    var(--tertiary-color2) 80%,
+    transparent
+  );
+}
+
+.vector-search-accordion__item-label {
+  font-weight: 500;
+  font-size: 1rem;
+  font-family: 'Inter', sans-serif;
+  color: var(--primary-color1);
+}
+
+.vector-search-accordion__item-id {
+  opacity: 0.55;
+  font-size: 0.8rem;
+}
+
+.vector-search-accordion__empty {
+  padding: 1rem;
+  text-align: center;
+  opacity: 0.65;
+}

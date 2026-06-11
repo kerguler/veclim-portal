@@ -12,7 +12,7 @@ import TemplatePage from 'pages/TemplatePage/TemplatePage';
 import { useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import Skeleton from 'components/skeleton/Skeleton';
-import VectorSelector from 'components/LeftPanel/vectorSelection/VectorCarousel';
+import VectorSelector from 'components/vectorSelection/Carousel/VectorCarousel';
 import XLink from 'components/xlink';
 
 function IsmedClimLeftPanel({ page, displayNews, displayContent }) {
@@ -23,7 +23,13 @@ function IsmedClimLeftPanel({ page, displayNews, displayContent }) {
   );
 
   const text = (
-    <p>Risk indicators from the <XLink href="https://ismed-clim.eu/"><strong>ISMED-CLIM</strong></XLink> project are not yet available on <strong>VEClim</strong></p>
+    <p>
+      Risk indicators from the{' '}
+      <XLink href="https://ismed-clim.eu/">
+        <strong>ISMED-CLIM</strong>
+      </XLink>{' '}
+      project are not yet available on <strong>VEClim</strong>
+    </p>
   );
 
   const home = (
@@ -48,9 +54,7 @@ function IsmedClimLeftPanel({ page, displayNews, displayContent }) {
               <Skeleton times={4} noBorder={true} />
             ) : (
               <div className="indicators-container inner-content">
-                <PlainInfo>
-                  {text}
-                </PlainInfo>
+                <PlainInfo>{text}</PlainInfo>
               </div>
             )}
           </div>
@@ -73,9 +77,7 @@ function IsmedClimLeftPanel({ page, displayNews, displayContent }) {
           {!webApp && (
             <div className="indicators-container">
               <div className="indicators-container inner-content">
-                <PlainInfo>
-                  {text}
-                </PlainInfo>
+                <PlainInfo>{text}</PlainInfo>
               </div>
             </div>
           )}
