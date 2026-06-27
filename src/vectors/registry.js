@@ -1,4 +1,4 @@
-const ctx = require.context('.', true, /module\.js?$/);
+const ctx = require.context('./', true, /module\.js?$/);
 
 const loadedModules = ctx.keys().map((key, index) => {
   const mod = ctx(key);
