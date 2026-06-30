@@ -33,6 +33,9 @@
   border-radius: 4px;
   padding: 0.25rem 0.5rem;
 }
+.albo-params input[type='text']:focus-visible {
+  outline: 1px solid var(--secondary-color2);
+}
 /* numeric value next to slider */
 .slider-value {
   font-variant-numeric: tabular-nums;

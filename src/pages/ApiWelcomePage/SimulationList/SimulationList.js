@@ -42,10 +42,9 @@ function SimulationList({ direction }) {
     // console.log(SimData);
     // dispatch(setSimList(SimData.simulations));
     renderedSimulationList = (
-      <SimulationTiles SimData={simData} direction={direction} />
+      <SimulationTiles simData={simData} direction={direction} />
     );
   }
-
   return (
     <div className="simlist-container  ">
       {blinkers.displayEditPage && <SimulationEditPanel />}
@@ -53,7 +52,7 @@ function SimulationList({ direction }) {
       <div className="title-simulations ">
         <h3>Current Simulations</h3>{' '}
       </div>
-        <div className="scrollable-list  ">{renderedSimulationList}</div>
+      <div className="scrollable-list  ">{renderedSimulationList}</div>
     </div>
   );
 }

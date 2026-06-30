@@ -11,6 +11,7 @@ import { useCreateSimulationMutation } from 'store';
 import ToolTipComponent from 'components/ToolTipComponent/ToolTipComponent';
 import { setSimulationFieldValue } from 'store';
 import { map } from 'leaflet';
+import './SliderRow.css';
 const SliderRow = ({ direction }) => {
   const [taskId, setTaskId] = useState(null); // Store Task ID
   const [shouldCheck, setShouldCheck] = useState(true);
@@ -93,58 +94,151 @@ const SliderRow = ({ direction }) => {
       dispatch(setInvalidateSimData(true));
       setEnableSlider(false);
     } else {
-       setEnableSlider(true);
+      setEnableSlider(true);
     }
   }, [mapPagePosition.lat]);
 
   return (
     <div className="slider-row">
       <div className="albo-params">
-        {Object.entries(simulationFieldValues).map(([key, field]) => (
-          <div key={key}>
-            <label>{field.label}</label>
+        {/* {Object.entries(simulationFieldValues).map(([key, field]) => {
+          const inputId = `sim-${direction}-${key}`;
+          const isSlider = field.type === 'slider';
 
-            {field.type === 'slider' ? (
-              <input
-                type="range"
-                min={field.min}
-                max={field.max}
-                step={field.step ?? 1}
-                value={field.value}
-                disabled={!slider1Enabled}
-                onChange={(e) =>
-                  dispatch(
-                    setSimulationFieldValue({
-                      direction,
-                      key,
-                      value: Number(e.target.value),
-                    })
-                  )
-                }
-              />
-            ) : (
-              <input
-                type="text"
-                inputMode="numeric"
-                value={field.value}
-                disabled={!slider1Enabled}
-                onChange={(e) => {
-                  const nextValue = e.target.value;
+          return (
+            <div key={key} className="albo-param-row">
+              <div className="albo-param-row__header">
+                <label htmlFor={inputId}>{field.label}</label>
 
-                  if (/^\d*$/.test(nextValue)) {
-                    dispatch(
-                      setSimulationFieldValue({
-                        direction,
-                        key,
-                        value: nextValue,
-                      })
-                    );
-                  }
-                }}
-              />
-            )}
-          </div>
-        ))}
+                {isSlider && (
+                  <span className="albo-param-row__value">{field.value}</span>
+                )}
+              </div>
+
+              {isSlider ? (
+                <>
+                <div className="albo-param-row__minmax">
+                    <span>{field.min}</span>
+                    <span>{field.max}</span>
+                  </div>
+                  <input
+                    id={inputId}
+                    type="range"
+                    min={field.min}
+                    max={field.max}
+                    step={field.step ?? 1}
+                    value={field.value}
+                    disabled={!slider1Enabled}
+                    onChange={(e) =>
+                      dispatch(
+                        setSimulationFieldValue({
+                          direction,
+                          key,
+                          value: Number(e.target.value),
+                        })
+                      )
+                    }
+                  />
+
+                  
+                </>
+              ) : (
+                <input
+                  id={inputId}
+                  type="text"
+                  inputMode="numeric"
+                  value={field.value}
+                  disabled={!slider1Enabled}
+                  onChange={(e) => {
+                    const nextValue = e.target.value;
+
+                    if (/^\d*$/.test(nextValue)) {
+                      dispatch(
+                        setSimulationFieldValue({
+                          direction,
+                          key,
+                          value: nextValue,
+                        })
+                      );
+                    }
+                  }}
+                />
+              )}
+            </div>
+          );
+        })} */}
+        {Object.entries(simulationFieldValues).map(([key, field]) => {
+          const inputId = `sim-${direction}-${key}`;
+          const isSlider = field.type === 'slider';
+
+          const min = Number(field.min);
+          const max = Number(field.max);
+          const value = Number(field.value);
+
+          const percent = max === min ? 0 : (value - min) / (max - min);
+
+          return (
+            <div key={key} className="albo-param-row">
+              <label htmlFor={inputId}>{field.label}</label>
+
+              {isSlider ? (
+                <>
+                  <div
+                    className="slider-with-value"
+                    style={{
+                      '--slider-percent': percent,
+                    }}
+                  >
+                    <span className="slider-value-bubble">{field.value}</span>
+                    <div className="albo-param-row__minmax">
+                      <span>{field.min}</span>
+                      <span>{field.max}</span>
+                    </div>
+                    <input
+                      id={inputId}
+                      type="range"
+                      min={field.min}
+                      max={field.max}
+                      step={field.step ?? 1}
+                      value={field.value}
+                      disabled={!slider1Enabled}
+                      onChange={(e) =>
+                        dispatch(
+                          setSimulationFieldValue({
+                            direction,
+                            key,
+                            value: Number(e.target.value),
+                          })
+                        )
+                      }
+                    />
+                  </div>
+                </>
+              ) : (
+                <input
+                  id={inputId}
+                  type="text"
+                  inputMode="numeric"
+                  value={field.value}
+                  disabled={!slider1Enabled}
+                  onChange={(e) => {
+                    const nextValue = e.target.value;
+
+                    if (/^\d*$/.test(nextValue)) {
+                      dispatch(
+                        setSimulationFieldValue({
+                          direction,
+                          key,
+                          value: nextValue,
+                        })
+                      );
+                    }
+                  }}
+                />
+              )}
+            </div>
+          );
+        })}
       </div>
 
       <button

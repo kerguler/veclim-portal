@@ -25,7 +25,6 @@ function SimulationTiles({ fetchedSimList, direction }) {
       shimmerList = { ...shimmerList, [parent]: false };
     }
   });
-
   if (fetchedSimList && fetchedSimList.length === 0) {
     return (
       <div className="flex-row full-width">
@@ -39,7 +38,12 @@ function SimulationTiles({ fetchedSimList, direction }) {
       fetchedSimList &&
       fetchedSimList.map((sim) => {
         return (
-          <SimTile shimmerList={shimmerList} direction={direction} key={sim.id} sim={sim}></SimTile>
+          <SimTile
+            shimmerList={shimmerList}
+            direction={direction}
+            key={sim.id}
+            sim={sim}
+          ></SimTile>
         );
       })
     );

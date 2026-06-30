@@ -62,7 +62,6 @@ function SimTile({ sim, direction, shimmerList }) {
         console.error('Invalid simulation coordinates', { lat, lon, payload });
         return;
       }
-   
 
       dispatch(
         setDirectMap({
@@ -95,7 +94,6 @@ function SimTile({ sim, direction, shimmerList }) {
       setIsLoadingSim(false);
     }
   };
-
   return (
     <div
       key={sim.id}
@@ -109,7 +107,13 @@ function SimTile({ sim, direction, shimmerList }) {
         <p>{sim.id}</p>
         <SimDate sim={sim} />
       </div>
-
+      {simRecord?.model_data && (
+        <div>
+          {' '}
+          lat:{simRecord.model_data.pr[2].toFixed(2)} lng:
+          {simRecord.model_data.pr[1].toFixed(2)}{' '}
+        </div>
+      )}
       <div className="icon-area">
         {/* Eye (left slot) — reserve space via visibility toggle */}
         <span
