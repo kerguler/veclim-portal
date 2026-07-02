@@ -90,6 +90,7 @@ import {
   appendToLabelsChartParameters,
   appendToPlottedKeysChartParameters,
   spliceChartParametersForSlices,
+  resetSimulationFieldValues,
 } from 'components/mapMenu/menuStore/mapMenuSlice';
 
 import { languageReducer, changeLanguage } from './slices/languageSlice';
@@ -214,6 +215,7 @@ export {
 export { useFetchNewsDataQuery } from './apis/newsApi';
 export {
   setPersistPointer,
+  resetSimulationFieldValues,
   setSimulationFieldValue,
   setPermalink,
   setIsPermalinkClick,

@@ -773,6 +773,7 @@ export const panelData = [
   {
     key: 'simulation_adjustment_panel',
     label: 'Simulation Adjustment Panel',
+    overridesPanelScroll: true,
     content: (
       <div className="text-area">
         <div>

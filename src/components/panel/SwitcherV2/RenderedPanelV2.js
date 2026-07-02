@@ -28,7 +28,10 @@ const RenderedPanelV2 = ({
     openItems,
     panelLevelLeft: levelData,
     mapPagePosition,
-    interferePanelStyleRight: interferePanelStyle,twinArray,twinIndex,
+    interferePanelStyleRight: interferePanelStyle,
+    twinArray,
+    twinIndex,
+    panelData,
   } = useDirectorFun(direction);
   const panelRef = useRef(null);
   usePanelResize({ panelRef, direction, setPanelTop });
@@ -46,8 +49,7 @@ const RenderedPanelV2 = ({
   };
 
   const [showCoordinateWarning, setShowCoordinateWarning] = useState(false);
-  
-  
+
   useEffect(() => {
     if (mapPagePosition.lat === null) {
       setShowCoordinateWarning(true);
@@ -55,8 +57,7 @@ const RenderedPanelV2 = ({
       setShowCoordinateWarning(false);
     }
   }, [mapPagePosition.lat]);
-  
-  
+
   useEffect(() => {
     dispatch(setSiblingCount({ direction, value: panelChildren.length }));
 
@@ -84,6 +85,11 @@ const RenderedPanelV2 = ({
       );
     }
   }
+  console.log(passedKey);
+
+  const currentPanel = panelData.find((panel) => panel.key === passedKey?.key);
+  const overridesPanelScroll = currentPanel?.overridesPanelScroll === true;
+
   return (
     <span
       className={`panel-restrictive-wrapper ${direction}`}
@@ -96,6 +102,7 @@ const RenderedPanelV2 = ({
           direction={direction}
           className={panelClassName}
           onClosed={(key) => handlePanelClosed(key)}
+          overridesPanelScroll={overridesPanelScroll}
         >
           <div className="panel-content" style={{ userSelect: 'none' }}>
             {panel}

@@ -4,29 +4,29 @@ import {
   setAlboRequestPlot,
   setDataArrived,
   setInvalidateSimData,
+  setSimulationFieldValue,
+  resetSimulationFieldValues,
 } from 'store';
 import useDirectorFun from 'customHooks/useDirectorFun';
-import { setSimSlider1Enabled } from 'store';
 import { useCreateSimulationMutation } from 'store';
 import ToolTipComponent from 'components/ToolTipComponent/ToolTipComponent';
-import { setSimulationFieldValue } from 'store';
-import { map } from 'leaflet';
 import './SliderRow.css';
 const SliderRow = ({ direction }) => {
-  const [taskId, setTaskId] = useState(null); // Store Task ID
-  const [shouldCheck, setShouldCheck] = useState(true);
+  const [taskId, setTaskId] = useState(null);
+  const [enableSlider, setEnableSlider] = useState(false);
+
   const {
     mapPagePosition,
     simList,
-    invalidateSimData,
     simulationFieldValues,
     simSlider1Enabled: slider1Enabled,
     dispatch,
   } = useDirectorFun(direction);
+
   const { setDataSim, setIsLoadingSim, setErrorSim } = useAlboData();
-  const [enableSlider, setEnableSlider] = useState(false);
-  const [createSimulation /* { isLoading, isError, data }*/] =
-    useCreateSimulationMutation();
+
+  const [createSimulation] = useCreateSimulationMutation();
+
   useEffect(() => {
     if (simList.length >= 10) {
       setEnableSlider(false);
@@ -35,18 +35,27 @@ const SliderRow = ({ direction }) => {
     }
   }, [simList]);
 
-  // useEffect(() => {
-  //   if (mapPagePosition.lat !== null || mapPagePosition.lng !== null) {
-  //     setEnableSlider(false);
-  //   }
-  // }, [mapPagePosition.lat, mapPagePosition.lng]);
+  useEffect(() => {
+    if (mapPagePosition.lat === null) {
+      setDataSim(null);
+      dispatch(setDataArrived({ direction, value: false }));
+      dispatch(setInvalidateSimData(true));
+      setEnableSlider(false);
+    } else {
+      setEnableSlider(true);
+    }
+  }, [mapPagePosition.lat, direction, dispatch, setDataSim]);
 
   const f = simulationFieldValues;
+
   const toInt = (value, fallback) => {
     if (value === '' || value === null || value === undefined) return fallback;
+
     const parsed = parseInt(value, 10);
+
     return Number.isNaN(parsed) ? fallback : parsed;
   };
+
   const simulationData = {
     model_type: 'model_albochik',
     title: 'Albochik',
@@ -58,9 +67,9 @@ const SliderRow = ({ direction }) => {
         0.0,
         mapPagePosition.lng,
         mapPagePosition.lat,
-        toInt(f.humanPopulationSize.value || 1000),
-        toInt(f.daysToRunTransmission.value || 60),
-        toInt(f.numberOfRepetitions.value || 100),
+        toInt(f.humanPopulationSize.value, 1000),
+        toInt(f.daysToRunTransmission.value, 60),
+        toInt(f.numberOfRepetitions.value, 100),
         Number(f.vecHumanScaling.value || 50) / 100,
         Number(f.personalProtection.value || 0),
         Number(f.vectorControlDelay.value || -1),
@@ -69,196 +78,127 @@ const SliderRow = ({ direction }) => {
   };
 
   const handleConfirm = async () => {
-    // dispatch(setSimSlider1Enabled({ direction: direction, value: false }));
     dispatch(setAlboRequestPlot(true));
 
     const response = await createSimulation(simulationData);
 
     dispatch(setInvalidateSimData(false));
+
     if (response?.data && 'task_id' in response.data) {
       setTaskId(response.data.task_id);
       localStorage.setItem('task_id', response.data.task_id);
-      setIsLoadingSim(true); // Update context state
+      setIsLoadingSim(true);
     }
 
     if ('error' in response) {
-      // dispatch(setMessenger("response"))
       setErrorSim(response.error);
     }
   };
 
-  useEffect(() => {
-    if (mapPagePosition.lat === null) {
-      setDataSim(null);
-      dispatch(setDataArrived({ direction, value: false }));
-      dispatch(setInvalidateSimData(true));
-      setEnableSlider(false);
-    } else {
-      setEnableSlider(true);
-    }
-  }, [mapPagePosition.lat]);
+  const handleReset = () => {
+    dispatch(resetSimulationFieldValues({ direction }));
+  };
+  const renderField = ([key, field]) => {
+    const inputId = `sim-${direction}-${key}`;
 
-  return (
-    <div className="slider-row">
-      <div className="albo-params">
-        {/* {Object.entries(simulationFieldValues).map(([key, field]) => {
-          const inputId = `sim-${direction}-${key}`;
-          const isSlider = field.type === 'slider';
+    return (
+      <div key={key} className="sim-param-card">
+        <div className="sim-param-card__header">
+          <label className="sim-param-card__label" htmlFor={inputId}>
+            {field.label}
+          </label>
 
-          return (
-            <div key={key} className="albo-param-row">
-              <div className="albo-param-row__header">
-                <label htmlFor={inputId}>{field.label}</label>
+          <span className="sim-param-card__value">{field.value}</span>
+        </div>
+        <span className="sim-param-card__tooltip">{field.detail}</span>
+        <div className="sim-param-card__limits">
+          <span>{field.min}</span>
+          <span>{field.max}</span>
+        </div>
 
-                {isSlider && (
-                  <span className="albo-param-row__value">{field.value}</span>
-                )}
-              </div>
-
-              {isSlider ? (
-                <>
-                <div className="albo-param-row__minmax">
-                    <span>{field.min}</span>
-                    <span>{field.max}</span>
-                  </div>
-                  <input
-                    id={inputId}
-                    type="range"
-                    min={field.min}
-                    max={field.max}
-                    step={field.step ?? 1}
-                    value={field.value}
-                    disabled={!slider1Enabled}
-                    onChange={(e) =>
-                      dispatch(
-                        setSimulationFieldValue({
-                          direction,
-                          key,
-                          value: Number(e.target.value),
-                        })
-                      )
-                    }
-                  />
-
-                  
-                </>
-              ) : (
-                <input
-                  id={inputId}
-                  type="text"
-                  inputMode="numeric"
-                  value={field.value}
-                  disabled={!slider1Enabled}
-                  onChange={(e) => {
-                    const nextValue = e.target.value;
-
-                    if (/^\d*$/.test(nextValue)) {
-                      dispatch(
-                        setSimulationFieldValue({
-                          direction,
-                          key,
-                          value: nextValue,
-                        })
-                      );
-                    }
-                  }}
-                />
-              )}
-            </div>
-          );
-        })} */}
-        {Object.entries(simulationFieldValues).map(([key, field]) => {
-          const inputId = `sim-${direction}-${key}`;
-          const isSlider = field.type === 'slider';
-
-          const min = Number(field.min);
-          const max = Number(field.max);
-          const value = Number(field.value);
-
-          const percent = max === min ? 0 : (value - min) / (max - min);
-
-          return (
-            <div key={key} className="albo-param-row">
-              <label htmlFor={inputId}>{field.label}</label>
-
-              {isSlider ? (
-                <>
-                  <div
-                    className="slider-with-value"
-                    style={{
-                      '--slider-percent': percent,
-                    }}
-                  >
-                    <span className="slider-value-bubble">{field.value}</span>
-                    <div className="albo-param-row__minmax">
-                      <span>{field.min}</span>
-                      <span>{field.max}</span>
-                    </div>
-                    <input
-                      id={inputId}
-                      type="range"
-                      min={field.min}
-                      max={field.max}
-                      step={field.step ?? 1}
-                      value={field.value}
-                      disabled={!slider1Enabled}
-                      onChange={(e) =>
-                        dispatch(
-                          setSimulationFieldValue({
-                            direction,
-                            key,
-                            value: Number(e.target.value),
-                          })
-                        )
-                      }
-                    />
-                  </div>
-                </>
-              ) : (
-                <input
-                  id={inputId}
-                  type="text"
-                  inputMode="numeric"
-                  value={field.value}
-                  disabled={!slider1Enabled}
-                  onChange={(e) => {
-                    const nextValue = e.target.value;
-
-                    if (/^\d*$/.test(nextValue)) {
-                      dispatch(
-                        setSimulationFieldValue({
-                          direction,
-                          key,
-                          value: nextValue,
-                        })
-                      );
-                    }
-                  }}
-                />
-              )}
-            </div>
-          );
-        })}
+        <input
+          id={inputId}
+          className="sim-param-card__slider"
+          type="range"
+          min={field.min}
+          max={field.max}
+          step={field.step ?? 1}
+          value={field.value}
+          disabled={!slider1Enabled}
+          onChange={(e) =>
+            dispatch(
+              setSimulationFieldValue({
+                direction,
+                key,
+                value: Number(e.target.value),
+              })
+            )
+          }
+        />
       </div>
+    );
+  };
+  return (
+    <div className="sim-adjustment">
+      <div className="sim-adjustment__scroll">
+        <div className="sim-params">
+          {Object.entries(simulationFieldValues).map(renderField)}
+        </div>
+      </div>
+      <div className="sim-bottom">
+        <div className="sim-location-status">
+          <div className="sim-coordinate-card">
+            <span className="sim-coordinate-card__title">Selected cell</span>
 
-      <button
-        type="button"
-        onClick={handleConfirm}
-        className="confirm-button"
-        disabled={!enableSlider}
-        aria-disabled={!enableSlider}
-      >
-        {!enableSlider ? (
-          <ToolTipComponent
-            placement="top"
-            label="you cannot add another simulation you need to delete some simulations"
+            <span className="sim-coordinate-chip">
+              <span className="sim-coordinate-chip__label">Lat</span>
+              <strong>
+                {mapPagePosition.lat !== null &&
+                mapPagePosition.lat !== undefined
+                  ? Number(mapPagePosition.lat).toFixed(2)
+                  : '--'}
+              </strong>
+            </span>
+
+            <span className="sim-coordinate-chip">
+              <span className="sim-coordinate-chip__label">Lng</span>
+              <strong>
+                {mapPagePosition.lng !== null &&
+                mapPagePosition.lng !== undefined
+                  ? Number(mapPagePosition.lng).toFixed(2)
+                  : '--'}
+              </strong>
+            </span>
+          </div>
+
+          <div className="sim-status message">
+            {mapPagePosition.lat === null
+              ? 'Select a map cell to run a simulation'
+              : 'Ready to run simulation with new coordinates'}
+          </div>
+        </div>
+
+        <div className="sim-actions-bottom">
+          <button
+            type="button"
+            className="sim-reset-button"
+            onClick={handleReset}
+            disabled={!slider1Enabled}
           >
-            Confirm{' '}
-          </ToolTipComponent>
-        ) : (
-          'Confirm'
-        )}
-      </button>
+            Reset
+          </button>
+
+          <button
+            type="button"
+            className="sim-confirm-button"
+            onClick={handleConfirm}
+            disabled={!enableSlider}
+            aria-disabled={!enableSlider}
+          >
+            Confirm
+          </button>
+        </div>
+      </div>
     </div>
   );
 };

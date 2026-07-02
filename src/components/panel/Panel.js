@@ -4,10 +4,16 @@ import classNames from 'classnames';
 import useDirectorFun from 'customHooks/useDirectorFun';
 import { useDispatch } from 'react-redux';
 import { setPanelOpen } from 'store';
-import SwitcherArrows from './SwitcherArrows';
 import { setTwinIndex } from 'store';
-import PanelChildren from 'components/mapMenu/mapMenu/PanelChildren';
-function Panel({ onClosed, children, className, direction, passedKey, tabs }) {
+function Panel({
+  onClosed,
+  children,
+  className,
+  direction,
+  passedKey,
+  tabs,
+  overridesPanelScroll,
+}) {
   const dispatch = useDispatch();
   const {
     panelOpen,
@@ -52,7 +58,7 @@ function Panel({ onClosed, children, className, direction, passedKey, tabs }) {
       </div>
     );
   });
-
+  console.log({ overridesPanelScroll });
   return (
     <div className={outerClassNames} style={interferePanelStyle}>
       {/* <SwitcherArrows direction={direction} passedKey={passedKey} /> */}
@@ -60,7 +66,15 @@ function Panel({ onClosed, children, className, direction, passedKey, tabs }) {
         <img alt="close-button" src={closeIcon} />
       </div>
       <div className="tab-list"> {displayedTabs}</div>
-      <div className="panel-inner-box">{children}</div>
+      <div
+        className="panel-inner-box"
+        style={{
+          overflowY: overridesPanelScroll ? 'hidden' : 'auto',
+          minHeight: '330px',
+        }}
+      >
+        {children}
+      </div>
     </div>
   );
 }

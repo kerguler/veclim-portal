@@ -84,48 +84,71 @@ const mapMenuSlice = createSlice({
         simulationFields: {
           vecHumanScaling: {
             label: 'vec/human scaling',
+            detail: ' how many vectors per human',
             enabled: true,
             value: 50,
             type: 'slider',
             min: 0,
             max: 100,
             step: 1,
+            default: 50,
           },
           personalProtection: {
             label: 'personal protection',
+            detail: 'are we taking measures',
+
             enabled: false,
             value: 0,
             type: 'slider',
             min: 0,
             max: 100,
             step: 1,
+            default: 0,
           },
           vectorControlDelay: {
             label: 'vector control delay',
+            detail: 'delay in vector control measures',
+
             enabled: false,
             value: -1,
             type: 'slider',
             min: -1,
             max: 30,
             step: 1,
+            default: -1,
           },
           humanPopulationSize: {
             label: 'human population size',
+            detail: 'total number of humans in the population',
             enabled: false,
             value: 1000,
-            type: 'input',
+            type: 'slider',
+            min: 0,
+            max: 10000,
+            step: 1,
+            default: 1000,
           },
           daysToRunTransmission: {
             label: 'days to run transmission',
+            detail: 'number of days to simulate transmission',
             enabled: false,
             value: 60,
-            type: 'input',
+            type: 'slider',
+            default: 60,
+            min: 1,
+            max: 365,
+            step: 1,
           },
           numberOfRepetitions: {
             label: 'number of repetitions',
+            detail: 'number of times to repeat the simulation',
             enabled: false,
             value: 100,
-            type: 'input',
+            type: 'slider',
+            default: 100,
+            min: 1,
+            max: 1000,
+            step: 1,
           },
         },
 
@@ -137,6 +160,14 @@ const mapMenuSlice = createSlice({
   },
 
   reducers: {
+    resetSimulationFieldValues: (state, action) => {
+      const { direction } = action.payload;
+
+      Object.keys(state[direction].chart.simulationFields).forEach((key) => {
+        const field = state[direction].chart.simulationFields[key];
+        field.value = field.default;
+      });
+    },
     setPersistPointer(state, action) {
       const { direction, value } = action.payload;
       state[direction].persistPointer = value;
@@ -354,5 +385,6 @@ export const {
   appendToPlottedKeysChartParameters,
   spliceChartParametersForSlices,
   setLastPanelDisplayed,
+  resetSimulationFieldValues,
 } = mapMenuSlice.actions;
 export const mapMenuReducer = mapMenuSlice.reducer;
