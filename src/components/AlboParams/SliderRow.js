@@ -9,42 +9,36 @@ import {
 } from 'store';
 import useDirectorFun from 'customHooks/useDirectorFun';
 import { useCreateSimulationMutation } from 'store';
-import ToolTipComponent from 'components/ToolTipComponent/ToolTipComponent';
 import './SliderRow.css';
+import useSimulationUiState from './useSimulationUiState';
+
 const SliderRow = ({ direction }) => {
   const [taskId, setTaskId] = useState(null);
-  const [enableSlider, setEnableSlider] = useState(false);
+
+  const { mapPagePosition, simList, simulationFieldValues, dispatch } =
+    useDirectorFun(direction);
 
   const {
-    mapPagePosition,
-    simList,
-    simulationFieldValues,
-    simSlider1Enabled: slider1Enabled,
-    dispatch,
-  } = useDirectorFun(direction);
-
-  const { setDataSim, setIsLoadingSim, setErrorSim } = useAlboData();
+    setDataSim,
+    setIsLoadingSim,
+    setErrorSim,
+    isLoadingSim,
+    errorSim,
+    dataSim,
+  } = useAlboData();
 
   const [createSimulation] = useCreateSimulationMutation();
 
-  useEffect(() => {
-    if (simList.length >= 10) {
-      setEnableSlider(false);
-    } else {
-      setEnableSlider(true);
-    }
-  }, [simList]);
+  const { disableConfirm, disableSliders, message, hasSelectedCell, markCurrentSetupSubmitted, simcount } =
+    useSimulationUiState(direction, simulationFieldValues);
 
   useEffect(() => {
-    if (mapPagePosition.lat === null) {
+    if (!hasSelectedCell) {
       setDataSim(null);
       dispatch(setDataArrived({ direction, value: false }));
       dispatch(setInvalidateSimData(true));
-      setEnableSlider(false);
-    } else {
-      setEnableSlider(true);
     }
-  }, [mapPagePosition.lat, direction, dispatch, setDataSim]);
+  }, [hasSelectedCell, direction, dispatch, setDataSim]);
 
   const f = simulationFieldValues;
 
@@ -78,6 +72,9 @@ const SliderRow = ({ direction }) => {
   };
 
   const handleConfirm = async () => {
+    if (disableConfirm) return;
+    markCurrentSetupSubmitted();
+
     dispatch(setAlboRequestPlot(true));
 
     const response = await createSimulation(simulationData);
@@ -89,7 +86,6 @@ const SliderRow = ({ direction }) => {
       localStorage.setItem('task_id', response.data.task_id);
       setIsLoadingSim(true);
     }
-
     if ('error' in response) {
       setErrorSim(response.error);
     }
@@ -124,7 +120,7 @@ const SliderRow = ({ direction }) => {
           max={field.max}
           step={field.step ?? 1}
           value={field.value}
-          disabled={!slider1Enabled}
+          disabled={disableSliders}
           onChange={(e) =>
             dispatch(
               setSimulationFieldValue({
@@ -172,18 +168,22 @@ const SliderRow = ({ direction }) => {
           </div>
 
           <div className="sim-status message">
-            {mapPagePosition.lat === null
-              ? 'Select a map cell to run a simulation'
-              : 'Ready to run simulation with new coordinates'}
+            {message} 
           </div>
+         
         </div>
 
         <div className="sim-actions-bottom">
+           <div className="sim-status message">
+            {simcount !== null && simcount !== undefined
+              ? `You have ${simcount} simulations.`
+              : ''}
+          </div>
           <button
             type="button"
             className="sim-reset-button"
             onClick={handleReset}
-            disabled={!slider1Enabled}
+            disabled={disableSliders}
           >
             Reset
           </button>
@@ -192,8 +192,8 @@ const SliderRow = ({ direction }) => {
             type="button"
             className="sim-confirm-button"
             onClick={handleConfirm}
-            disabled={!enableSlider}
-            aria-disabled={!enableSlider}
+            disabled={disableConfirm}
+            aria-disabled={disableConfirm}
           >
             Confirm
           </button>

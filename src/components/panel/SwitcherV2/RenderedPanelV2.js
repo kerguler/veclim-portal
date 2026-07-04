@@ -85,7 +85,6 @@ const RenderedPanelV2 = ({
       );
     }
   }
-  console.log(passedKey);
 
   const currentPanel = panelData.find((panel) => panel.key === passedKey?.key);
   const overridesPanelScroll = currentPanel?.overridesPanelScroll === true;

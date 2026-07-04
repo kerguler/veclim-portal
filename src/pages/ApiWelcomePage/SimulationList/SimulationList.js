@@ -41,6 +41,7 @@ function SimulationList({ direction }) {
   } else if (simData) {
     // console.log(SimData);
     // dispatch(setSimList(SimData.simulations));
+    console.log('SimList updated', simData);
     renderedSimulationList = (
       <SimulationTiles simData={simData} direction={direction} />
     );

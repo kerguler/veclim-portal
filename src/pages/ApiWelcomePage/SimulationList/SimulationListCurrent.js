@@ -18,7 +18,7 @@ function SimulationListCurrent({ direction }) {
   }, [fetchedSimList, dispatch]);
 
   let renderedSimulationList = null;
-console.log({ fetchedSimList });
+  console.log({ fetchedSimList });
   if (fetchedSimList) {
     renderedSimulationList = (
       <SimulationTiles fetchedSimList={fetchedSimList} direction={direction} />

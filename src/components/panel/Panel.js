@@ -58,7 +58,6 @@ function Panel({
       </div>
     );
   });
-  console.log({ overridesPanelScroll });
   return (
     <div className={outerClassNames} style={interferePanelStyle}>
       {/* <SwitcherArrows direction={direction} passedKey={passedKey} /> */}

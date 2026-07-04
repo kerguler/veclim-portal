@@ -32,8 +32,7 @@ const simulationApi = createApi({
       }),
       getSimulationList: builder.query({
         query: (data) => {
-          console.log('getSimulationList args:', data);
-    console.trace('getSimulationList trace');
+
           const params = new URLSearchParams();
 
           // Handle optional include_results param

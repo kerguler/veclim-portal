@@ -118,6 +118,17 @@
   box-shadow: 0 4px 10px rgba(12, 35, 55, 0.22);
   cursor: pointer;
 }
+.sim-confirm-button:disabled {
+  background: #173b56;
+  opacity: 0.45;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.simconfirm-button:active {
+  background: #0c4c6e;
+  box-shadow: 0 2px 6px rgba(12, 35, 55, 0.22);
+}
 
 .sim-reset-button:disabled,
 .sim-confirm-button:disabled,
