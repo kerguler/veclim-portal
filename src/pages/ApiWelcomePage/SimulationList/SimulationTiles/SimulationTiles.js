@@ -25,7 +25,11 @@ function SimulationTiles({ fetchedSimList, direction }) {
       shimmerList = { ...shimmerList, [parent]: false };
     }
   });
-  if (fetchedSimList && fetchedSimList.length === 0) {
+  const sortedSimList = fetchedSimList
+    ? [...fetchedSimList].sort((a, b) => Number(b.id) - Number(a.id))
+    : [];
+
+  if (sortedSimList && sortedSimList.length === 0) {
     return (
       <div className="flex-row full-width">
         <div className="flex-column border-r5 float-bg2">
@@ -35,8 +39,8 @@ function SimulationTiles({ fetchedSimList, direction }) {
     );
   } else {
     return (
-      fetchedSimList &&
-      fetchedSimList.map((sim) => {
+      sortedSimList &&
+      sortedSimList.map((sim) => {
         return (
           <SimTile
             shimmerList={shimmerList}
