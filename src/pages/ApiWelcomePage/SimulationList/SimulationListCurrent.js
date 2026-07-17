@@ -30,7 +30,6 @@ function SimulationListCurrent({ direction }) {
       </div>
     );
   }
-
   return (
     <div className="simlist-container  ">
       <div className="title-simulations ">

@@ -95,24 +95,25 @@
   padding-top: 0.65rem;
   border-top: 1px solid var(--sim-line);
 }
-
+.sim-confirm-button,
 .sim-reset-button {
   border: 1px solid rgba(12, 76, 110, 0.25);
-  background: white;
   color: var(--sim-ink);
   border-radius: 999px;
-  padding: 0.35rem 0.75rem;
-  font-size: 0.76rem;
-  font-weight: 600;
+  padding: 0.45rem 0.85rem;
+  font-size: 1rem;
+  line-height: 1.2;
+  font-weight: 500;
   cursor: pointer;
 }
-
+.sim-reset-button {
+  color: var(--sim-ink);
+  border-radius: 999px;
+  background: white;
+  cursor: pointer;
+}
 .sim-confirm-button {
   border: none;
-  border-radius: 999px;
-  padding: 0.42rem 0.95rem;
-  font-size: 0.82rem;
-  font-weight: 700;
   background: #173b56;
   color: white;
   box-shadow: 0 4px 10px rgba(12, 35, 55, 0.22);
@@ -143,7 +144,7 @@
 }
 
 .sim-confirm-button:hover {
-  background: #102f49;
+  background: var(--primary-color2, #087aa2);
 }
 
 .sim-adjustment {
@@ -167,17 +168,30 @@
   overflow-y: scroll;
   max-height: 400px;
   scrollbar-width: thin;
-  scrollbar-color: rgba(12, 76, 110, 0.25)
+  scrollbar-color: rgba(12, 76, 110, 0.25);
 }
 @media (max-width: 500px) {
   .sim-adjustment__scroll {
-    max-height: 200px;
+    max-height: clamp(150px, 10vh, 400px);
   }
   .sim-bottom {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
   }
+
+  .sim-confirm-button,
+  .sim-reset-button {
+    border: 1px solid rgba(12, 76, 110, 0.25);
+    border-radius: 999px;
+    padding: 0.45rem 0.85rem;
+    font-size: clamp(1rem, 2vw, 1.2rem);
+    line-height: clamp(1rem, 2vw, 1.2rem);
+    font-weight: 500;
+    max-width: 100%;
+    cursor: pointer;
+  }
+
 }
 .sim-params {
   display: flex;
@@ -269,10 +283,7 @@
     grid-area: control;
   }
 
-  .sim-actions-bottom {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-  }
+  
 }
 .sim-location-status {
   display: flex;
