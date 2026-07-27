@@ -29,7 +29,7 @@ function SimTile({ sim, direction, shimmerList }) {
   const levelData = useSelector((state) => state.mapMenu.left.panelLevel);
 
   const { setSimResult, setIsLoadingSim } = useAlboData();
-  const { simRecord, isAlboChik, displayViewIcon } = useSimTileFunctions(sim);
+  const { simRecord, isAlboChik, displayViewIcon, isFailureState, errorMessage } = useSimTileFunctions(sim);
   const { currentMapCenter, currentMapZoom, vectorName } =
     useDirectorFun('left');
   const handleDeleteSimulation = (id) => {
@@ -140,6 +140,8 @@ function SimTile({ sim, direction, shimmerList }) {
           <StatusIndicator
             status={simRecord?.status || sim.status}
             setDownloadResult={() => handleDownload(sim.id)}
+            isFailureState={isFailureState}
+            errorMessage={errorMessage}
           />
         </span>
 

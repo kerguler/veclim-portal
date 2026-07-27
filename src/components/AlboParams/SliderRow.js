@@ -29,8 +29,14 @@ const SliderRow = ({ direction }) => {
 
   const [createSimulation] = useCreateSimulationMutation();
 
-  const { disableConfirm, disableSliders, message, hasSelectedCell, markCurrentSetupSubmitted, simcount } =
-    useSimulationUiState(direction, simulationFieldValues);
+  const {
+    disableConfirm,
+    disableSliders,
+    message,
+    hasSelectedCell,
+    markCurrentSetupSubmitted,
+    simcount,
+  } = useSimulationUiState(direction, simulationFieldValues);
 
   useEffect(() => {
     if (!hasSelectedCell) {
@@ -168,13 +174,12 @@ const SliderRow = ({ direction }) => {
           </div>
 
           <div className="sim-status message">
-            {message} 
+            <div style={{ whiteSpace: 'pre-line' }}>{message}</div>
           </div>
-         
         </div>
 
         <div className="sim-actions-bottom">
-           <div className="sim-status message">
+          <div className="sim-status message">
             {simcount !== null && simcount !== undefined
               ? `You have ${simcount} simulations.`
               : ''}

@@ -53,7 +53,7 @@ function useArrangeDataSim({ rawData, dataTs, direction }) {
           mapPagePosition,
           direction
         );
-      console.log("error checkData for Mixed keys", { errorMessage, isError });
+      console.log('error checkData for Mixed keys', { errorMessage, isError });
       if (isError) throw new Error(errorMessage);
 
       ChartCalculatorService.createDateArray(rawData, chartParameters);
@@ -80,8 +80,7 @@ function useArrangeDataSim({ rawData, dataTs, direction }) {
           value: {
             id: 5,
             isError: true,
-            message:
-              'Something went wrong when dealing with data in simulation',
+            message: `Something went wrong when dealing with data in simulation \n\n ${err}`,
           },
         })
       );
@@ -101,4 +100,3 @@ function useArrangeDataSim({ rawData, dataTs, direction }) {
 }
 
 export default useArrangeDataSim;
-

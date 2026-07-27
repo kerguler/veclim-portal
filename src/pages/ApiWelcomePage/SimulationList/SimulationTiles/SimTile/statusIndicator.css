@@ -69,3 +69,33 @@
   fill: red;
   stroke: red;
 }
+.status-error-wrap {
+  position: relative;
+  display: inline-flex;
+}
+
+.status-error-popup {
+  /* Rendered as a fixed-position React portal to document.body (see
+     StatusIndicator.js openPopup), not as a child of the row. A popup
+     nested inside a row can't paint above a LATER sibling row's own
+     content just by raising a descendant's z-index — once you cross into
+     a different row's box, that row's own paint order wins, which is why
+     this used to render behind the green checkmark of the row below it.
+     Being a body-level portal also lets us clamp its horizontal position
+     in JS so it never overflows the panel/viewport edge, instead of
+     relying on `left: 50%; transform: translateX(-50%)` centering that had
+     no clamp. top/left are set inline per-instance from the button's
+     bounding rect. */
+  position: fixed;
+  background: #1e1e1e;
+  color: #fff;
+  font-size: 10px;
+  line-height: 1.2;
+  padding: 6px 10px;
+  border-radius: 4px;
+  white-space: normal;
+  width: max-content;
+  max-width: 220px;
+  z-index: 9999;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+}
