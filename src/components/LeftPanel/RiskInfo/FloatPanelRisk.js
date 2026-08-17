@@ -17,7 +17,9 @@ function RiskPanel() {
   const position = useSelector((state) => {
     return state.fetcher.fetcherStates.map.globalPosition;
   });
-  const { data, error, isFetching } = useFetchCoordinateDataQuery(JSON.stringify(position));
+  const { data, error, isFetching } = useFetchCoordinateDataQuery(
+    JSON.stringify(position)
+  );
 
   const { webApp } = useWindowSize();
   const closePic = webApp ? closePicW : closePicB;
@@ -37,6 +39,17 @@ function RiskPanel() {
   if (isFetching) {
     content = <></>;
   } else if (error) {
+    content = (
+      <div className="risk-indicator-container-nodata">
+        <p>
+          We are connecting to our servers. Please{' '}
+          <a target="_blank" rel="noreferrer" href="mailto:k.erguler@cyi.ac.cy">
+            contact us
+          </a>{' '}
+          if nothing happens soon.
+        </p>
+      </div>
+    );
   } else if (data) {
     content = (
       <>
@@ -79,7 +92,10 @@ function RiskPanel() {
           <RiskIndicator props={riskO} />
           <RiskIndicator props={riskI} />
           <AccuracyIndicator props={acc} />
-          <div className="risk-indicator-info clickable" onClick={handleClickHow}></div>
+          <div
+            className="risk-indicator-info clickable"
+            onClick={handleClickHow}
+          ></div>
         </>
       );
     }
@@ -101,8 +117,8 @@ function RiskPanel() {
             <code>Vector08c</code> and <code>CHIKV</code> model predictions
           </h1>
           <p>
-            Mosquito activity as <strong>predicted by the model</strong> (assumes tiger mosquito
-            presence). These offer a hint on{' '}
+            Mosquito activity as <strong>predicted by the model</strong>{' '}
+            (assumes tiger mosquito presence). These offer a hint on{' '}
             <strong>suitability even if the vector is absent</strong>.
           </p>
           <ul>
@@ -127,7 +143,8 @@ function RiskPanel() {
           <p>
             Predictions are normalised against Emilia-Romagna, Italy. Roughly,{' '}
             <strong>
-              low is off season, medium is start/end, and high is peak vector activity
+              low is off season, medium is start/end, and high is peak vector
+              activity
             </strong>
             .
           </p>
@@ -138,19 +155,26 @@ function RiskPanel() {
             <strong>Accuracy</strong>
           </p>
           <div className="risk-indicator-mini">
-            <AccuracyIndicator props={{ name: 'Unknown', value: 0, text: '' }} />
-            <AccuracyIndicator props={{ name: 'Pending', value: 1, text: '' }} />
+            <AccuracyIndicator
+              props={{ name: 'Unknown', value: 0, text: '' }}
+            />
+            <AccuracyIndicator
+              props={{ name: 'Pending', value: 1, text: '' }}
+            />
             <AccuracyIndicator props={{ name: 'Valid', value: 2, text: '' }} />
           </div>
           <ul>
             <li>
-              <strong>Unknown:</strong> Not tested with any observations from this region
+              <strong>Unknown:</strong> Not tested with any observations from
+              this region
             </li>
             <li>
-              <strong>Pending:</strong> Pending validation with recent observations
+              <strong>Pending:</strong> Pending validation with recent
+              observations
             </li>
             <li>
-              <strong>Valid:</strong> Validated with past and present data from this region
+              <strong>Valid:</strong> Validated with past and present data from
+              this region
             </li>
           </ul>
 

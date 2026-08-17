@@ -17,6 +17,7 @@ function StatusIndicator({
   setDownloadResult,
   isFailureState,
   errorMessage,
+  isPollStalled,
 }) {
   const [hovered, setHovered] = useState(false);
   const [showError, setShowError] = useState(false);
@@ -36,8 +37,19 @@ function StatusIndicator({
     setPopupPos({ top: rect.bottom + POPUP_GAP, left });
     setShowError(true);
   }, []);
-
   const closePopup = useCallback(() => setShowError(false), []);
+
+
+  useEffect(() => {
+    if (!showError) return;
+    window.addEventListener('scroll', closePopup, true);
+    window.addEventListener('resize', closePopup);
+    return () => {
+      window.removeEventListener('scroll', closePopup, true);
+      window.removeEventListener('resize', closePopup);
+    };
+  }, [showError, closePopup]);
+
 
   useEffect(() => {
     if (!showError) return;
@@ -53,17 +65,26 @@ function StatusIndicator({
     const isSmall =
       typeof window !== 'undefined' ? window.innerWidth < 500 : true;
     return (
-      <ToolTipComponent placement="top" label="pending" delay={150}>
+      <ToolTipComponent
+        placement="top"
+        label={
+          isPollStalled
+            ? 'having trouble checking status - retrying'
+            : 'pending'
+        }
+        delay={150}
+      >
+        {' '}
         <CircularSpinner
           size={isSmall ? 20 : 24} // match 20px / 24px
           strokeWidth={3}
-          className="status-spinner"
+          className={`status-spinner${isPollStalled ? ' status-spinner-stalled' : ''}`}
         />
       </ToolTipComponent>
     );
   }
 
-  if (isFailureState || status === 'FAILURE' || status === 'FAILED') {
+    if (isFailureState || status === 'FAILURE' || status === 'FAILED') {
     const errorTrigger = (
       <span className="status-error-wrap">
         <button
@@ -71,6 +92,7 @@ function StatusIndicator({
           ref={errorBtnRef}
           className="status-btn"
           onClick={() => (showError ? closePopup() : openPopup())}
+          onMouseLeave={closePopup}
           aria-label="Show error details"
         >
           <ErrorIcon className="status-icon red" />
@@ -89,14 +111,6 @@ function StatusIndicator({
           )}
       </span>
     );
-
-    // Only show the "click for error details" hover hint while the reason
-    // popup isn't already open. The hint tooltip (ToolTipComponent) only
-    // closes on mouseleave, not on click — if it stayed mounted while
-    // showError is true, clicking to close the reason popup would close
-    // THAT popup but leave the hint bubble sitting there (the mouse hasn't
-    // moved), which looks exactly like "the popup won't turn off". Once
-    // the reason is already showing, the hint is redundant anyway.
     if (showError) return errorTrigger;
 
     return (

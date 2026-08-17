@@ -23,7 +23,9 @@ function FloatPanelMosquitoInfo() {
   const position = useSelector((state) => {
     return state.fetcher.fetcherStates.map.globalPosition;
   });
-  const { data, error, isFetching } = useFetchCoordinateDataQuery(JSON.stringify(position));
+  const { data, error, isFetching } = useFetchCoordinateDataQuery(
+    JSON.stringify(position)
+  );
 
   const [isFlipped, setFlip] = useState(false);
 
@@ -45,20 +47,41 @@ function FloatPanelMosquitoInfo() {
       <div className="mosquito-container-wrap">
         <div className="mosquito-container">
           {' '}
-          <ChartLoadingSkeleton noBorder={true} times={4}></ChartLoadingSkeleton>
+          <ChartLoadingSkeleton
+            noBorder={true}
+            times={4}
+          ></ChartLoadingSkeleton>
         </div>
       </div>
     );
   } else if (error) {
+    content = (
+      <p>
+        We are connecting to our servers. Please{' '}
+        <a href="mailto:k.erguler@cyi.ac.cy" target="_blank" rel="noreferrer">
+          contact us
+        </a>{' '}
+        if nothing happens soon.
+      </p>
+    );
   } else if (data) {
     if (!('location' in data) || !data.location.island) {
-      content = <p>Ops! We do not have information about the tiger mosquito in your region</p>;
+      content = (
+        <p>
+          Ops! We do not have information about the tiger mosquito in your
+          region
+        </p>
+      );
       explain = (
         <div className="mosquito-text-full">
           <p>This is strage!</p>
           <p>
             Please{' '}
-            <a href="mailto:k.erguler@cyi.ac.cy" target="_blank" rel="noreferrer">
+            <a
+              href="mailto:k.erguler@cyi.ac.cy"
+              target="_blank"
+              rel="noreferrer"
+            >
               contact us
             </a>{' '}
             about this problem.
@@ -68,14 +91,16 @@ function FloatPanelMosquitoInfo() {
     } else if (data.presence.albopictus[0]) {
       content = (
         <p>
-          There are reports of the <strong>tiger mosquito</strong> in your region
+          There are reports of the <strong>tiger mosquito</strong> in your
+          region
         </p>
       );
       explain = (
         <>
           <div className="mosquito-text-full">
             <p>
-              The tiger mosquito is seen somewhere around the <strong>little red square</strong>.
+              The tiger mosquito is seen somewhere around the{' '}
+              <strong>little red square</strong>.
             </p>
             <p>How do we know? Here:</p>
             <ul>
@@ -91,8 +116,8 @@ function FloatPanelMosquitoInfo() {
             </ul>
             <p>
               Please check it out,{' '}
-              <strong>contact your regional authorities for information</strong>, and do let us know
-              if we've made a mistake.
+              <strong>contact your regional authorities for information</strong>
+              , and do let us know if we've made a mistake.
             </p>
             <p>
               I am sure you will find this excellent{' '}
@@ -111,19 +136,21 @@ function FloatPanelMosquitoInfo() {
     } else {
       content = (
         <p>
-          There are <strong>no</strong> reports of the tiger mosquito in your region
+          There are <strong>no</strong> reports of the tiger mosquito in your
+          region
         </p>
       );
       explain = (
         <>
           <div className="mosquito-text-full">
             <p>
-              <strong>Good news!</strong> The little red square on the map does not overlap with any
-              administrative region where the tiger mosquito is seen.
+              <strong>Good news!</strong> The little red square on the map does
+              not overlap with any administrative region where the tiger
+              mosquito is seen.
             </p>
             <p>
-              We try to keep an up-to-date database of mosquito sightings. Please let us know if we
-              missed something!
+              We try to keep an up-to-date database of mosquito sightings.
+              Please let us know if we missed something!
             </p>
           </div>
         </>

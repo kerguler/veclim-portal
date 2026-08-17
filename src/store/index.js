@@ -101,7 +101,7 @@ import {
   setTwinsNotDisplayed,
   setSwitcher,
   setDisplayedIcons,
-  setSwitcherArrows,
+  
   graphSwitcherReducer,
 } from './slices/switcherSlice';
 import { vectorSelectorReducer } from './slices/vectorSelectorSlice';
@@ -291,7 +291,6 @@ export {
   setDividerPosition,
   setSwitcher,
   setTwinsNotDisplayed,
-  setSwitcherArrows,
   setTwinArray,
   setTwinIndex,
   setDisplayedIcons,

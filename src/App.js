@@ -4,6 +4,7 @@ import { Route, Routes } from 'react-router-dom';
 import { Suspense, lazy } from 'react';
 import 'styles/Theme1.css';
 import 'styles/App.css';
+import ErrorBoundary from 'components/errorBoundary/ErrorBoundary';
 import CookieHandler from './components/cookieConsent/CookieHandler';
 import { useUserLocation } from './store/apis/utils';
 import { PanelProvider } from 'context/panelsIconsV2';
@@ -17,12 +18,14 @@ function App() {
     <div className="app">
       <div className="page-container">
         <CookieHandler></CookieHandler>
-        <Suspense fallback={<div>Loading...</div>}>
-          <Routes>
-            <Route path="/" element={<GenericPage />} />
-            <Route path="/Project" element={<GenericPage />} />
-            <Route path="/Policy" element={<GenericPage />} />
-            {/* <Route
+
+        <ErrorBoundary>
+          <Suspense fallback={<div>Loading...</div>}>
+            <Routes>
+              <Route path="/" element={<GenericPage />} />
+              <Route path="/Project" element={<GenericPage />} />
+              <Route path="/Policy" element={<GenericPage />} />
+              {/* <Route
 							path='/Methods/TigerMosquito'
 							element={<GenericPage />}
 						/>
@@ -30,19 +33,20 @@ function App() {
 							path='/Methods/SandFly'
 							element={<GenericPage />}
 						/> */}
-            <Route path="/Methods/:vecId" element={<VectorMethodsPage />} />
+              <Route path="/Methods/:vecId" element={<VectorMethodsPage />} />
 
-            <Route path="/404" element={<NoPage />} />
-            <Route
-              path="/MapPage"
-              element={
-                <PanelProvider>
-                  <MapPackageLandingV2 />
-                </PanelProvider>
-              }
-            />
-          </Routes>
-        </Suspense>
+              <Route path="/404" element={<NoPage />} />
+              <Route
+                path="/MapPage"
+                element={
+                  <PanelProvider>
+                    <MapPackageLandingV2 />
+                  </PanelProvider>
+                }
+              />
+            </Routes>
+          </Suspense>
+        </ErrorBoundary>
       </div>
     </div>
   );

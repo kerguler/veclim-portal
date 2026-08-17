@@ -30,7 +30,7 @@
   right: 0%;
 }
 
-@media (min-width: 500) {
+@media (min-width: 500px) {
   .switcher-arrows {
     position: absolute;
     top: 0%;

@@ -1,4 +1,3 @@
-import HoverMenuMethods from 'components/HoverMenuMethods/HoverMenuMethods';
 import { Link } from 'react-router-dom';
 import './BurgerMenu.css';
 import MethodsNavItem from 'components/MethodsNavItem/MethodsNavItem';

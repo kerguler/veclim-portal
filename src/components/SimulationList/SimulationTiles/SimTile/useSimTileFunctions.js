@@ -3,7 +3,8 @@ import { useGetSimulationListQuery } from 'store';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { setAlbochickStatus } from 'store';
-
+import { useRef } from 'react';
+const STALLED_POLL_THRESHOLD = 2;
 const FAILURE_CODE_MESSAGES = {
   OOM_KILLED:
     'This simulation ran out of memory on the server. Please try again.',
@@ -22,12 +23,13 @@ const FAILURE_CODE_MESSAGES = {
   TASK_FAILED: 'Something went wrong while running this simulation.',
   DEFAULT: 'Something went wrong while running this simulation.',
 };
-
 function useSimTileFunctions(sim) {
   const dispatch = useDispatch();
   const [isAlboChik, setIsAlboChik] = useState(false);
   const [displayViewIcon, setDisplayViewIcon] = useState(false);
   const [pollingActive, setPollingActive] = useState(false);
+  const [isPollStalled, setIsPollStalled] = useState(false);
+  const consecutiveFailuresRef = useRef(0);
   const {
     data: simRecord,
     isFetching: isSimListFetching,
@@ -42,6 +44,22 @@ function useSimTileFunctions(sim) {
     return () => clearInterval(interval);
   }, [pollingActive, refetch]);
 
+  useEffect(() => {
+    if (!pollingActive) {
+      consecutiveFailuresRef.current = 0;
+      setIsPollStalled(false);
+      return;
+    }
+    if (simListError) {
+      consecutiveFailuresRef.current += 1;
+      if (consecutiveFailuresRef.current >= STALLED_POLL_THRESHOLD) {
+        setIsPollStalled(true);
+      }
+    } else {
+      consecutiveFailuresRef.current = 0;
+      setIsPollStalled(false);
+    }
+  }, [simListError, pollingActive]);
   useEffect(() => {
     if (!simRecord) return;
     const isPendingSim =
@@ -62,7 +80,6 @@ function useSimTileFunctions(sim) {
   const hasData = simRecord?.success === 1 || simRecord?.success === true;
   const isNoDataCompletion = isCompleted && !hasData;
   const isFailureState = isHardFailure || isNoDataCompletion;
-
   const errorMessage = isHardFailure
     ? FAILURE_CODE_MESSAGES[simRecord?.errors?.code] ||
       FAILURE_CODE_MESSAGES.DEFAULT
@@ -89,6 +106,7 @@ function useSimTileFunctions(sim) {
     simRecord,
     isSimListFetching,
     simListError,
+    isPollStalled,
     refetch,
     isAlboChik,
     displayViewIcon,

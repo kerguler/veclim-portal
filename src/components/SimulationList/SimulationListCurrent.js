@@ -8,7 +8,7 @@ import useCsrf from 'pages/LoginRegister/Services/useCsrf';
 function SimulationListCurrent({ direction }) {
   const dispatch = useDispatch();
   useCsrf(); // Initialize CSRF token for API requests
-  const { data: fetchedSimList } = useGetSimulationListQuery({
+  const { data: fetchedSimList,isLoading, isFetching, error, refetch } = useGetSimulationListQuery({
     return_results: false,
   });
 
@@ -18,15 +18,28 @@ function SimulationListCurrent({ direction }) {
   }, [fetchedSimList, dispatch]);
 
   let renderedSimulationList = null;
-  console.log({ fetchedSimList });
   if (fetchedSimList) {
     renderedSimulationList = (
       <SimulationTiles fetchedSimList={fetchedSimList} direction={direction} />
     );
+  }   else if (error) {
+    renderedSimulationList = (
+      <div className="simlist-error">
+        <p>Couldn't load your simulations. Check your connection.</p>
+        <button type="button" className="simlist-retry" onClick={refetch}>
+          Retry
+        </button>
+      </div>
+    );
+  } else if (isLoading || isFetching) {
+    renderedSimulationList = (
+      <div><p>Loading simulations…</p></div>
+    );
+ 
   } else {
     renderedSimulationList = (
       <div>
-        <p>Waiting for data</p>
+        <p>No simulations yet.</p>
       </div>
     );
   }

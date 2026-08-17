@@ -1,4 +1,4 @@
-import RenderedPanelV2 from 'components/panel/SwitcherV2/RenderedPanelV2';
+import RenderedPanelV2 from 'components/panel/RenderedPanel';
 import useDirectorFun from 'customHooks/useDirectorFun';
 import { useEffect, useRef } from 'react';
 
@@ -8,8 +8,6 @@ import { setGraphType } from 'store';
 import { setLastPanelDisplayed, setPanelOpen } from '../menuStore/mapMenuSlice';
 import { setSiblingCount } from 'store';
 import { setTwinIndex } from 'store';
-import { Tab } from 'material-ui';
-import { TabView } from 'components/TabView/TabView';
 function PanelChildren({ displayedItem, level, direction }) {
   const dispatch = useDispatch();
   const {

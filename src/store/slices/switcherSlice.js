@@ -9,7 +9,6 @@ const graphSwitcherSlice = createSlice({
       twinIndex: 0,
       siblingCount: 1,
       twinArray: [],
-      switcherArrows: { left: false, right: false },
       displayedIcons: [{ id: null, panelArray: [] }],
     },
     right: {
@@ -18,7 +17,6 @@ const graphSwitcherSlice = createSlice({
       twinIndex: 0,
       siblingCount: 1,
       twinArray: [],
-      switcherArrows: { left: false, right: false },
       displayedIcons: [{ id: null, panelArray: [] }],
     },
   },
@@ -46,10 +44,6 @@ const graphSwitcherSlice = createSlice({
       state[direction].twinArray = value;
     },
 
-    setSwitcherArrows(state, action) {
-      const { direction, value } = action.payload;
-      state[direction].switcherArrows = value;
-    },
 
     setDisplayedIcons(state, action) {
       const { direction, value } = action.payload;
@@ -63,7 +57,6 @@ export const {
   setTwinsNotDisplayed,
   setTwinIndex,
   setTwinArray,
-  setSwitcherArrows,
   setDisplayedIcons,
   setSiblingCount,
 } = graphSwitcherSlice.actions;

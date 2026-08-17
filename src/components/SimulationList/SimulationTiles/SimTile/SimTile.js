@@ -29,7 +29,14 @@ function SimTile({ sim, direction, shimmerList }) {
   const levelData = useSelector((state) => state.mapMenu.left.panelLevel);
 
   const { setSimResult, setIsLoadingSim } = useAlboData();
-  const { simRecord, isAlboChik, displayViewIcon, isFailureState, errorMessage } = useSimTileFunctions(sim);
+  const {
+    simRecord,
+    isAlboChik,
+    displayViewIcon,
+    isFailureState,
+    errorMessage,
+    isPollStalled,
+  } = useSimTileFunctions(sim);
   const { currentMapCenter, currentMapZoom, vectorName } =
     useDirectorFun('left');
   const handleDeleteSimulation = (id) => {
@@ -50,6 +57,8 @@ function SimTile({ sim, direction, shimmerList }) {
 
   const handleViewSimulationResults = async (id) => {
     dispatch(setShimmered({ direction, value: shimmerList }));
+    setIsLoadingSim(true);
+    setErrorSim(null);
 
     try {
       const payload = await triggerFetch({ id, return_results: true }).unwrap();
@@ -90,6 +99,7 @@ function SimTile({ sim, direction, shimmerList }) {
       );
     } catch (err) {
       console.error('Failed to load simulation results:', err);
+      setErrorSim(err);
     } finally {
       setIsLoadingSim(false);
     }
@@ -142,6 +152,7 @@ function SimTile({ sim, direction, shimmerList }) {
             setDownloadResult={() => handleDownload(sim.id)}
             isFailureState={isFailureState}
             errorMessage={errorMessage}
+            isPollStalled={isPollStalled}
           />
         </span>
 

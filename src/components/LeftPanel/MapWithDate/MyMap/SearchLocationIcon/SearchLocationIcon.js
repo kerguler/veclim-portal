@@ -11,6 +11,17 @@ import {
 import ToolTipComponent from 'components/ToolTipComponent/ToolTipComponent';
 import './SearchLocationIcon.css';
 import { useEffect, useRef } from 'react';
+
+// If the network drops mid-load before this icon's own request finishes,
+// the browser shows the native "broken image" glyph plus the alt text
+// spilling out next to it. Swap to a small inline SVG (no network needed)
+// instead of leaving that broken state on screen.
+const SEARCH_ICON_FALLBACK =
+  'data:image/svg+xml,' +
+  encodeURIComponent(
+    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#444" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>'
+  );
+
 function SearchLocationIcon() {
   //TODO: handle the closing of the settings menu
   const dispatch = useDispatch();
@@ -53,6 +64,10 @@ function SearchLocationIcon() {
           alt="search-icon"
           className="locate-me-icon"
           onClick={handleSearchIconClick}
+          onError={(e) => {
+            e.currentTarget.onerror = null;
+            e.currentTarget.src = SEARCH_ICON_FALLBACK;
+          }}
           src={searchIcon}
         />{' '}
       </ToolTipComponent>

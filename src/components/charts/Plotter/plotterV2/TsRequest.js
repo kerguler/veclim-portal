@@ -61,7 +61,7 @@ function TsRequest({ direction }) {
         Object.keys(chartParameters).length > 0 &&
         mapPagePosition.lat
       ) {
-        const { errorMessage, isError } =
+        const { errorMessage, isError, unavailableKeys } =
           ChartCalculatorService.checkDataForMixedKeys(
             chartParameters,
             data,
@@ -80,12 +80,24 @@ function TsRequest({ direction }) {
           );
           throw new Error(errorMessage);
         }
+
+        // Filter out unavailable keys before downstream processing.
+        const effectiveChartParameters =
+          unavailableKeys && unavailableKeys.length > 0
+            ? {
+                ...chartParameters,
+                mixedKeys: chartParameters.mixedKeys.filter(
+                  (element) => !unavailableKeys.includes(element.key)
+                ),
+              }
+            : chartParameters;
+
         r.data = data;
         r.dataToPlot = {};
         r.rawDataToPlot = {};
-        ChartCalculatorService.createDateArray(rawData, chartParameters);
-        ChartCalculatorService.handleMixedKeys(rawData, chartParameters);
-        ChartCalculatorService.handleSlices(rawData, chartParameters);
+        ChartCalculatorService.createDateArray(rawData, effectiveChartParameters);
+        ChartCalculatorService.handleMixedKeys(rawData, effectiveChartParameters);
+        ChartCalculatorService.handleSlices(rawData, effectiveChartParameters);
         dispatch(setPlotReady({ direction, value: true }));
         dispatch(
           setMessenger({
@@ -103,9 +115,19 @@ function TsRequest({ direction }) {
           })
         );
       } else {
-        console.log('no data or no chartparameters');
         dispatch(setPlotReady({ direction, value: false }));
-        mapPagePosition.lat &&
+        if (error) {
+          dispatch(
+            setMessenger({
+              direction,
+              value: {
+                ...messenger,
+                message:
+                  "Couldn't load data for this location. Check your connection and try again.",
+              },
+            })
+          );
+        } else if (mapPagePosition.lat) {
           dispatch(
             setMessenger({
               direction,
@@ -115,6 +137,7 @@ function TsRequest({ direction }) {
               },
             })
           );
+        }
       }
     } catch (err) {
       console.log('in catch block', err);

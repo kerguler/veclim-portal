@@ -15,16 +15,16 @@
 /* card centers within your modal, fluid width */
 .login-card {
   width: min(450px, 100%);
-  width:100%;
+  width: 100%;
   padding: 12px;
 }
 
-.login-title {
+/* .login-title {
   margin: 0 0 4px 0;
   color: var(--primary-color1);
   font-size: clamp(18px, 3.4vw, 22px);
   font-weight: 700;
-}
+} */
 
 .login-sub {
   margin: 0 0 12px 0;
@@ -104,12 +104,39 @@
 
 /* error text */
 .error {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
   margin-top: 4px;
+  padding: 8px 10px;
+  background: #fdecea;
+  border: 1px solid #f5c2c0;
+  border-radius: 8px;
   color: #b00020;
   font-size: clamp(12px, 2.6vw, 14px);
+  line-height: 1.35;
 }
 .error.small {
+  background: none;
+  border: 0;
+  padding: 0;
   font-size: clamp(11px, 2.4vw, 13px);
+}
+
+.error-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: 16px;
+  height: 16px;
+  margin-top: 1px;
+  border-radius: 50%;
+  background: #b00020;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1;
 }
 
 /* footer link */

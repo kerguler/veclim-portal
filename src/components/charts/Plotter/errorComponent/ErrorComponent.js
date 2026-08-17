@@ -1,7 +1,14 @@
-function ErrorComponent({ text, errorcode }) {
+function ErrorComponent({ text, errorcode, onRetry }) {
 	return (
 		<div className='error-container'>
-			<p>{text}</p>
+		<div>
+				<p>{text}</p>
+				{onRetry && (
+					<button type='button' className='error-retry' onClick={onRetry}>
+						Retry
+					</button>
+				)}
+			</div>
 		</div>
 	);
 }

@@ -24,7 +24,6 @@ import useSetBrushInfo from './useSetBrushInfo';
 import { useMemo } from 'react';
 import handleAxisAdjustments from './handleAxisAdjustments';
 import { useState } from 'react';
-import SwitcherArrows from 'components/panel/SwitcherArrows';
 function RechartsPlot({ direction, plotMat }) {
   const args = {
     years: { firstYear: null, lastYear: null },
@@ -199,7 +198,6 @@ function RechartsPlot({ direction, plotMat }) {
       />
 
       <ResponsiveContainer>
-        {/* <SwitcherArrows direction={direction} /> */}
 
         <LineChart
           id="line-chart"

@@ -33,6 +33,28 @@
   border-radius: 10px 10px 0px 0px;
 }
 
+.simlist-error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem;
+  text-align: center;
+  color: #b00020;
+}
+.simlist-retry {
+  border: 1px solid var(--primary-color1);
+  background: transparent;
+  color: var(--primary-color1);
+  border-radius: 2rem;
+  padding: 0.3rem 1rem;
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+.simlist-retry:hover {
+  background: color-mix(in srgb, var(--primary-color1) 10%, transparent);
+}
+
 @media (min-width: 500px) {
   .simlist-container {
     display: flex;

@@ -60,7 +60,6 @@ function Panel({
   });
   return (
     <div className={outerClassNames} style={interferePanelStyle}>
-      {/* <SwitcherArrows direction={direction} passedKey={passedKey} /> */}
       <div className="panel-close-button" onClick={handleClick}>
         <img alt="close-button" src={closeIcon} />
       </div>

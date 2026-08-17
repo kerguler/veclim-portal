@@ -42,7 +42,11 @@ function AlboParams({ children }) {
     );
     dispatch(setPassword(''));
     localStorage.removeItem('id');
-    await refresh();
+    try {
+      await refresh();
+    } catch (e) {
+      console.error('CSRF refresh after logout failed (non-critical):', e);
+    }
   };
 
   return showPanel ? (

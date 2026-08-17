@@ -12,8 +12,6 @@ import { setTwinIndex } from 'store';
 import { setPanelOpen } from 'store';
 import MapToolsPopover from 'components/map/MapToolsPanel/MapToolsPopover';
 import { useRef } from 'react';
-import { TabView } from 'components/TabView/TabView';
-import { setOpenItems } from 'store';
 const PanelChildren = lazy(() => import('./PanelChildren'));
 const MenuChildren = lazy(() => import('./MenuChildren'));
 

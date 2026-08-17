@@ -1,4 +1,3 @@
-import { parse } from 'jsoneditor/dist/jsoneditor-minimalist';
 import { parseDate } from 'store/apis/utils';
 
 class ChartCalculatorService {
@@ -46,28 +45,40 @@ class ChartCalculatorService {
       };
     }
 
-    let error = { errorMessage: null, isError: false };
+    // Per manual.md: a missing mixedKeys entry is ignored, not blocking.
+    let error = { errorMessage: null, isError: false, unavailableKeys: [] };
     for (const element of chartParameters.mixedKeys) {
-      const { levels } = element;
+      const { key, levels } = element;
       let val = data;
+      let missing = false;
 
       for (const v of levels) {
-        if (v in val) {
+        if (val != null && v in val) {
           val = val[v];
         } else {
-          // Update error state and exit
-          //watchout for this one....
-
-          error.errorMessage = `There is no data available for the position chosen lat:${mapPagePosition.lat.toFixed(
-            2
-          )} lng: ${mapPagePosition.lng.toFixed(2)}`;
-          error.isError = true;
-          return error; // Exit immediately when an error is found
+          missing = true;
+          break;
         }
+      }
+
+      // Present but empty (e.g. a sub-model with zero trials) also counts as missing.
+      const isEmptyArray = Array.isArray(val) && val.length === 0;
+
+      if (missing || isEmptyArray) {
+        error.unavailableKeys.push(key);
       }
     }
 
-    // Return error object (default to no error)
+    if (error.unavailableKeys.length === chartParameters.mixedKeys.length) {
+      // Nothing at all resolved - genuine no-data case.
+      error.errorMessage =
+        data?.reason ||
+        `There is no data available for the position chosen lat:${mapPagePosition.lat.toFixed(
+          2
+        )} lng: ${mapPagePosition.lng.toFixed(2)}`;
+      error.isError = true;
+    }
+
     return error;
   }
 

@@ -16,8 +16,7 @@ import SettingsPanel from 'components/panel/SettingsPanel';
 import { tileIcons } from './tileIcons';
 import AlboParams from 'components/AlboParams/AlboParams';
 import { SimulationParametersTab } from 'components/AlboParams/SimulationParametersTab';
-import SimulationListCurrent from 'pages/ApiWelcomePage/SimulationList/SimulationListCurrent';
-import { TabView } from 'components/TabView/TabView';
+import SimulationListCurrent from 'components/SimulationList/SimulationListCurrent';
 export const panelData = [
   {
     key: 'menu_icon',
