@@ -71,14 +71,13 @@ function TsRequest({ direction }) {
             direction
           );
         if (isError) {
-          console.log('shouldnt have come here');
           dispatch(
             setMessenger({
               direction,
               value: { id: 0, message: errorMessage },
             })
           );
-          throw new Error(errorMessage);
+          return;
         }
 
         // Filter out unavailable keys before downstream processing.
@@ -140,13 +139,13 @@ function TsRequest({ direction }) {
         }
       }
     } catch (err) {
-      console.log('in catch block', err);
+      console.error('Chart data processing failed:', err);
       dispatch(
         setMessenger({
           direction,
           value: {
             ...messenger,
-            message: err.message,
+            message: 'Something went wrong displaying this chart. Please try again.',
           },
         })
       );
