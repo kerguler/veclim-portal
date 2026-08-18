@@ -1,10 +1,9 @@
 import './alboParams.css';
-import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import LoginComponent from 'pages/LoginRegister/LoginComponent/LoginComponent';
 
-import { useLogoutMutation } from 'store';
+import { useLogoutMutation, useGetSimulationListQuery } from 'store';
 import { setApiRegisterResponse, setPassword } from 'store';
 import useCsrf from 'pages/LoginRegister/Services/useCsrf';
 
@@ -15,14 +14,25 @@ function AlboParams({ children }) {
   const direction = 'left';
   const apiReg = useSelector((s) => s.login.apiRegisterResponse);
   const userID = apiReg?.userId;
-  const userName = apiReg?.userName;
+  const userName = apiReg?.userName || localStorage.getItem('username');
 
-  const [showPanel, setShowPanel] = useState(false);
   const [logout, { isLoading: loggingOut }] = useLogoutMutation();
 
-  useEffect(() => {
-    setShowPanel(Boolean(userID));
-  }, [userID]);
+  // No local record of being logged in yet (e.g. fresh page load) - probe
+  // with an already-authenticated endpoint to see if the existing session
+  // cookie is still valid, instead of asking for the password again.
+  const {
+    data: sessionCheckData,
+    error: sessionCheckError,
+    isFetching: checkingSession,
+    refetch: refetchSessionCheck,
+  } = useGetSimulationListQuery(
+    { return_results: false },
+    { skip: Boolean(userID) }
+  );
+
+  const hasValidSession =
+    Boolean(userID) || (Boolean(sessionCheckData) && !sessionCheckError);
 
   const handleLogout = async () => {
     try {
@@ -47,9 +57,16 @@ function AlboParams({ children }) {
     } catch (e) {
       console.error('CSRF refresh after logout failed (non-critical):', e);
     }
+    // Force the session-check query to re-run now that the cookie is gone,
+    // otherwise its cached "logged in" result keeps the panel showing.
+    refetchSessionCheck();
   };
 
-  return showPanel ? (
+  if (!hasValidSession && checkingSession) {
+    return <div className="albo-params-container">Checking session…</div>;
+  }
+
+  return hasValidSession ? (
     <div className="albo-params-container">
       <div className="albo-header">
         <span className="albo-user">

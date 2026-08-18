@@ -83,11 +83,9 @@ function LoginComponent() {
   useEffect(() => {
     const remembered = localStorage.getItem('rememberLogin') === 'true';
     const storedUser = localStorage.getItem('username') || '';
-    const storedPw = localStorage.getItem('password') || '';
     if (remembered) {
       dispatch(setRememberLogin(true));
       if (storedUser) dispatch(setUsername(storedUser));
-      if (storedPw) dispatch(setPassword(storedPw));
     }
   }, [dispatch]);
 
@@ -101,17 +99,15 @@ function LoginComponent() {
     localStorage.setItem('rememberLogin', String(val));
     if (val) {
       localStorage.setItem('username', username);
-      localStorage.setItem('password', password);
     } else {
       localStorage.removeItem('username');
-      localStorage.removeItem('password');
     }
   };
 
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const data = await login({ username, password }).unwrap();
+      const data = await login({ username, password, remember: rememberLogin }).unwrap();
       dispatch(
         setApiRegisterResponse({
           response: data,

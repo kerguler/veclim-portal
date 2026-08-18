@@ -112,7 +112,7 @@ function RechartsPlot({ direction, plotMat }) {
     s3 = { ...s3, [key]: { min: Infinity, max: -Infinity } };
   });
 
-  useMemo(() => {
+  useEffect(() => {
     handleAxisAdjustments(
       plotMat,
       chartParameters,

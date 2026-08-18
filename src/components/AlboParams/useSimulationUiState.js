@@ -19,11 +19,13 @@ export default function useSimulationUiState(direction, simulationFieldValues) {
   const { isFetching, error, data } = useGetSimulationListQuery({
     return_results: false,
   });
-  let simcount = 0;
-  if (data) {
-    simcount = data.length;
-    dispatch(setSimList(data));
-  }
+  const simcount = data ? data.length : 0;
+  useEffect(() => {
+    if (data) {
+      dispatch(setSimList(data));
+    }
+  }, [data, dispatch]);
+
   const { setDataSim, errorSim } = useAlboData();
 
   const [lastSubmittedSimulationKey, setLastSubmittedSimulationKey] =

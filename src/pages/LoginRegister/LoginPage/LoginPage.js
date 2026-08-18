@@ -35,10 +35,8 @@ function LoginPage() {
 	useEffect(() => {
 		const rememberLogin = localStorage.getItem("rememberLogin");
 		const username = localStorage.getItem("username");
-		const password = localStorage.getItem("password");
-		if (rememberLogin && username && password) {
+		if (rememberLogin && username) {
 			dispatch(setUsername(username));
-			dispatch(setPassword(password));
 			dispatch(setRememberLogin(rememberLogin));
 		}
 	}, []);
@@ -54,11 +52,10 @@ function LoginPage() {
 		dispatch(setRememberLogin(e.target.checked));
 		localStorage.setItem("rememberLogin", e.target.checked);
 		localStorage.setItem("username", username);
-		localStorage.setItem("password", password);
 	};
 	const handleLogin = async () => {
 		try {
-			const response = await loginUser(login, { username, password });
+			const response = await loginUser(login, { username, password, remember: rememberLogin });
 
 			dispatch(
 				setApiRegisterResponse({
