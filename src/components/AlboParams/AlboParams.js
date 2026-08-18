@@ -1,4 +1,5 @@
 import './alboParams.css';
+import { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import LoginComponent from 'pages/LoginRegister/LoginComponent/LoginComponent';
@@ -33,6 +34,26 @@ function AlboParams({ children }) {
 
   const hasValidSession =
     Boolean(userID) || (Boolean(sessionCheckData) && !sessionCheckError);
+
+  // A session can become valid either via a fresh login (which already
+  // refreshes the CSRF token itself) or via this passive cookie check on
+  // page load. Only the login path used to refresh CSRF, so a returning
+  // user with a still-valid session cookie never got a matching CSRF
+  // token in Redux, and every mutation fell back to sending the raw
+  // cookie value - which the backend rejects. Refresh here too.
+  const csrfRefreshedRef = useRef(false);
+  useEffect(() => {
+    if (hasValidSession && !csrfRefreshedRef.current) {
+      csrfRefreshedRef.current = true;
+      refresh().catch((e) => {
+        console.error('CSRF refresh on session validation failed:', e);
+        csrfRefreshedRef.current = false;
+      });
+    }
+    if (!hasValidSession) {
+      csrfRefreshedRef.current = false;
+    }
+  }, [hasValidSession, refresh]);
 
   const handleLogout = async () => {
     try {

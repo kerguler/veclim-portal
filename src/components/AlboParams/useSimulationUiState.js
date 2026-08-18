@@ -11,6 +11,27 @@ import {
 } from 'store';
 import { useGetSimulationListQuery } from 'store';
 import { setSimList } from 'store';
+
+// Turns a raw simulation-submit error into something a user can act on,
+// instead of surfacing backend/framework internals (e.g. Django's CSRF
+// failure text) directly in the UI.
+function getFriendlySimError(errorSim) {
+  const detail = errorSim?.data?.detail;
+
+  if (typeof detail === 'string' && detail.toLowerCase().includes('csrf')) {
+    return 'Your session needs to be refreshed. Please reload the page and try again.';
+  }
+  if (errorSim?.status === 401 || errorSim?.status === 403) {
+    return 'You need to be logged in to run a simulation. Please log in and try again.';
+  }
+  if (errorSim?.status === 'FETCH_ERROR' || errorSim?.status === 'TIMEOUT_ERROR') {
+    return "Can't reach the server right now. Check your connection and try again.";
+  }
+  if (typeof detail === 'string' && detail) return detail;
+
+  return 'Something went wrong running this simulation. Please try again.';
+}
+
 export default function useSimulationUiState(direction, simulationFieldValues) {
   const dispatch = useDispatch();
 
@@ -106,9 +127,9 @@ export default function useSimulationUiState(direction, simulationFieldValues) {
       console.log('errorSim:', errorSim);
       return `We have an error for lat:${Number(mapPagePosition.lat).toFixed(
         2
-      )} lng:${Number(mapPagePosition.lng).toFixed(2)}: ${
-        errorSim?.data?.detail || 'Unknown error'
-      }`;
+      )} lng:${Number(mapPagePosition.lng).toFixed(2)}: ${getFriendlySimError(
+        errorSim
+      )}`;
     }
 
     if (invalidateSimData) {

@@ -3,7 +3,6 @@ import { setupListeners } from '@reduxjs/toolkit/query';
 import { coordinatesApi } from './apis/coordinatesApi';
 import { timeSeriesApi } from './apis/timeSeriesApi';
 import { colorBarsApi } from './apis/colorBarsApi';
-import { alboApi } from './apis/alboApi';
 import {
   searchBarReducer,
   setShowSearchBar,
@@ -159,7 +158,6 @@ export const store = configureStore({
     [newsApi.reducerPath]: newsApi.reducer,
     [loginRegisterApi.reducerPath]: loginRegisterApi.reducer,
     [simulationApi.reducerPath]: simulationApi.reducer,
-    [alboApi.reducerPath]: alboApi.reducer,
     login: loginReducer,
     dashboard: dashboardReducer,
     simulation: simulationReducer,
@@ -181,17 +179,11 @@ export const store = configureStore({
       .concat(colorBarsApi.middleware)
       .concat(newsApi.middleware)
       .concat(loginRegisterApi.middleware)
-      .concat(simulationApi.middleware)
-      .concat(alboApi.middleware); //.concat(logger);
+      .concat(simulationApi.middleware); //.concat(logger);
   },
 });
 setupListeners(store.dispatch);
 export { useFetchCoordinateDataQuery } from './apis/coordinatesApi';
-export {
-  useSubmitAlboDataMutation,
-  useFetchSimStatusQuery,
-  useListenToSimUpdatesQuery,
-} from './apis/alboApi';
 export { useFetchTimeSeriesDataQuery } from './apis/timeSeriesApi';
 export { useFetchColorBarsDataQuery } from './apis/colorBarsApi';
 export {
