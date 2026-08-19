@@ -16,23 +16,41 @@ const News = ({ width }) => {
   const displayedArticleId = useSelector(
     (state) => state.news.displayedArticleId
   );
+  const displayReady = useSelector((state) => state.news.displayReady);
 
   useEffect(() => {
     if (data) {
       dispatch(setNews(data));
-      dispatch(setDisplayReady(true));
+      if (data.length > 0 && data[0]?.image) {
+        let firstReady = false;
+        data.forEach((article, idx) => {
+          if (!article.image) return;
+          const img = new Image();
+          const markFirstReady = () => {
+            if (idx === 0 && !firstReady) {
+              firstReady = true;
+              dispatch(setDisplayReady(true));
+            }
+          };
+          img.onload = markFirstReady;
+          img.onerror = markFirstReady;
+          img.src = article.image;
+        });
+      } else {
+        dispatch(setDisplayReady(true));
+      }
     }
   }, [data, dispatch]);
 
   useEffect(() => {
-    if (data && data?.id && displayedArticleId === -1) {
+    if (data && data.length > 0 && displayedArticleId === -1) {
       dispatch(setDisplayedArticleId(data[0].id));
     }
   }, [data, dispatch, displayedArticleId]);
   let output = null;
 
   if (isFetching) {
-    output = <Loader text="loading" />;
+    output = <Loader />;
   } else if (error) {
     output = (
       <div className="news-wrapper">
@@ -42,18 +60,17 @@ const News = ({ width }) => {
             Retry
           </button>
         </div>
-        <div className="lines-container">
-          <RenderedLines />
-        </div>
       </div>
     );
   } else {
     output = (
       <div className="news-wrapper">
         <RenderedNewsContent />
-        <div className="lines-container">
-          <RenderedLines />
-        </div>
+        {displayReady && (
+          <div className="lines-container">
+            <RenderedLines />
+          </div>
+        )}
       </div>
     );
   }
@@ -62,16 +79,11 @@ const News = ({ width }) => {
 
 export default News;
 
-const Loader = ({ text }) => {
+const Loader = () => {
   return (
     <div className="news-wrapper">
       <div className="news-container">
-        <Skeleton times={6} noBorder={true} />
-        <h3>{text}</h3>{' '}
-      </div>
-      <div className="lines-container">
-        {' '}
-        <RenderedLines />{' '}
+        <Skeleton className="news-skeleton-img" times={1} noBorder={true} />
       </div>
     </div>
   );

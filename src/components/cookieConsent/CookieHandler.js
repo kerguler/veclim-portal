@@ -3,11 +3,23 @@ import CookieConsent, {
 	getCookieConsentValue,
 } from "react-cookie-consent";
 import { useEffect } from "react";
-import * as ReactGA from "react-ga";
 import "./consentPlugin.css";
 
 // const Modal = lazy(() => import("../Modal"));
 import Modal from "./Modal/Modal";
+
+const GTM_ID = "GTM-TTX96326";
+
+function loadGTM() {
+	if (window.dataLayer) return;
+	window.dataLayer = [];
+	window.dataLayer.push({ "gtm.start": new Date().getTime(), event: "gtm.js" });
+	const script = document.createElement("script");
+	script.async = true;
+	script.src = `https://www.googletagmanager.com/gtm.js?id=${GTM_ID}`;
+	document.head.appendChild(script);
+}
+
 function CookieHandler() {
 	useEffect(() => {
 		const isConsent = getCookieConsentValue();
@@ -16,7 +28,7 @@ function CookieHandler() {
 		}
 	}, []);
 	const handleAcceptCookie = () => {
-		ReactGA.initialize("GTM-TTX96326");
+		loadGTM();
 	};
 	const handleDeclineCookie = () => {
 		Cookies.remove("_ga");

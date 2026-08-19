@@ -1,4 +1,4 @@
-import { createContext } from 'react';
+import { createContext, useMemo } from 'react';
 import mosquitoPic from '../assets/images/many-mosquitoes-sm.webp';
 import controlPic from '../assets/images/mosquito-control-sm.webp';
 
@@ -34,28 +34,31 @@ import PackageMapServices from 'components/map/mapPackage/PackageMapServices';
  import { methodsPageSand } from 'vectors/sandfly/methodsPage';
 const TextContext = createContext();
 
+const months = [
+  'JANUARY',
+  'FEBRUARY',
+  'MARCH',
+  'APRIL',
+  'MAY',
+  'JUNE',
+  'JULY',
+  'AUGUST',
+  'SEPTEMBER',
+  'OCTOBER',
+  'NOVEMBER',
+  'DECEMBER',
+];
+
 function TextProvider({ children, pageOverride }) {
   let location = useLocation();
 
-  const months = [
-    'JANUARY',
-    'FEBRUARY',
-    'MARCH',
-    'APRIL',
-    'MAY',
-    'JUNE',
-    'JULY',
-    'AUGUST',
-    'SEPTEMBER',
-    'OCTOBER',
-    'NOVEMBER',
-    'DECEMBER',
-  ];
   const dispatch = useDispatch();
 
   const mapVector = useSelector(
     (state) => state.fetcher.fetcherStates.mapVector
   );
+
+  const sharedValues = useMemo(() => {
   const homePage = {
     id: 0,
     page: 'HomePage',
@@ -1317,10 +1320,11 @@ function TextProvider({ children, pageOverride }) {
         page = homePage;
     }
   }
-  const sharedValues = {
+  return {
     months: months,
     pageTexts: [page],
   };
+  }, [location.pathname, pageOverride, mapVector, dispatch]);
 
   return (
     <TextContext.Provider value={sharedValues}>{children}</TextContext.Provider>

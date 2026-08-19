@@ -67,6 +67,7 @@ class PackageMapServices {
       zIndex: 1000,
       attribution: '',
       noWrap: true,
+      updateWhenZooming: false,
     }
   );
 

@@ -11,6 +11,7 @@ import { useState } from 'react';
 import ReactCardFlip from 'react-card-flip';
 import { useSelector } from 'react-redux';
 import { useFetchCoordinateDataQuery } from 'store';
+import ChartLoadingSkeleton from 'components/skeleton/Skeleton';
 import { RiskIndicator, AccuracyIndicator } from './FloatPanelRiskIndicator';
 
 function RiskPanel() {
@@ -37,7 +38,11 @@ function RiskPanel() {
   };
   let content;
   if (isFetching) {
-    content = <></>;
+    content = (
+      <div className="risk-indicator-container-nodata">
+        <ChartLoadingSkeleton noBorder={true} times={5} />
+      </div>
+    );
   } else if (error) {
     content = (
       <div className="risk-indicator-container-nodata">

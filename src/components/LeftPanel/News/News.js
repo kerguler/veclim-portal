@@ -5,7 +5,6 @@ import "./News.css";
 import { useRef } from "react";
 import { useCallback } from "react";
 import rightArrow from "assets/icons/arrow-teal-16px.png";
-import { set } from "react-ga";
 
 const News = ({ width }) => {
 	const [readMore, setReadMore] = useState(false);

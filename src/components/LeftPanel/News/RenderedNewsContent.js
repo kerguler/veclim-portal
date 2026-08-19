@@ -8,6 +8,7 @@ import {
   clearTimer,
   setReadMore,
 } from 'store';
+import ChartLoadingSkeleton from 'components/skeleton/Skeleton';
 
 const RenderedNewsContent = () => {
   const news = useSelector((state) => state.news.news);
@@ -69,7 +70,11 @@ const RenderedNewsContent = () => {
   };
 
   if (!displayReady) {
-    return <div>Loading images, please wait...</div>; // Show loading message or spinner while preloading
+    return (
+      <div className="news-container">
+        <ChartLoadingSkeleton className="news-skeleton-img" times={1} noBorder={true} />
+      </div>
+    );
   }
 
   const currentIndex = news.findIndex(

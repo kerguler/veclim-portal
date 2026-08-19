@@ -22,7 +22,7 @@ function ImageWithCaptions({
 	);
 	return (
 		<div className={internalClassName}>
-			{imagePath && <img alt="map" src={imagePath} />}
+			{imagePath && <img alt="map" src={imagePath} loading="lazy" />}
 			{caption && <div className={internalCaptionClassName}>{caption}</div>}
 		</div>
 	);

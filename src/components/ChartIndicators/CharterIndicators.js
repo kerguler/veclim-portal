@@ -1,6 +1,7 @@
 import './ChartIndicators.css';
 import { useFetchTimeSeriesDataQuery } from 'store';
 import ChartLoadingSkeleton from '../skeleton/Skeleton';
+import ErrorComponent from '../charts/Plotter/errorComponent/ErrorComponent';
 import { parseDate, dateToString } from 'store/apis/utils';
 import useDirectorFun from 'customHooks/useDirectorFun';
 import { getVector } from 'vectors/registry';
@@ -14,7 +15,7 @@ function ChartIndicators() {
     mapPagePosition?.lat !== undefined &&
     mapPagePosition?.lng !== undefined;
 
-  const { data, error, isFetching } = useFetchTimeSeriesDataQuery(
+  const { data, error, isFetching, refetch } = useFetchTimeSeriesDataQuery(
     {
       position: JSON.stringify(mapPagePosition),
       vectorName: mapVector, // use registry id for backend coherence
@@ -28,6 +29,17 @@ function ChartIndicators() {
     return (
       <div className="chart-indicators">
         <ChartLoadingSkeleton times={6} noBorder />
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="chart-indicators">
+        <ErrorComponent
+          text="Couldn't load this data. Check your connection and try again."
+          onRetry={refetch}
+        />
       </div>
     );
   }
