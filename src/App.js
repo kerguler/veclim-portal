@@ -8,12 +8,15 @@ import ErrorBoundary from 'components/errorBoundary/ErrorBoundary';
 import CookieHandler from './components/cookieConsent/CookieHandler';
 import { useUserLocation } from './store/apis/utils';
 import { PanelProvider } from 'context/panelsIconsV2';
+import useIsStaff from 'customHooks/useIsStaff';
 const GenericPage = lazy(() => import('pages/GenericPage/GenericPage'));
 const NoPage = lazy(() => import('pages/NoPage'));
 const MapPackageLandingV2 = lazy(() => import('pages/MapPackageLanding'));
 const VectorMethodsPage = lazy(() => import('pages/VectorMethodsPage'));
 function App() {
   useUserLocation();
+  // fires the /me check once so its cached before draft gating needs it
+  useIsStaff();
   return (
     <div className="app">
       <div className="page-container">

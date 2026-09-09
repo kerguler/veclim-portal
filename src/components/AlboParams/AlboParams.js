@@ -7,10 +7,12 @@ import LoginComponent from 'pages/LoginRegister/LoginComponent/LoginComponent';
 import { useLogoutMutation, useGetSimulationListQuery } from 'store';
 import { setApiRegisterResponse, setPassword } from 'store';
 import useCsrf from 'pages/LoginRegister/Services/useCsrf';
+import useIsStaff from 'customHooks/useIsStaff';
 
 function AlboParams({ children }) {
   const dispatch = useDispatch();
   const { refresh } = useCsrf();
+  const { refetch: refetchIsStaff } = useIsStaff();
 
   const direction = 'left';
   const apiReg = useSelector((s) => s.login.apiRegisterResponse);
@@ -81,6 +83,8 @@ function AlboParams({ children }) {
     // Force the session-check query to re-run now that the cookie is gone,
     // otherwise its cached "logged in" result keeps the panel showing.
     refetchSessionCheck();
+    // same deal for isStaff, else drafts stay visible after logout
+    refetchIsStaff();
   };
 
   if (!hasValidSession && checkingSession) {

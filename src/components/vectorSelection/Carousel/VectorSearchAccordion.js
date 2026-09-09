@@ -53,6 +53,11 @@ const VectorSearchAccordion = ({
             >
               <span className="vector-search-accordion__item-label">
                 {item.label}
+                {item.isDraft && (
+                  <span className="draft-badge" title="Draft - hidden from public">
+                    Draft
+                  </span>
+                )}
               </span>
 
               <span className="vector-search-accordion__item-id">

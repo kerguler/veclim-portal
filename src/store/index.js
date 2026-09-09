@@ -193,6 +193,8 @@ export {
   useFetchCsrfQuery,
   useLogoutMutation,
   useLazyFetchCsrfQuery,
+  useFetchCurrentUserQuery,
+  useRequestDraftAccessMutation,
 } from './apis/loginRegisterApi';
 
 export {

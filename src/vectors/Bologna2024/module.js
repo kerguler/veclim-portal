@@ -16,6 +16,8 @@ const BOLOGNA_BOUNDS = [
 ];
 const moduleObj = {
   id: 'Bologna2024',
+  // draft, hidden until ready
+  status: 'draft',
   displayOrder: 3,
   meta: {
     icon: tileIconFly,

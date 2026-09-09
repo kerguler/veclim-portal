@@ -13,10 +13,20 @@ import NavBarContainer from 'components/NavBar/NavBarContainer';
 import LeftPanel from 'components/LeftPanel/LeftPanel';
 import DesktopContentWrapper from './GenericPage/DesktopContentWrapper';
 import { TextProvider } from 'context/appText';
+import useIsStaff from 'customHooks/useIsStaff';
+import DraftAccessGate from 'components/DraftAccessGate/DraftAccessGate';
 
 function VectorMethodsPage() {
   const { vecId } = useParams(); // /Methods/:vecId
   const dispatch = useDispatch();
+  const {
+    isChecking: isStaffCheckPending,
+    canView,
+    isLoggedIn,
+    username,
+    pendingVectorIds,
+    refetch: refetchIsStaff,
+  } = useIsStaff();
 
   const currentVectorName = useSelector(
     (state) => state.fetcher.fetcherStates.vectorName
@@ -46,8 +56,30 @@ function VectorMethodsPage() {
   const activeVectorId = currentVectorName || vecId;
   const vector = getVector(activeVectorId);
 
+  // drafts show an access gate instead of the methods page
+  const isDraftVector = vector?.status === 'draft';
+  const draftAccessPending = isDraftVector && isStaffCheckPending;
+  const draftAccessBlocked =
+    isDraftVector && !isStaffCheckPending && !canView(vector?.id);
+
   if (!vector) {
     return <div>Unknown vector: {activeVectorId}</div>;
+  }
+
+  if (draftAccessBlocked) {
+    return (
+      <DraftAccessGate
+        vector={vector}
+        isLoggedIn={isLoggedIn}
+        username={username}
+        pendingVectorIds={pendingVectorIds}
+        refetchIsStaff={refetchIsStaff}
+      />
+    );
+  }
+
+  if (draftAccessPending) {
+    return null;
   }
 
   // Fallback to albopictus if no methodsPage

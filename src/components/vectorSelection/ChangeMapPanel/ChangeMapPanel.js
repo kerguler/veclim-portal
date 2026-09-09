@@ -5,8 +5,9 @@ import { Link, useNavigate } from 'react-router-dom';
 
 import { setPageTransition } from 'store';
 import PackageMapServices from 'components/map/mapPackage/PackageMapServices';
-import { getVector, ALL_VECTORS } from 'vectors/registry';
+import { getVector, ALL_VECTORS, isVectorPublic } from 'vectors/registry';
 import useDirectorFun from 'customHooks/useDirectorFun';
+import useIsStaff from 'customHooks/useIsStaff';
 
 import './ChangeMapPanel.css';
 import {
@@ -30,6 +31,7 @@ function ChangeMapPanel() {
 
   // whatever is in Redux (may contain duplicates)
   const vectorNamesFromStore = useSelector((state) => state.vector.vectorNames);
+  const { isStaff, grantedVectorIds } = useIsStaff();
 
   // 🔑 Build a clean, unique list of IDs to render
   const vectorIds = useMemo(() => {
@@ -39,9 +41,12 @@ function ChangeMapPanel() {
         ? vectorNamesFromStore
         : ALL_VECTORS.map((v) => v.id);
 
-    // dedupe by ID
-    return Array.from(new Set(baseIds));
-  }, [vectorNamesFromStore]);
+    // dedupe by ID, then drop drafts for non-staff/non-granted regardless of source
+    const uniqueIds = Array.from(new Set(baseIds));
+    return isStaff
+      ? uniqueIds
+      : uniqueIds.filter((id) => isVectorPublic(getVector(id), grantedVectorIds));
+  }, [vectorNamesFromStore, isStaff, grantedVectorIds]);
 
   const handleChangeTile = (desiredVectorId) => {
     const vec = getVector(desiredVectorId);
@@ -95,7 +100,14 @@ function ChangeMapPanel() {
             {icon && <img alt={`${id}-icon`} src={icon} />}
           </Link>
         </div>
-        <div>{description}</div>
+        <div>
+          {description}
+          {vec.status === 'draft' && (
+            <span className="draft-badge" title="Draft - hidden from public">
+              Draft
+            </span>
+          )}
+        </div>
       </div>
     );
   });

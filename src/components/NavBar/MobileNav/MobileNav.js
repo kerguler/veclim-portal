@@ -7,9 +7,9 @@ import 'styles/IconMenu.css';
 import { useDispatch, useSelector } from 'react-redux';
 import useOutsideClickClose from 'customHooks/useOutsideClickClose';
 import BurgerMenu from './BurgerMenu/BurgerMenu';
-import PackageMapServices from 'components/map/mapPackage/PackageMapServices';
 import { getVector } from 'vectors/registry';
 import { setReadyToView, setPanelOpen } from 'store';
+import useIsStaff from 'customHooks/useIsStaff';
 
 function MobileNav() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -26,11 +26,15 @@ function MobileNav() {
     (state) => state.fetcher.fetcherStates.mapVector
   );
 
-  // ✅ same decision rule as MyNavbar
-  const currentVectorId = useMemo(
-    () => mapVector || vectorName || 'albopictus',
-    [mapVector, vectorName]
-  );
+  const { canView } = useIsStaff();
+
+  // ✅ same decision rule as MyNavbar, skips a draft this visitor cant see
+  const currentVectorId = useMemo(() => {
+    const candidate = mapVector || vectorName || 'albopictus';
+    const vec = getVector(candidate);
+    if (vec?.status === 'draft' && !canView(vec.id)) return 'albopictus';
+    return candidate;
+  }, [mapVector, vectorName, canView]);
 
   // ✅ same route derivation as MyNavbar
   const currentVector = getVector(currentVectorId);
@@ -38,11 +42,17 @@ function MobileNav() {
 
   const handleClick = () => setIsMenuOpen((v) => !v);
 
+  // PackageMapServices pulls in Leaflet, so it's loaded on demand rather
+  // than imported at the top of this module (rendered on every page).
   const handleMapBounds = () => {
-    PackageMapServices.handleToMapPageTransition(
-      dispatch,
-      currentVectorId,
-      currentVectorId
+    import('components/map/mapPackage/PackageMapServices').then(
+      ({ default: PackageMapServices }) => {
+        PackageMapServices.handleToMapPageTransition(
+          dispatch,
+          currentVectorId,
+          currentVectorId
+        );
+      }
     );
     dispatch(setPanelOpen({ direction: 'left', value: false }));
     dispatch(setReadyToView(false));
@@ -52,10 +62,14 @@ function MobileNav() {
   // ✅ optional sync behavior (same as MyNavbar)
   useEffect(() => {
     if (!mapVector) return;
-    PackageMapServices.handleToMapPageTransition(
-      dispatch,
-      mapVector,
-      mapVector
+    import('components/map/mapPackage/PackageMapServices').then(
+      ({ default: PackageMapServices }) => {
+        PackageMapServices.handleToMapPageTransition(
+          dispatch,
+          mapVector,
+          mapVector
+        );
+      }
     );
   }, [mapVector, dispatch]);
 

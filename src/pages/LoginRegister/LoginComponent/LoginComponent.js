@@ -6,9 +6,10 @@ import {
   setPassword,
   setRememberLogin,
 } from 'store/slices/loginSlice';
-import { useLoginMutation, useRegisterMutation } from 'store';
+import { useLoginMutation, useRegisterMutation, useRequestDraftAccessMutation } from 'store';
 import { setApiRegisterResponse } from 'store';
 import useCsrf from '../Services/useCsrf';
+import useIsStaff from 'customHooks/useIsStaff';
 
 // Turns an RTK Query error (from fetchBaseQuery) into a short, human-readable
 // message. RTK Query errors come in a few shapes:
@@ -61,7 +62,11 @@ function getFriendlyAuthError(err, mode) {
   return 'Something went wrong. Please try again.';
 }
 
-function LoginComponent() {
+function LoginComponent({
+  requestAccessVectorId,
+  requestAccessLabel,
+  refetchIsStaff: refetchIsStaffProp,
+}) {
   const dispatch = useDispatch();
   const { refresh } = useCsrf();
 
@@ -72,9 +77,17 @@ function LoginComponent() {
   const [login, { isLoading: loggingIn, error: loginErr }] = useLoginMutation();
   const [register, { isLoading: registering, error: registerErr }] =
     useRegisterMutation();
+  const [requestDraftAccess] = useRequestDraftAccessMutation();
+  // a parent may already have a stable subscription (the draft-access gate
+  // does) - skip opening a second one, only fall back to our own otherwise
+  const { refetch: refetchIsStaffOwn } = useIsStaff({
+    skip: Boolean(refetchIsStaffProp),
+  });
+  const refetchIsStaff = refetchIsStaffProp || refetchIsStaffOwn;
 
   const [mode, setMode] = useState('login'); // 'login' | 'register'
   const [confirm, setConfirm] = useState('');
+  const [requestAccessChecked, setRequestAccessChecked] = useState(true);
 
   // NEW: show/hide toggles
   const [showPw, setShowPw] = useState(false);
@@ -119,6 +132,11 @@ function LoginComponent() {
       );
       if (rememberLogin) localStorage.setItem('username', username);
       await refresh(); // now triggers the lazy query; no more refetch error
+      refetchIsStaff(); // same thing as logout, just in reverse
+
+      if (requestAccessVectorId && requestAccessChecked) {
+        requestDraftAccess(requestAccessVectorId);
+      }
     } catch (err) {
       // optional: show a toast / set error state
     }
@@ -140,7 +158,11 @@ function LoginComponent() {
   return (
     <div className="login-base">
       <div className="login-card">
-        <p className="login-sub">You must be logged in to run parameters</p>
+        <p className="login-sub">
+          {requestAccessVectorId
+            ? `Log in or create an account to request access to ${requestAccessLabel || requestAccessVectorId}`
+            : 'You must be logged in to run parameters'}
+        </p>
 
         <form
           onSubmit={mode === 'login' ? handleLogin : handleRegister}
@@ -216,6 +238,17 @@ function LoginComponent() {
                 </button>
               </div>
             </>
+          )}
+
+          {requestAccessVectorId && (
+            <label className="checkbox">
+              <input
+                type="checkbox"
+                checked={requestAccessChecked}
+                onChange={(e) => setRequestAccessChecked(e.target.checked)}
+              />
+              <span>Request collaborator access to this model</span>
+            </label>
           )}
 
           <div className="form-row">

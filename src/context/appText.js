@@ -29,10 +29,25 @@ import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import { setReadyToView } from 'store';
-import PackageMapServices from 'components/map/mapPackage/PackageMapServices';
  import { methodsPage } from 'vectors/albopictus/methodsPage';
  import { methodsPageSand } from 'vectors/sandfly/methodsPage';
 const TextContext = createContext();
+
+// PackageMapServices pulls in Leaflet + leaflet-side-by-side, which the
+// map-links on the home page don't need until they're actually clicked.
+// Import it lazily here so Leaflet isn't part of the home page's initial
+// bundle/parse cost.
+function handleMapTransitionClick(dispatch, mapVector) {
+  import('components/map/mapPackage/PackageMapServices').then(
+    ({ default: PackageMapServices }) => {
+      PackageMapServices.handleToMapPageTransition(
+        dispatch,
+        mapVector,
+        mapVector
+      );
+    }
+  );
+}
 
 const months = [
   'JANUARY',
@@ -90,11 +105,7 @@ function TextProvider({ children, pageOverride }) {
             <h4>
               <Link
                 onClick={() => {
-                  PackageMapServices.handleToMapPageTransition(
-                    dispatch,
-                    mapVector,
-                    mapVector
-                  );
+                  handleMapTransitionClick(dispatch, mapVector);
                   dispatch(setReadyToView(false));
                   // dispatch(setDisplayedPanelID(0));
                 }}
@@ -109,11 +120,7 @@ function TextProvider({ children, pageOverride }) {
               </Link>
               <Link
                 onClick={() => {
-                  PackageMapServices.handleToMapPageTransition(
-                    dispatch,
-                    mapVector,
-                    mapVector
-                  );
+                  handleMapTransitionClick(dispatch, mapVector);
                   dispatch(setReadyToView(false));
                   // dispatch(setDisplayedPanelID(0));
                 }}
@@ -128,11 +135,7 @@ function TextProvider({ children, pageOverride }) {
               </Link>
               <Link
                 onClick={() => {
-                  PackageMapServices.handleToMapPageTransition(
-                    dispatch,
-                    mapVector,
-                    mapVector
-                  );
+                  handleMapTransitionClick(dispatch, mapVector);
                   dispatch(setReadyToView(false));
                 }}
                 to="/MapPage?session=papatasi"

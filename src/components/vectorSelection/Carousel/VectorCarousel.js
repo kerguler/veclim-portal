@@ -3,8 +3,8 @@ import React, { useMemo, useRef, useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
 
-import { VECTORS, ALL_VECTORS, getVector } from 'vectors/registry';
-import PackageMapServices from 'components/map/mapPackage/PackageMapServices';
+import { VECTORS, getVisibleVectors, getVector } from 'vectors/registry';
+import useIsStaff from 'customHooks/useIsStaff';
 
 import VectorSearchModal from './VectorSearchModal';
 import VectorSearchAccordion from './VectorSearchAccordion';
@@ -28,15 +28,17 @@ const VectorCarousel = ({ className = '', onChange }) => {
     (state) => state.fetcher.fetcherStates.vectorName
   );
 
+  const { isStaff, grantedVectorIds } = useIsStaff();
+
   const vectorOrder = useMemo(() => {
     const seen = new Set();
 
-    return ALL_VECTORS.filter((v) => {
+    return getVisibleVectors(isStaff, grantedVectorIds).filter((v) => {
       if (!v?.id || !VECTORS[v.id] || seen.has(v.id)) return false;
       seen.add(v.id);
       return true;
     }).map((v) => v.id);
-  }, []);
+  }, [isStaff, grantedVectorIds]);
 
   const vectorItems = useMemo(() => {
     return vectorOrder
@@ -48,6 +50,7 @@ const VectorCarousel = ({ className = '', onChange }) => {
         fullLabel: vec.label || vec.shortLabel || vec.id,
         group:
           vec.meta?.group || vec.meta?.category || vec.meta?.type || 'Vectors',
+        isDraft: vec.status === 'draft',
       }));
   }, [vectorOrder]);
 
@@ -92,7 +95,13 @@ const VectorCarousel = ({ className = '', onChange }) => {
       return;
     }
 
-    PackageMapServices.setActiveVector(dispatch, nextId);
+    // Loaded on demand (only when a vector is actually switched) since it
+    // pulls in Leaflet, which shouldn't be part of the home page's initial bundle.
+    import('components/map/mapPackage/PackageMapServices').then(
+      ({ default: PackageMapServices }) => {
+        PackageMapServices.setActiveVector(dispatch, nextId);
+      }
+    );
 
     const vec = getVector(nextId);
     const currentFullPath = `${location.pathname}${location.search}`;
@@ -206,6 +215,15 @@ const VectorCarousel = ({ className = '', onChange }) => {
             currentVector?.label ||
             currentVector?.id ||
             'Unknown'}
+        </span>
+
+        <span
+          className={`draft-badge ${
+            currentVector?.status === 'draft' ? '' : 'draft-badge--hidden'
+          }`}
+          title="Draft - hidden from public"
+        >
+          Draft
         </span>
 
         <span className="vector-carousel__index">

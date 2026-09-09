@@ -9,6 +9,7 @@ import useDirectorFun from '../useDirectorFun';
 import useSessionControl from './useSessionControl';
 import useQuery from './useQuery';
 import usePermalinkHydration from 'customHooks/permalink/usePermalinkHydration';
+import useIsStaff from 'customHooks/useIsStaff';
 import {
   setMapPagePosition,
   setReadyToView,
@@ -30,6 +31,14 @@ import { getVector } from 'vectors/registry';
 const useFetcherStates = () => {
   const direction = 'left';
   const dispatch = useDispatch();
+  const {
+    isChecking: isStaffCheckPending,
+    isLoggedIn,
+    canView,
+    username,
+    pendingVectorIds,
+    refetch: refetchIsStaff,
+  } = useIsStaff();
 
   const {
     mapVector,
@@ -56,9 +65,11 @@ const useFetcherStates = () => {
     bounds,
   } = useQuery();
 
+  // no deps before meant this dispatched a fresh object every render, which
+  // re-triggered itself forever once nothing unmounted the page to stop it
   useEffect(() => {
     dispatch(setDirectMap({ ...directMap, center: { lat: cLat, lng: cLon } }));
-  });
+  }, [cLat, cLon, dispatch]);
   useSessionControl(session);
 
   useEffect(() => {
@@ -79,6 +90,12 @@ const useFetcherStates = () => {
   const effectiveVectorId = session || mapVector;
   const activeVector = getVector(effectiveVectorId);
   const defaultTiles = activeVector?.defaults?.tileArray || [];
+
+  // drafts show an access gate instead of the map, wait for staff check first
+  const isDraftVector = activeVector?.status === 'draft';
+  const draftAccessPending = isDraftVector && isStaffCheckPending;
+  const draftAccessBlocked =
+    isDraftVector && !isStaffCheckPending && !canView(activeVector?.id);
 
   // 2) URL → mapPagePosition (clicked point, used for panels)
 
@@ -225,7 +242,7 @@ const useFetcherStates = () => {
     const iconsReady = Array.isArray(tileIcons) && tileIcons.length > 0;
     const panelsReady = Array.isArray(panelData) && panelData.length > 0;
 
-    if (!iconsReady || !panelsReady) {
+    if (!iconsReady || !panelsReady || draftAccessPending || draftAccessBlocked) {
       dispatch(setReadyToView(false));
       return;
     }
@@ -268,10 +285,23 @@ const useFetcherStates = () => {
     lat,
     dispatch,
     decade,
+    draftAccessPending,
+    draftAccessBlocked,
     Array.isArray(tileIcons) ? tileIcons.length : 0,
     Array.isArray(panelData) ? panelData.length : 0,
     defaultTiles.join(','),
   ]);
+
+  return {
+    activeVector,
+    isDraftVector,
+    draftAccessPending,
+    draftAccessBlocked,
+    isLoggedIn,
+    username,
+    pendingVectorIds,
+    refetchIsStaff,
+  };
 };
 
 export default useFetcherStates;

@@ -5,8 +5,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import MethodsNavItem from 'components/MethodsNavItem/MethodsNavItem';
 import { useEffect, useMemo } from 'react';
 import { setReadyToView, setPanelOpen } from 'store';
-import PackageMapServices from 'components/map/mapPackage/PackageMapServices';
 import { getVector } from 'vectors/registry';
+import useIsStaff from 'customHooks/useIsStaff';
 
 function MyNavbar({ style }) {
   const panelInterfere = useSelector(
@@ -18,26 +18,35 @@ function MyNavbar({ style }) {
   const mapVector = useSelector(
     (state) => state.fetcher.fetcherStates.mapVector
   );
+  const { canView } = useIsStaff();
 
   const dispatch = useDispatch();
 
-  // Decide which vector to use for map routing (prefer mapVector, fall back to vectorName)
-  const currentVectorId = useMemo(
-    () => mapVector || vectorName || 'albopictus',
-    [mapVector, vectorName]
-  );
+  // decide which vector to use for map routing, skip a draft this visitor
+  // cant see so the nav link doesnt just send them back into the gate
+  const currentVectorId = useMemo(() => {
+    const candidate = mapVector || vectorName || 'albopictus';
+    const vec = getVector(candidate);
+    if (vec?.status === 'draft' && !canView(vec.id)) return 'albopictus';
+    return candidate;
+  }, [mapVector, vectorName, canView]);
 
   const currentVector = getVector(currentVectorId);
   const mapRoute = currentVector?.meta?.route || '/MapPage';
 
   const handleMapBounds = () => {
-    // Apply vector-specific bounds/center/etc before going to map
-    PackageMapServices.handleToMapPageTransition(
-      dispatch,
-      currentVectorId,
-      currentVectorId
+    // Apply vector-specific bounds/center/etc before going to map.
+    // Loaded on demand since PackageMapServices pulls in Leaflet, which
+    // shouldn't be part of every page's initial bundle.
+    import('components/map/mapPackage/PackageMapServices').then(
+      ({ default: PackageMapServices }) => {
+        PackageMapServices.handleToMapPageTransition(
+          dispatch,
+          currentVectorId,
+          currentVectorId
+        );
+      }
     );
-
 
     dispatch(setPanelOpen({ direction: 'left', value: false }));
     dispatch(setReadyToView(false));

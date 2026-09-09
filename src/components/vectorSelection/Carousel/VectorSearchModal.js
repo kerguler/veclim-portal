@@ -69,7 +69,14 @@ const VectorGroupedList = ({
               }`}
               onClick={() => switchTo(item.id)}
             >
-              <span className={`${baseClass}__item-label`}>{item.label}</span>
+              <span className={`${baseClass}__item-label`}>
+                {item.label}
+                {item.isDraft && (
+                  <span className="draft-badge" title="Draft - hidden from public">
+                    Draft
+                  </span>
+                )}
+              </span>
               <span className={`${baseClass}__item-id`}>{item.id}</span>
             </button>
           ))}

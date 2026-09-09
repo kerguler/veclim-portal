@@ -1,0 +1,80 @@
+.draft-access-gate {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: 3rem 1.5rem;
+}
+
+.draft-access-logo {
+  height: 56px;
+  width: auto;
+}
+
+.draft-access-card {
+  width: min(420px, 100%);
+  padding: 1.5rem;
+  border-radius: 1rem;
+  background: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.12);
+  text-align: center;
+}
+
+.draft-access-card h2 {
+  margin: 0 0 0.5rem;
+  color: var(--primary-color1);
+  font-size: 1.1rem;
+}
+
+.draft-access-card p {
+  margin: 0 0 1rem;
+  color: var(--meteo-text, #444);
+  font-size: 0.9rem;
+}
+
+.draft-access-status {
+  color: var(--tertiary-color2, #f27c2a);
+  font-weight: 600;
+}
+
+.draft-access-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.55rem 1rem;
+  min-height: 40px;
+  border: 0;
+  border-radius: 10px;
+  background: var(--primary-color1);
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.draft-access-btn:hover {
+  background: var(--primary-color2);
+}
+
+.draft-access-btn:disabled {
+  background: var(--neutral-color1, #999);
+  cursor: not-allowed;
+}
+
+.draft-access-link {
+  display: block;
+  margin: 0.75rem auto 0;
+  border: 0;
+  background: none;
+  color: var(--primary-color1);
+  text-decoration: underline;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+
+.draft-access-back {
+  color: var(--primary-color1);
+  text-decoration: underline;
+  font-size: 0.85rem;
+}

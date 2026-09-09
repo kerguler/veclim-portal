@@ -42,3 +42,16 @@ export function getVector(id) {
   if (id && VECTORS[id]) return VECTORS[id];
   return ALL_VECTORS[0];
 }
+
+// no status = public by default, so old module.js files dont need touching
+// grantedVectorIds = draft vectors this specific user got collaborator access to
+export function isVectorPublic(vector, grantedVectorIds = []) {
+  return vector?.status !== 'draft' || grantedVectorIds.includes(vector?.id);
+}
+
+// one place for every listing UI to filter drafts from
+export function getVisibleVectors(isStaff, grantedVectorIds = []) {
+  return isStaff
+    ? ALL_VECTORS
+    : ALL_VECTORS.filter((v) => isVectorPublic(v, grantedVectorIds));
+}

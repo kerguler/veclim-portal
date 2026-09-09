@@ -18,7 +18,7 @@ const loginRegisterApi = createApi({
       return headers;
     },
   }),
-  tagTypes: ['LoginRegister'],
+  tagTypes: ['LoginRegister', 'CurrentUser'],
   endpoints(builder) {
     return {
       logout: builder.mutation({
@@ -26,7 +26,7 @@ const loginRegisterApi = createApi({
           url: 'logout/',
           method: 'POST',
         }),
-        invalidatesTags: ['Csrf'],
+        invalidatesTags: ['Csrf', 'CurrentUser'],
       }),
       FetchCsrf: builder.query({
         query: () => {
@@ -45,6 +45,7 @@ const loginRegisterApi = createApi({
             body: data,
           };
         },
+        invalidatesTags: ['CurrentUser'],
       }),
       register: builder.mutation({
         query: (data) => {
@@ -66,6 +67,25 @@ const loginRegisterApi = createApi({
           };
         },
       }),
+
+      // who's logged in via the session cookie, used to recover isStaff on load
+      fetchCurrentUser: builder.query({
+        query: () => ({
+          url: 'users/me/',
+          method: 'GET',
+        }),
+        providesTags: ['CurrentUser'],
+      }),
+
+      // ask for access to one draft vector, once logged in
+      requestDraftAccess: builder.mutation({
+        query: (vectorId) => ({
+          url: 'draft-access/request/',
+          method: 'POST',
+          body: { vector_id: vectorId },
+        }),
+        invalidatesTags: ['CurrentUser'],
+      }),
     };
   },
 });
@@ -76,6 +96,8 @@ export const {
   useFetchCsrfQuery,
   useLogoutMutation,
   useLazyFetchCsrfQuery,
+  useFetchCurrentUserQuery,
+  useRequestDraftAccessMutation,
 } = loginRegisterApi;
 
 export { loginRegisterApi };

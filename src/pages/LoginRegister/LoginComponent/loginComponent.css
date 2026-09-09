@@ -15,7 +15,6 @@
 /* card centers within your modal, fluid width */
 .login-card {
   width: min(450px, 100%);
-  width: 100%;
   padding: 12px;
 }
 
