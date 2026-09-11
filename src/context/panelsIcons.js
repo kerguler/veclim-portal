@@ -30,7 +30,7 @@ function PanelProvider({ children }) {
 
 	const tileBase = process.env.REACT_APP_BASE_URL;
 
-	const fcastDateRange = "2026-09-01:2027-07-01";
+	const fcastDateRange = "2026-09-01:2027-01-01";
 	const fcastDateLabel = "September - December, 2026";
 
 	const tileIconRowHeadings = [
