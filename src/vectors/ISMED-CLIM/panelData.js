@@ -53,7 +53,7 @@ export const panelData = [
     key: 'sandfly_population_panel',
     positionDependent: true,
 
-    label: 'Sandfly Population',
+    label: 'Sand fly activity',
     chartParameters: {
       years: 'ISMED-CLIM',
       mixedKeys: [
@@ -97,12 +97,11 @@ export const panelData = [
 
     content: (
       <div className="text-area">
-        <h1>Female vector abundance</h1>
+        <h1>Seasonal dynamics<br/>of sand fly activity</h1>
         <div>
           <p>
-            The number of <i>Phlebotomus papatasi</i> females averaged over the
-            time period: 2011-2015. The dotted lines mark the 50% range of the
-            V2511A model output. This work has been developed in the framework
+            The number of newly laid <i>Phlebotomus papatasi</i> eggs averaged over the
+            time period: 2011-2015. This work has been developed in the framework
             of the <XLink href="https://ismed-clim.eu/">ISMED-CLIM</XLink>{' '}
             project.
           </p>
