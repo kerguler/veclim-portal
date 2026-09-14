@@ -5,11 +5,6 @@ import DraftAccessRequestPrompt from './DraftAccessRequestPrompt';
 import TopAuthBar from 'components/TopAuthBar/TopAuthBar';
 import './DraftAccessGate.css';
 
-// blocks a draft vector page for anyone without access, in place instead of
-// bouncing them home (that left the map nav pointed at the blocked vector
-// and looped). caller already decided this is blocked - stays prop-driven,
-// no useIsStaff() call here, since a mount/unmount cycle on the query
-// subscription was what caused an infinite render loop before.
 function DraftAccessGate({
   vector,
   isLoggedIn,
@@ -23,7 +18,6 @@ function DraftAccessGate({
 
   return (
     <div className="draft-access-gate">
-      {/* logged in but wrong account (e.g. two tabs) - let them switch without leaving */}
       {isLoggedIn && (
         <TopAuthBar username={username} refetchIsStaff={refetchIsStaff} />
       )}

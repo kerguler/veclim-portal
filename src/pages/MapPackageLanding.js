@@ -8,7 +8,6 @@ import { AlboDataProvider } from 'context/AlboDataContext';
 import MapMenuPicker from 'components/mapMenu/mapMenu/MapMenuPicker';
 import useFetcherStates from 'customHooks/fethcerStates/useFetcherStates';
 import DraftAccessGate from 'components/DraftAccessGate/DraftAccessGate';
-import TopAuthBar from 'components/TopAuthBar/TopAuthBar';
 function MapPackageLanding() {
   const {
     activeVector,
@@ -43,10 +42,6 @@ function MapPackageLanding() {
         <AlboDataProvider>
           <div className="map-wrapper">
             <MapLogo />
-            {/* lets a collaborator who logged in via a draft link switch accounts here too */}
-            {isLoggedIn && (
-              <TopAuthBar username={username} refetchIsStaff={refetchIsStaff} />
-            )}
             <MapMenuPicker direction="left" />
             <ErrorBoundary>
               <MapPackageComponent />

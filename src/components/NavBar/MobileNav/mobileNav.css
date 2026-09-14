@@ -44,8 +44,10 @@
 
 .burger-menu {
 	display: flex;
+	align-items: flex-start; /* centering here pushed the icon into the clip-path */
 	top: 0;
-	justify-content: space-between;
+	justify-content: flex-start;
+	gap: 0.4rem;
 	padding: 0.1rem 0.1rem;
 	height: var(--mobile-nav-height);
 	width: 100vw;
@@ -57,6 +59,14 @@
 }
 .burger-menu img {
 	z-index: 4000;
+}
+
+/* primary-color1 pill is nearly invisible on the dark header, use the accent instead */
+.burger-menu .auth-nav__toggle {
+	background: var(--primary-color2);
+}
+.burger-menu .auth-nav__toggle:hover {
+	background: var(--tertiary-color2);
 }
 
 .burger-icon {

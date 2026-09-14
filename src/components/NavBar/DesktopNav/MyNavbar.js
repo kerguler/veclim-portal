@@ -7,6 +7,7 @@ import { useEffect, useMemo } from 'react';
 import { setReadyToView, setPanelOpen } from 'store';
 import { getVector } from 'vectors/registry';
 import useIsStaff from 'customHooks/useIsStaff';
+import AuthNav from 'components/AuthNav/AuthNav';
 
 function MyNavbar({ style }) {
   const panelInterfere = useSelector(
@@ -22,8 +23,7 @@ function MyNavbar({ style }) {
 
   const dispatch = useDispatch();
 
-  // decide which vector to use for map routing, skip a draft this visitor
-  // cant see so the nav link doesnt just send them back into the gate
+  
   const currentVectorId = useMemo(() => {
     const candidate = mapVector || vectorName || 'albopictus';
     const vec = getVector(candidate);
@@ -35,9 +35,7 @@ function MyNavbar({ style }) {
   const mapRoute = currentVector?.meta?.route || '/MapPage';
 
   const handleMapBounds = () => {
-    // Apply vector-specific bounds/center/etc before going to map.
-    // Loaded on demand since PackageMapServices pulls in Leaflet, which
-    // shouldn't be part of every page's initial bundle.
+    // lazy import - keeps Leaflet out of the main bundle
     import('components/map/mapPackage/PackageMapServices').then(
       ({ default: PackageMapServices }) => {
         PackageMapServices.handleToMapPageTransition(
@@ -57,11 +55,14 @@ function MyNavbar({ style }) {
   return (
     <div className="navbar">
       <div className="my-navbar">
-        <Link to="/">
-          <div className="logo-div">
-            <img src={logo100} alt="VEClim Logo" />
-          </div>
-        </Link>
+        <div className="navbar-left">
+          <Link to="/">
+            <div className="logo-div">
+              <img src={logo100} alt="VEClim Logo" />
+            </div>
+          </Link>
+          <AuthNav />
+        </div>
 
         <div className="navbar-links">
           <Link to="/">HOME</Link>

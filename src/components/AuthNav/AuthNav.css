@@ -1,0 +1,72 @@
+.auth-nav {
+	position: relative;
+	display: inline-flex;
+	margin-top: 14px; /* level with "VEClim" text, not the pin icon */
+}
+
+.auth-nav__toggle {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	max-width: 120px;
+	padding: 0.4rem 0.85rem;
+	border: 0;
+	border-radius: 999px;
+	background: var(--primary-color1);
+	color: #fff;
+	font-weight: 600;
+	font-size: 0.85rem;
+	line-height: 1;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	cursor: pointer;
+}
+
+.auth-nav__toggle:hover {
+	background: var(--primary-color2);
+}
+
+
+.auth-nav__popover {
+	position: fixed;
+	z-index: 9000;
+	width: min(300px, calc(100vw - 24px));
+	background: #fff;
+	border-radius: 0.75rem;
+	box-shadow: 0 12px 30px rgba(0, 0, 0, 0.18);
+	overflow: hidden;
+}
+
+.auth-nav__account {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 0.6rem;
+	padding: 1rem;
+	text-align: center;
+}
+
+.auth-nav__username {
+	font-weight: 600;
+	color: var(--primary-color1);
+	word-break: break-word;
+}
+
+.auth-nav__logout {
+	border: 0;
+	background: none;
+	color: var(--primary-color1);
+	text-decoration: underline;
+	cursor: pointer;
+	font-size: 0.85rem;
+}
+
+.auth-nav__logout:disabled {
+	opacity: 0.6;
+	cursor: not-allowed;
+}
+
+.auth-nav__popover .login-base {
+	padding: 0.5rem;
+}

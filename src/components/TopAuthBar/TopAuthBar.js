@@ -3,9 +3,7 @@ import { useLogoutMutation, setApiRegisterResponse, setPassword } from 'store';
 import useCsrf from 'pages/LoginRegister/Services/useCsrf';
 import './TopAuthBar.css';
 
-// small username + logout chip for the map/methods pages. lets someone who
-// logged in through a collaborator link switch accounts without going back
-// to albopictus' sim panel. prop-driven, only renders when logged in.
+// username + logout chip so a collaborator can switch accounts here too
 function TopAuthBar({ username, refetchIsStaff }) {
   const dispatch = useDispatch();
   const { refresh } = useCsrf();

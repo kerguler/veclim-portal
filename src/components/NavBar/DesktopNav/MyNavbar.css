@@ -54,6 +54,14 @@
   box-sizing: border-box;
 }
 
+.navbar-left {
+  display: flex;
+  align-items: flex-start; /* logo's pin mark sits above the text, don't center on it */
+  gap: 0.75rem;
+  flex: 0 0 auto;
+  min-width: 0;
+}
+
 .logo-div {
   flex: 0 0 auto;
 }

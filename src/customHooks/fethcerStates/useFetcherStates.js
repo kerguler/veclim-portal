@@ -65,8 +65,7 @@ const useFetcherStates = () => {
     bounds,
   } = useQuery();
 
-  // no deps before meant this dispatched a fresh object every render, which
-  // re-triggered itself forever once nothing unmounted the page to stop it
+
   useEffect(() => {
     dispatch(setDirectMap({ ...directMap, center: { lat: cLat, lng: cLon } }));
   }, [cLat, cLon, dispatch]);

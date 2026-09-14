@@ -1,12 +1,9 @@
 import { useFetchCurrentUserQuery } from 'store';
 
-// controls draft vector visibility everywhere. 401 from /me = not logged in, not an error
-// RTK Query keeps old `data` after a failed refetch, so check `error` too or logout doesnt stick
-//
-// pass { skip: true } when a parent already has a stable subscription and
-// handed you its refetch - a component whose own mount is conditional on
-// isChecking (like the draft-access gate) must not open a second one, or
-// mounting it flips isChecking, which unmounts it, which flips it back...
+// controls draft vector visibility everywhere. checks `error` too, not just
+// `data` - RTK Query keeps stale data after a failed refetch, or logout
+// doesnt stick. pass { skip: true } if a parent already has a subscription
+// and handed you its refetch (a gated component opening its own would loop)
 function useIsStaff({ skip = false } = {}) {
   const { data, error, isLoading, isUninitialized, refetch } =
     useFetchCurrentUserQuery(undefined, { skip });
