@@ -26,6 +26,28 @@ export const tileIcons = [
     ),
   },
   {
+    key: 'papatasi_V2511A',
+    colkey: 'papatasi_V2511A',
+
+    label: 'Sand fly activity',
+    icon: adultsandfly,
+    tileLayer: {
+      tile: tileBase + '?v=papatasi_V2511A&z={z}&x={x}&y={y}',
+      props: { attribution: '', noWrap: true },
+      displayIndex: 21,
+    },
+    description: (
+      <>
+        <p>
+          Average number of <i>Phlebotomus papatasi</i> females (2011-2015)
+          simulated by using the V2511A model. This work has been developed in
+          the framework of the{' '}
+          <XLink href="https://ismed-clim.eu/">ISMED-CLIM</XLink> project.
+        </p>
+      </>
+    ),
+  },
+  {
     key: 'papatasi_V2511A_PRT_newegg',
     colkey: 'papatasi_V2511A_PRT_newegg',
 
@@ -34,7 +56,7 @@ export const tileIcons = [
     tileLayer: {
       tile: tileBase + '?v=papatasi_V2511A_PRT_newegg&z={z}&x={x}&y={y}',
       props: { attribution: '', noWrap: true },
-      displayIndex: 11,
+      displayIndex: 22,
     },
     description: (
       <>
@@ -56,7 +78,7 @@ export const tileIcons = [
     tileLayer: {
       tile: tileBase + '?v=papatasi_V2511A_PRT_season_length&z={z}&x={x}&y={y}',
       props: { attribution: '', noWrap: true },
-      displayIndex: 11,
+      displayIndex: 31,
     },
     description: (
       <>
@@ -78,7 +100,7 @@ export const tileIcons = [
     tileLayer: {
       tile: tileBase + '?v=papatasi_V2511A_PRT_season_num&z={z}&x={x}&y={y}',
       props: { attribution: '', noWrap: true },
-      displayIndex: 11,
+      displayIndex: 32,
     },
     description: (
       <>
@@ -100,7 +122,7 @@ export const tileIcons = [
     tileLayer: {
       tile: tileBase + '?v=papatasi_V2511A_PRT_peak_num&z={z}&x={x}&y={y}',
       props: { attribution: '', noWrap: true },
-      displayIndex: 11,
+      displayIndex: 33,
     },
     description: (
       <>
@@ -122,7 +144,7 @@ export const tileIcons = [
     tileLayer: {
       tile: tileBase + '?v=papatasi_V2511A_PRT_season&z={z}&x={x}&y={y}',
       props: { attribution: '', noWrap: true },
-      displayIndex: 11,
+      displayIndex: 34,
     },
     description: (
       <>
@@ -144,7 +166,7 @@ export const tileIcons = [
     tileLayer: {
       tile: tileBase + '?v=papatasi_V2511A_PRT_peak&z={z}&x={x}&y={y}',
       props: { attribution: '', noWrap: true },
-      displayIndex: 11,
+      displayIndex: 35,
     },
     description: (
       <>
