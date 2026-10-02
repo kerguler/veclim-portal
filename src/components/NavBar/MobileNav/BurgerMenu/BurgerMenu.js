@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import './BurgerMenu.css';
 import MethodsNavItem from 'components/MethodsNavItem/MethodsNavItem';
 import VectorCarousel from 'components/vectorSelection/Carousel/VectorCarousel';
+import AuthNav from 'components/AuthNav/AuthNav';
 function BurgerMenu({ mainDivRef, linkText, handleMapBounds, handleMenu }) {
   const handleMenuClose = () => {
     handleMenu(false);
@@ -30,9 +31,15 @@ function BurgerMenu({ mainDivRef, linkText, handleMapBounds, handleMenu }) {
           TUTORIALS
         </a>
 
-        <Link to={linkText} onClick={handleMapBounds} className="map">
-          MAP
-        </Link>
+        <div className="burger-bottom-row">
+          <div className="burger-auth">
+            <AuthNav />
+          </div>
+
+          <Link to={linkText} onClick={handleMapBounds} className="map">
+            MAP
+          </Link>
+        </div>
       </div>
     </div>
   );

@@ -61,14 +61,6 @@
 	z-index: 4000;
 }
 
-/* primary-color1 pill is nearly invisible on the dark header, use the accent instead */
-.burger-menu .auth-nav__toggle {
-	background: var(--primary-color2);
-}
-.burger-menu .auth-nav__toggle:hover {
-	background: var(--tertiary-color2);
-}
-
 .burger-icon {
 	height: 35px;
 	width: 35px;

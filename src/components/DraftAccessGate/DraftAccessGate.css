@@ -14,6 +14,7 @@
 
 .draft-access-card {
   width: min(420px, 100%);
+  margin: 0 auto;
   padding: 1.5rem;
   border-radius: 1rem;
   background: #fff;
@@ -76,5 +77,20 @@
 .draft-access-back {
   color: var(--primary-color1);
   text-decoration: underline;
+  font-size: 0.85rem;
+}
+
+.collaborator-access-request__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.4rem 0;
+  text-align: left;
+}
+
+.collaborator-access-request__row .draft-access-btn {
+  padding: 0.4rem 0.75rem;
+  min-height: 32px;
   font-size: 0.85rem;
 }

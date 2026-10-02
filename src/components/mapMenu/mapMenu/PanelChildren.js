@@ -69,7 +69,8 @@ function PanelChildren({ displayedItem, level, direction }) {
         panel.chartParameters &&
         Object.keys(panel.chartParameters).length > 0
       ) {
-        if (mapPagePosition.lat === null) {
+        // only dispatch if the key is actually open, or this loops forever
+        if (mapPagePosition.lat === null && safeDisplayedItem.key in openItems) {
           const tempOpenItems = { ...openItems };
           delete tempOpenItems[safeDisplayedItem.key];
           dispatch(setOpenItems(tempOpenItems));
@@ -103,12 +104,17 @@ function PanelChildren({ displayedItem, level, direction }) {
     const posDependence = panelData.filter(
       (panel) => panel.key === safeDisplayedItem.key
     )[0]?.positionDependent;
-    if (mapPagePosition.lat === null && posDependence) {
+    // same loop guard as above
+    if (
+      mapPagePosition.lat === null &&
+      posDependence &&
+      safeDisplayedItem.key in openItems
+    ) {
       const tempOpenItems = { ...openItems };
       delete tempOpenItems[safeDisplayedItem.key];
       dispatch(setOpenItems(tempOpenItems));
     }
-  });
+  }, [mapPagePosition.lat, panelData, safeDisplayedItem.key, openItems, dispatch, setOpenItems]);
 
   useEffect(() => {
     dispatch(setSiblingCount({ direction, value: panelChildren.length }));

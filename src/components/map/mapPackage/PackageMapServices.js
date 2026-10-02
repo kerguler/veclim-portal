@@ -138,7 +138,8 @@ class PackageMapServices {
     dispatch(setDisplayReady(false));
     dispatch(setPanelOpen({ direction: 'left', value: false }));
     const firstPanel = vec.defaults?.firstPanelKey || 'location_info_panel';
-    dispatch(setOpenItems({ direction: 'left', value: {} }));
+    // setOpenItems wants the raw openItems object, not a {direction,value} wrapper
+    dispatch(setOpenItems({ menu_icon: true }));
     dispatch(
       setLastPanelDisplayed({
         direction: 'left',

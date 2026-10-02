@@ -13,7 +13,8 @@
   flex-direction: column;
   align-items: center;
 
-  width: 90vw;
+  width: 72vw;
+  max-width: 300px;
   margin-left: 5vw;
   padding: 0.2rem;
 
@@ -49,19 +50,34 @@
   border-radius: 2rem;
 }
 
-.nav-burger .links a:not(.map):hover,
-.nav-burger .links .hover-menu-wrapper:hover {
-  color: var(--primary-color2);
+
+@media (hover: hover) and (pointer: fine) {
+  .nav-burger .links a:not(.map):hover,
+  .nav-burger .links .hover-menu-wrapper:hover {
+    color: var(--primary-color2);
+  }
+}
+
+/* Account + MAP stack */
+.nav-burger .links .burger-bottom-row {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  gap: 0.35rem;
+  margin: 0.5rem 0 0.3rem;
 }
 
 /* MAP button */
-.nav-burger .links .map {
+.nav-burger .links .burger-bottom-row .map {
   position: relative;
   overflow: hidden;
   display: block;
 
-  width: 80%;
-  margin: 0.5rem auto;
+  width: 60%;
+  margin: 0;
+  padding: 0.5rem 0.5rem;
+  font-size: 1.05rem;
 
   color: white;
   background: linear-gradient(
@@ -72,7 +88,6 @@
   );
 }
 
-.nav-burger .links .map:hover,
 .nav-burger .links .map.selected {
   color: white;
   background: linear-gradient(
@@ -81,6 +96,18 @@
     var(--secondary-color1) 50%,
     var(--primary-color1) 100%
   );
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .nav-burger .links .map:hover {
+    color: white;
+    background: linear-gradient(
+      90deg,
+      var(--secondary-color2) 0%,
+      var(--secondary-color1) 50%,
+      var(--primary-color1) 100%
+    );
+  }
 }
 
 .nav-burger .links .map::after {
@@ -112,6 +139,26 @@
   );
   pointer-events: none;
   cursor: default;
+}
+
+/* Account / login button */
+.nav-burger .links .burger-bottom-row .burger-auth {
+  display: flex;
+  justify-content: center;
+  width: 60%;
+  margin: 0;
+}
+
+.nav-burger .links .burger-auth .auth-nav {
+  margin-top: 0;
+  width: 100%;
+}
+
+.nav-burger .links .burger-auth .auth-nav__toggle {
+  width: 100%;
+  max-width: none;
+  padding: 0.5rem 0.5rem;
+  font-size: 1rem;
 }
 
 /* Vector search modal on mobile */

@@ -1,38 +1,9 @@
-import { useDispatch } from 'react-redux';
-import { useLogoutMutation, setApiRegisterResponse, setPassword } from 'store';
-import useCsrf from 'pages/LoginRegister/Services/useCsrf';
+import useLogout from 'customHooks/useLogout';
 import './TopAuthBar.css';
 
 // username + logout chip so a collaborator can switch accounts here too
 function TopAuthBar({ username, refetchIsStaff }) {
-  const dispatch = useDispatch();
-  const { refresh } = useCsrf();
-  const [logout, { isLoading: loggingOut }] = useLogoutMutation();
-
-  const handleLogout = async () => {
-    try {
-      await logout().unwrap();
-    } catch (e) {
-      console.error('Logout failed (continuing cleanup):', e);
-    }
-    dispatch(
-      setApiRegisterResponse({
-        response: null,
-        status: null,
-        message: null,
-        userName: null,
-        userId: null,
-      })
-    );
-    dispatch(setPassword(''));
-    localStorage.removeItem('id');
-    try {
-      await refresh();
-    } catch (e) {
-      console.error('CSRF refresh after logout failed (non-critical):', e);
-    }
-    refetchIsStaff();
-  };
+  const { handleLogout, loggingOut } = useLogout({ refetchIsStaff });
 
   return (
     <div className="top-auth-bar">

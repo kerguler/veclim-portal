@@ -10,12 +10,12 @@ import BurgerMenu from './BurgerMenu/BurgerMenu';
 import { getVector } from 'vectors/registry';
 import { setReadyToView, setPanelOpen } from 'store';
 import useIsStaff from 'customHooks/useIsStaff';
-import AuthNav from 'components/AuthNav/AuthNav';
 
 function MobileNav() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const mainDivRef = useRef();
-  useOutsideClickClose(mainDivRef, setIsMenuOpen);
+ 
+  useOutsideClickClose(mainDivRef, setIsMenuOpen, '.auth-nav__popover');
 
   const dispatch = useDispatch();
 
@@ -99,7 +99,6 @@ function MobileNav() {
         <header className="mobile-header">
           <div className="burger-menu">
             <div onClick={handleClick} width="32px" className="burger-icon" />
-            <AuthNav />
           </div>
         </header>
       </div>

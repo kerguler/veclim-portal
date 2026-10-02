@@ -13,6 +13,7 @@ function Panel({
   passedKey,
   tabs,
   overridesPanelScroll,
+  innerMinHeight = 330,
 }) {
   const dispatch = useDispatch();
   const {
@@ -65,10 +66,12 @@ function Panel({
       </div>
       <div className="tab-list"> {displayedTabs}</div>
       <div
-        className="panel-inner-box"
+        className={classNames('panel-inner-box', {
+          'panel-inner-box--compact': innerMinHeight === 0,
+        })}
         style={{
           overflowY: overridesPanelScroll ? 'hidden' : 'auto',
-          minHeight: '330px',
+          minHeight: `${innerMinHeight}px`,
         }}
       >
         {children}

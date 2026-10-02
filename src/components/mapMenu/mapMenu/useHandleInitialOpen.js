@@ -2,6 +2,7 @@ import useDirectorFun from 'customHooks/useDirectorFun';
 import { useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import { setDisplaySimulationPanel } from 'store';
+
 function useHandleInitialOpen(
   displayedItem,
   onToggle,
@@ -9,17 +10,18 @@ function useHandleInitialOpen(
   displaySimulationPanel,
   lastDisplayedPanel
 ) {
-  const { panelInterfere, mapPagePosition } = useDirectorFun(direction);
+  const { panelInterfere, mapPagePosition, openItems } = useDirectorFun(direction);
 
   const dispatch = useDispatch();
   useEffect(() => {
+ 
     if (
       displayedItem?.initialOpen &&
       !displaySimulationPanel &&
-      panelInterfere === 0
+      panelInterfere === 0 &&
+      !openItems?.[displayedItem.key]
     ) {
       onToggle(displayedItem?.key);
-      console.log('Initial open for:', displayedItem?.key);
     }
 
     if (displayedItem?.key === displaySimulationPanel) {

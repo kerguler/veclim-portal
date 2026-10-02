@@ -156,11 +156,11 @@ function LoginComponent({
   return (
     <div className="login-base">
       <div className="login-card">
-        <p className="login-sub">
-          {requestAccessVectorId
-            ? `Log in or create an account to request access to ${requestAccessLabel || requestAccessVectorId}`
-            : 'You must be logged in to run parameters'}
-        </p>
+        {requestAccessVectorId && (
+          <p className="login-sub">
+            {`Log in or create an account to request access to ${requestAccessLabel || requestAccessVectorId}`}
+          </p>
+        )}
 
         <form
           onSubmit={mode === 'login' ? handleLogin : handleRegister}

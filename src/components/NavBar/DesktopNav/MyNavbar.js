@@ -61,7 +61,6 @@ function MyNavbar({ style }) {
               <img src={logo100} alt="VEClim Logo" />
             </div>
           </Link>
-          <AuthNav />
         </div>
 
         <div className="navbar-links">
@@ -70,6 +69,8 @@ function MyNavbar({ style }) {
           <Link to="/Policy">POLICY</Link>
           <MethodsNavItem />
           <a href="/tutorials-viewer/localfile/README.ipynb">TUTORIALS</a>
+
+          <AuthNav variant="icon" />
 
           {/* 🔑 Vector-dependent MAP link */}
           <Link onClick={handleMapBounds} className="button" to={mapRoute}>

@@ -3,6 +3,11 @@ import { useSelector } from 'react-redux';
 import { getVector } from '../vectors/registry';
 
 import { GLOBAL_TOOLS_MENU_ITEM } from 'components/map/MapToolsPanel/globalPanels';
+import {
+  ACCOUNT_MENU_ITEM,
+  ACCOUNT_PANEL_MENU_ITEM,
+  ACCOUNT_PANEL_DATA_ITEMS,
+} from 'components/map/AccountPanel/globalAccountPanel';
 
 const PanelContext = createContext(null);
 
@@ -13,15 +18,26 @@ function decorateVectorWithGlobalTools(vec) {
   const hasToolsMenu = baseMenu.some(
     (m) => m && m.key === GLOBAL_TOOLS_MENU_ITEM.key
   );
+  const hasAccountMenu = baseMenu.some(
+    (m) => m && m.key === ACCOUNT_MENU_ITEM.key
+  );
 
-  const menu = hasToolsMenu
-    ? baseMenu
-    : [...baseMenu, GLOBAL_TOOLS_MENU_ITEM];
+  let menu = baseMenu;
+  if (!hasToolsMenu) menu = [...menu, GLOBAL_TOOLS_MENU_ITEM];
+  if (!hasAccountMenu) menu = [...menu, ACCOUNT_MENU_ITEM, ACCOUNT_PANEL_MENU_ITEM];
+
+  const basePanelData = vec.panelData || [];
+  const hasAccountPanelData = basePanelData.some(
+    (p) => p && p.key === ACCOUNT_MENU_ITEM.key
+  );
+  const panelData = hasAccountPanelData
+    ? basePanelData
+    : [...basePanelData, ...ACCOUNT_PANEL_DATA_ITEMS];
 
   return {
     ...vec,
     menu,
-    // panelData stays as vector defined it
+    panelData,
   };
 }
 

@@ -73,6 +73,7 @@ const SliderRow = ({ direction }) => {
         Number(f.vecHumanScaling.value || 50) / 100,
         Number(f.personalProtection.value || 0),
         Number(f.vectorControlDelay.value || -1),
+        
       ],
     },
   };

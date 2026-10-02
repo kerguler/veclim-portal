@@ -23,6 +23,15 @@ const FAILURE_CODE_MESSAGES = {
   TASK_FAILED: 'Something went wrong while running this simulation.',
   DEFAULT: 'Something went wrong while running this simulation.',
 };
+const DEFAULT_NO_DATA_REASON =
+  'This simulation completed but produced no data for this location.';
+
+function looksLikeRawExceptionText(text) {
+  if (!text) return false;
+  return /line \d+ column \d+|char \d+\)|traceback|[a-z.]+error[:(]|expecting value/i.test(
+    text
+  );
+}
 function useSimTileFunctions(sim) {
   const dispatch = useDispatch();
   const [isAlboChik, setIsAlboChik] = useState(false);
@@ -84,8 +93,9 @@ function useSimTileFunctions(sim) {
     ? FAILURE_CODE_MESSAGES[simRecord?.errors?.code] ||
       FAILURE_CODE_MESSAGES.DEFAULT
     : isNoDataCompletion
-      ? simRecord?.reason ||
-        'This simulation completed but produced no data for this location.'
+      ? looksLikeRawExceptionText(simRecord?.reason)
+        ? DEFAULT_NO_DATA_REASON
+        : simRecord?.reason || DEFAULT_NO_DATA_REASON
       : null;
 
   useEffect(() => {

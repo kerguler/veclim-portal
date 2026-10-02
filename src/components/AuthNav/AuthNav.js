@@ -1,33 +1,44 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
-import { useDispatch } from 'react-redux';
-import { useLogoutMutation, setApiRegisterResponse, setPassword } from 'store';
-import useCsrf from 'pages/LoginRegister/Services/useCsrf';
 import useIsStaff from 'customHooks/useIsStaff';
+import useLogout from 'customHooks/useLogout';
 import LoginComponent from 'pages/LoginRegister/LoginComponent/LoginComponent';
+import CollaboratorAccessRequest from 'components/DraftAccessGate/CollaboratorAccessRequest';
+import GrantedVectorsAccess from 'components/DraftAccessGate/GrantedVectorsAccess';
+import userIcon from 'assets/icons/map-page-right-menu/svg/user-32px.svg';
 import './AuthNav.css';
 
-function AuthNav() {
+function AuthNav({ variant = 'default' }) {
   const [open, setOpen] = useState(false);
   const [coords, setCoords] = useState(null);
   const toggleRef = useRef();
   const popoverRef = useRef();
 
-  const dispatch = useDispatch();
-  const { refresh } = useCsrf();
   const {
     isLoggedIn,
     isChecking,
+    isStaff,
     username,
+    grantedVectorIds,
+    pendingVectorIds,
     refetch: refetchIsStaff,
   } = useIsStaff();
-  const [logout, { isLoading: loggingOut }] = useLogoutMutation();
+  const { handleLogout: runLogout, loggingOut } = useLogout({ refetchIsStaff });
 
   useLayoutEffect(() => {
     if (!open || !toggleRef.current) return;
     const rect = toggleRef.current.getBoundingClientRect();
-    // opens rightward - anchoring to rect.right ran it off-screen
-    setCoords({ top: rect.bottom + 8, left: rect.left });
+    const popoverWidth = Math.min(300, window.innerWidth - 24);
+    const left = Math.min(
+      Math.max(rect.left + rect.width / 2 - popoverWidth / 2, 12),
+      window.innerWidth - popoverWidth - 12
+    );
+    const opensUp = rect.top > window.innerHeight / 2;
+    setCoords(
+      opensUp
+        ? { bottom: window.innerHeight - rect.top + 8, left }
+        : { top: rect.bottom + 8, left }
+    );
   }, [open]);
 
   useEffect(() => {
@@ -42,42 +53,38 @@ function AuthNav() {
   }, [open]);
 
   const handleLogout = async () => {
-    try {
-      await logout().unwrap();
-    } catch (e) {
-      console.error('Logout failed (continuing cleanup):', e);
-    }
-    dispatch(
-      setApiRegisterResponse({
-        response: null,
-        status: null,
-        message: null,
-        userName: null,
-        userId: null,
-      })
-    );
-    dispatch(setPassword(''));
-    localStorage.removeItem('id');
-    try {
-      await refresh();
-    } catch (e) {
-      console.error('CSRF refresh after logout failed (non-critical):', e);
-    }
-    refetchIsStaff();
+    await runLogout();
     setOpen(false);
   };
 
   if (isChecking) return null;
 
+  const isIcon = variant === 'icon';
+
   return (
-    <div className="auth-nav">
+    <div className={isIcon ? 'auth-nav auth-nav--icon' : 'auth-nav'}>
       <button
         ref={toggleRef}
         type="button"
-        className="auth-nav__toggle"
+        className={
+          isIcon ? 'auth-nav__toggle auth-nav__toggle--icon' : 'auth-nav__toggle'
+        }
+        aria-label={isLoggedIn ? username || 'Account' : 'Log in'}
         onClick={() => setOpen((v) => !v)}
       >
-        {isLoggedIn ? username || 'Account' : 'Log in'}
+        {isIcon ? (
+          <span
+            className="auth-nav__icon-mask"
+            style={{
+              WebkitMaskImage: `url(${userIcon})`,
+              maskImage: `url(${userIcon})`,
+            }}
+          />
+        ) : isLoggedIn ? (
+          username || 'Account'
+        ) : (
+          'Log in'
+        )}
       </button>
 
       {open &&
@@ -86,7 +93,7 @@ function AuthNav() {
           <div
             className="auth-nav__popover"
             ref={popoverRef}
-            style={{ top: coords.top, left: coords.left }}
+            style={{ ...coords }}
           >
             {isLoggedIn ? (
               <div className="auth-nav__account">
@@ -99,6 +106,17 @@ function AuthNav() {
                 >
                   {loggingOut ? 'Logging out…' : 'Log out'}
                 </button>
+                <GrantedVectorsAccess
+                  isStaff={isStaff}
+                  grantedVectorIds={grantedVectorIds}
+                />
+                {!isStaff && (
+                  <CollaboratorAccessRequest
+                    grantedVectorIds={grantedVectorIds}
+                    pendingVectorIds={pendingVectorIds}
+                    refetchIsStaff={refetchIsStaff}
+                  />
+                )}
               </div>
             ) : (
               <LoginComponent

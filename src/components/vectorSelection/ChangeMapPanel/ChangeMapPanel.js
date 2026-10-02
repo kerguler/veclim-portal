@@ -49,10 +49,13 @@ function ChangeMapPanel() {
   }, [vectorNamesFromStore, isStaff, grantedVectorIds]);
 
   const handleChangeTile = (desiredVectorId) => {
+    // no-op when clicking the already-active vector
+    if (desiredVectorId === vectorName) return;
+
     const vec = getVector(desiredVectorId);
     if (!vec) return;
-    PackageMapServices.setActiveVector(dispatch, vec);
-
+    // pass the id, not `vec` - setActiveVector does its own getVector() lookup
+    PackageMapServices.setActiveVector(dispatch, desiredVectorId);
 
     const hasValidPosition =
       Number.isFinite(mapPagePosition?.lat) &&

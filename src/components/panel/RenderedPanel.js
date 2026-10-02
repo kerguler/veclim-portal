@@ -87,6 +87,7 @@ const RenderedPanel = ({
 
   const currentPanel = panelData.find((panel) => panel.key === passedKey?.key);
   const overridesPanelScroll = currentPanel?.overridesPanelScroll === true;
+  const innerMinHeight = currentPanel?.compactPanel ? 0 : 330;
 
   return (
     <span
@@ -101,6 +102,7 @@ const RenderedPanel = ({
           className={panelClassName}
           onClosed={(key) => handlePanelClosed(key)}
           overridesPanelScroll={overridesPanelScroll}
+          innerMinHeight={innerMinHeight}
         >
           <div className="panel-content" style={{ userSelect: 'none' }}>
             {panel}

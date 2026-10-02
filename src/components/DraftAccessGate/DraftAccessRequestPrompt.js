@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useRequestDraftAccessMutation } from 'store';
+import useCsrf from 'pages/LoginRegister/Services/useCsrf';
 
 function DraftAccessRequestPrompt({
   vectorId,
@@ -8,12 +9,14 @@ function DraftAccessRequestPrompt({
   refetchIsStaff,
 }) {
   const [requestDraftAccess, { isLoading }] = useRequestDraftAccessMutation();
+  const { refresh: refreshCsrf } = useCsrf();
   const [justRequested, setJustRequested] = useState(false);
 
   const isPending = justRequested || (pendingVectorIds || []).includes(vectorId);
 
   const handleRequest = async () => {
     try {
+      await refreshCsrf();
       await requestDraftAccess(vectorId).unwrap();
       setJustRequested(true);
     } catch (e) {

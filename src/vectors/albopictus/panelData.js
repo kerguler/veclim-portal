@@ -773,6 +773,9 @@ export const panelData = [
     key: 'simulation_adjustment_panel',
     label: 'Simulation Adjustment Panel',
     overridesPanelScroll: true,
+    requiresAuth: true,
+
+    compactPanel: true,
     content: (
       <div className="text-area">
         <div>
@@ -786,6 +789,7 @@ export const panelData = [
   {
     key: 'simulation_list_panel',
     label: 'List Panel',
+    requiresAuth: true,
     content: (
       <div className="text-area">
         <div>

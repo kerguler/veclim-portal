@@ -1,8 +1,16 @@
 import { useEffect } from "react";
-function useOutsideClickClose(reference, closefun) {
+
+function useOutsideClickClose(reference, closefun, ignoreSelector) {
 	useEffect(() => {
 		const handleClickOnDoc = (event) => {
 			if (!reference.current) {
+				return;
+			}
+			if (
+				ignoreSelector &&
+				event.target.closest &&
+				event.target.closest(ignoreSelector)
+			) {
 				return;
 			}
 			if (!reference.current.contains(event.target)) {

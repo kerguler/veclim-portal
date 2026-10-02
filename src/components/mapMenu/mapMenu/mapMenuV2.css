@@ -71,6 +71,29 @@
 	position: relative;
 	overflow: hidden;
 }
+
+
+.icon-disabled-tooltip {
+	z-index: 5100;
+	box-sizing: border-box;
+
+	width: max-content;
+
+	padding: 0.55rem 0.8rem;
+
+	/* match the app's standard tooltip color (ToolTipComponent / .tt-bubble) */
+	background: rgba(0, 0, 0, 0.85);
+	color: #fff;
+	font-size: 1rem;
+	font-weight: 500;
+	line-height: 1.35;
+	text-align: left;
+	white-space: normal;
+	border-radius: 0.4rem;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+
+	pointer-events: none;
+}
 .icon.shimmer-on::after {
 	content: '';
 	position: absolute;

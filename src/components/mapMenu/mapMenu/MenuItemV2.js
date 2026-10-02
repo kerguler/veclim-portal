@@ -2,7 +2,8 @@ import useDirectorFun from 'customHooks/useDirectorFun';
 import classNames from 'classnames';
 import { useDispatch } from 'react-redux';
 import { lazy, Suspense } from 'react';
-import { useState } from 'react';
+import { useState, useEffect, useLayoutEffect } from 'react';
+import { createPortal } from 'react-dom';
 import useHandleInitialOpen from './useHandleInitialOpen';
 import useSetIconActive from './useSetIconActive';
 import useHandleIconShimmer from './useHandleIconShimmer';
@@ -90,8 +91,91 @@ function MenuItemV2({ item, onToggle, shouldShimmer, direction }) {
   const toolsBtnRef = useRef(null);
   const [anchorPoint, setAnchorPoint] = useState(null);
 
+
+  const [tooltipOpen, setTooltipOpen] = useState(false);
+  const [tooltipPos, setTooltipPos] = useState(null);
+  const tooltipRef = useRef(null);
+
+
+  const updateTooltipPos = () => {
+    if (!toolsBtnRef.current) return;
+    const r = toolsBtnRef.current.getBoundingClientRect();
+    const vw = window.innerWidth;
+    const vh = window.innerHeight;
+    const M = 10;
+    const isMobile = vw < 500;
+    const maxWidth = isMobile ? Math.min(260, vw - 2 * M) : 260;
+
+    if (isMobile) {
+      setTooltipPos({
+        left: -9999,
+        bottom: vh - r.top + 8,
+        maxWidth,
+        measured: false,
+      });
+    } else {
+      const top = Math.max(M, Math.min(r.top + r.height / 2 - 20, vh - 60 - M));
+      setTooltipPos({
+        left: r.right + 8,
+        top,
+        maxWidth: Math.min(maxWidth, Math.max(vw - r.right - 2 * M, 160)),
+        measured: false,
+      });
+    }
+  };
+
+  useLayoutEffect(() => {
+    if (!tooltipOpen || !tooltipPos || tooltipPos.measured) return;
+    if (!tooltipRef.current || !toolsBtnRef.current) return;
+
+    const tipRect = tooltipRef.current.getBoundingClientRect();
+    const r = toolsBtnRef.current.getBoundingClientRect();
+    const vw = window.innerWidth;
+    const vh = window.innerHeight;
+    const M = 10;
+    const isMobile = vw < 500;
+
+    if (isMobile) {
+      const left = Math.max(
+        M,
+        Math.min(r.left + r.width / 2 - tipRect.width / 2, vw - tipRect.width - M)
+      );
+      setTooltipPos((p) => ({ ...p, left, measured: true }));
+    } else {
+      const top = Math.max(
+        M,
+        Math.min(r.top + r.height / 2 - tipRect.height / 2, vh - tipRect.height - M)
+      );
+      setTooltipPos((p) => ({ ...p, top, measured: true }));
+    }
+  }, [tooltipOpen, tooltipPos]);
+
+  useEffect(() => {
+    if (!tooltipOpen) return;
+    const close = (e) => {
+      if (toolsBtnRef.current?.contains(e.target)) return;
+      setTooltipOpen(false);
+    };
+    window.addEventListener('click', close, true);
+    window.addEventListener('scroll', close, true);
+    return () => {
+      window.removeEventListener('click', close, true);
+      window.removeEventListener('scroll', close, true);
+    };
+  }, [tooltipOpen]);
+
   let menuDirection = displayedItem?.subMenuOpenDirection;
   const handleToggle = (e, key) => {
+ 
+    if (shouldDisable) {
+      setTooltipOpen((v) => {
+        const next = !v;
+        if (next) updateTooltipPos();
+        return next;
+      });
+      return;
+    }
+
     // 🔹 Utility action: open tools popover, do NOT change panels
     if (item.isUtility) {
       const r = e.currentTarget.getBoundingClientRect();
@@ -134,8 +218,8 @@ function MenuItemV2({ item, onToggle, shouldShimmer, direction }) {
     onToggle(key);
   };
 
-  const { style, imgStyle, shouldDisable } =
-    useHandleDisabledIcons(panelChildren);
+  const { style, imgStyle, shouldDisable, disabledTooltip } =
+    useHandleDisabledIcons(panelChildren, displayedItem?.rotate);
 
   return (
     <>
@@ -145,6 +229,12 @@ function MenuItemV2({ item, onToggle, shouldShimmer, direction }) {
         className={className}
         style={style}
         onClick={(e) => handleToggle(e, baseItem.key)}
+        onMouseEnter={() => {
+          if (!shouldDisable || !disabledTooltip) return;
+          updateTooltipPos();
+          setTooltipOpen(true);
+        }}
+        onMouseLeave={() => setTooltipOpen(false)}
       >
         <img
           style={imgStyle}
@@ -153,6 +243,27 @@ function MenuItemV2({ item, onToggle, shouldShimmer, direction }) {
           src={baseItem.icon}
         />
       </div>
+      {tooltipOpen &&
+        shouldDisable &&
+        disabledTooltip &&
+        tooltipPos &&
+        createPortal(
+          <div
+            ref={tooltipRef}
+            className="icon-disabled-tooltip"
+            style={{
+              position: 'fixed',
+              left: tooltipPos.left,
+              top: tooltipPos.top,
+              bottom: tooltipPos.bottom,
+              maxWidth: tooltipPos.maxWidth,
+              visibility: tooltipPos.measured ? 'visible' : 'hidden',
+            }}
+          >
+            {disabledTooltip}
+          </div>,
+          document.body
+        )}
       {showTools && (
         <div className="map-tools-container" style={{ position: 'relative' }}>
           <MapToolsPopover

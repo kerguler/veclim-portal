@@ -28,8 +28,8 @@
   align-items: center;
   justify-content: center;
 
-  width: 140px;
-  max-width: 140px;
+  width: 190px;
+  max-width: 190px;
   text-align: center;
 
   border: none;
@@ -40,7 +40,7 @@
 }
 
 .vector-carousel__name {
-  font-size: 0.95rem;
+  font-size: 1.1rem;
   font-weight: 600;
   white-space: nowrap;
   overflow: hidden;
@@ -49,8 +49,9 @@
 }
 
 .vector-carousel__index {
-  font-size: 0.7rem;
-  opacity: 0.7;
+  font-size: 1rem;
+  font-weight: 600;
+  opacity: 1;
 }
 
 .draft-badge {
@@ -69,8 +70,9 @@
 
 .vector-carousel__label > .draft-badge {
   margin-left: 0;
-  margin-top: 0.1rem;
-  font-size: 0.55rem;
+  margin-top: 0.15rem;
+  padding: 0.1rem 0.5rem;
+  font-size: 0.72rem;
 }
 
 .vector-carousel__label > .draft-badge--hidden {
@@ -293,16 +295,17 @@
   }
 
   .vector-carousel__label {
-    width: 160px;
-    max-width: 160px;
+    width: 195px;
+    max-width: 195px;
   }
 
   .vector-carousel__name {
-    font-size: 1rem;
+    font-size: 1.1rem;
   }
 
   .vector-carousel__index {
-    font-size: 0.75rem;
+    font-size: 0.9rem;
+    opacity: 0.85;
   }
 
   .vector-search-panel {

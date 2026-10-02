@@ -1,5 +1,5 @@
 // customHooks/fethcerStates/useFetcherStates.js
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 
 import FetcherService from 'services/FetcherService';
@@ -225,12 +225,19 @@ const useFetcherStates = () => {
   }, [bounds, dispatch]);
 
   // 7) open a panel from URL if it exists
+  const dispatchedUrlPanelRef = useRef(null);
   useEffect(() => {
-    if (!panel) return;
-    if (!Array.isArray(menuStructure)) return;
+    if (!panel) {
+      dispatchedUrlPanelRef.current = null;
+      return;
+    }
+    if (!Array.isArray(menuStructure) || menuStructure.length === 0) return;
+  
+    if (dispatchedUrlPanelRef.current === panel) return;
 
     const exists = menuStructure.some((item) => item.key === panel);
     if (exists) {
+      dispatchedUrlPanelRef.current = panel;
       dispatch(setLastPanelDisplayed({ direction, value: panel }));
       dispatch(setPanelInterfere({ direction, value: -1 }));
     }

@@ -10,6 +10,7 @@ import {
   setDataArrived,
   setTwinIndex,
   setPanelLevel,
+  setPanelInterfere,
 } from 'store';
 import { setPanelOpen } from 'store';
 
@@ -59,6 +60,8 @@ export default function MapMenuPicker({ direction }) {
       displaySimulationPanel === null
     ) {
       handleToggle(lastPanelDisplayed);
+    
+      dispatch(setPanelInterfere({ direction, value: 0 }));
     }
   }, [
     panelInterfere,
@@ -79,8 +82,10 @@ export default function MapMenuPicker({ direction }) {
     const findMenuItem = (key) =>
       menuStructure.find((item) => item.key === key);
 
+    // an empty chartParameters: {} is truthy but not real chart data
     const isPositionDependentPanel = (panel) =>
-      panel?.positionDependent || !!panel?.chartParameters;
+      panel?.positionDependent ||
+      (!!panel?.chartParameters && Object.keys(panel.chartParameters).length > 0);
 
     Object.keys(openItems).forEach((key) => {
       const panel = panelData.find((item) => item.key === key);
@@ -92,8 +97,6 @@ export default function MapMenuPicker({ direction }) {
           changed = true;
         }
 
-        // walk upward and remove wrapper ancestors,
-        // but stop before removing the root sidebar icon key
         let parentKey = findMenuItem(key)?.parent;
 
         while (parentKey && !topLevelKeys.has(parentKey)) {
@@ -118,8 +121,6 @@ export default function MapMenuPicker({ direction }) {
         level: Object.keys(nextOpenItems).length,
       })
     );
-
-    // close the visible panel container
     dispatch(setPanelOpen({ direction, value: false }));
   }, [mapPagePosition?.lat]);
   function handleToggle(clickedKey) {
@@ -154,8 +155,23 @@ export default function MapMenuPicker({ direction }) {
 
     if (!openItems[clickedKey]) {
       const clickedPanel = panelData.find((panel) => panel.key === clickedKey);
+      // check child panels too, not just the clicked item's own entry
+      // (e.g. 'activity_forecast' only has chartParameters on its
+      // 'activity_forecast_panel' child)
+      const hasRealChartParameters = (panel) =>
+        !!panel?.chartParameters && Object.keys(panel.chartParameters).length > 0;
+
+      const childPanelKeys = menuStructure
+        .filter((item) => item.parent === clickedKey && item.key.endsWith('_panel'))
+        .map((item) => item.key);
+      const childIsPositionDependent = childPanelKeys.some((key) => {
+        const panel = panelData.find((p) => p.key === key);
+        return panel?.positionDependent || hasRealChartParameters(panel);
+      });
       const isPositionDependent =
-        clickedPanel?.positionDependent || !!clickedPanel?.chartParameters;
+        clickedPanel?.positionDependent ||
+        hasRealChartParameters(clickedPanel) ||
+        childIsPositionDependent;
 
       if (!(isPositionDependent && mapPagePosition?.lat === null)) {
         openItemsTemp[clickedKey] = true;

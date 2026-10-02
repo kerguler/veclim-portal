@@ -23,10 +23,52 @@
 	cursor: pointer;
 }
 
-.auth-nav__toggle:hover {
-	background: var(--primary-color2);
+
+@media (hover: hover) and (pointer: fine) {
+	.auth-nav__toggle:hover {
+		background: var(--primary-color2);
+	}
 }
 
+.auth-nav--icon {
+	margin-top: 0;
+	align-self: center;
+	display: inline-flex;
+	align-items: center;
+}
+
+.auth-nav__toggle--icon {
+	max-width: none;
+	width: 1.8rem;
+	height: 1.8rem;
+	padding: 0;
+	border-radius: 4px;
+	background: #fff;
+	border: 0;
+	outline: none;
+	box-shadow: none;
+}
+
+.auth-nav__toggle--icon:hover,
+.auth-nav__toggle--icon:focus,
+.auth-nav__toggle--icon:focus-visible {
+	background: #fff;
+	outline: none;
+	box-shadow: none;
+}
+
+.auth-nav__icon-mask {
+	display: inline-block;
+	width: 1.8rem;
+	height: 1.8rem;
+	background-color: var(--primary-color1);
+	-webkit-mask-size: contain;
+	mask-size: contain;
+	-webkit-mask-repeat: no-repeat;
+	mask-repeat: no-repeat;
+	-webkit-mask-position: center;
+	mask-position: center;
+}
 
 .auth-nav__popover {
 	position: fixed;
