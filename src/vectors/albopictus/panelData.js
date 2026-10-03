@@ -58,6 +58,7 @@ export const panelData = [
     label: 'Location Information',
     positionDependent: true,
     key: 'location_info_panel',
+    innerMinHeight: 0,
     content: (
       <div className="text-area">
         <h1>Location Information</h1>

@@ -172,7 +172,7 @@
 }
 @media (max-width: 500px) {
   .sim-adjustment__scroll {
-    max-height: clamp(150px, 10vh, 400px);
+    max-height: clamp(300px, 55vh, 550px);
   }
   .sim-bottom {
     display: flex;
