@@ -107,7 +107,8 @@ function useHandleDisabledIcons(panelChildren, rotateDeg = 0) {
 
   const imgStyle = useMemo(() => {
 
-    const rotate = rotateDeg ? `rotate(${rotateDeg}deg) ` : '';
+    const isMobile = window.matchMedia('(max-width: 499px)').matches;
+    const rotate = rotateDeg && !isMobile ? `rotate(${rotateDeg}deg) ` : '';
     return shouldDisable
       ? {
           opacity: 0.5,

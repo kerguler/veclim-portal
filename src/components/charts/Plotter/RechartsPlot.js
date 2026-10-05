@@ -94,6 +94,47 @@ function RechartsPlot({ direction, plotMat }) {
   const legendHostRef = useRef(null);
   const [legendOpen, setLegendOpen] = useState(false);
 
+  // keep brush date labels inside the panel: flip to the inner side of the handle
+  useEffect(() => {
+    const root = legendHostRef.current?.parentElement;
+    const box = legendHostRef.current?.closest('.panel-inner-box');
+    if (!root || !box) return;
+    const gap = 10;
+    const observer = new MutationObserver(() => fix());
+    const observe = () =>
+      observer.observe(root, {
+        childList: true,
+        subtree: true,
+        attributes: true,
+      });
+    const fix = () => {
+      const texts = root.querySelectorAll('.recharts-brush-texts text');
+      if (texts.length < 2) return;
+      observer.disconnect();
+      const [startT, endT] = texts;
+      const travellers = root.querySelectorAll('.recharts-brush-traveller');
+      const tw = travellers[0]?.getBoundingClientRect().width || 8;
+      startT.removeAttribute('transform');
+      endT.removeAttribute('transform');
+      startT.style.removeProperty('fill');
+      endT.style.removeProperty('fill');
+      const bounds = box.getBoundingClientRect();
+      const s = startT.getBoundingClientRect();
+      const e = endT.getBoundingClientRect();
+      if (s.left < bounds.left + gap) {
+        startT.setAttribute('transform', `translate(${s.width + tw + 10},0)`);
+        startT.style.fill = '#fff';
+      }
+      if (e.right > bounds.right - gap) {
+        endT.setAttribute('transform', `translate(${-(e.width + tw + 10)},0)`);
+        endT.style.fill = '#fff';
+      }
+      observe();
+    };
+    observe();
+    return () => observer.disconnect();
+  }, [plotMat?.length > 0]);
+
   const argKeys = useMemo(() => {
     if (plotMat && plotMat.length > 0) {
       const { date, ...restObj } = plotMat[0];

@@ -36,6 +36,12 @@
 	transition: transform 3s ease-out;
 }
 
+@media (max-width: 499px) {
+	.rotate90 {
+		transform: none;
+	}
+}
+
 .panel-restrictive-wrapper {
 	position: absolute;
 	display: inline;

@@ -21,7 +21,7 @@ function AccountPanel() {
 
   return (
     <div className="text-area account-panel">
-      <h1>Account</h1>
+      <h1>My Account</h1>
       {isLoggedIn ? (
         <>
           <div className="account-panel__info">

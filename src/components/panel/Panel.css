@@ -201,6 +201,34 @@
     height: clamp(300px, 80vw, 600px);
   }
 
+  /* chart panels: fixed box height, chart takes the space left under the text */
+  .panel-inner-box:not(.panel-inner-box--compact) {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .panel-inner-box:not(.panel-inner-box--compact) > .panel-content {
+    flex: 1 1 auto;
+    min-height: 0;
+    margin-top: 0;
+  }
+
+  .panel-inner-box:not(.panel-inner-box--compact) .panel-content.chart {
+    flex: 1 1 0;
+    height: auto;
+    min-height: 150px;
+    margin: 0.5rem 0;
+  }
+
+  /* legend sits above the plot; plot takes the remaining height */
+  .panel-inner-box:not(.panel-inner-box--compact)
+    .panel-content.chart
+    > .recharts-responsive-container {
+    flex: 1 1 0;
+    height: auto !important;
+    min-height: 0;
+  }
+
   /* non-chart panels: fit their own content height, no forced scroll */
   .panel-inner-box.panel-inner-box--compact {
     height: auto;

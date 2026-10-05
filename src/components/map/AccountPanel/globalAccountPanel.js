@@ -19,7 +19,7 @@ export const ACCOUNT_PANEL_DATA_ITEMS = [
   },
   {
     key: 'account_utility_panel',
-    label: 'Account',
+    label: 'Profile',
     forgetOpen: true,
     compactPanel: true,
     content: <AccountPanel />,
