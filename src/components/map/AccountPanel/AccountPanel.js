@@ -1,3 +1,4 @@
+import { useRef, useState } from 'react';
 import useIsStaff from 'customHooks/useIsStaff';
 import useLogout from 'customHooks/useLogout';
 import LoginComponent from 'pages/LoginRegister/LoginComponent/LoginComponent';
@@ -16,12 +17,18 @@ function AccountPanel() {
     refetch: refetchIsStaff,
   } = useIsStaff();
   const { handleLogout, loggingOut } = useLogout({ refetchIsStaff });
+  const [authMode, setAuthMode] = useState('login');
 
-  if (isChecking) return null;
+  // block first check only, keeps form mounted
+  const resolvedRef = useRef(false);
+  if (!isChecking) resolvedRef.current = true;
+  if (isChecking && !resolvedRef.current) return null;
 
   return (
     <div className="text-area account-panel">
-      <h1>My Account</h1>
+      <h1>
+        {!isLoggedIn && authMode === 'register' ? 'Registration' : 'My Account'}
+      </h1>
       {isLoggedIn ? (
         <>
           <div className="account-panel__info">
@@ -50,7 +57,10 @@ function AccountPanel() {
           </div>
         </>
       ) : (
-        <LoginComponent refetchIsStaff={refetchIsStaff} />
+        <LoginComponent
+          refetchIsStaff={refetchIsStaff}
+          onModeChange={setAuthMode}
+        />
       )}
     </div>
   );

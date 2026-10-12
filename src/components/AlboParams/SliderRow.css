@@ -170,7 +170,7 @@
   scrollbar-width: thin;
   scrollbar-color: rgba(12, 76, 110, 0.25);
 }
-@media (max-width: 500px) {
+@media (max-width: 499px) {
   .sim-adjustment__scroll {
     max-height: clamp(300px, 55vh, 550px);
   }

@@ -94,7 +94,7 @@ function RechartsPlot({ direction, plotMat }) {
   const legendHostRef = useRef(null);
   const [legendOpen, setLegendOpen] = useState(false);
 
-  // keep brush date labels inside the panel: flip to the inner side of the handle
+  // brush dates flip inside near panel edge
   useEffect(() => {
     const root = legendHostRef.current?.parentElement;
     const box = legendHostRef.current?.closest('.panel-inner-box');
@@ -247,7 +247,7 @@ function RechartsPlot({ direction, plotMat }) {
           width={500}
           height={400}
           data={plotMat}
-          margin={{ top: 5, right: 0, left: 20, bottom: 5 }}
+          margin={{ top: 5, right: 20, left: 0, bottom: 5 }}
         >
           {renderedLines}
           <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />

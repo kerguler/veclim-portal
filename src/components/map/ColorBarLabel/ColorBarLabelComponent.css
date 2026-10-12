@@ -1,6 +1,7 @@
 @import url('styles/colors.css');
 
 .color-bar {
+  --cb-size: clamp(1rem, 4.5vw, 1.8rem);
   position: fixed;
   display: flex;
   align-items: flex-end;
@@ -40,15 +41,17 @@
   justify-content: center;
   margin-top: 0.9rem;
   margin-bottom: 0.9rem;
-  width: clamp(1.2rem, 5vw, 2rem);
+  flex: 0 0 auto;
+  box-sizing: content-box;
+  width: var(--cb-size);
   border: 1px solid black;
   z-index: 2001;
   pointer-events: all;
 }
 
 .color-bar-rect {
-  width: clamp(1rem, 4.5vw, 1.8rem);
-  height: clamp(1rem, 4.5vw, 1.8rem);
+  width: var(--cb-size);
+  height: var(--cb-size);
   position: relative;
 }
 
@@ -80,7 +83,7 @@
   width: auto;
   min-width: fit-content;
   max-width: none;
-  height: clamp(1rem, 4.5vw, 1.8rem);
+  height: var(--cb-size);
   font-weight: 600;
 }
 
@@ -182,13 +185,8 @@
     max-width: 48vw;
   }
 
-  .color-bar-colors {
-    width: 1.1rem;
-  }
-
-  .color-bar-rect,
-  .color-bar-p {
-    height: 1.1rem;
+  .color-bar {
+    --cb-size: 1.1rem;
   }
 
   .color-bar-p p {
@@ -204,6 +202,7 @@
 
 @media (min-width: 500px) {
   .color-bar {
+    --cb-size: 1.8rem;
     width: 240px;
     max-width: none;
   }
@@ -217,13 +216,12 @@
   }
 
   .color-bar-colors {
-    width: 2rem;
-    height: 100%;
+    width: var(--cb-size);
+    height: auto;
   }
 
   .color-bar-p {
     width: 11rem;
-    height: 1.8rem;
   }
 
   .color-bar-p p {

@@ -13,6 +13,7 @@ function AuthNav({ variant = 'default' }) {
   const [coords, setCoords] = useState(null);
   const toggleRef = useRef();
   const popoverRef = useRef();
+  const resolvedRef = useRef(false);
 
   const {
     isLoggedIn,
@@ -57,7 +58,9 @@ function AuthNav({ variant = 'default' }) {
     setOpen(false);
   };
 
-  if (isChecking) return null;
+  // block first check only, keeps form mounted
+  if (!isChecking) resolvedRef.current = true;
+  if (isChecking && !resolvedRef.current) return null;
 
   const isIcon = variant === 'icon';
 

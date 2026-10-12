@@ -87,8 +87,7 @@ const RenderedPanel = ({
 
   const currentPanel = panelData.find((panel) => panel.key === passedKey?.key);
   const overridesPanelScroll = currentPanel?.overridesPanelScroll === true;
-  // non-chart panels (selectors, forms, info) fit their content height on mobile;
-  // only chart panels keep the fixed/scrollable height
+  // only chart panels keep fixed height
   const innerMinHeight =
     currentPanel?.innerMinHeight ??
     (currentPanel?.compactPanel || !panelChart ? 0 : 330);

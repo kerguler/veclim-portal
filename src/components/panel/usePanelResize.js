@@ -25,7 +25,19 @@ function usePanelResize({ panelRef, direction, setPanelTop }) {
     measureAndStoreTop();
 
     window.addEventListener('resize', measureAndStoreTop);
-    return () => window.removeEventListener('resize', measureAndStoreTop);
+    // panel height changes (skeleton -> chart) move its top
+    // next frame, avoids resize-observer loop
+    let raf = 0;
+    const ro = new ResizeObserver(() => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(measureAndStoreTop);
+    });
+    if (panelRef.current) ro.observe(panelRef.current);
+    return () => {
+      window.removeEventListener('resize', measureAndStoreTop);
+      cancelAnimationFrame(raf);
+      ro.disconnect();
+    };
   }, [measureAndStoreTop, panelOpen]);
 }
 

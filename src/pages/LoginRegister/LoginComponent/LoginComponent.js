@@ -63,6 +63,7 @@ function LoginComponent({
   requestAccessLabel,
   refetchIsStaff: refetchIsStaffProp,
   onSuccess,
+  onModeChange,
 }) {
   const dispatch = useDispatch();
   const { refresh } = useCsrf();
@@ -82,6 +83,9 @@ function LoginComponent({
   const refetchIsStaff = refetchIsStaffProp || refetchIsStaffOwn;
 
   const [mode, setMode] = useState('login'); // 'login' | 'register'
+  useEffect(() => {
+    onModeChange?.(mode);
+  }, [mode, onModeChange]);
   const [confirm, setConfirm] = useState('');
   const [requestAccessChecked, setRequestAccessChecked] = useState(true);
 

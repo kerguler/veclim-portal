@@ -168,11 +168,8 @@ function MenuItemV2({ item, onToggle, shouldShimmer, direction }) {
   const handleToggle = (e, key) => {
  
     if (shouldDisable) {
-      setTooltipOpen((v) => {
-        const next = !v;
-        if (next) updateTooltipPos();
-        return next;
-      });
+      if (!tooltipOpen) updateTooltipPos();
+      setTooltipOpen(!tooltipOpen);
       return;
     }
 
