@@ -1,19 +1,18 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useLogoutMutation, setApiRegisterResponse, setPassword } from 'store';
 import useCsrf from 'pages/LoginRegister/Services/useCsrf';
 import { getVector } from 'vectors/registry';
 
 // Shared logout flow for every "Log out" button. Clears auth state and,
-// if viewing a now-inaccessible draft vector, redirects to the default one.
+// on a draft vector, restarts on albopictus keeping the same page type.
 function useLogout({ refetchIsStaff } = {}) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
+  const mapVector = useSelector((state) => state.fetcher.fetcherStates.mapVector);
   const { refresh } = useCsrf();
   const [logout, { isLoading: loggingOut }] = useLogoutMutation();
-
-  const mapVector = useSelector((state) => state.fetcher.fetcherStates.mapVector);
-  const vectorName = useSelector((state) => state.fetcher.fetcherStates.vectorName);
 
   const handleLogout = async () => {
     try {
@@ -43,14 +42,17 @@ function useLogout({ refetchIsStaff } = {}) {
       // can throw if the query was unsubscribed mid-logout; non-critical
       console.error('refetchIsStaff after logout failed (non-critical):', e);
     }
-
-    // ?session=<id> stays in the URL through logout, so redirect away
-    // from a draft vector we can no longer view
-    const currentId = mapVector || vectorName;
-    const currentVector = currentId ? getVector(currentId) : null;
-    if (currentVector?.status === 'draft') {
+    const onMethods = location.pathname.startsWith('/Methods/');
+    const currentId = onMethods
+      ? location.pathname.split('/')[2]
+      : new URLSearchParams(location.search).get('session') || mapVector;
+    if (getVector(currentId)?.status === 'draft') {
       const fallback = getVector('albopictus');
-      navigate(fallback?.meta?.route || '/MapPage?session=albopictus');
+      navigate(
+        onMethods
+          ? fallback?.meta?.methods?.route || '/Methods/albopictus'
+          : fallback?.meta?.route || '/MapPage?session=albopictus'
+      );
     }
   };
 
