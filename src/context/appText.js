@@ -1019,7 +1019,7 @@ function TextProvider({ children }) {
 						</p>{" "}
 						<p>
 							<strong>
-								Well, you shouldn’t. Like an artwork, your data should carry
+								Well, you shouldn't. Like an artwork, your data should carry
 								your signature and always be cited appropriately. Fortunately,
 								nowadays digital technologies accommodate deposition and reuse
 								of virtually endless amount of such data. Thousands of rows in a
@@ -1103,15 +1103,8 @@ function TextProvider({ children }) {
 						>
 							OpenStreetMap
 						</a>{" "}
-						contributors &copy;{" "}
-						<a
-							href="https://carto.com/attributions"
-							target="_blank"
-							rel="noreferrer"
-						>
-							CARTO
-						</a>
-						. The maps, country boundaries, and place names are displayed as
+						contributors, Esri, HERE, Garmin, and the GIS user community. 
+						The maps, country boundaries, and place names are displayed as
 						they are without any political intent.
 					</p>
 				),
