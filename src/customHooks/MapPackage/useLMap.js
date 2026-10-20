@@ -4,6 +4,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import PackageMapServices from 'components/map/mapPackage/PackageMapServices';
 import { setCurrentMapBounds } from 'store';
 import useDirectorFun from 'customHooks/useDirectorFun';
+import {
+  BASEMAP_MAX_ZOOM,
+  OSM_MAX_ZOOM,
+  mapBasemapKey,
+} from 'components/map/mapPackage/basemaps';
 
 function useLMap(mapParRef) {
   const dispatch = useDispatch();
@@ -116,6 +121,12 @@ function useLMap(mapParRef) {
     const baseLayer = PackageMapServices.getBaseLayerForVector(vectorName);
     const baseLayerOSM = PackageMapServices.baseLayerOSM;
     const dataLayer = PackageMapServices.dataLayer;
+
+    // cap zoom where the basemap has tiles
+    const key = mapBasemapKey(vectorName);
+    map.setMaxZoom(
+      showMapLabels ? OSM_MAX_ZOOM : BASEMAP_MAX_ZOOM[key] || BASEMAP_MAX_ZOOM.terrain
+    );
 
     // drop other basemaps (vector changed)
     Object.values(PackageMapServices._baseCache).forEach((l) => {
