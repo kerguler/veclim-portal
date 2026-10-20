@@ -120,6 +120,7 @@ const { tileOpacity, showVectorAbundance,showMapLabels } = optionsPanel;
 		}
 		if (p.map !== null && p.map !== undefined) {
 			MapAdjustmentsService.setMinZoom(mapParRef, vectorName);
+			MapAdjustmentsService.setMaxZoom(mapParRef, vectorName);
 			p.map.setView({ lat: p.center[0], lng: p.center[1] }, p.zoom);
 		}
 		const handleMapClick = (e) => {
@@ -138,7 +139,9 @@ const { tileOpacity, showVectorAbundance,showMapLabels } = optionsPanel;
 			let tempZ = p.map.getZoom();
 			p.zoom = tempZ;
 			p.center = [tempC.lat, tempC.lng];
-			dispatch(setCurrentMapZoom(tempZ));
+			console.log(tempZ);
+			if (tempZ < 10)
+				dispatch(setCurrentMapZoom(tempZ));
 			dispatch(setCurrentMapCenter([tempC.lat, tempC.lng]));
 		};
 

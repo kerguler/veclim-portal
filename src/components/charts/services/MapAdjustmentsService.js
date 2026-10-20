@@ -27,8 +27,8 @@ import { setDirectMap } from "store";
 
 class MapAdjustmentsService {
 	static baseLayer = L.tileLayer(
-		"https://server.arcgisonline.com/ArcGIS/rest/services/World_Shaded_Relief/MapServer/tile/{z}/{y}/{x}",
-		{ attribution: "", noWrap: true, maxZoom: 10 }
+		"https://server.arcgisonline.com/ArcGIS/rest/services/World_Terrain_Base/MapServer/tile/{z}/{y}/{x}.webp",
+		{ attribution: "", noWrap: true, maxZoom: 9 }
 	);
 	static baseLayerOSM = L.tileLayer(
 		"https://tile.openstreetmap.org/{z}/{x}/{y}.png", 
@@ -290,6 +290,24 @@ class MapAdjustmentsService {
 		p.map.setMinZoom(newMinZoom);
 		p.minZoom = newMinZoom;
 		return newMinZoom;
+	}
+	static setMaxZoom(mapParRef, vectorName) {
+	    let p = mapParRef.current;
+
+    	let newMaxZoom = 9;
+
+	    if (vectorName === "albopictus") {
+    	    newMaxZoom = 9;
+	    }
+
+	    p.map.setMaxZoom(newMaxZoom);
+
+	    if (p.map.getZoom() > newMaxZoom) {
+    	    p.map.setZoom(newMaxZoom);
+	    }
+
+    	p.maxZoom = newMaxZoom;
+	    return newMaxZoom;
 	}
 	static calculateZoomForBounds(mapParRef, bounds) {
 		// Get the size of the map container

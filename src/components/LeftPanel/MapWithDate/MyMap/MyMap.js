@@ -59,8 +59,8 @@ function MyMap({ maxZoom }) {
 			);
 		}
 		L.tileLayer(
-			"https://server.arcgisonline.com/ArcGIS/rest/services/World_Shaded_Relief/MapServer/tile/{z}/{y}/{x}",
-			{ attribution: "", noWrap: true }
+			"https://server.arcgisonline.com/ArcGIS/rest/services/World_Shaded_Relief/MapServer/tile/{z}/{y}/{x}.webp",
+			{ attribution: "", noWrap: true, maxZoom: 9 }
 		).addTo(p.map);
 
 		return () => {
