@@ -197,16 +197,19 @@ export const panelData = [
     icon: model,
   },
   {
-    label: 'Vector Selector',
+    label: 'Models',
     key: 'sandfly_vector_selector_panel',
     forgetOpen: true,
 
     chartParameters: {},
-    content: (
-      <>
-        <ChangeMapPanel></ChangeMapPanel>
-        <OptionsPanel></OptionsPanel>
-      </>
-    ),
+    content: <ChangeMapPanel></ChangeMapPanel>,
+  },
+  {
+    label: 'Options',
+    key: 'options_selector_panel',
+    forgetOpen: true,
+
+    chartParameters: {},
+    content: <OptionsPanel></OptionsPanel>,
   },
 ];

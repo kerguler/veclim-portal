@@ -21,11 +21,12 @@ function useLMap(mapParRef) {
     if (!p || p.map) return;
 
     const map = L.map('map1', {
-      maxBoundsViscosity: 0,
-      maxBounds: PackageMapServices.worldBounds,
+      maxBoundsViscosity: 1.0, // hard edge, no pan past bounds
+      maxBounds: PackageMapServices.mercatorBounds,
       zoomControl: false,
       minZoom: 3,
     });
+    PackageMapServices.fitWorldMinZoom(map);
 
     p.map = map;
 
@@ -71,7 +72,9 @@ function useLMap(mapParRef) {
     const map = p.map;
 
     if (!currentMaxBounds) {
-      map.setMaxBounds(null);
+      map.setMaxBounds(
+        PackageMapServices.calculateBounds(PackageMapServices.mercatorBounds)
+      );
       return;
     }
 
@@ -110,9 +113,14 @@ function useLMap(mapParRef) {
     if (!p?.map) return;
     const map = p.map;
 
-    const baseLayer = PackageMapServices.baseLayer;
+    const baseLayer = PackageMapServices.getBaseLayerForVector(vectorName);
     const baseLayerOSM = PackageMapServices.baseLayerOSM;
     const dataLayer = PackageMapServices.dataLayer;
+
+    // drop other basemaps (vector changed)
+    Object.values(PackageMapServices._baseCache).forEach((l) => {
+      if (l !== baseLayer && map.hasLayer(l)) map.removeLayer(l);
+    });
 
     if (!map.hasLayer(baseLayer) && !map.hasLayer(baseLayerOSM)) {
       baseLayer.addTo(map);
@@ -141,7 +149,7 @@ function useLMap(mapParRef) {
         map.removeLayer(baseLayerOSM);
       }
     }
-  }, [mapParRef, showVectorAbundance, showMapLabels]);
+  }, [mapParRef, showVectorAbundance, showMapLabels, vectorName]);
 }
 
 export default useLMap;

@@ -8,4 +8,5 @@ export const Bologna2024_MENU = [
   { key: 'sandfly_tile_selector_panel', parent: 'sandfly_tile_selector' },
   { key: 'sandfly_vector_selector', parent: 'menu_icon' },
   { key: 'sandfly_vector_selector_panel', parent: 'sandfly_vector_selector' },
+  { key: 'options_selector_panel', parent: 'sandfly_vector_selector' },
 ];

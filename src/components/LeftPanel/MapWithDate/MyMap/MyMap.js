@@ -4,6 +4,11 @@ import './MyMap.css';
 // import "leaflet/dist/leaflet.css";
 import { useSelector } from 'react-redux';
 import PackageMapServices from 'components/map/mapPackage/PackageMapServices';
+import {
+	BASEMAPS,
+	BASEMAP_OPTIONS,
+	HOME_BASEMAP,
+} from 'components/map/mapPackage/basemaps';
 import { useRef } from 'react';
 import SearchLocationIcon from 'components/LeftPanel/MapWithDate/MyMap/SearchLocationIcon/SearchLocationIcon';
 
@@ -56,10 +61,8 @@ function MyMap({ maxZoom }) {
 				'albopictus',
 			);
 		}
-		L.tileLayer(
-			'http://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.webp',
-			{ attribution: '', noWrap: true },
-		).addTo(p.map);
+		// basemap set in basemaps.js
+		L.tileLayer(BASEMAPS[HOME_BASEMAP], BASEMAP_OPTIONS).addTo(p.map);
 
 		return () => {
 			p.map.remove();

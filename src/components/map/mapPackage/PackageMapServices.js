@@ -3,6 +3,13 @@ import L from 'leaflet';
 import 'leaflet-side-by-side';
 import { getVector } from 'vectors/registry';
 import {
+  BASEMAPS,
+  BASEMAP_OPTIONS,
+  MAP_BASEMAP,
+  WORLD_TILE_BOUNDS,
+  mapBasemapKey,
+} from './basemaps';
+import {
   setMapPagePosition,
   setPanelInterfere,
   setMapLoaded,
@@ -52,14 +59,23 @@ class PackageMapServices {
     return this.worldBounds;
   }
 
-  static baseLayer = L.tileLayer(
-    'http://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.webp',
-    { attribution: '', noWrap: true }
-  ); // '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>';
+  // base layer by key, cached (see basemaps.js)
+  static _baseCache = {};
+  static getBaseLayer(key) {
+    if (!BASEMAPS[key]) key = MAP_BASEMAP;
+    if (!this._baseCache[key]) {
+      this._baseCache[key] = L.tileLayer(BASEMAPS[key], BASEMAP_OPTIONS);
+    }
+    return this._baseCache[key];
+  }
+  static getBaseLayerForVector(vectorId) {
+    return this.getBaseLayer(mapBasemapKey(vectorId));
+  }
+  // other keyless label-free: World_Shaded_Relief, World_Terrain_Base, Ocean/World_Ocean_Base (same URL pattern, swap the service name)
 
   static baseLayerOSM = L.tileLayer(
     'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-    { attribution: '', noWrap: true } //'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    { attribution: '', noWrap: true, bounds: WORLD_TILE_BOUNDS } //'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
   );
   static dataLayer = L.tileLayer(
     'https://veclim.com/api?v=vabun_v015&z={z}&x={x}&y={y}',
@@ -67,14 +83,21 @@ class PackageMapServices {
       zIndex: 1000,
       attribution: '',
       noWrap: true,
+      bounds: WORLD_TILE_BOUNDS,
       updateWhenZooming: false,
     }
   );
 
-  static labelLayer = L.tileLayer(
-    'https://{s}.basemaps.cartocdn.com/rastertiles/voyager_only_labels/{z}/{x}/{y}{r}.webp',
-    { zIndex: 2000, attribution: '', noWrap: true } // '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
-  );
+  // unused, OSM tiles already have labels
+  // static labelLayer = L.tileLayer(
+  //   'https://{s}.basemaps.cartocdn.com/rastertiles/voyager_only_labels/{z}/{x}/{y}{r}.png?key={key}',
+  //   {
+  //     zIndex: 2000,
+  //     attribution: '',
+  //     noWrap: true,
+  //     key: process.env.REACT_APP_CARTO_API_KEY || '',
+  //   }
+  // );
   static cyprusBounds = [
     [34.25, 31.5],
     [36, 35],
@@ -93,6 +116,26 @@ class PackageMapServices {
     popupAnchor: [0, -30],
   });
 
+  // mercator limits, no pan past these
+  static mercatorBounds = [
+    [-85.0511, -180],
+    [85.0511, 180],
+  ];
+
+  static isWorldBounds(b) {
+    return !b || (b[1][0] - b[0][0] >= 170 && b[1][1] - b[0][1] >= 350);
+  }
+
+  // min zoom so world covers the whole screen (desktop + mobile), no gray edges
+  static fitWorldMinZoom(map) {
+    if (!map) return;
+    const { x, y } = map.getSize();
+    if (!x || !y) return;
+    const z = Math.log2(Math.max(x, y) / 256);
+    map.setMinZoom(z);
+    if (map.getZoom() < z) map.setZoom(z, { animate: false });
+  }
+
   static resizeMap(mapParRef, vectorName, dispatch) {
     let p = mapParRef.current;
     this.setMinZoom(mapParRef, vectorName);
@@ -105,6 +148,10 @@ class PackageMapServices {
 
     p.map.setMinZoom(tempMin);
     p.minZoom = tempMin;
+
+    const cfgBounds = getVector(vectorName)?.map?.maxBounds;
+    if (this.isWorldBounds(cfgBounds)) this.fitWorldMinZoom(p.map);
+    p.zoom = p.map.getZoom();
     dispatch(setCurrentMapZoom(p.zoom));
 
     // p.map.setView([p.center[0], p.center[1]], p.zoom);
@@ -153,7 +200,8 @@ class PackageMapServices {
     vectorId,
     currentMapCenter,
     currentMapZoom,
-    mapPagePosition,isPermalinkClick=false
+    mapPagePosition,
+    isPermalinkClick = false,
   }) {
     const vec = getVector(vectorId);
     if (!vec) return;
@@ -166,21 +214,16 @@ class PackageMapServices {
 
     const boundsKey = cfg.defaultBounds || 'world';
     const boundsBox = this.resolveBounds(boundsKey);
-let center,zoom
-     
-    
+    let center, zoom;
+
     if (isPermalinkClick) {
-     center = currentMapCenter || cfg.defaultCenter || this.defaultCypCenter;
-     zoom = currentMapZoom ?? cfg.defaultZoom ?? 8;
-
-
-    }else{
-     center = cfg.defaultCenter || currentMapCenter || this.defaultCypCenter;
-     zoom = cfg.defaultZoom ?? currentMapZoom ?? 8;
-
-
+      center = currentMapCenter || cfg.defaultCenter || this.defaultCypCenter;
+      zoom = currentMapZoom ?? cfg.defaultZoom ?? 8;
+    } else {
+      center = cfg.defaultCenter || currentMapCenter || this.defaultCypCenter;
+      zoom = cfg.defaultZoom ?? currentMapZoom ?? 8;
     }
-    
+
     // ---------------------------------------------------
     // 4. Validate pointer
     // ---------------------------------------------------
@@ -486,9 +529,11 @@ let center,zoom
     elm.style.display = 'flex';
   }
   static calculateBounds(value) {
+    // clamp lat, mercator has no poles
+    const clamp = (v) => Math.max(-85.0511, Math.min(85.0511, v));
     return L.latLngBounds(
-      L.latLng(value[0][0], value[0][1]),
-      L.latLng(value[1][0], value[1][1])
+      L.latLng(clamp(value[0][0]), value[0][1]),
+      L.latLng(clamp(value[1][0]), value[1][1])
     );
   }
 
@@ -499,18 +544,14 @@ let center,zoom
     const vec = getVector(vectorName);
     const cfg = vec?.map || {};
 
-    if (!cfg.maxBounds) {
-      p.maxBounds = null;
-      p.map.setMaxBounds(null);
-      dispatch(setCurrentMaxBounds(null));
-      return;
-    }
-
-    const maxBounds = this.calculateBounds(cfg.maxBounds);
+    // no vector bounds, fall back to world limits
+    const raw = cfg.maxBounds || this.mercatorBounds;
+    const maxBounds = this.calculateBounds(raw);
 
     p.maxBounds = maxBounds;
     p.map.setMaxBounds(maxBounds);
-    dispatch(setCurrentMaxBounds(cfg.maxBounds));
+    dispatch(setCurrentMaxBounds(raw));
+    if (this.isWorldBounds(cfg.maxBounds)) this.fitWorldMinZoom(p.map);
   }
 
   static setMinZoom(mapParRef, vectorName) {
@@ -636,6 +677,7 @@ let center,zoom
           tileMat.push(
             L.tileLayer(selectedTile.tileLayer.tile, {
               ...selectedTile.tileLayer.props,
+              bounds: WORLD_TILE_BOUNDS,
               opacity: tileOpacity || 1,
             })
           );
