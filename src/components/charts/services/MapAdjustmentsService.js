@@ -27,10 +27,8 @@ import { setDirectMap } from "store";
 
 class MapAdjustmentsService {
 	static baseLayer = L.tileLayer(
-		"https://server.arcgisonline.com/ArcGIS/rest/services/World_Terrain_Base/MapServer/tile/{z}/{y}/{x}.webp",
-		// "https://server.arcgisonline.com/ArcGIS/rest/services/World_Shaded_Relief/MapServer/tile/{z}/{y}/{x}.webp",
-		// "http://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.webp",
-		{ attribution: "", noWrap: true }
+		"https://server.arcgisonline.com/ArcGIS/rest/services/World_Shaded_Relief/MapServer/tile/{z}/{y}/{x}",
+		{ attribution: "", noWrap: true, maxZoom: 10 }
 	);
 	static baseLayerOSM = L.tileLayer(
 		"https://tile.openstreetmap.org/{z}/{x}/{y}.png", 

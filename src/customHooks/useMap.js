@@ -43,6 +43,7 @@ const mapOptions=useSelector(
 			maxBoundsViscosity: 0,
 			maxBounds: p.maxBounds,
 			zoomControl: false,
+			maxZoom: 10, // esri relief has no real tiles past this
 		});
 		const baseLayer=MapAdjustmentsService.baseLayer
 		const baseLayerOSM=MapAdjustmentsService.baseLayerOSM
