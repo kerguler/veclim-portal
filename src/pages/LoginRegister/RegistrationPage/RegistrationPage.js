@@ -136,6 +136,7 @@ function RegistrationPage() {
 					value={username}
 					type="text"
 					placeholder="Username"
+					maxLength={24}
 					required
 				></input>
 			</div>

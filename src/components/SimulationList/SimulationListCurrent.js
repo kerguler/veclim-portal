@@ -1,16 +1,19 @@
-import { useGetSimulationListQuery } from 'store';
+import useSimulationListPolling from 'customHooks/useSimulationListPolling';
 import './SimulationList.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { setSimList } from 'store';
 import SimulationTiles from './SimulationTiles/SimulationTiles';
 import useCsrf from 'pages/LoginRegister/Services/useCsrf';
+import { useAlboData } from 'context/AlboDataContext';
 function SimulationListCurrent({ direction }) {
   const dispatch = useDispatch();
   useCsrf(); // Initialize CSRF token for API requests
-  const { data: fetchedSimList,isLoading, isFetching, error, refetch } = useGetSimulationListQuery({
-    return_results: false,
-  });
+  const { listAttention, setListAttention } = useAlboData();
+  useEffect(() => {
+    if (listAttention) setListAttention(0);
+  }, [listAttention, setListAttention]);
+  const { data: fetchedSimList,isLoading, isFetching, error, refetch } = useSimulationListPolling();
 
   useEffect(() => {
     if (!fetchedSimList) return;

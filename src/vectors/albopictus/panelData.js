@@ -1,3 +1,4 @@
+import SimulationResultsNote from 'components/charts/Plotter/SimulationResultsNote';
 import seasonal from 'assets/icons/map-page-right-menu/png/019-cloud-32px.png';
 import adult from 'assets/icons/map-page-right-menu/png/adult-32px.png';
 import larva from 'assets/icons/map-page-right-menu/png/larva-32px.png';
@@ -222,7 +223,9 @@ export const panelData = [
       <div className="text-area">
         <h1>Activity Simulation Data </h1>
         <div>
-          <p>Here we will display simulation graphics</p>{' '}
+          <p>
+            <SimulationResultsNote />
+          </p>{' '}
         </div>
       </div>
     ),
@@ -432,7 +435,7 @@ export const panelData = [
   // SIMULATION OUTBREAK
   {
     key: 'simulation_outbreak_graph_panel',
-    label: 'Albochick',
+    label: 'Simulation',
     simulation: true,
     chartParameters: {
       mixedKeys: [
@@ -477,7 +480,9 @@ export const panelData = [
       <div className="text-area">
         <h1>Outbreak Simulation Data </h1>
         <div>
-          <p>Here we will display simulation graphics</p>{' '}
+          <p>
+            <SimulationResultsNote />
+          </p>{' '}
         </div>
       </div>
     ),
@@ -647,7 +652,9 @@ export const panelData = [
       <div className="text-area">
         <h1>Impact Simulation Data </h1>
         <div>
-          <p>Here we will display simulation graphics</p>{' '}
+          <p>
+            <SimulationResultsNote />
+          </p>{' '}
         </div>
       </div>
     ),

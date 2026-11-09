@@ -9,7 +9,7 @@ import {
 } from 'store';
 import { useAlboData } from 'context/AlboDataContext';
 
-function useArrangeDataSim({ rawData, dataTs, direction }) {
+function useArrangeDataSim({ rawData, dataTs, direction, onBuilt }) {
   const { simResult } = useAlboData();
 
   const {
@@ -44,7 +44,7 @@ function useArrangeDataSim({ rawData, dataTs, direction }) {
     try {
       r.data = { ...simResult, ts: dataTs };
 
-      const { errorMessage, isError } =
+      const { errorMessage, isError, unavailableKeys } =
         ChartCalculatorService.checkDataForMixedKeys(
           chartParameters,
           r.data,
@@ -54,19 +54,40 @@ function useArrangeDataSim({ rawData, dataTs, direction }) {
           direction
         );
       console.log('error checkData for Mixed keys', { errorMessage, isError });
-      if (isError) throw new Error(errorMessage);
+      if (isError) {
+        const noData = new Error(errorMessage);
+        noData.isNoData = true;
+        throw noData;
+      }
 
-      ChartCalculatorService.createDateArray(rawData, chartParameters);
-      ChartCalculatorService.handleMixedKeys(rawData, chartParameters);
-      ChartCalculatorService.handleSlices(rawData, chartParameters);
+      const effectiveChartParameters =
+        unavailableKeys && unavailableKeys.length > 0
+          ? {
+              ...chartParameters,
+              mixedKeys: chartParameters.mixedKeys.filter(
+                (element) => !unavailableKeys.includes(element.key)
+              ),
+            }
+          : chartParameters;
+
+      ChartCalculatorService.createDateArray(rawData, effectiveChartParameters);
+      ChartCalculatorService.handleMixedKeys(rawData, effectiveChartParameters);
+      ChartCalculatorService.handleSlices(rawData, effectiveChartParameters);
 
       if (lastReadyRef.current !== true) {
         lastReadyRef.current = true;
         dispatch(setPlotReady({ direction, value: true }));
       }
 
+      dispatch(
+        setMessenger({
+          direction,
+          value: { id: null, message: null, isError: false },
+        })
+      );
       dispatch(setAlboRequestPlot(false));
       dispatch(setSimSlider1Enabled({ direction, value: true }));
+      onBuilt?.();
     } catch (err) {
       // Only set messenger once per failure state (optional guard)
       if (lastReadyRef.current !== false) {
@@ -80,7 +101,9 @@ function useArrangeDataSim({ rawData, dataTs, direction }) {
           value: {
             id: 5,
             isError: true,
-            message: `Something went wrong when dealing with data in simulation \n\n ${err}`,
+            message: err?.isNoData
+              ? err.message
+              : "We couldn't draw the chart for this simulation. Try running it again, or pick a different location.",
           },
         })
       );

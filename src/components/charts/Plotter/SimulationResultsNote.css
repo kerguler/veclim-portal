@@ -1,0 +1,56 @@
+.sim-note {
+  position: relative;
+  display: inline-block;
+}
+
+.sim-note__id {
+  padding: 0;
+  border: none;
+  background: transparent;
+  font: inherit;
+  font-weight: 600;
+  color: inherit;
+  text-decoration: underline;
+  cursor: pointer;
+}
+.sim-note__id:hover {
+  color: var(--primary-color1);
+}
+
+.sim-note__popover {
+  position: absolute;
+  top: 1.8em;
+  left: 0;
+  z-index: 3100;
+  display: grid;
+  grid-template-columns: max-content max-content;
+  column-gap: 12px;
+  row-gap: 2px;
+  padding: 8px 12px;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.4;
+  text-align: left;
+  color: black;
+  white-space: nowrap;
+}
+.sim-note__popover span:nth-child(odd) {
+  color: var(--meteo-text);
+}
+
+.sim-note__link {
+  padding: 0;
+  border: none;
+  background: transparent;
+  font: inherit;
+  color: inherit;
+  text-decoration: underline;
+  cursor: pointer;
+}
+.sim-note__link:hover {
+  color: var(--primary-color1);
+}

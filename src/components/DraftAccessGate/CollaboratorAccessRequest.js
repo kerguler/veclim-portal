@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useRequestDraftAccessMutation } from 'store';
 import useCsrf from 'pages/LoginRegister/Services/useCsrf';
+import useIsStaff from 'customHooks/useIsStaff';
 import { ALL_VECTORS } from 'vectors/registry';
 import './DraftAccessGate.css';
 
@@ -14,6 +15,7 @@ function CollaboratorAccessRequest({
   const [requestDraftAccess, { isLoading }] = useRequestDraftAccessMutation();
   const { refresh: refreshCsrf } = useCsrf();
   const [justRequested, setJustRequested] = useState({});
+  const { deniedVectors } = useIsStaff();
 
   const seen = new Set();
   const draftVectors = ALL_VECTORS.filter((v) => {
@@ -41,8 +43,11 @@ function CollaboratorAccessRequest({
     <div className="draft-access-card collaborator-access-request">
       <h2>Request collaborator access</h2>
       {draftVectors.map((vector) => {
+        const retryAfterDays = deniedVectors[vector.id] || 0;
+        const isDenied = retryAfterDays > 0;
         const isPending =
-          justRequested[vector.id] || (pendingVectorIds || []).includes(vector.id);
+          !isDenied &&
+          (justRequested[vector.id] || (pendingVectorIds || []).includes(vector.id));
         return (
           <div key={vector.id} className="collaborator-access-request__row">
             <span>
@@ -51,7 +56,11 @@ function CollaboratorAccessRequest({
                 vector.meta?.methods?.label ||
                 vector.id}
             </span>
-            {isPending ? (
+            {isDenied ? (
+              <span className="draft-access-status draft-access-status--denied">
+                Declined, retry in {retryAfterDays} {retryAfterDays === 1 ? 'day' : 'days'}
+              </span>
+            ) : isPending ? (
               <span className="draft-access-status">Pending review</span>
             ) : (
               <button

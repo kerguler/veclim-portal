@@ -19,6 +19,7 @@ import imageCyprus from '../assets/images/project-Cyprus-sm.webp';
 import imageFinance from '../assets/images/project-finance.webp';
 import imageTime from '../assets/images/project-time.webp';
 import DataPolicy from '../components/cookieConsent/DataPolicy/DataPolicy';
+import { OPEN_COOKIE_SETTINGS_EVENT } from '../components/cookieConsent/CookieHandler';
 import IuBendaScripts from '../components/cookieConsent/IubendaScripts/IuBendaScripts';
 
 import imageSandFlyIcon from '../assets/images/front_sand_fly.webp';
@@ -1087,7 +1088,26 @@ function TextProvider({ children, pageOverride }) {
                 <IuBendaScripts id="10679144" type="cookie">
                   cookie policy
                 </IuBendaScripts>
-                for more information.
+                for more information. You can review or change your cookie
+                choices at any time through{' '}
+                <button
+                  type="button"
+                  onClick={() =>
+                    window.dispatchEvent(new Event(OPEN_COOKIE_SETTINGS_EVENT))
+                  }
+                  style={{
+                    border: 0,
+                    background: 'none',
+                    padding: 0,
+                    font: 'inherit',
+                    color: 'inherit',
+                    textDecoration: 'underline',
+                    cursor: 'pointer',
+                  }}
+                >
+                  cookie settings
+                </button>
+                .
               </p>
               <p>
                 Please contact us if you wish to know more, and if you have any

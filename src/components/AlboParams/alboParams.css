@@ -131,6 +131,24 @@ button.confirm-button:disabled,
   font-size: 1rem;
   color: var(--meteo-text);
   opacity: 1;
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  gap: 0.35em;
+  white-space: nowrap;
+}
+
+.albo-user__name {
+  min-width: 0;
+  max-width: 14ch;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-weight: 600;
+}
+
+.link-btn.logout {
+  flex: 0 0 auto;
+  white-space: nowrap;
 }
 
 /* reuse the link-btn style if you already have it; otherwise: */

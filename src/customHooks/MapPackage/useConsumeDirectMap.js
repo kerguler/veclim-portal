@@ -14,7 +14,10 @@ const useConsumeDirectMap = (consumedDirectMapRef, mapParRef) => {
       Number.isFinite(directMap?.lat) &&
       Number.isFinite(directMap?.lon);
 
-    if (!isActive) return;
+    if (!isActive) {
+      consumedDirectMapRef.current = null;
+      return;
+    }
 
     const key = `${directMap.lat}:${directMap.lon}:${directMap.display}`;
     if (consumedDirectMapRef.current === key) return;

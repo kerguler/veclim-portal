@@ -32,6 +32,8 @@
 
 .auth-nav--icon {
 	margin-top: 0;
+	margin-left: -6px;
+	margin-right: 6px;
 	align-self: center;
 	display: inline-flex;
 	align-items: center;
@@ -39,8 +41,8 @@
 
 .auth-nav__toggle--icon {
 	max-width: none;
-	width: 1.8rem;
-	height: 1.8rem;
+	width: 2.2rem;
+	height: 2.2rem;
 	padding: 0;
 	border-radius: 4px;
 	background: #fff;
@@ -59,11 +61,11 @@
 
 .auth-nav__icon-mask {
 	display: inline-block;
-	width: 1.8rem;
-	height: 1.8rem;
+	width: 2.2rem;
+	height: 2.2rem;
 	background-color: var(--primary-color1);
-	-webkit-mask-size: contain;
-	mask-size: contain;
+	-webkit-mask-size: 150%;
+	mask-size: 150%;
 	-webkit-mask-repeat: no-repeat;
 	mask-repeat: no-repeat;
 	-webkit-mask-position: center;

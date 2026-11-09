@@ -38,6 +38,10 @@ export const VECTORS = Object.fromEntries(
 
 export const ALL_VECTORS = modules.map(({ __originalIndex, ...m }) => m);
 
+export function hasVector(id) {
+  return Boolean(id && VECTORS[id]);
+}
+
 export function getVector(id) {
   if (id && VECTORS[id]) return VECTORS[id];
   return ALL_VECTORS[0];

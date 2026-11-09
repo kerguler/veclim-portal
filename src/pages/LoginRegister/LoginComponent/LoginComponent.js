@@ -15,6 +15,26 @@ import { setApiRegisterResponse } from 'store';
 import useCsrf from '../Services/useCsrf';
 import useIsStaff from 'customHooks/useIsStaff';
 
+function EyeIcon({ off }) {
+  return (
+    <svg
+      width="20"
+      height="20"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z" />
+      <circle cx="12" cy="12" r="3" />
+      {off && <line x1="3" y1="3" x2="21" y2="21" />}
+    </svg>
+  );
+}
+
 // turns an RTK Query error into a short, human-readable message
 function getFriendlyAuthError(err, mode) {
   if (!err) return null;
@@ -181,6 +201,7 @@ function LoginComponent({
             autoComplete="username"
             value={username}
             onChange={onUsername}
+            maxLength={24}
             required
           />
 
@@ -207,8 +228,9 @@ function LoginComponent({
               aria-controls="password"
               onClick={() => setShowPw((v) => !v)}
               title={showPw ? 'Hide password' : 'Show password'}
+              aria-label={showPw ? 'Hide password' : 'Show password'}
             >
-              {showPw ? 'Hide' : 'Show'}
+              <EyeIcon off={showPw} />
             </button>
           </div>
 
@@ -235,8 +257,9 @@ function LoginComponent({
                   aria-controls="confirm"
                   onClick={() => setShowConfirmPw((v) => !v)}
                   title={showConfirmPw ? 'Hide password' : 'Show password'}
+                  aria-label={showConfirmPw ? 'Hide password' : 'Show password'}
                 >
-                  {showConfirmPw ? 'Hide' : 'Show'}
+                  <EyeIcon off={showConfirmPw} />
                 </button>
               </div>
             </>

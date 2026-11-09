@@ -1,9 +1,10 @@
-import { useState } from 'react';
-import { useGetSimulationListQuery } from 'store';
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { setAlbochickStatus } from 'store';
-import { useRef } from 'react';
+import useSimulationListPolling, {
+  IN_PROGRESS_STATUSES,
+} from 'customHooks/useSimulationListPolling';
+export { IN_PROGRESS_STATUSES };
 const STALLED_POLL_THRESHOLD = 2;
 const FAILURE_CODE_MESSAGES = {
   OOM_KILLED:
@@ -35,46 +36,14 @@ function looksLikeRawExceptionText(text) {
 function useSimTileFunctions(sim) {
   const dispatch = useDispatch();
   const [isAlboChik, setIsAlboChik] = useState(false);
-  const [displayViewIcon, setDisplayViewIcon] = useState(false);
-  const [pollingActive, setPollingActive] = useState(false);
   const [isPollStalled, setIsPollStalled] = useState(false);
-  const consecutiveFailuresRef = useRef(0);
-  const {
-    data: simRecord,
-    isFetching: isSimListFetching,
-    error: simListError,
-    refetch,
-  } = useGetSimulationListQuery({ id: sim.id, return_results: false });
-  useEffect(() => {
-    if (!pollingActive) return;
-    const interval = setInterval(() => {
-      refetch();
-    }, 5000);
-    return () => clearInterval(interval);
-  }, [pollingActive, refetch]);
+  const { error: simListError, refetch } = useSimulationListPolling();
+  const simRecord = sim;
+  const pollingActive = IN_PROGRESS_STATUSES.includes(simRecord?.status);
 
   useEffect(() => {
-    if (!pollingActive) {
-      consecutiveFailuresRef.current = 0;
-      setIsPollStalled(false);
-      return;
-    }
-    if (simListError) {
-      consecutiveFailuresRef.current += 1;
-      if (consecutiveFailuresRef.current >= STALLED_POLL_THRESHOLD) {
-        setIsPollStalled(true);
-      }
-    } else {
-      consecutiveFailuresRef.current = 0;
-      setIsPollStalled(false);
-    }
+    setIsPollStalled(Boolean(simListError) && pollingActive);
   }, [simListError, pollingActive]);
-  useEffect(() => {
-    if (!simRecord) return;
-    const isPendingSim =
-      simRecord.status === 'PENDING' || simRecord.status === 'STARTED';
-    setPollingActive(isPendingSim);
-  }, [simRecord, dispatch]);
 
   useEffect(() => {
     if (sim.model_type === 'model_albochik') {
@@ -97,24 +66,19 @@ function useSimTileFunctions(sim) {
         ? DEFAULT_NO_DATA_REASON
         : simRecord?.reason || DEFAULT_NO_DATA_REASON
       : null;
+  const displayViewIcon = isCompleted && hasData;
 
   useEffect(() => {
-    if (simRecord) {
-      if (simRecord.status === 'PENDING' || simRecord.status === 'STARTED') {
-        setDisplayViewIcon(false);
-        dispatch(setAlbochickStatus('PENDING'));
-      } else if (isCompleted && hasData) {
-        setDisplayViewIcon(true);
-        dispatch(setAlbochickStatus('SUCCESS'));
-      } else {
-        setDisplayViewIcon(false);
-      }
+    if (!simRecord) return;
+    if (pollingActive) {
+      dispatch(setAlbochickStatus('PENDING'));
+    } else if (isCompleted && hasData) {
+      dispatch(setAlbochickStatus('SUCCESS'));
     }
-  }, [sim.status, simRecord, dispatch, isCompleted, hasData]);
+  }, [simRecord?.status, pollingActive, isCompleted, hasData, dispatch]);
 
   return {
     simRecord,
-    isSimListFetching,
     simListError,
     isPollStalled,
     refetch,
@@ -124,4 +88,5 @@ function useSimTileFunctions(sim) {
     errorMessage,
   };
 }
+export { STALLED_POLL_THRESHOLD };
 export default useSimTileFunctions;

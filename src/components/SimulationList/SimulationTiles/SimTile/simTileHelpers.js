@@ -6,14 +6,14 @@ import { setDataArrived } from 'store';
 import { setInvalidateSimData } from 'store';
 
 class simTileHelpers {
-  static handleDownload = (result) => {
+  static handleDownload = (result, id) => {
     try {
       const fileContent = JSON.stringify(result, null, 2);
-      const blob = new Blob([fileContent], { type: 'text/plain' });
+      const blob = new Blob([fileContent], { type: 'application/json' });
       const url = URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.href = url;
-      link.download = `${result.id}_download.txt`;
+      link.download = `${id ?? result?.simulation?.id}_ts-data.json`;
       link.click();
       URL.revokeObjectURL(url);
     } catch (error) {
@@ -47,15 +47,17 @@ class simTileHelpers {
     setSimResult(results);
     dispatch(setInvalidateSimData(false));
     dispatch(setDataArrived({ direction: direction, value: true }));
-    dispatch(
-      setDisplaySimulationPanel({
-        direction: direction,
-        // value: "activity_forecast",
-        value: 'activity_forecast',
-      })
-    );
-    dispatch(setTwinIndex({ direction: direction, value: 0 }));
-    dispatch(setPanelInterfere({ direction, value: -1 }));
+    dispatch(setDisplaySimulationPanel({ direction, value: null }));
+    setTimeout(() => {
+      dispatch(
+        setDisplaySimulationPanel({
+          direction: direction,
+          value: 'activity_forecast',
+        })
+      );
+      dispatch(setTwinIndex({ direction: direction, value: 0 }));
+      dispatch(setPanelInterfere({ direction, value: -1 }));
+    }, 0);
   };
 }
 

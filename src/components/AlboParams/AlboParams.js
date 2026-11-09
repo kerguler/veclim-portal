@@ -12,12 +12,14 @@ import useIsStaff from 'customHooks/useIsStaff';
 function AlboParams({ children }) {
   const dispatch = useDispatch();
   const { refresh } = useCsrf();
-  const { refetch: refetchIsStaff } = useIsStaff();
+  const { refetch: refetchIsStaff, username: serverUserName } = useIsStaff();
 
   const direction = 'left';
   const apiReg = useSelector((s) => s.login.apiRegisterResponse);
   const userID = apiReg?.userId;
-  const userName = apiReg?.userName || localStorage.getItem('username');
+  const userName =
+    serverUserName || apiReg?.userName || localStorage.getItem('username');
+  const displayName = userName || '';
 
   const [logout, { isLoading: loggingOut }] = useLogoutMutation();
 
@@ -95,7 +97,12 @@ function AlboParams({ children }) {
     <div className="albo-params-container">
       <div className="albo-header">
         <span className="albo-user">
-          {userName ? `Signed in as ${userName}` : 'Signed in'}
+          <span>Signed in{displayName ? ' as' : ''}</span>
+          {displayName && (
+            <span className="albo-user__name" title={displayName}>
+              {displayName}
+            </span>
+          )}
         </span>
         <button
           type="button"

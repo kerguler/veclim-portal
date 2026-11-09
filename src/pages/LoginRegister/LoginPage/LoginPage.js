@@ -91,6 +91,7 @@ function LoginPage() {
 					placeholder="Email"
 					value={username}
 					onChange={handleUsernameChange}
+					maxLength={24}
 					required
 				/>
 				<input

@@ -7,6 +7,7 @@ import CircularSpinner from 'components/spinner/CircularSpinner';
 import './statusIndicator.css';
 import { useDispatch } from 'react-redux';
 import ToolTipComponent from 'components/ToolTipComponent/ToolTipComponent';
+import { IN_PROGRESS_STATUSES } from './useSimTileFunctions';
 
 const POPUP_WIDTH = 220;
 const POPUP_MARGIN = 8;
@@ -61,7 +62,7 @@ function StatusIndicator({
     };
   }, [showError, closePopup]);
 
-  if (status === 'PENDING' || status === 'STARTED') {
+  if (IN_PROGRESS_STATUSES.includes(status)) {
     const isSmall =
       typeof window !== 'undefined' ? window.innerWidth < 500 : true;
     return (

@@ -19,6 +19,8 @@ const simulationApi = createApi({
     },
   }),
   tagTypes: ['Simulation List'],
+  refetchOnFocus: true,
+  refetchOnReconnect: true,
   endpoints(builder) {
     return {
       runSimulation: builder.mutation({

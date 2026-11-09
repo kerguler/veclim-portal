@@ -31,6 +31,7 @@ function useLogout({ refetchIsStaff } = {}) {
     );
     dispatch(setPassword(''));
     localStorage.removeItem('id');
+    localStorage.removeItem('task_id');
     try {
       await refresh();
     } catch (e) {

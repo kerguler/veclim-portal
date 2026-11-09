@@ -25,6 +25,7 @@ import { useMemo } from 'react';
 import handleAxisAdjustments from './handleAxisAdjustments';
 import { useState } from 'react';
 function RechartsPlot({ direction, plotMat }) {
+  const isEmptyPlot = ChartCalculatorService.isEmptySeries(plotMat);
   const args = {
     years: { firstYear: null, lastYear: null },
     date: null,
@@ -56,7 +57,16 @@ function RechartsPlot({ direction, plotMat }) {
     chartParameters,
     yaxisInfo,
     openItems,
+    mapPagePosition,
   } = useDirectorFun(direction);
+  const missingNotice =
+    isEmptyPlot && Number.isFinite(mapPagePosition?.lat)
+      ? `No data available for the location lat: ${mapPagePosition.lat.toFixed(
+          2
+        )}, lng: ${mapPagePosition.lng.toFixed(2)}.`
+      : isEmptyPlot
+      ? 'No data available for this location.'
+      : null;
   const [activeKeys, setActiveKeys] = useState(() => {
     // start with everything active
     return Object.keys(chartParameters.sliceInfo).flatMap((gid) =>
@@ -178,6 +188,12 @@ function RechartsPlot({ direction, plotMat }) {
         brushRange
       );
   }, [plotMat, vectorName]);
+  const lastIndex = Math.max((plotMat?.length || 1) - 1, 0);
+  const clampIndex = (value, fallback) =>
+    Number.isFinite(value) ? Math.min(Math.max(value, 0), lastIndex) : fallback;
+  const brushEndSafe = clampIndex(d.index[1], lastIndex);
+  const brushStartSafe = Math.min(clampIndex(d.index[0], 0), brushEndSafe);
+
   const handleBrushChange = (range) => {
     ChartCalculatorService.handleBrushChange(
       range,
@@ -238,6 +254,32 @@ function RechartsPlot({ direction, plotMat }) {
         style={{ width: '100%', margin: '6px 0 10px' }}
       />
 
+      {missingNotice && (
+        <div style={{ position: 'relative', height: 0, width: '100%' }}>
+          <div
+            role="status"
+            style={{
+              position: 'absolute',
+              top: '70px',
+              left: '50%',
+              transform: 'translateX(-50%)',
+              width: 'max-content',
+              maxWidth: '80%',
+              padding: '6px 12px',
+              borderRadius: '8px',
+              border: '1px solid rgba(0, 0, 0, 0.2)',
+              background: 'rgba(255, 255, 255, 0.92)',
+              fontSize: '13px',
+              textAlign: 'center',
+              pointerEvents: 'none',
+              zIndex: 2,
+            }}
+          >
+            {missingNotice}
+          </div>
+        </div>
+      )}
+
       <ResponsiveContainer>
 
         <LineChart
@@ -270,8 +312,8 @@ function RechartsPlot({ direction, plotMat }) {
             height={15}
             data={plotMat}
             onChange={handleBrushChange}
-            startIndex={d.index[0]}
-            endIndex={d.index[1]}
+            startIndex={brushStartSafe}
+            endIndex={brushEndSafe}
           />
           <Tooltip
             contentStyle={{ margin: '20px' }}

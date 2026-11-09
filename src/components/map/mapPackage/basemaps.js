@@ -15,7 +15,7 @@ export const WORLD_TILE_BOUNDS = [
 ];
 
 // last zoom with real tiles worldwide (sampled; esri returns a placeholder past this)
-export const BASEMAP_MAX_ZOOM = { terrain: 10, relief: 10, lightGray: 10 };
+export const BASEMAP_MAX_ZOOM = { terrain: 9, relief: 10, lightGray: 10 };
 export const OSM_MAX_ZOOM = 10;
 
 export const BASEMAP_OPTIONS = {
@@ -27,7 +27,7 @@ export const BASEMAP_OPTIONS = {
 
 // which one where, change here
 export const HOME_BASEMAP = 'relief'; // MyMap, main page
-export const MAP_BASEMAP = 'relief'; // MapPage default
+export const MAP_BASEMAP = 'terrain';
 export const VECTOR_BASEMAP = {
   // vectorId: 'relief',
 };

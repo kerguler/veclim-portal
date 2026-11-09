@@ -13,6 +13,7 @@ import { setTwinIndex } from 'store';
 import { setPanelOpen } from 'store';
 import MapToolsPopover from 'components/map/MapToolsPanel/MapToolsPopover';
 import { useRef } from 'react';
+import { useAlboData } from 'context/AlboDataContext';
 const PanelChildren = lazy(() => import('./PanelChildren'));
 const MenuChildren = lazy(() => import('./MenuChildren'));
 
@@ -32,6 +33,11 @@ function MenuItemV2({ item, onToggle, shouldShimmer, direction }) {
   } = useDirectorFun('left');
 
   const dispatch = useDispatch();
+  const listAttention = useAlboData()?.listAttention || 0;
+  const badgeCount =
+    item.key === 'simulation_adjustment' && !openItems[item.key]
+      ? listAttention
+      : 0;
 
   const [shimmerOn, setShimmerOn] = useState(false);
   const [level, setLevel] = useState(0);
@@ -223,7 +229,9 @@ function MenuItemV2({ item, onToggle, shouldShimmer, direction }) {
       <div
         ref={toolsBtnRef}
         key={baseItem.key}
-        className={className}
+        className={classNames(className, {
+          'icon--with-badge': badgeCount > 0,
+        })}
         style={style}
         onClick={(e) => handleToggle(e, baseItem.key)}
         onMouseEnter={() => {
@@ -239,6 +247,9 @@ function MenuItemV2({ item, onToggle, shouldShimmer, direction }) {
           alt="item icon"
           src={baseItem.icon}
         />
+        {badgeCount > 0 && (
+          <span className="notify-badge notify-badge--icon">{badgeCount}</span>
+        )}
       </div>
       {tooltipOpen &&
         shouldDisable &&

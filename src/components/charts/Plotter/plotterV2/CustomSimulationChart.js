@@ -49,12 +49,15 @@ function CustomSimulationChart({ direction }) {
     dataToPlot: null,
   });
 
+  const [, setBuildTick] = useState(0);
+
   useArrangeDataSim({
     rawData,
     dataTs,
     setAlboDataArrived,
     alboDataArrived,
     direction,
+    onBuilt: () => setBuildTick((t) => t + 1),
   });
 
   useCheckChartParameters();

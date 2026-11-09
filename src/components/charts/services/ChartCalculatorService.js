@@ -73,13 +73,22 @@ class ChartCalculatorService {
       // Nothing at all resolved - genuine no-data case.
       error.errorMessage =
         data?.reason ||
-        `There is no data available for the position chosen lat:${mapPagePosition.lat.toFixed(
+        `No data available for the location lat: ${mapPagePosition.lat.toFixed(
           2
-        )} lng: ${mapPagePosition.lng.toFixed(2)}`;
+        )}, lng: ${mapPagePosition.lng.toFixed(2)}.`;
       error.isError = true;
     }
 
     return error;
+  }
+
+  static isEmptySeries(plotMat) {
+    if (!Array.isArray(plotMat) || plotMat.length === 0) return false;
+    return !plotMat.some((row) =>
+      Object.keys(row).some(
+        (k) => k !== 'date' && typeof row[k] === 'number' && row[k] !== 0
+      )
+    );
   }
 
   static slicer(r, key, result) {

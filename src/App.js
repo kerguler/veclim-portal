@@ -9,6 +9,11 @@ import CookieHandler from './components/cookieConsent/CookieHandler';
 import { useUserLocation } from './store/apis/utils';
 import { PanelProvider } from 'context/panelsIconsV2';
 import useIsStaff from 'customHooks/useIsStaff';
+import {
+  MethodsRouteGuard,
+  MapRouteGuard,
+} from 'components/routeGuards/VectorRouteGuard';
+import RouteNotice from 'components/routeGuards/RouteNotice';
 const GenericPage = lazy(() => import('pages/GenericPage/GenericPage'));
 const NoPage = lazy(() => import('pages/NoPage'));
 const MapPackageLandingV2 = lazy(() => import('pages/MapPackageLanding'));
@@ -36,20 +41,31 @@ function App() {
 							path='/Methods/SandFly'
 							element={<GenericPage />}
 						/> */}
-              <Route path="/Methods/:vecId" element={<VectorMethodsPage />} />
+              <Route
+                path="/Methods/:vecId"
+                element={
+                  <MethodsRouteGuard>
+                    <VectorMethodsPage />
+                  </MethodsRouteGuard>
+                }
+              />
 
               <Route path="/404" element={<NoPage />} />
               <Route
                 path="/MapPage"
                 element={
-                  <PanelProvider>
-                    <MapPackageLandingV2 />
-                  </PanelProvider>
+                  <MapRouteGuard>
+                    <PanelProvider>
+                      <MapPackageLandingV2 />
+                    </PanelProvider>
+                  </MapRouteGuard>
                 }
               />
+              <Route path="*" element={<NoPage />} />
             </Routes>
           </Suspense>
         </ErrorBoundary>
+        <RouteNotice />
       </div>
     </div>
   );

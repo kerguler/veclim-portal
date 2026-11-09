@@ -23,7 +23,6 @@ import { syncReduxFromLeaflet } from 'utils/syncReduxFromLeaflet';
 import { setCurrentMapCenter, setCurentMapZoom } from 'store';
 import { setCurrentMapZoom } from 'store';
 import useConsumeDirectMap from 'customHooks/MapPackage/useConsumeDirectMap';
-
 function MapPackageComponent({ fitworld }) {
   const dispatch = useDispatch();
   const {

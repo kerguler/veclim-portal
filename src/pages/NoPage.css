@@ -1,0 +1,79 @@
+.no-page {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  padding: 32px 24px;
+}
+
+.no-page-logo {
+  height: 72px;
+  width: auto;
+}
+
+.no-page-card {
+  width: min(460px, 100%);
+  padding: 32px 28px;
+  border-radius: 16px;
+  background: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.12);
+  text-align: center;
+}
+
+.no-page-card .no-page-code {
+  margin: 0;
+  font-size: 72px;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--tertiary-color2, #f27c2a);
+}
+
+.no-page-card h2 {
+  margin: 8px 0;
+  color: var(--primary-color1);
+  font-size: 24px;
+}
+
+.no-page-card p {
+  color: var(--meteo-text, #444);
+  font-size: 16px;
+}
+
+.no-page-actions {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.no-page-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 10px 22px;
+  border-radius: 10px;
+  background: var(--primary-color1);
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.no-page-btn:hover {
+  background: var(--primary-color2);
+}
+
+.no-page-btn--alt {
+  background: transparent;
+  color: var(--primary-color1);
+  border: 1px solid var(--primary-color1);
+}
+
+.no-page-btn--alt:hover {
+  background: rgba(0, 0, 0, 0.05);
+}

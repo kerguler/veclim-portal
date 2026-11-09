@@ -35,6 +35,7 @@ const SliderRow = ({ direction }) => {
     message,
     hasSelectedCell,
     markCurrentSetupSubmitted,
+    clearSubmittedSetup,
     simcount,
   } = useSimulationUiState(direction, simulationFieldValues);
 
@@ -80,6 +81,7 @@ const SliderRow = ({ direction }) => {
   const handleConfirm = async () => {
     if (disableConfirm) return;
     markCurrentSetupSubmitted();
+    setErrorSim(null);
 
     dispatch(setAlboRequestPlot(true));
 
@@ -93,6 +95,7 @@ const SliderRow = ({ direction }) => {
       setIsLoadingSim(true);
     }
     if ('error' in response) {
+      clearSubmittedSetup();
       setErrorSim(response.error);
     }
   };

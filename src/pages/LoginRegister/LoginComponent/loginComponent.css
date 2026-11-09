@@ -182,11 +182,18 @@
 
 /* give space on the right for the toggle */
 .input-wrap .text-field {
-  padding-right: 3.25rem;
+  padding-right: 44px;
 }
 
-/* the Show/Hide button */
+.input-wrap input::-ms-reveal,
+.input-wrap input::-ms-clear {
+  display: none;
+}
+
 .pw-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   position: absolute;
   right: 8px;
   top: 50%;

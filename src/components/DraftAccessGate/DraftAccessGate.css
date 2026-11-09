@@ -40,6 +40,10 @@
   font-weight: 600;
 }
 
+.draft-access-status--denied {
+  color: #a33a3a;
+}
+
 .draft-access-btn {
   display: inline-flex;
   align-items: center;
@@ -78,6 +82,49 @@
   color: var(--primary-color1);
   text-decoration: underline;
   font-size: 0.85rem;
+}
+
+@media (min-width: 768px) {
+  .draft-access-gate {
+    gap: 20px;
+    padding: 48px 24px;
+  }
+
+  .draft-access-gate .draft-access-logo {
+    height: 72px;
+  }
+
+  .draft-access-gate .draft-access-card {
+    width: min(620px, 100%);
+    padding: 32px;
+    border-radius: 16px;
+  }
+
+  .draft-access-gate .draft-access-card h2 {
+    margin: 0 0 12px;
+    font-size: 26px;
+  }
+
+  .draft-access-gate .draft-access-card p {
+    margin: 0 0 18px;
+    font-size: 18px;
+    line-height: 1.45;
+  }
+
+  .draft-access-gate .draft-access-btn {
+    padding: 10px 22px;
+    min-height: 46px;
+    font-size: 17px;
+  }
+
+  .draft-access-gate .draft-access-link {
+    margin-top: 14px;
+    font-size: 16px;
+  }
+
+  .draft-access-gate .draft-access-back {
+    font-size: 16px;
+  }
 }
 
 .collaborator-access-request__row {

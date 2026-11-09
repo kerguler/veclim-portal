@@ -1,6 +1,11 @@
 import './SimTile.css';
 import { ReactComponent as DeleteIcon } from 'assets/icons/django/delete-icon.svg';
-import { ReactComponent as ViewIcon } from 'assets/icons/django/eye-icon.svg';
+import { ReactComponent as ViewIcon } from 'assets/icons/django/chart-line-icon.svg';
+import { ReactComponent as InfoIcon } from 'assets/icons/django/info-icon.svg';
+import {
+  describeSimulationParams,
+  getSimulationCoordinates,
+} from './simParams';
 import { useDeleteSimulationMutation } from 'store';
 import SimDate from './SimDate';
 import { useState } from 'react';
@@ -16,7 +21,6 @@ import { setMapPagePosition } from 'store';
 import { setDirectMap, setCurrentMapCenter, setCurrentMapZoom } from 'store';
 import PackageMapServices from 'components/map/mapPackage/PackageMapServices';
 import useDirectorFun from 'customHooks/useDirectorFun';
-import useWindowSize from 'customHooks/useWindowSize';
 
 function SimTile({ sim, direction, shimmerList }) {
   const dispatch = useDispatch();
@@ -28,7 +32,7 @@ function SimTile({ sim, direction, shimmerList }) {
   const setErrorSim = useAlboData().setErrorSim;
   const levelData = useSelector((state) => state.mapMenu.left.panelLevel);
 
-  const { setSimResult, setIsLoadingSim } = useAlboData();
+  const { setSimResult, setIsLoadingSim, setSimMeta } = useAlboData();
   const {
     simRecord,
     isAlboChik,
@@ -39,6 +43,9 @@ function SimTile({ sim, direction, shimmerList }) {
   } = useSimTileFunctions(sim);
   const { currentMapCenter, currentMapZoom, vectorName } =
     useDirectorFun('left');
+  const [showDetails, setShowDetails] = useState(false);
+  const coords = getSimulationCoordinates(simRecord?.model_data);
+  const params = describeSimulationParams(simRecord?.model_data);
   const handleDeleteSimulation = (id) => {
     simTileHelpers.handleDeleteSimulation(deleteSimulation, id);
   };
@@ -47,13 +54,64 @@ function SimTile({ sim, direction, shimmerList }) {
     try {
       const payload = await triggerFetch({ id, return_results: true }).unwrap();
       const results = payload?.results ?? payload;
-      simTileHelpers.handleDownload(results);
+      const coords = getSimulationCoordinates(payload?.model_data);
+      const parameters = {};
+      describeSimulationParams(payload?.model_data).forEach((p) => {
+        parameters[p.label] = p.value;
+      });
+      simTileHelpers.handleDownload(
+        {
+          simulation: {
+            id: payload?.id ?? id,
+            title: payload?.title ?? null,
+            model_type: payload?.model_type ?? null,
+            status: payload?.status ?? null,
+            created_at: payload?.created_at ?? null,
+            updated_at: payload?.updated_at ?? null,
+            location: coords
+              ? { latitude: coords.lat, longitude: coords.lng }
+              : null,
+            parameters,
+            model_data: payload?.model_data ?? null,
+          },
+          results,
+        },
+        id
+      );
     } catch (e) {
       console.error('Failed to download results:', e);
     }
   };
 
-  const webapp = useWindowSize();
+  const focusLocation = (lat, lon) => {
+    const zoom = 5;
+    const scale = 256 * Math.pow(2, zoom);
+    const rad = Math.PI / 180;
+    const mx = ((lon + 180) / 360) * scale;
+    const my =
+      (0.5 - Math.log(Math.tan(Math.PI / 4 + (lat * rad) / 2)) / (2 * Math.PI)) *
+      scale;
+    const isNarrow = window.innerWidth <= 499;
+    const cx = isNarrow ? mx : mx - 270;
+    const cy = isNarrow ? my + window.innerHeight * 0.25 : my;
+    const centerLng = (cx / scale) * 360 - 180;
+    const centerLat =
+      (2 * Math.atan(Math.exp((0.5 - cy / scale) * 2 * Math.PI)) - Math.PI / 2) /
+      rad;
+
+    dispatch(
+      setDirectMap({
+        direction,
+        value: {
+          lat,
+          lon,
+          display: 1,
+          center: { lat: centerLat, lng: centerLng },
+          zoom,
+        },
+      })
+    );
+  };
 
   const handleViewSimulationResults = async (id) => {
     dispatch(setShimmered({ direction, value: shimmerList }));
@@ -72,21 +130,9 @@ function SimTile({ sim, direction, shimmerList }) {
         return;
       }
 
-      dispatch(
-        setDirectMap({
-          direction,
-          value: {
-            lat: lat,
-            lon: lon,
-            display: 1,
-            center: {
-              lat: lat + (webapp ? 0 : 5),
-              lng: lon + (webapp ? 5 : 0),
-            },
-            zoom: 5,
-          },
-        })
-      );
+      focusLocation(lat, lon);
+
+      setSimMeta({ id, model_data: payload?.model_data ?? null });
 
       simTileHelpers.handleViewSimulationResults(
         results,
@@ -112,19 +158,37 @@ function SimTile({ sim, direction, shimmerList }) {
       onMouseLeave={() => setDisplayIcon(false)}
       onClick={() => setDisplayIcon(true)}
     >
+      <div className="sim-row">
       <div className="tile-entry">
         <p>Id:&nbsp;</p>
         <p>{sim.id}</p>
         <SimDate sim={sim} />
       </div>
-      {simRecord?.model_data && (
-        <div>
-          {' '}
-          lat:{simRecord.model_data.pr[2].toFixed(2)} lng:
-          {simRecord.model_data.pr[1].toFixed(2)}{' '}
-        </div>
+      {coords && (
+        <button
+          type="button"
+          className="sim-coords-btn"
+          onClick={() => focusLocation(coords.lat, coords.lng)}
+          title="Go to this location"
+        >
+          lat:{coords.lat.toFixed(2)} lng:{coords.lng.toFixed(2)}
+        </button>
       )}
       <div className="icon-area">
+        <span className="icon-cell">
+          <ToolTipComponent label="parameters" placement="top">
+            <button
+              type="button"
+              className={`icon-btn ${showDetails ? 'icon-btn--active' : ''}`}
+              onClick={() => setShowDetails((v) => !v)}
+              aria-label="Simulation parameters"
+              aria-expanded={showDetails}
+            >
+              <InfoIcon className="sim-icon icon-img" />
+            </button>
+          </ToolTipComponent>
+        </span>
+
         {/* Eye (left slot) — reserve space via visibility toggle */}
         <span
           className={`icon-cell ${
@@ -170,6 +234,34 @@ function SimTile({ sim, direction, shimmerList }) {
           </ToolTipComponent>
         </span>
       </div>
+      </div>
+      {showDetails && (
+        <div className="sim-details" role="region" aria-label="Simulation parameters">
+          {coords && (
+            <>
+              <div className="sim-details__row">
+                <span>Latitude</span>
+                <span>{coords.lat.toFixed(2)}</span>
+              </div>
+              <div className="sim-details__row">
+                <span>Longitude</span>
+                <span>{coords.lng.toFixed(2)}</span>
+              </div>
+            </>
+          )}
+          {params.map((p) => (
+            <div className="sim-details__row" key={p.label}>
+              <span>{p.label}</span>
+              <span>{p.value}</span>
+            </div>
+          ))}
+          {!coords && params.length === 0 && (
+            <div className="sim-details__row">
+              <span>Parameters are not available yet.</span>
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 }

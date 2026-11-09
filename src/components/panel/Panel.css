@@ -92,6 +92,42 @@
   background: white;
 }
 
+.notify-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.6rem;
+  height: 1.6rem;
+  padding: 0 0.3rem;
+  box-sizing: border-box;
+  border-radius: 999px;
+  background: var(--primary-color2);
+  color: #ffffff;
+  font-size: 1.05rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.notify-badge--tab {
+  position: absolute;
+  top: -0.8rem;
+  right: -0.8rem;
+  z-index: 2;
+}
+
+.notify-badge--icon {
+  position: absolute;
+  top: 0.2rem;
+  right: 0.2rem;
+  background: #ffffff;
+  color: var(--primary-color2);
+  box-shadow: 0 0 0 0.15rem #ffffff;
+}
+
+.icon--with-badge {
+  position: relative;
+}
+
 /* ---------------- INNER WHITE PANEL ---------------- */
 
 .panel-inner-box {
@@ -168,6 +204,16 @@
   height: 260px;
   margin: 1rem 0;
   z-index: 3002;
+}
+
+/* error and hint boxes fill the chart area on every screen size */
+.panel-content.chart > .error-container,
+.panel-content.chart > .chart-hint {
+  flex: 1 1 auto;
+  align-self: stretch;
+  height: auto;
+  min-height: 0;
+  box-sizing: border-box;
 }
 
 /* skeleton fills the chart area */
@@ -342,5 +388,25 @@
   .panel-inner-box p.footnote {
     font-size: 1.1rem;
     line-height: 1.4rem;
+  }
+}
+
+@media (max-width: 499px) {
+  .notify-badge {
+    min-width: 1.3rem;
+    height: 1.3rem;
+    padding: 0 0.2rem;
+    font-size: 0.85rem;
+  }
+
+  .notify-badge--icon {
+    top: 0;
+    right: 0;
+    box-shadow: 0 0 0 0.1rem #ffffff;
+  }
+
+  .notify-badge--tab {
+    top: -0.65rem;
+    right: -0.65rem;
   }
 }

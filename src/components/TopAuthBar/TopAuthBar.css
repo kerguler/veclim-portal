@@ -43,3 +43,19 @@
 		top: 80px;
 	}
 }
+
+@media (min-width: 768px) {
+	.top-auth-bar {
+		gap: 10px;
+		padding: 7px 16px;
+	}
+
+	.top-auth-bar__user {
+		font-size: 15px;
+		max-width: 200px;
+	}
+
+	.top-auth-bar__logout {
+		font-size: 15px;
+	}
+}

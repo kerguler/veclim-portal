@@ -2,6 +2,7 @@ import './Panel.css';
 import closeIcon from 'assets/icons/close-bold-svgrepo-com.svg';
 import classNames from 'classnames';
 import useDirectorFun from 'customHooks/useDirectorFun';
+import { useAlboData } from 'context/AlboDataContext';
 import { useDispatch } from 'react-redux';
 import { setPanelOpen } from 'store';
 import { setTwinIndex } from 'store';
@@ -16,6 +17,7 @@ function Panel({
   innerMinHeight = 330,
 }) {
   const dispatch = useDispatch();
+  const listAttention = useAlboData()?.listAttention;
   const {
     panelOpen,
     interferePanelStyleRight: interferePanelStyle,
@@ -46,16 +48,25 @@ function Panel({
   };
   let displayedTabs = orderedTabs.map((item) => {
     const isActive = item.key === passedKey?.key;
+    const badgeCount =
+      item.key === 'simulation_list_panel' && !isActive ? listAttention : 0;
 
     return (
       <div
         key={item.key}
-        className={classNames('tab-heading', { 'is-active': isActive })}
+        className={classNames('tab-heading', {
+          'is-active': isActive,
+        })}
         onClick={() => {
           handleHeadingClick(item.tabIndex);
         }}
       >
         <h3>{item?.label}</h3>
+        {badgeCount > 0 && (
+          <span className="notify-badge notify-badge--tab" aria-label={`${badgeCount} finished`}>
+            {badgeCount}
+          </span>
+        )}
       </div>
     );
   });

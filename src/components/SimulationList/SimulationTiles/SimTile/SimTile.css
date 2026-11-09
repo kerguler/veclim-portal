@@ -65,11 +65,64 @@
 /* Right icon bar: 3 fixed slots (eye | status | trash) */
 .icon-area {
   display: grid;
-  grid-template-columns: var(--icon-size) var(--icon-size) var(--icon-size);
+  grid-template-columns: repeat(4, var(--icon-size));
   column-gap: var(--icon-gap);
   align-items: center;
   justify-content: end;
-  width: calc(3 * var(--icon-size) + 2 * var(--icon-gap)); /* lock width */
+  width: calc(4 * var(--icon-size) + 3 * var(--icon-gap)); /* lock width */
+}
+
+.sim-list-item {
+  flex-wrap: wrap;
+  flex-shrink: 0;
+}
+
+.sim-row {
+  display: flex;
+  align-items: center;
+  flex-basis: 100%;
+  min-width: 0;
+  gap: 0.25rem;
+}
+
+.sim-coords-btn {
+  border: none;
+  background: transparent;
+  padding: 0;
+  font: inherit;
+  font-size: 0.8rem;
+  color: var(--meteo-text);
+  text-decoration: underline;
+  cursor: pointer;
+}
+.sim-coords-btn:hover {
+  color: var(--primary-color1);
+}
+
+.icon-btn--active .icon-img path {
+  stroke: var(--primary-color1);
+}
+
+.sim-details {
+  flex-basis: 100%;
+  margin-top: 0.25rem;
+  padding: 0.4rem 0.5rem;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.7);
+  font-size: 0.8rem;
+}
+.sim-details {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  column-gap: 0.75rem;
+}
+.sim-details__row {
+  display: contents;
+  color: black;
+  line-height: 1.5;
+}
+.sim-details__row span:first-child {
+  color: var(--meteo-text);
 }
 
 .icon-cell {
@@ -114,7 +167,7 @@
 
 .sim-icon.icon-img.green path,
 .status-icon.green path {
-  fill: green;
+  fill: none;
   stroke: green;
 }
 .sim-icon.icon-img.blue path,
@@ -124,7 +177,7 @@
 }
 .sim-icon.icon-img.red path,
 .status-icon.red path {
-  fill: red;
+  fill: none;
   stroke: red;
 }
 

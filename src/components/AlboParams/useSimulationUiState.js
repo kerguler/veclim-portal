@@ -9,7 +9,7 @@ import {
   setInvalidateSimData,
   setAlbochickStatus,
 } from 'store';
-import { useGetSimulationListQuery } from 'store';
+import useSimulationListPolling from 'customHooks/useSimulationListPolling';
 import { setSimList } from 'store';
 
 // Turns a raw simulation-submit error into something a user can act on,
@@ -37,9 +37,11 @@ export default function useSimulationUiState(direction, simulationFieldValues) {
 
   const { mapPagePosition, invalidateSimData, albochickStatus, simList } =
     useDirectorFun(direction);
-  const { isFetching, error, data } = useGetSimulationListQuery({
-    return_results: false,
-  });
+  const { setDataSim, errorSim, setErrorSim } = useAlboData();
+  const isLimitNotice = errorSim?.status === 429;
+  const { isFetching, error, data } = useSimulationListPolling(
+    isLimitNotice ? 5000 : 0
+  );
   const simcount = data ? data.length : 0;
   useEffect(() => {
     if (data) {
@@ -47,7 +49,13 @@ export default function useSimulationUiState(direction, simulationFieldValues) {
     }
   }, [data, dispatch]);
 
-  const { setDataSim, errorSim } = useAlboData();
+  useEffect(() => {
+    if (!isLimitNotice || !data) return;
+    const active = data.filter((s) =>
+      ['PENDING', 'QUEUED', 'PARSING', 'STARTED', 'RUNNING'].includes(s.status)
+    ).length;
+    if (active < 2) setErrorSim(null);
+  }, [isLimitNotice, data, setErrorSim]);
 
   const [lastSubmittedSimulationKey, setLastSubmittedSimulationKey] =
     useState(null);
@@ -91,6 +99,10 @@ export default function useSimulationUiState(direction, simulationFieldValues) {
     setLastSubmittedSimulationKey(currentSimulationKey);
   };
 
+  const clearSubmittedSetup = () => {
+    setLastSubmittedSimulationKey(null);
+  };
+
   useEffect(() => {
     if (!hasSelectedCell) {
       setDataSim(null);
@@ -124,7 +136,9 @@ export default function useSimulationUiState(direction, simulationFieldValues) {
     }
 
     if (errorSim && !invalidateSimData) {
-      console.log('errorSim:', errorSim);
+      if (errorSim?.status === 429 && typeof errorSim?.data?.detail === 'string') {
+        return errorSim.data.detail;
+      }
       return `We have an error for lat:${Number(mapPagePosition.lat).toFixed(
         2
       )} lng:${Number(mapPagePosition.lng).toFixed(2)}: ${getFriendlySimError(
@@ -156,6 +170,7 @@ export default function useSimulationUiState(direction, simulationFieldValues) {
     maxSimsReached,
     alreadySubmittedCurrentSetup,
     markCurrentSetupSubmitted,
+    clearSubmittedSetup,
     simcount: data?.length,
   };
 }
