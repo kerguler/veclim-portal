@@ -400,9 +400,10 @@
   }
 
   .notify-badge--icon {
-    top: 0;
-    right: 0;
-    box-shadow: 0 0 0 0.1rem #ffffff;
+    top: 0.3rem;
+    right: 0.2rem;
+    box-shadow: none;
+    z-index: 0;
   }
 
   .notify-badge--tab {
