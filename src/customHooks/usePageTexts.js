@@ -30,7 +30,7 @@ function usePageTexts() {
 		return (
 			<PageRows
 				large={row.large}
-				key={row.rowno}
+				key={`${pageTexts[0].page}-${row.rowno}`}
 				newsStyle={newsStyle}
 				caption={caption}
 				rotateMe={rotateMe}

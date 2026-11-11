@@ -10,11 +10,9 @@ import {
 	setLocationRequested,
 } from "store";
 import { setShowSearchBar } from "store";
-import { useUserLocation } from "store/apis/utils";
 
 function LiveSearchCaps({ showInstructions }) {
 	const dispatch = useDispatch();
-	useUserLocation();
 	const [showList, setShowList] = useState(false);
 	const [selectedTerm, setSelectedTerm] = useState(null);
 	const [myRenderedList, setMyRenderedList] = useState([]);

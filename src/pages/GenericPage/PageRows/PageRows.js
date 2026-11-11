@@ -16,10 +16,11 @@ function PageRows({
 }) {
 	const [decisiveNewsStyle, setDecisiveNewsStyle] = useState(null);
 	const [forcedNonReversed, setForcedNonReversed] = useState(null);
+	const narrowReverse = newsStyle && !wide ? true : wide ? reverse : false;
 	const handleResize = () => {
 		if (window.innerWidth < 1000) {
 			setDecisiveNewsStyle(false);
-			setForcedNonReversed(true);
+			setForcedNonReversed(narrowReverse);
 		} else if (newsStyle && !wide) {
 			setDecisiveNewsStyle(true);
 			setForcedNonReversed(reverse);
@@ -34,7 +35,7 @@ function PageRows({
 	useEffect(() => {
 		if (window.innerWidth < 1000) {
 			setDecisiveNewsStyle(false);
-			setForcedNonReversed(true);
+			setForcedNonReversed(narrowReverse);
 		} else if (newsStyle && !wide) {
 			setDecisiveNewsStyle(true);
 			setForcedNonReversed(reverse);

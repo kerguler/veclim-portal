@@ -77,6 +77,8 @@ export function getDateRange(sep = ':') {
   return dateToString(today, '-') + sep + dateToString(tomorrow, '-');
 }
 
+let cachedCoords = null;
+
 export function useUserLocation() {
   const [cookies] = useCookies(['cookieConsent']);
   const locationRequested = useSelector(
@@ -91,6 +93,7 @@ export function useUserLocation() {
   const handleLocationFound = useCallback(
     (position) => {
       const { latitude, longitude } = position.coords;
+      cachedCoords = { latitude, longitude };
       const updatedPosition = { lat: latitude, lng: longitude };
       // dispatch(setUserPosition(updatedPosition));
       dispatch(setGlobalPosition(updatedPosition));
@@ -110,11 +113,16 @@ export function useUserLocation() {
   };
 
   const handleRequestLocation = useCallback(() => {
+    dispatch(setLocationRequested(false));
+    if (cachedCoords) {
+      handleLocationFound({ coords: cachedCoords });
+      return;
+    }
     navigator.geolocation.getCurrentPosition(
       handleLocationFound,
       handleLocationError
     );
-  }, [handleLocationFound]);
+  }, [handleLocationFound, dispatch]);
   // useEffect(() => {
   //   cookies.cookieConsent && setConsentGiven(true);
   // });
