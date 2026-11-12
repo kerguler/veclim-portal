@@ -14,7 +14,7 @@ import { recallPanelTab } from 'utils/panelTabMemory';
 import { setPanelOpen } from 'store';
 import MapToolsPopover from 'components/map/MapToolsPanel/MapToolsPopover';
 import { useRef } from 'react';
-import { useAlboData } from 'context/AlboDataContext';
+import { useSimulationAttention } from 'utils/simulationAttention';
 const PanelChildren = lazy(() => import('./PanelChildren'));
 const MenuChildren = lazy(() => import('./MenuChildren'));
 
@@ -34,7 +34,7 @@ function MenuItemV2({ item, onToggle, shouldShimmer, direction }) {
   } = useDirectorFun('left');
 
   const dispatch = useDispatch();
-  const listAttention = useAlboData()?.listAttention || 0;
+  const listAttention = useSimulationAttention();
   const badgeCount =
     item.key === 'simulation_adjustment' && !openItems[item.key]
       ? listAttention

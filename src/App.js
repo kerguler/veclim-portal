@@ -9,6 +9,7 @@ import CookieHandler from './components/cookieConsent/CookieHandler';
 import { useUserLocation } from './store/apis/utils';
 import { PanelProvider } from 'context/panelsIconsV2';
 import useIsStaff from 'customHooks/useIsStaff';
+import SimulationCompletionWatcher from 'components/SimulationList/SimulationCompletionWatcher';
 import {
   MethodsRouteGuard,
   MapRouteGuard,
@@ -26,6 +27,7 @@ function App() {
     <div className="app">
       <div className="page-container">
         <CookieHandler></CookieHandler>
+        <SimulationCompletionWatcher />
 
         <ErrorBoundary>
           <Suspense fallback={<div>Loading...</div>}>

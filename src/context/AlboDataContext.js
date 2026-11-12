@@ -1,5 +1,4 @@
 import React, { createContext, useContext, useState } from 'react';
-import SimulationCompletionWatcher from 'components/SimulationList/SimulationCompletionWatcher';
 
 const AlboDataContext = createContext();
 
@@ -9,7 +8,6 @@ export const AlboDataProvider = ({ children }) => {
 	const [errorSim, setErrorSim] = useState(null);
 	const [simResult, setSimResult] = useState(null);
 	const [simMeta, setSimMeta] = useState(null);
-	const [listAttention, setListAttention] = useState(0);
 	return (
 		<AlboDataContext.Provider
 			value={{
@@ -23,11 +21,8 @@ export const AlboDataProvider = ({ children }) => {
 				setSimResult,
 				simMeta,
 				setSimMeta,
-				listAttention,
-				setListAttention,
 			}}
 		>
-			<SimulationCompletionWatcher />
 			{children}
 		</AlboDataContext.Provider>
 	);

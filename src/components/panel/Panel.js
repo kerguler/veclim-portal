@@ -2,7 +2,7 @@ import './Panel.css';
 import closeIcon from 'assets/icons/close-bold-svgrepo-com.svg';
 import classNames from 'classnames';
 import useDirectorFun from 'customHooks/useDirectorFun';
-import { useAlboData } from 'context/AlboDataContext';
+import { useSimulationAttention } from 'utils/simulationAttention';
 import { useDispatch } from 'react-redux';
 import { setPanelOpen } from 'store';
 import { setTwinIndex } from 'store';
@@ -18,7 +18,7 @@ function Panel({
   innerMinHeight = 330,
 }) {
   const dispatch = useDispatch();
-  const listAttention = useAlboData()?.listAttention;
+  const listAttention = useSimulationAttention();
   const {
     panelOpen,
     interferePanelStyleRight: interferePanelStyle,

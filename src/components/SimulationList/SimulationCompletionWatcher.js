@@ -1,52 +1,38 @@
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import { useGetSimulationListQuery } from 'store';
-import { simulationApi } from 'store/apis/simulationApi';
-import { useAlboData } from 'context/AlboDataContext';
+import useIsStaff from 'customHooks/useIsStaff';
 import {
   IN_PROGRESS_STATUSES,
   getPollInterval,
 } from 'customHooks/useSimulationListPolling';
+import { syncAttention, resetAttention } from 'utils/simulationAttention';
 
 const LIST_ARG = { return_results: false };
-const NEW_SIM_WINDOW_MS = 15 * 60 * 1000;
-
-const isRecent = (sim) => {
-  const age = Date.now() - new Date(sim.created_at).getTime();
-  return Number.isFinite(age) && age < NEW_SIM_WINDOW_MS;
-};
 
 function SimulationCompletionWatcher() {
-  const { setListAttention } = useAlboData();
-  const { data: cached } =
-    simulationApi.endpoints.getSimulationList.useQueryState(LIST_ARG);
-  const interval = getPollInterval(cached);
+  const { isLoggedIn, username } = useIsStaff();
+  const apiReg = useSelector((s) => s.login.apiRegisterResponse);
+  const signedIn = isLoggedIn || Boolean(apiReg?.userId);
+  const userKey = username || apiReg?.userName || localStorage.getItem('username');
 
-  const { data } = useGetSimulationListQuery(LIST_ARG, {
-    skip: !cached,
+  const { data } = useGetSimulationListQuery(LIST_ARG, { skip: !signedIn });
+  const interval = getPollInterval(data);
+
+  useGetSimulationListQuery(LIST_ARG, {
+    skip: !signedIn || !interval,
     pollingInterval: interval,
     skipPollingIfUnfocused: true,
   });
 
-  const previous = useRef(null);
-
   useEffect(() => {
+    if (!signedIn) {
+      resetAttention();
+      return;
+    }
     if (!Array.isArray(data)) return;
-    const next = {};
-    let finishedCount = 0;
-    data.forEach((sim) => {
-      next[sim.id] = sim.status;
-      const before = previous.current?.[sim.id];
-      const isFinished = !IN_PROGRESS_STATUSES.includes(sim.status);
-      const wasRunning = before && IN_PROGRESS_STATUSES.includes(before);
-      const appearedFinished =
-        previous.current && !before && isFinished && isRecent(sim);
-      if (isFinished && (wasRunning || appearedFinished)) {
-        finishedCount += 1;
-      }
-    });
-    previous.current = next;
-    if (finishedCount > 0) setListAttention((count) => count + finishedCount);
-  }, [data, setListAttention]);
+    syncAttention(userKey, data, IN_PROGRESS_STATUSES);
+  }, [signedIn, data, userKey]);
 
   return null;
 }

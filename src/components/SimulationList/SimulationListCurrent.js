@@ -5,14 +5,17 @@ import { useEffect } from 'react';
 import { setSimList } from 'store';
 import SimulationTiles from './SimulationTiles/SimulationTiles';
 import useCsrf from 'pages/LoginRegister/Services/useCsrf';
-import { useAlboData } from 'context/AlboDataContext';
+import {
+  acknowledgeAttention,
+  useSimulationAttention,
+} from 'utils/simulationAttention';
 function SimulationListCurrent({ direction }) {
   const dispatch = useDispatch();
   useCsrf(); // Initialize CSRF token for API requests
-  const { listAttention, setListAttention } = useAlboData();
+  const listAttention = useSimulationAttention();
   useEffect(() => {
-    if (listAttention) setListAttention(0);
-  }, [listAttention, setListAttention]);
+    if (listAttention) acknowledgeAttention();
+  }, [listAttention]);
   const { data: fetchedSimList,isLoading, isFetching, error, refetch } = useSimulationListPolling();
 
   useEffect(() => {

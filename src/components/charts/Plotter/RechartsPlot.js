@@ -61,11 +61,13 @@ function RechartsPlot({ direction, plotMat }) {
   } = useDirectorFun(direction);
   const missingNotice =
     isEmptyPlot && Number.isFinite(mapPagePosition?.lat)
-      ? `No data available for the location lat: ${mapPagePosition.lat.toFixed(
+      ? `No activity is predicted at lat: ${mapPagePosition.lat.toFixed(
           2
-        )}, lng: ${mapPagePosition.lng.toFixed(2)}.`
+        )}, lng: ${mapPagePosition.lng.toFixed(
+          2
+        )}. All modelled values are zero here, so conditions are probably unsuitable for the vector.`
       : isEmptyPlot
-      ? 'No data available for this location.'
+      ? 'No activity is predicted at this location. All modelled values are zero.'
       : null;
   const [activeKeys, setActiveKeys] = useState(() => {
     // start with everything active
