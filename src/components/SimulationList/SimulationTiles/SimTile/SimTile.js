@@ -122,15 +122,14 @@ function SimTile({ sim, direction, shimmerList }) {
       const payload = await triggerFetch({ id, return_results: true }).unwrap();
       const results = payload?.results ?? payload;
 
-      const lon = Number(payload?.model_data?.pr?.[1]);
-      const lat = Number(payload?.model_data?.pr?.[2]);
+      const coords = getSimulationCoordinates(payload?.model_data);
 
-      if (!Number.isFinite(lat) || !Number.isFinite(lon)) {
-        console.error('Invalid simulation coordinates', { lat, lon, payload });
+      if (!coords) {
+        console.error('Invalid simulation coordinates', { payload });
         return;
       }
 
-      focusLocation(lat, lon);
+      focusLocation(coords.lat, coords.lng);
 
       setSimMeta({ id, model_data: payload?.model_data ?? null });
 

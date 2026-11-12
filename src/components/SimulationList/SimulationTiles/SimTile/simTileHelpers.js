@@ -22,11 +22,9 @@ class simTileHelpers {
   };
 
   static handleDeleteSimulation = async (deleteSimulation, id) => {
-    console.log('delete', id);
     try {
       const response = deleteSimulation({ id: id });
     } catch (err) {
-      console.log('error while deleting simulation:', err);
     }
   };
 

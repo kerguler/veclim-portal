@@ -89,7 +89,6 @@ export function useUserLocation() {
   );
   const dispatch = useDispatch();
   const vec = getVector(vectorName);
-  console.log('Using vector', vectorName, vec.map.defaultCenter);
   const handleLocationFound = useCallback(
     (position) => {
       const { latitude, longitude } = position.coords;

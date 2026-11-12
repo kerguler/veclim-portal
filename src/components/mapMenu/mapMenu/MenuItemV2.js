@@ -10,6 +10,7 @@ import useHandleIconShimmer from './useHandleIconShimmer';
 import useHandleDisabledIcons from './useHandleDisabledIcons';
 import { setPanelInterfere } from 'store';
 import { setTwinIndex } from 'store';
+import { recallPanelTab } from 'utils/panelTabMemory';
 import { setPanelOpen } from 'store';
 import MapToolsPopover from 'components/map/MapToolsPanel/MapToolsPopover';
 import { useRef } from 'react';
@@ -213,7 +214,12 @@ function MenuItemV2({ item, onToggle, shouldShimmer, direction }) {
     if (panelInterfere === -1) {
       dispatch(setPanelInterfere({ direction, value: 0 }));
     }
-    dispatch(setTwinIndex({ direction, value: 0 }));
+    dispatch(
+      setTwinIndex({
+        direction,
+        value: key === 'simulation_adjustment' ? recallPanelTab(key) : 0,
+      })
+    );
 
     if (!key.endsWith('_panel')) {
       dispatch(setPanelOpen({ direction, value: false }));

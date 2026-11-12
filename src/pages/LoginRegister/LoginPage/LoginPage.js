@@ -67,7 +67,6 @@ function LoginPage() {
 					userId: response.userId,
 				})
 			);
-			console.log({ response });
 			localStorage.setItem("username", response.userName);
 			localStorage.setItem("id", response.userId);
 

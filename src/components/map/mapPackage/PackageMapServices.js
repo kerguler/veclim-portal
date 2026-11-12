@@ -306,11 +306,6 @@ class PackageMapServices {
     const map = mapParRef?.current?.map;
 
     if (map) {
-      console.log('SETVIEW', {
-        center,
-        zoom,
-        mapExists: !!map,
-      });
       map.setView(center, zoom, {
         animate: false,
       });
@@ -711,7 +706,6 @@ class PackageMapServices {
       mapPagePosition?.lat === null || mapPagePosition?.lng === null;
 
     if (pointerExplicitlyDisabled) {
-      console.log('Pointer explicitly disabled, removing markers');
       p.iconMarker && p.map.removeLayer(p.iconMarker);
       p.rectMarker && p.map.removeLayer(p.rectMarker);
       p.highlightMarker && p.map.removeLayer(p.highlightMarker);

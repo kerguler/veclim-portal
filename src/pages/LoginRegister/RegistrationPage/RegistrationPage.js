@@ -53,7 +53,6 @@ function RegistrationPage() {
 			navigate("/login");
 		} catch (err) {
 			console.error("Failed to register:", err);
-			console.log(err.data.username[0]);
 			setDisplayWarning({
 				...displayWarning,
 				errorMessage: err.data.username[0],
@@ -66,7 +65,6 @@ function RegistrationPage() {
 	const onEmailChange = (e) => {
 		dispatch(setDetails({ ...details, email: e.target.value }));
 		if (!LoginRegisterService.validateEmail(e.target.value)) {
-			console.log("Invalid Email");
 			setDisplayWarning({ ...displayWarning, emailMessage: "invalid email" });
 		} else {
 			setDisplayWarning({ ...displayWarning, emailMessage: "" });

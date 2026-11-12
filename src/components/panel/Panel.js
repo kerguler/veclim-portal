@@ -6,6 +6,7 @@ import { useAlboData } from 'context/AlboDataContext';
 import { useDispatch } from 'react-redux';
 import { setPanelOpen } from 'store';
 import { setTwinIndex } from 'store';
+import { rememberPanelTab } from 'utils/panelTabMemory';
 function Panel({
   onClosed,
   children,
@@ -44,6 +45,7 @@ function Panel({
     .filter(Boolean);
 
   const handleHeadingClick = (tabIndex) => {
+    rememberPanelTab(tabs[0]?.parent, tabIndex);
     dispatch(setTwinIndex({ direction, value: tabIndex }));
   };
   let displayedTabs = orderedTabs.map((item) => {

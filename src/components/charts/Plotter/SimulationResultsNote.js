@@ -73,11 +73,16 @@ function SimulationResultsNote() {
           type="button"
           className="sim-note__id"
           aria-expanded={open}
-          title="Show simulation parameters"
+          aria-describedby="sim-note-hint"
           onClick={() => setOpen((v) => !v)}
         >
           {simMeta.id}
         </button>
+        {!open && (
+          <span id="sim-note-hint" className="sim-note__hint" role="tooltip">
+            Click to view simulation parameters
+          </span>
+        )}
         {open && (
           <span className="sim-note__popover" role="dialog">
             {coords && (

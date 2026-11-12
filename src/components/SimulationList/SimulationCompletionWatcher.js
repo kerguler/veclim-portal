@@ -8,6 +8,12 @@ import {
 } from 'customHooks/useSimulationListPolling';
 
 const LIST_ARG = { return_results: false };
+const NEW_SIM_WINDOW_MS = 15 * 60 * 1000;
+
+const isRecent = (sim) => {
+  const age = Date.now() - new Date(sim.created_at).getTime();
+  return Number.isFinite(age) && age < NEW_SIM_WINDOW_MS;
+};
 
 function SimulationCompletionWatcher() {
   const { setListAttention } = useAlboData();
@@ -30,11 +36,11 @@ function SimulationCompletionWatcher() {
     data.forEach((sim) => {
       next[sim.id] = sim.status;
       const before = previous.current?.[sim.id];
-      if (
-        before &&
-        IN_PROGRESS_STATUSES.includes(before) &&
-        !IN_PROGRESS_STATUSES.includes(sim.status)
-      ) {
+      const isFinished = !IN_PROGRESS_STATUSES.includes(sim.status);
+      const wasRunning = before && IN_PROGRESS_STATUSES.includes(before);
+      const appearedFinished =
+        previous.current && !before && isFinished && isRecent(sim);
+      if (isFinished && (wasRunning || appearedFinished)) {
         finishedCount += 1;
       }
     });

@@ -144,7 +144,6 @@ function calculatePlotMat(data, chartType) {
 			};
 		});
 	} else {
-		console.log("unrecognized chart type");
 	}
 	return { dataB, plotMat };
 }

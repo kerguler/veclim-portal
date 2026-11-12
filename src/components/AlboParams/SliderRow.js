@@ -65,7 +65,6 @@ const SliderRow = ({ direction }) => {
     model_data: {
       envir: [],
       pr: [
-        1.0, // test mode on
         mapPagePosition.lng,
         mapPagePosition.lat,
         toInt(f.humanPopulationSize.value, 1000),

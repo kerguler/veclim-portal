@@ -15,7 +15,6 @@ function updateNestedState(state, path, value) {
 
 	// Assign the new value to the nested property
 	nestedState[lastKey] = value;
-console.log({path,value})
 	return newState;
 }
 export default updateNestedState;

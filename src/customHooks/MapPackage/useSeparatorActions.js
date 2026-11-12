@@ -12,7 +12,6 @@ function useSeparatorActions(mapParRef) {
       PackageMapServices.markerHandler(mapParRef, 4, mapVector, dispatch, mapPagePosition);
     };
     const handleSepClick = (e) => {
-      console.log('clicked on separator');
 
       handleMarkers();
       e.stopPropagation();

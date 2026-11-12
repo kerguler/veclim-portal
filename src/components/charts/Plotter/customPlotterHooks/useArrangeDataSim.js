@@ -53,7 +53,6 @@ function useArrangeDataSim({ rawData, dataTs, direction, onBuilt }) {
           mapPagePosition,
           direction
         );
-      console.log('error checkData for Mixed keys', { errorMessage, isError });
       if (isError) {
         const noData = new Error(errorMessage);
         noData.isNoData = true;
@@ -94,7 +93,6 @@ function useArrangeDataSim({ rawData, dataTs, direction, onBuilt }) {
         lastReadyRef.current = false;
         dispatch(setPlotReady({ direction, value: false }));
       }
-      console.log('cuaght error in useArrangeDataSim:', err);
       dispatch(
         setMessenger({
           direction,

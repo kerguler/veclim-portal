@@ -16,7 +16,6 @@ function SettingsPanel() {
 
 	const [displayNoCoords, setDisplayNoCoords] = useState(false);
 	const fetcherStates = useSelector((state) => state.fetcher.fetcherStates);
-	console.log({ userPosition });
 
 	useEffect(() => {
 		setDisplayNoCoords(userPosition.lat && userPosition.lng ? false : true);

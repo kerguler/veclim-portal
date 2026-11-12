@@ -29,7 +29,6 @@ function useAdjustAxes(plotMat, chartParameters, vectorName, argKeys) {
 			plotMat.length === 0
 		)
 			return;
-		console.log("AAAargRefKeys", argKeys);
 
 		let brushDataYL = { min: Infinity, max: -Infinity };
 		let brushDataYR = { min: Infinity, max: -Infinity };
@@ -37,10 +36,8 @@ function useAdjustAxes(plotMat, chartParameters, vectorName, argKeys) {
 		let minmaxR = { min: Infinity, max: -Infinity };
 		argKeys.forEach((key) => {
 			const { min, max } = getMinMaxForKey(plotMat, key);
-			console.log(`Key: ${key} `);
 			s3[key] = { min, max };
 		});
-		console.log("s3", s3);
 		"orientation" in chartParameters &&
 			Object.keys(chartParameters.orientation).map((key) => {
 				if (chartParameters.orientation[key] === "right") {
@@ -70,7 +67,6 @@ function useAdjustAxes(plotMat, chartParameters, vectorName, argKeys) {
 			});
 		brushDataYL = { min: minmaxL.min, max: minmaxL.max };
 		brushDataYR = { min: minmaxR.min, max: minmaxR.max };
-		console.log({ s3 });
 		dispatch(setYaxisInfo({ direction: "left", value: s3 }));
 		plotMat &&
 			dispatch(
