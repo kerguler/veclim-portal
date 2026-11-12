@@ -1,27 +1,19 @@
 import './alboParams.css';
 import { useEffect, useRef } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import LoginComponent from 'pages/LoginRegister/LoginComponent/LoginComponent';
 
-import { useLogoutMutation, useGetSimulationListQuery } from 'store';
-import { setApiRegisterResponse, setPassword } from 'store';
+import { useGetSimulationListQuery } from 'store';
 import useCsrf from 'pages/LoginRegister/Services/useCsrf';
 import useIsStaff from 'customHooks/useIsStaff';
 
 function AlboParams({ children }) {
-  const dispatch = useDispatch();
   const { refresh } = useCsrf();
-  const { refetch: refetchIsStaff, username: serverUserName } = useIsStaff();
+  const { isLoggedIn, isChecking } = useIsStaff();
 
-  const direction = 'left';
   const apiReg = useSelector((s) => s.login.apiRegisterResponse);
   const userID = apiReg?.userId;
-  const userName =
-    serverUserName || apiReg?.userName || localStorage.getItem('username');
-  const displayName = userName || '';
-
-  const [logout, { isLoading: loggingOut }] = useLogoutMutation();
 
   // No local record of being logged in yet (e.g. fresh page load) - probe
   // with an already-authenticated endpoint to see if the existing session
@@ -30,14 +22,16 @@ function AlboParams({ children }) {
     data: sessionCheckData,
     error: sessionCheckError,
     isFetching: checkingSession,
-    refetch: refetchSessionCheck,
   } = useGetSimulationListQuery(
     { return_results: false },
     { skip: Boolean(userID) }
   );
 
   const hasValidSession =
-    Boolean(userID) || (Boolean(sessionCheckData) && !sessionCheckError);
+    Boolean(userID) ||
+    (Boolean(sessionCheckData) &&
+      !sessionCheckError &&
+      (isChecking || isLoggedIn));
 
   // A session can become valid either via a fresh login (which already
   // refreshes the CSRF token itself) or via this passive cookie check on
@@ -59,63 +53,12 @@ function AlboParams({ children }) {
     }
   }, [hasValidSession, refresh]);
 
-  const handleLogout = async () => {
-    try {
-      await logout().unwrap(); // server clears session cookie
-    } catch (e) {
-      console.error('Logout failed (continuing cleanup):', e);
-    }
-    // local cleanup
-    dispatch(
-      setApiRegisterResponse({
-        response: null,
-        status: null,
-        message: null,
-        userName: null,
-        userId: null,
-      })
-    );
-    dispatch(setPassword(''));
-    localStorage.removeItem('id');
-    try {
-      await refresh();
-    } catch (e) {
-      console.error('CSRF refresh after logout failed (non-critical):', e);
-    }
-    // Force the session-check query to re-run now that the cookie is gone,
-    // otherwise its cached "logged in" result keeps the panel showing.
-    refetchSessionCheck();
-    // same deal for isStaff, else drafts stay visible after logout
-    refetchIsStaff();
-  };
-
   if (!hasValidSession && checkingSession) {
     return <div className="albo-params-container">Checking session…</div>;
   }
 
   return hasValidSession ? (
-    <div className="albo-params-container">
-      <div className="albo-header">
-        <span className="albo-user">
-          <span>Signed in{displayName ? ' as' : ''}</span>
-          {displayName && (
-            <span className="albo-user__name" title={displayName}>
-              {displayName}
-            </span>
-          )}
-        </span>
-        <button
-          type="button"
-          className="link-btn logout"
-          onClick={handleLogout}
-          disabled={loggingOut}
-          aria-label="Log out"
-        >
-          {loggingOut ? 'Logging out…' : 'Log out'}
-        </button>
-      </div>
-      {children}
-    </div>
+    <div className="albo-params-container">{children}</div>
   ) : (
     <div className="albo-params-container">
       <LoginComponent />
