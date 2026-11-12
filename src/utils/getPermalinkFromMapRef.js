@@ -1,5 +1,6 @@
 // utils/getPermalinkFromMapRef.js
 import { buildMapPermalink } from 'utils/mapPermalink';
+import { getDividerLng } from 'utils/dividerAnchor';
 
 export function getPermalinkFromMapRef({
   mapParRef,
@@ -24,6 +25,16 @@ export function getPermalinkFromMapRef({
       ? tileArray.join(':')
       : undefined;
 
+  const divider =
+    Array.isArray(tileArray) && tileArray.length > 1
+      ? p.sideBySide?._range?.value
+      : undefined;
+
+  const dividerLng =
+    Array.isArray(tileArray) && tileArray.length > 1
+      ? getDividerLng(p)
+      : undefined;
+
   return buildMapPermalink({
     vectorName,
     viewCenter,
@@ -31,6 +42,8 @@ export function getPermalinkFromMapRef({
     zoom,
     panelKey: lastPanelDisplayed,
     tileKey,
+    divider,
+    dividerLng,
     pathname: '/MapPage',
   });
 }

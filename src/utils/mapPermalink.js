@@ -6,6 +6,8 @@ export function buildMapPermalink({
   zoom,
   panelKey,
   tileKey,
+  divider,
+  dividerLng,
   pathname = '/MapPage',
 }) {
   const params = new URLSearchParams();
@@ -27,6 +29,10 @@ export function buildMapPermalink({
   if (typeof zoom === 'number') params.set('z', zoom.toString());
   if (panelKey) params.set('panel', panelKey);
   if (tileKey) params.set('tile', tileKey); // value "a:b" is fine
+  const dividerNum = parseFloat(divider);
+  if (Number.isFinite(dividerNum)) params.set('d', dividerNum.toFixed(4));
+  const dividerLngNum = parseFloat(dividerLng);
+  if (Number.isFinite(dividerLngNum)) params.set('dl', dividerLngNum.toFixed(5));
 
   return `${pathname}?${params.toString()}`;
 }

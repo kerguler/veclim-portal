@@ -1,5 +1,5 @@
 import { useCallback, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector, useStore } from 'react-redux';
 import { setUserPosition } from 'store';
 import { useCookies } from 'react-cookie';
 import { setLocationRequested, setGlobalPosition } from 'store';
@@ -88,6 +88,7 @@ export function useUserLocation() {
     (state) => state.fetcher.fetcherStates.vectorName
   );
   const dispatch = useDispatch();
+  const store = useStore();
   const vec = getVector(vectorName);
   const handleLocationFound = useCallback(
     (position) => {
@@ -96,9 +97,17 @@ export function useUserLocation() {
       const updatedPosition = { lat: latitude, lng: longitude };
       // dispatch(setUserPosition(updatedPosition));
       dispatch(setGlobalPosition(updatedPosition));
+
+      const query = new URLSearchParams(window.location.search);
+      const urlHasPosition = query.get('lat') !== null && query.get('lon') !== null;
+      const current = store.getState().fetcher.fetcherStates.map.mapPagePosition;
+      const hasSelectedCell =
+        Number.isFinite(current?.lat) && Number.isFinite(current?.lng);
+      if (urlHasPosition || hasSelectedCell) return;
+
       dispatch(setMapPagePosition(updatedPosition));
     },
-    [dispatch]
+    [dispatch, store]
   );
 
   const handleLocationError = (error) => {

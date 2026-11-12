@@ -15,8 +15,9 @@ function useQuery() {
   const session = params.get('session');
   const zoom = params.get('z');
   const bounds = params.get('b');
+  const divider = params.get('d');
 
-  return { tile, panel, decade, lon, lat, cLon, cLat, session, zoom, bounds };
+  return { tile, panel, decade, lon, lat, cLon, cLat, session, zoom, bounds, divider };
 }
 
 export default useQuery;

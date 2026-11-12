@@ -23,8 +23,11 @@ import { syncReduxFromLeaflet } from 'utils/syncReduxFromLeaflet';
 import { setCurrentMapCenter, setCurentMapZoom } from 'store';
 import { setCurrentMapZoom } from 'store';
 import useConsumeDirectMap from 'customHooks/MapPackage/useConsumeDirectMap';
+import useQuery from 'customHooks/fethcerStates/useQuery';
+import { getVector } from 'vectors/registry';
 function MapPackageComponent({ fitworld }) {
   const dispatch = useDispatch();
+  const { session } = useQuery();
   const {
     mapPagePosition,
     directMap,
@@ -142,6 +145,7 @@ function MapPackageComponent({ fitworld }) {
 
     if (!map) return;
     if (!mapVector) return;
+    if (session && getVector(session) && mapVector !== session) return;
 
     PackageMapServices.applyVectorToMapState({
       dispatch,
@@ -152,7 +156,7 @@ function MapPackageComponent({ fitworld }) {
       currentMapZoom,
       isPermalinkClick,
     });
-  }, [mapVector, dispatch]);
+  }, [mapVector, session, dispatch]);
 
   const consumedDirectMapRef = useRef(null);
   useConsumeDirectMap(consumedDirectMapRef, mapParRef);

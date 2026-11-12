@@ -2,6 +2,7 @@ import markerLogo from 'assets/images/VEClim-Map-Icon-30x30px.png';
 import L from 'leaflet';
 import 'leaflet-side-by-side';
 import { getVector } from 'vectors/registry';
+import { setDividerFromLng } from 'utils/dividerAnchor';
 import {
   BASEMAPS,
   BASEMAP_OPTIONS,
@@ -21,6 +22,7 @@ import {
   setTileArray,
   setCurrentMapBounds,
   setMapVector,
+  setDividerPosition,
 } from 'store';
 import TileLoaderService from '../../../customHooks/TileLoaderService';
 import ErrorScreenMap from 'components/map/errorScreen/ErrorScreenMap';
@@ -619,9 +621,49 @@ class PackageMapServices {
     };
   }
 
+  static applyPermalinkDivider(p, dispatch, previousValue) {
+    const control = p.sideBySide;
+    if (!control?._range) return;
+    let value = parseFloat(previousValue);
+    let anchorLng = NaN;
+    if (!Number.isFinite(value)) {
+      if (p.dividerHydrated) return;
+      const query = new URLSearchParams(window.location.search);
+      value = parseFloat(query.get('d'));
+      anchorLng = parseFloat(query.get('dl'));
+    }
+    p.dividerHydrated = true;
+
+    if (Number.isFinite(anchorLng)) {
+      const apply = () => {
+        const ratio = setDividerFromLng(p, anchorLng);
+        if (ratio !== null) dispatch(setDividerPosition(String(ratio)));
+      };
+      apply();
+      const map = p.map;
+      const stop = () => {
+        map.off('moveend', apply);
+        map.off('dragstart', stop);
+        control._range.removeEventListener('input', stop);
+        clearTimeout(timer);
+      };
+      const timer = setTimeout(stop, 3000);
+      map.on('moveend', apply);
+      map.on('dragstart', stop);
+      control._range.addEventListener('input', stop);
+      return;
+    }
+
+    if (!Number.isFinite(value) || value < 0 || value > 1) return;
+    control._range.value = value;
+    control._updateClip();
+    dispatch(setDividerPosition(String(value)));
+  }
+
   static handleDoubleMap(mapParRef, tileMat, tileArray, dispatch) {
     let p = mapParRef.current;
     let sideBySideMap = p.sideBySide;
+    const previousDivider = sideBySideMap?._range?.value;
     let tempCenter = p.map.getCenter();
     p.center = { lat: tempCenter.lat, lng: tempCenter.lng };
 
@@ -645,6 +687,7 @@ class PackageMapServices {
         .sideBySide([tileMat[0]], [tileMat[1]], {})
 
         .addTo(p.map);
+      PackageMapServices.applyPermalinkDivider(p, dispatch, previousDivider);
     }
   }
 

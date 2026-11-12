@@ -1,8 +1,9 @@
 // customHooks/permalink/useMapPermalinkSync.js
 import { useEffect, useCallback } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import PackageMapServices from 'components/map/mapPackage/PackageMapServices';
 import { buildMapPermalink } from 'utils/mapPermalink';
+import { getDividerLng } from 'utils/dividerAnchor';
 import { setPermalink, setIsPermalinkClick } from 'store';
 import { setPersistPointer } from 'store';
 import useDirectorFun from 'customHooks/useDirectorFun';
@@ -20,6 +21,7 @@ export default function useMapPermalinkSync({
   isPermalinkClick,
 }) {
   const dispatch = useDispatch();
+  const dividerPosition = useSelector((s) => s.location.dividerPosition);
 
   const buildLink = useCallback(() => {
     const p = mapParRef.current;
@@ -35,6 +37,16 @@ export default function useMapPermalinkSync({
         ? tileArray.join(':')
         : undefined;
 
+    const divider =
+      Array.isArray(tileArray) && tileArray.length > 1
+        ? p.sideBySide?._range?.value ?? dividerPosition
+        : undefined;
+
+    const dividerLng =
+      Array.isArray(tileArray) && tileArray.length > 1
+        ? getDividerLng(p)
+        : undefined;
+
     return buildMapPermalink({
       vectorName,
       viewCenter,
@@ -42,9 +54,18 @@ export default function useMapPermalinkSync({
       zoom,
       panelKey: lastPanelDisplayed,
       tileKey,
+      divider,
+      dividerLng,
       pathname: '/MapPage',
     });
-  }, [mapParRef, vectorName, mapPagePosition, lastPanelDisplayed, tileArray]);
+  }, [
+    mapParRef,
+    vectorName,
+    mapPagePosition,
+    lastPanelDisplayed,
+    tileArray,
+    dividerPosition,
+  ]);
 
   const sync = useCallback(() => {
     const link = buildLink();
