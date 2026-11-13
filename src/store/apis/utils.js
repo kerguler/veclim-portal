@@ -1,12 +1,11 @@
 import { useCallback, useEffect } from 'react';
-import { useDispatch, useSelector, useStore } from 'react-redux';
-import { setUserPosition } from 'store';
+import { useDispatch, useSelector } from 'react-redux';
+import { setUserPosition, setUserLocation } from 'store';
 import { useCookies } from 'react-cookie';
 import { setLocationRequested, setGlobalPosition } from 'store';
 import PackageMapServices from 'components/map/mapPackage/PackageMapServices';
 import { getVector } from 'vectors/registry';
 import useDirectorFun from 'customHooks/useDirectorFun';
-import { setMapPagePosition } from 'store/slices/fetcherSlice';
 
 export function parseDate(dstr) {
   // Trim whitespace just in case
@@ -88,7 +87,6 @@ export function useUserLocation() {
     (state) => state.fetcher.fetcherStates.vectorName
   );
   const dispatch = useDispatch();
-  const store = useStore();
   const vec = getVector(vectorName);
   const handleLocationFound = useCallback(
     (position) => {
@@ -97,20 +95,15 @@ export function useUserLocation() {
       const updatedPosition = { lat: latitude, lng: longitude };
       // dispatch(setUserPosition(updatedPosition));
       dispatch(setGlobalPosition(updatedPosition));
-
-      const query = new URLSearchParams(window.location.search);
-      const urlHasPosition = query.get('lat') !== null && query.get('lon') !== null;
-      const current = store.getState().fetcher.fetcherStates.map.mapPagePosition;
-      const hasSelectedCell =
-        Number.isFinite(current?.lat) && Number.isFinite(current?.lng);
-      if (urlHasPosition || hasSelectedCell) return;
-
-      dispatch(setMapPagePosition(updatedPosition));
+      dispatch(
+        setUserLocation({ status: 'granted', lat: latitude, lng: longitude })
+      );
     },
-    [dispatch, store]
+    [dispatch]
   );
 
   const handleLocationError = (error) => {
+    dispatch(setUserLocation({ status: 'unavailable', lat: null, lng: null }));
     dispatch(
       setGlobalPosition({
         lat: vec.map.defaultCenter.lat,
@@ -152,14 +145,15 @@ export function useUserLocation() {
             lng: vec.map.defaultCenter.lng,
           })
         );
+        dispatch(setUserLocation({ status: 'unavailable', lat: null, lng: null }));
         dispatch(setLocationRequested(false));
       }
     });
 
     if (navigator.geolocation && locationRequested) {
       handleRequestLocation();
-    } else {
-      // window.prompt("we couldnt get your location");
+    } else if (!navigator.geolocation) {
+      dispatch(setUserLocation({ status: 'unavailable', lat: null, lng: null }));
     }
   }, [
     handleRequestLocation,

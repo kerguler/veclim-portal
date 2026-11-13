@@ -58,6 +58,10 @@ const moduleObj = {
     // default is when switching from papatasi to albopictus, the bounds stay over cyprus
     switchBounds: 'cyprus',
     defaultCenter: { lat: 0, lng: 0 },
+    // true or missing: a fresh visit always selects defaultCenter.
+    // false: a fresh visit selects the visitor's own location when it is available.
+    // either way defaultCenter is used when the location is denied or unavailable.
+    overrideUserLocation: true,
     defaultZoom: 1,
     switchCenter: { lat: 35.1, lng: 33.33 },
     switchZoom: 8,

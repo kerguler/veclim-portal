@@ -24,6 +24,7 @@ import { setCurrentMapCenter, setCurentMapZoom } from 'store';
 import { setCurrentMapZoom } from 'store';
 import useConsumeDirectMap from 'customHooks/MapPackage/useConsumeDirectMap';
 import useQuery from 'customHooks/fethcerStates/useQuery';
+import useInitialCell from 'customHooks/MapPackage/useInitialCell';
 import { getVector } from 'vectors/registry';
 function MapPackageComponent({ fitworld }) {
   const dispatch = useDispatch();
@@ -63,6 +64,7 @@ function MapPackageComponent({ fitworld }) {
     permalink: '',
   });
   useLMap(mapParRef);
+  useInitialCell(mapParRef);
 
   useMapPermalinkSync({
     mapParRef,

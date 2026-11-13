@@ -47,6 +47,7 @@ const moduleObj = {
     defaultBounds: PORTUGAL_BOUNDS,
     switchBounds: PORTUGAL_BOUNDS,
     defaultCenter: { lat: 39.0, lng: -8.0 },
+    overrideUserLocation: true,
     defaultZoom: 6,
     switchCenter: { lat: 39.0, lng: -8.0 },
     switchZoom: 6,

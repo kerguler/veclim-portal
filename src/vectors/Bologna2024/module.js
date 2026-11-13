@@ -50,6 +50,7 @@ const moduleObj = {
     minZoomBounds: PackageMapServices.worldBounds,
     minZoomInside: false,
     defaultCenter: { lat: 44.5, lng: 11.3 },
+    overrideUserLocation: true,
     defaultZoom: 5,
     switchCenter: { lat: 44.5, lng: 11.3 },
     switchZoom: 5,

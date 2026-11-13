@@ -35,6 +35,7 @@ const fetcherSlice = createSlice({
         currentMapBounds: PackageMapServices.worldBounds,
         currentMaxBounds: PackageMapServices.worldBounds,
         userPosition: { lat: null, lng: null },
+        userLocation: { status: 'pending', lat: null, lng: null },
         globalPosition: { lat: null, lng: null },
         mapPagePosition: { lat: null, lng: null },
       },
@@ -132,6 +133,9 @@ const fetcherSlice = createSlice({
     setUserPosition(state, action) {
       state.fetcherStates.map.userPosition = action.payload;
     },
+    setUserLocation(state, action) {
+      state.fetcherStates.map.userLocation = action.payload;
+    },
     setGlobalPosition(state, action) {
       if (action && action.payload) {
         state.fetcherStates.map.globalPosition = action.payload;
@@ -174,6 +178,7 @@ export const {
   setTileOpacity,
   setTsData,
   setUserPosition,
+  setUserLocation,
   setVectorName,
 } = fetcherSlice.actions;
 export const fetcherReducer = fetcherSlice.reducer;

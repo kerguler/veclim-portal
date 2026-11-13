@@ -42,6 +42,7 @@ const moduleObj = {
     defaultBounds: PackageMapServices.cyprusBounds,
     switchBounds: PackageMapServices.cyprusBounds,
     defaultCenter: { lat: 35.1, lng: 33.33 },
+    overrideUserLocation: true,
     defaultZoom: 8,
     switchCenter: { lat: 35.1, lng: 33.33 },
     switchZoom: 8,
