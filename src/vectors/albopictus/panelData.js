@@ -291,7 +291,7 @@ export const panelData = [
       },
 
       orientation: { g3: 'right', g4: 'right', g5: 'right' },
-      lineStyle: { g3: 'dots', g4: 'dots', g5: 'dots' },
+      lineStyle: { g3: 'dashes', g4: 'dashes', g5: 'dashes' },
     },
     icon: adult,
     content: (
