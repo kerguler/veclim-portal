@@ -40,6 +40,7 @@
     "react-native-web": "0.19.6",
     "react-overflow-indicator": "0.2.2",
     "react-redux": "^8.0.7",
+    "react-refresh": "0.11.0",
     "react-router-dom": "^6.10.0",
     "react-scripts": "5.0.1",
     "redux-devtools-extension": "^2.13.9",
