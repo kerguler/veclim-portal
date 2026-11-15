@@ -1,12 +1,15 @@
 /* src/components/LeftPanel/vectorSelection/VectorCarousel.css */
 
+/* note: html font-size is 62.5%, so 1rem = 10px */
 .vector-carousel {
   position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
-  padding: 0.25rem 0.5rem;
+  gap: 0.6rem;
+  padding: 0.5rem 0.8rem;
+  min-height: 5rem;
+  box-sizing: border-box;
   border-radius: 999px;
   border: 1px solid #ccc;
   background: rgba(255, 255, 255, 0.9);
@@ -17,16 +20,17 @@
   border: none;
   background: transparent;
   cursor: pointer;
-  font-size: 1.1rem;
-  padding: 0.1rem 0.4rem;
+  font-size: 2rem;
+  padding: 0.2rem 0.6rem;
   line-height: 1;
 }
 
 .vector-carousel__label {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
   justify-content: center;
+  gap: 0.6rem;
 
   width: 190px;
   max-width: 190px;
@@ -39,9 +43,20 @@
   color: inherit;
 }
 
+/* name + index stacked; badge sits to the right */
+.vector-carousel__text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+  min-width: 0;
+  max-width: 100%;
+}
+
 .vector-carousel__name {
-  font-size: 1.1rem;
-  font-weight: 600;
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1.2;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -49,9 +64,10 @@
 }
 
 .vector-carousel__index {
-  font-size: 1rem;
-  font-weight: 600;
-  opacity: 1;
+  font-size: 1.2rem;
+  font-weight: 500;
+  line-height: 1.2;
+  opacity: 0.75;
 }
 
 .draft-badge {
@@ -69,14 +85,11 @@
 }
 
 .vector-carousel__label > .draft-badge {
-  margin-left: 0;
-  margin-top: 0.15rem;
-  padding: 0.1rem 0.5rem;
-  font-size: 0.72rem;
-}
-
-.vector-carousel__label > .draft-badge--hidden {
-  visibility: hidden;
+  flex: 0 0 auto;
+  margin: 0;
+  padding: 0.2rem 0.6rem;
+  font-size: 1rem;
+  line-height: 1.2;
 }
 .vector-search-backdrop {
   position: fixed;
@@ -291,21 +304,11 @@
   .vector-carousel {
     width: 100%;
     justify-content: space-between;
-    padding: 0.4rem 0.75rem;
   }
 
   .vector-carousel__label {
     width: 195px;
     max-width: 195px;
-  }
-
-  .vector-carousel__name {
-    font-size: 1.1rem;
-  }
-
-  .vector-carousel__index {
-    font-size: 0.9rem;
-    opacity: 0.85;
   }
 
   .vector-search-panel {

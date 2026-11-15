@@ -154,11 +154,17 @@
   width: 100%;
 }
 
+/* match the MAP button size and type */
 .nav-burger .links .burger-auth .auth-nav__toggle {
+  box-sizing: border-box;
   width: 100%;
   max-width: none;
   padding: 0.5rem 0.5rem;
-  font-size: 1rem;
+  font-family: Inter-Bold, sans-serif;
+  font-weight: 700;
+  font-size: 1.05rem;
+  line-height: 1.1;
+  border-radius: 2rem;
 }
 
 /* Vector search modal on mobile */
