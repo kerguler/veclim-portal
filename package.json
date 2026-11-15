@@ -30,7 +30,7 @@
     "react-cookie": "^6.1.1",
     "react-cookie-consent": "^8.0.1",
     "react-cookies": "^0.1.1",
-    "react-dom": "^18.2.0",
+    "react-dom": "18.2.0",
     "react-iubenda-policy": "^0.1.1",
     "react-json-pretty": "^2.2.0",
     "react-loading": "^2.0.3",
