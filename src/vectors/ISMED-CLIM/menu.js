@@ -4,6 +4,8 @@ export const menu = [
   { key: 'location_info_panel', parent: 'location_info' },
   { key: 'sandfly_population', parent: 'menu_icon' },
   { key: 'sandfly_population_panel', parent: 'sandfly_population' },
+  { key: 'sandfly_population_panel_hires', parent: 'sandfly_population' },
+  { key: 'sandfly_population_panel_midres', parent: 'sandfly_population' },
   { key: 'sandfly_tile_selector', parent: 'menu_icon' },
   { key: 'sandfly_tile_selector_panel', parent: 'sandfly_tile_selector' },
   { key: 'sandfly_vector_selector', parent: 'menu_icon' },

@@ -4,7 +4,7 @@ export const indicators = {
     label: 'Model of Phlebotomus papatasi',
     url: null,
     description:
-      "Model of Phlebotomus papatasi, version V2511A, developed as part of ISMED-CLIM's early warning system against zoonotic diseases",
+      "Model of Phlebotomus papatasi, version V2609C, developed as part of ISMED-CLIM's early warning system against zoonotic diseases",
   },
   covariates: [
     {

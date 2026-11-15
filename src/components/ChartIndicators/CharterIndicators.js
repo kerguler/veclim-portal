@@ -144,11 +144,11 @@ function ChartIndicators() {
       <div>
         {modelDescription ? (
           <p>
-            {modelDescription.includes('V2511A') ? (
+            {modelDescription.includes('V2609C') ? (
               <>
                 Model of <i>Phlebotomus papatasi</i>, version{' '}
                 <strong style={{ fontFamily: "'Inter-Bold', sans-serif" }}>
-                  V2511A
+                  V2609C
                 </strong>
                 , developed as part of ISMED-CLIM&apos;s early warning system
                 against zoonotic diseases

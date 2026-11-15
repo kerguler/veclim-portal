@@ -4,13 +4,13 @@ const tileBase = process.env.REACT_APP_BASE_URL;
 
 export const tileIcons = [
   {
-    key: 'papatasi_V2511A_PRT_surv',
-    colkey: 'papatasi_V2511A_PRT_surv',
+    key: 'papatasi_V2609C_PRT_newegg',
+    colkey: 'papatasi_V2609C_PRT_newegg',
 
     label: 'Sand fly activity',
     icon: adultsandfly,
     tileLayer: {
-      tile: tileBase + '?v=papatasi_V2511A_PRT_surv&z={z}&x={x}&y={y}',
+      tile: tileBase + '?v=papatasi_V2609C_PRT_newegg&z={z}&x={x}&y={y}',
       props: { attribution: '', noWrap: true },
       displayIndex: 11,
     },
@@ -18,7 +18,7 @@ export const tileIcons = [
       <>
         <p>
           Average number of <i>Phlebotomus papatasi</i> females (2011-2015)
-          simulated by using the V2511A model. This work has been developed in
+          simulated by using the V2609C model. This work has been developed in
           the framework of the{' '}
           <XLink href="https://ismed-clim.eu/">ISMED-CLIM</XLink> project.
         </p>
@@ -26,13 +26,79 @@ export const tileIcons = [
     ),
   },
   {
-    key: 'papatasi_V2511A',
-    colkey: 'papatasi_V2511A',
+    key: 'papatasi_V2609C_PRT_season_length',
+    colkey: 'papatasi_V2609C_PRT_season_length',
+
+    label: 'Sand fly season length (in weeks)',
+    icon: adultsandfly,
+    tileLayer: {
+      tile: tileBase + '?v=papatasi_V2609C_PRT_season_length&z={z}&x={x}&y={y}',
+      props: { attribution: '', noWrap: true },
+      displayIndex: 12,
+    },
+    description: (
+      <>
+        <p>
+          Average number of <i>Phlebotomus papatasi</i> females (2011-2015)
+          simulated by using the V2609C model. This work has been developed in
+          the framework of the{' '}
+          <XLink href="https://ismed-clim.eu/">ISMED-CLIM</XLink> project.
+        </p>
+      </>
+    ),
+  },
+  {
+    key: 'papatasi_V2609C_PRT_season_num',
+    colkey: 'papatasi_V2609C_PRT_season_num',
+
+    label: 'Sand fly season number of seasons (in weeks)',
+    icon: adultsandfly,
+    tileLayer: {
+      tile: tileBase + '?v=papatasi_V2609C_PRT_season_num&z={z}&x={x}&y={y}',
+      props: { attribution: '', noWrap: true },
+      displayIndex: 13,
+    },
+    description: (
+      <>
+        <p>
+          Average number of <i>Phlebotomus papatasi</i> females (2011-2015)
+          simulated by using the V2609C model. This work has been developed in
+          the framework of the{' '}
+          <XLink href="https://ismed-clim.eu/">ISMED-CLIM</XLink> project.
+        </p>
+      </>
+    ),
+  },
+  {
+    key: 'papatasi_EDENext_PRT_surv',
+    colkey: 'papatasi_EDENext_PRT_surv',
 
     label: 'Sand fly activity',
     icon: adultsandfly,
     tileLayer: {
-      tile: tileBase + '?v=papatasi_V2511A&z={z}&x={x}&y={y}',
+      tile: tileBase + '?v=papatasi_EDENext_PRT_surv&z={z}&x={x}&y={y}',
+      props: { attribution: '', noWrap: true },
+      displayIndex: 14,
+    },
+    description: (
+      <>
+        <p>
+          Average number of <i>Phlebotomus papatasi</i> females (2011-2015)
+          simulated by using the V2609C model. This work has been developed in
+          the framework of the{' '}
+          <XLink href="https://ismed-clim.eu/">ISMED-CLIM</XLink> project.
+        </p>
+      </>
+    ),
+  },
+  {
+    key: 'papatasi_V2609C_CERRA_newegg',
+    colkey: 'papatasi_V2609C_CERRA_newegg',
+
+    label: 'Sand fly activity',
+    icon: adultsandfly,
+    tileLayer: {
+      tile: tileBase + '?v=papatasi_V2609C_CERRA_newegg&z={z}&x={x}&y={y}',
       props: { attribution: '', noWrap: true },
       displayIndex: 21,
     },
@@ -40,7 +106,7 @@ export const tileIcons = [
       <>
         <p>
           Average number of <i>Phlebotomus papatasi</i> females (2011-2015)
-          simulated by using the V2511A model. This work has been developed in
+          simulated by using the V2609C model. This work has been developed in
           the framework of the{' '}
           <XLink href="https://ismed-clim.eu/">ISMED-CLIM</XLink> project.
         </p>
@@ -48,13 +114,13 @@ export const tileIcons = [
     ),
   },
   {
-    key: 'papatasi_V2511A_PRT_newegg',
-    colkey: 'papatasi_V2511A_PRT_newegg',
+    key: 'papatasi_EDENext_CERRA_surv',
+    colkey: 'papatasi_EDENext_CERRA_surv',
 
     label: 'Sand fly activity',
     icon: adultsandfly,
     tileLayer: {
-      tile: tileBase + '?v=papatasi_V2511A_PRT_newegg&z={z}&x={x}&y={y}',
+      tile: tileBase + '?v=papatasi_EDENext_CERRA_surv&z={z}&x={x}&y={y}',
       props: { attribution: '', noWrap: true },
       displayIndex: 22,
     },
@@ -62,7 +128,7 @@ export const tileIcons = [
       <>
         <p>
           Average number of <i>Phlebotomus papatasi</i> females (2011-2015)
-          simulated by using the V2511A model. This work has been developed in
+          simulated by using the V2609C model. This work has been developed in
           the framework of the{' '}
           <XLink href="https://ismed-clim.eu/">ISMED-CLIM</XLink> project.
         </p>
@@ -70,13 +136,13 @@ export const tileIcons = [
     ),
   },
   {
-    key: 'papatasi_V2511A_PRT_season_length',
-    colkey: 'papatasi_V2511A_PRT_season_length',
+    key: 'papatasi_V2609C',
+    colkey: 'papatasi_V2609C',
 
-    label: 'Sand fly season length (in weeks)',
+    label: 'Sand fly activity',
     icon: adultsandfly,
     tileLayer: {
-      tile: tileBase + '?v=papatasi_V2511A_PRT_season_length&z={z}&x={x}&y={y}',
+      tile: tileBase + '?v=papatasi_V2609C&z={z}&x={x}&y={y}',
       props: { attribution: '', noWrap: true },
       displayIndex: 31,
     },
@@ -84,7 +150,7 @@ export const tileIcons = [
       <>
         <p>
           Average number of <i>Phlebotomus papatasi</i> females (2011-2015)
-          simulated by using the V2511A model. This work has been developed in
+          simulated by using the V2609C model. This work has been developed in
           the framework of the{' '}
           <XLink href="https://ismed-clim.eu/">ISMED-CLIM</XLink> project.
         </p>
@@ -92,13 +158,13 @@ export const tileIcons = [
     ),
   },
   {
-    key: 'papatasi_V2511A_PRT_season_num',
-    colkey: 'papatasi_V2511A_PRT_season_num',
+    key: 'papatasi_V2609C_ssp585',
+    colkey: 'papatasi_V2609C_ssp585',
 
-    label: 'Sand fly season number of seasons (in weeks)',
+    label: 'Sand fly activity',
     icon: adultsandfly,
     tileLayer: {
-      tile: tileBase + '?v=papatasi_V2511A_PRT_season_num&z={z}&x={x}&y={y}',
+      tile: tileBase + '?v=papatasi_V2609C_ssp585&z={z}&x={x}&y={y}',
       props: { attribution: '', noWrap: true },
       displayIndex: 32,
     },
@@ -106,77 +172,11 @@ export const tileIcons = [
       <>
         <p>
           Average number of <i>Phlebotomus papatasi</i> females (2011-2015)
-          simulated by using the V2511A model. This work has been developed in
+          simulated by using the V2609C model. This work has been developed in
           the framework of the{' '}
           <XLink href="https://ismed-clim.eu/">ISMED-CLIM</XLink> project.
         </p>
       </>
     ),
-  },
-  {
-    key: 'papatasi_V2511A_PRT_peak_num',
-    colkey: 'papatasi_V2511A_PRT_peak_num',
-
-    label: 'Sand fly season number of peaks (in weeks)',
-    icon: adultsandfly,
-    tileLayer: {
-      tile: tileBase + '?v=papatasi_V2511A_PRT_peak_num&z={z}&x={x}&y={y}',
-      props: { attribution: '', noWrap: true },
-      displayIndex: 33,
-    },
-    description: (
-      <>
-        <p>
-          Average number of <i>Phlebotomus papatasi</i> females (2011-2015)
-          simulated by using the V2511A model. This work has been developed in
-          the framework of the{' '}
-          <XLink href="https://ismed-clim.eu/">ISMED-CLIM</XLink> project.
-        </p>
-      </>
-    ),
-  },
-  {
-    key: 'papatasi_V2511A_PRT_season',
-    colkey: 'papatasi_V2511A_PRT_season',
-
-    label: 'Sand fly season start (in weeks)',
-    icon: adultsandfly,
-    tileLayer: {
-      tile: tileBase + '?v=papatasi_V2511A_PRT_season&z={z}&x={x}&y={y}',
-      props: { attribution: '', noWrap: true },
-      displayIndex: 34,
-    },
-    description: (
-      <>
-        <p>
-          Average number of <i>Phlebotomus papatasi</i> females (2011-2015)
-          simulated by using the V2511A model. This work has been developed in
-          the framework of the{' '}
-          <XLink href="https://ismed-clim.eu/">ISMED-CLIM</XLink> project.
-        </p>
-      </>
-    ),
-  },
-  {
-    key: 'papatasi_V2511A_PRT_peak',
-    colkey: 'papatasi_V2511A_PRT_peak',
-
-    label: 'Sand fly peak activity season start (in weeks)',
-    icon: adultsandfly,
-    tileLayer: {
-      tile: tileBase + '?v=papatasi_V2511A_PRT_peak&z={z}&x={x}&y={y}',
-      props: { attribution: '', noWrap: true },
-      displayIndex: 35,
-    },
-    description: (
-      <>
-        <p>
-          Average number of <i>Phlebotomus papatasi</i> females (2011-2015)
-          simulated by using the V2511A model. This work has been developed in
-          the framework of the{' '}
-          <XLink href="https://ismed-clim.eu/">ISMED-CLIM</XLink> project.
-        </p>
-      </>
-    ),
-  },
+  }
 ];

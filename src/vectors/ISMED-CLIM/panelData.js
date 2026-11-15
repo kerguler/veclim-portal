@@ -53,21 +53,21 @@ export const panelData = [
     key: 'sandfly_population_panel',
     positionDependent: true,
 
-    label: 'Sand fly activity',
+    label: 'Municipality',
     chartParameters: {
       years: 'ISMED-CLIM',
       mixedKeys: [
         {
           key: 'g1',
-          levels: ['sim-ts', 'V2511A_PRT', 'newegg'],
+          levels: ['SHP', 'sim-ts', 'V2609C_PRT', 'newegg'],
         },
         {
           key: 'g2',
-          levels: ['risk-ts', 'V2511A_PRT', 'risk'],
+          levels: ['SHP', 'risk-ts', 'V2609C_PRT', 'risk'],
         },
         {
           key: 'g3',
-          levels: ['surv-ts', 'adult_norm'],
+          levels: ['SHP', 'surv-ts', 'adult_norm'],
         },
       ],
       sliceInfo: {
@@ -87,10 +87,122 @@ export const panelData = [
       horizontalAxis: 'date',
       chartType: 'rechart',
       initialSetting: 'sim-ts',
-      orientation: { g2: 'right', g3: 'right' },
+      orientation: { g3: 'right' },
       plottedKeys: ['newegg', 'risk', 'adult_norm'],
       colors: ['#167997', '#1B3958', '#0d540a'],
       labels: ['New eggs', 'Category', 'Data'],
+      lineStyle: { g3: 'dots' },
+      lineSlice: [],
+    },
+
+    content: (
+      <div className="text-area">
+        <h1>Seasonal dynamics<br/>of sand fly activity</h1>
+        <div>
+          <p>
+            The number of newly laid <i>Phlebotomus papatasi</i> eggs averaged over the
+            time period: 2011-2015. This work has been developed in the framework
+            of the <XLink href="https://ismed-clim.eu/">ISMED-CLIM</XLink>{' '}
+            project.
+          </p>
+        </div>
+      </div>
+    ),
+  },
+  {
+    key: 'sandfly_population_panel_hires',
+    positionDependent: true,
+
+    label: 'CERRA Grid',
+    chartParameters: {
+      years: 'ISMED-CLIM',
+      mixedKeys: [
+        {
+          key: 'g1',
+          levels: ['CERRA', 'sim-ts', 'V2609C', 'newegg'],
+        },
+        {
+          key: 'g3',
+          levels: ['CERRA', 'surv-ts', 'adult_norm'],
+        },
+      ],
+      sliceInfo: {
+        g1: {
+          sliceLabels: { slice0: 'New egg' },
+          sliceColors: { slice0: '#167997' },
+        },
+        g3: {
+          sliceLabels: { slice0: 'Data' },
+          sliceColors: { slice0: '#0d540aff' },
+        },
+      },
+      horizontalAxis: 'date',
+      chartType: 'rechart',
+      initialSetting: 'sim-ts',
+      orientation: { g3: 'right' },
+      plottedKeys: ['newegg', 'adult_norm'],
+      colors: ['#167997', '#0d540a'],
+      labels: ['New eggs', 'Data'],
+      lineStyle: { g3: 'dots' },
+      lineSlice: [],
+    },
+
+    content: (
+      <div className="text-area">
+        <h1>Seasonal dynamics<br/>of sand fly activity</h1>
+        <div>
+          <p>
+            The number of newly laid <i>Phlebotomus papatasi</i> eggs averaged over the
+            time period: 2011-2015. This work has been developed in the framework
+            of the <XLink href="https://ismed-clim.eu/">ISMED-CLIM</XLink>{' '}
+            project.
+          </p>
+        </div>
+      </div>
+    ),
+  },
+  {
+    key: 'sandfly_population_panel_midres',
+    positionDependent: true,
+
+    label: 'ERA Grid',
+    chartParameters: {
+      years: 'ISMED-CLIM',
+      mixedKeys: [
+        {
+          key: 'g1',
+          levels: ['ERA', 'sim-ts', 'V2609C', 'newegg'],
+        },
+        {
+          key: 'g2',
+          levels: ['ERA', 'sim-ts', 'V2609C', 'newegg_ssp585'],
+        },
+        {
+          key: 'g3',
+          levels: ['ERA', 'surv-ts', 'adult_norm'],
+        },
+      ],
+      sliceInfo: {
+        g1: {
+          sliceLabels: { slice0: 'New egg' },
+          sliceColors: { slice0: '#167997' },
+        },
+        g2: {
+          sliceLabels: { slice0: 'New egg (SSP5-8.5)' },
+          sliceColors: { slice0: '#ff7f0e' },
+        },
+        g3: {
+          sliceLabels: { slice0: 'Data' },
+          sliceColors: { slice0: '#0d540aff' },
+        },
+      },
+      horizontalAxis: 'date',
+      chartType: 'rechart',
+      initialSetting: 'sim-ts',
+      orientation: { g3: 'right' },
+      plottedKeys: ['newegg', 'newegg_ssp585', 'adult_norm'],
+      colors: ['#167997', '#ff7f0e', '#0d540a'],
+      labels: ['New eggs', 'New eggs (SSP5-8.5)', 'Data'],
       lineStyle: { g3: 'dots' },
       lineSlice: [],
     },

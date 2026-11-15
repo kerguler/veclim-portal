@@ -19,7 +19,7 @@ export const tileIcons = [
     tileLayer: {
       tile: tileBase + '?v=Bologna2024_vabun&z={z}&x={x}&y={y}',
       props: { attribution: '', noWrap: true },
-      displayIndex: 31,
+      displayIndex: 11,
     },
     description: (
       <>
@@ -43,7 +43,7 @@ export const tileIcons = [
     tileLayer: {
       tile: tileBase + '?v=Bologna2024_M0&z={z}&x={x}&y={y}',
       props: { attribution: '', noWrap: true },
-      displayIndex: 11,
+      displayIndex: 21,
     },
     description: (
       <>
@@ -60,7 +60,7 @@ export const tileIcons = [
     tileLayer: {
       tile: tileBase + '?v=Bologna2024_M1&z={z}&x={x}&y={y}',
       props: { attribution: '', noWrap: true },
-      displayIndex: 12,
+      displayIndex: 22,
     },
     description: (
       <>
@@ -77,7 +77,7 @@ export const tileIcons = [
     tileLayer: {
       tile: tileBase + '?v=Bologna2024_M2&z={z}&x={x}&y={y}',
       props: { attribution: '', noWrap: true },
-      displayIndex: 13,
+      displayIndex: 23,
     },
     description: (
       <>
@@ -97,7 +97,7 @@ export const tileIcons = [
     tileLayer: {
       tile: tileBase + '?v=Bologna2024_M3&z={z}&x={x}&y={y}',
       props: { attribution: '', noWrap: true },
-      displayIndex: 14,
+      displayIndex: 31,
     },
     description: (
       <>
@@ -114,7 +114,7 @@ export const tileIcons = [
     tileLayer: {
       tile: tileBase + '?v=Bologna2024_M4&z={z}&x={x}&y={y}',
       props: { attribution: '', noWrap: true },
-      displayIndex: 21,
+      displayIndex: 32,
     },
     description: (
       <>
@@ -133,7 +133,7 @@ export const tileIcons = [
     tileLayer: {
       tile: tileBase + '?v=Bologna2024_M5&z={z}&x={x}&y={y}',
       props: { attribution: '', noWrap: true },
-      displayIndex: 22,
+      displayIndex: 33,
     },
     description: (
       <>
@@ -150,7 +150,7 @@ export const tileIcons = [
     tileLayer: {
       tile: tileBase + '?v=Bologna2024_M6&z={z}&x={x}&y={y}',
       props: { attribution: '', noWrap: true },
-      displayIndex: 23,
+      displayIndex: 34,
     },
     description: (
       <>

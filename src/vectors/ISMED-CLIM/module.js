@@ -20,7 +20,7 @@ const moduleObj = {
   // draft, hidden until ready
   status: 'draft',
 
-  displayOrder: 4,
+  displayOrder: 5,
   meta: {
     icon: tileIconFly,
 
@@ -47,7 +47,6 @@ const moduleObj = {
     defaultBounds: PORTUGAL_BOUNDS,
     switchBounds: PORTUGAL_BOUNDS,
     defaultCenter: { lat: 39.0, lng: -8.0 },
-    overrideUserLocation: true,
     defaultZoom: 6,
     switchCenter: { lat: 39.0, lng: -8.0 },
     switchZoom: 6,
@@ -60,7 +59,7 @@ const moduleObj = {
     },
   },
   defaults: {
-    tileArray: ['papatasi_V2511A_PRT_newegg'],
+    tileArray: ['papatasi_V2609C_PRT_newegg'],
     firstPanelKey: 'location_info_panel',
   },
 };
