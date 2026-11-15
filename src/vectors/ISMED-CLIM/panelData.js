@@ -72,7 +72,7 @@ export const panelData = [
       ],
       sliceInfo: {
         g1: {
-          sliceLabels: { slice0: 'New egg' },
+          sliceLabels: { slice0: 'Activity' },
           sliceColors: { slice0: '#167997' },
         },
         g2: {
@@ -90,7 +90,7 @@ export const panelData = [
       orientation: { g3: 'right' },
       plottedKeys: ['newegg', 'risk', 'adult_norm'],
       colors: ['#167997', '#1B3958', '#0d540a'],
-      labels: ['New eggs', 'Category', 'Data'],
+      labels: ['Activity', 'Risk', 'Data'],
       lineStyle: { g3: 'dots' },
       lineSlice: [],
     },
@@ -100,10 +100,8 @@ export const panelData = [
         <h1>Seasonal dynamics<br/>of sand fly activity</h1>
         <div>
           <p>
-            The number of newly laid <i>Phlebotomus papatasi</i> eggs averaged over the
-            time period: 2011-2015. This work has been developed in the framework
-            of the <XLink href="https://ismed-clim.eu/">ISMED-CLIM</XLink>{' '}
-            project.
+            The average number of newly laid eggs in each municipality 
+            of Portugal, during 2011-2014.
           </p>
         </div>
       </div>
@@ -128,7 +126,7 @@ export const panelData = [
       ],
       sliceInfo: {
         g1: {
-          sliceLabels: { slice0: 'New egg' },
+          sliceLabels: { slice0: 'Activity' },
           sliceColors: { slice0: '#167997' },
         },
         g3: {
@@ -142,7 +140,7 @@ export const panelData = [
       orientation: { g3: 'right' },
       plottedKeys: ['newegg', 'adult_norm'],
       colors: ['#167997', '#0d540a'],
-      labels: ['New eggs', 'Data'],
+      labels: ['Activity', 'Data'],
       lineStyle: { g3: 'dots' },
       lineSlice: [],
     },
@@ -152,10 +150,8 @@ export const panelData = [
         <h1>Seasonal dynamics<br/>of sand fly activity</h1>
         <div>
           <p>
-            The number of newly laid <i>Phlebotomus papatasi</i> eggs averaged over the
-            time period: 2011-2015. This work has been developed in the framework
-            of the <XLink href="https://ismed-clim.eu/">ISMED-CLIM</XLink>{' '}
-            project.
+            The average number of newly laid eggs across the CERRA grid 
+            during 2011-2014.
           </p>
         </div>
       </div>
@@ -184,11 +180,11 @@ export const panelData = [
       ],
       sliceInfo: {
         g1: {
-          sliceLabels: { slice0: 'New egg' },
+          sliceLabels: { slice0: 'Activity' },
           sliceColors: { slice0: '#167997' },
         },
         g2: {
-          sliceLabels: { slice0: 'New egg (SSP5-8.5)' },
+          sliceLabels: { slice0: 'Activity (SSP5-8.5)' },
           sliceColors: { slice0: '#ff7f0e' },
         },
         g3: {
@@ -202,7 +198,7 @@ export const panelData = [
       orientation: { g3: 'right' },
       plottedKeys: ['newegg', 'newegg_ssp585', 'adult_norm'],
       colors: ['#167997', '#ff7f0e', '#0d540a'],
-      labels: ['New eggs', 'New eggs (SSP5-8.5)', 'Data'],
+      labels: ['Activity', 'Activity (SSP5-8.5)', 'Data'],
       lineStyle: { g3: 'dots' },
       lineSlice: [],
     },
@@ -212,10 +208,8 @@ export const panelData = [
         <h1>Seasonal dynamics<br/>of sand fly activity</h1>
         <div>
           <p>
-            The number of newly laid <i>Phlebotomus papatasi</i> eggs averaged over the
-            time period: 2011-2015. This work has been developed in the framework
-            of the <XLink href="https://ismed-clim.eu/">ISMED-CLIM</XLink>{' '}
-            project.
+            The average number of newly laid eggs across the ERA5 grid 
+            during 2011-2014 and 2091-2094, according to the SSP5-8.5 scenario.
           </p>
         </div>
       </div>

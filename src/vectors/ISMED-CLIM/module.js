@@ -18,8 +18,6 @@ const PORTUGAL_BOUNDS = [
 
 const moduleObj = {
   id: 'ISMED-CLIM',
-  // draft, hidden until ready
-  status: 'draft',
 
   displayOrder: 5,
   meta: {

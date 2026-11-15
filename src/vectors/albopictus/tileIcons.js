@@ -2,8 +2,8 @@ import adult from 'assets/icons/map-page-right-menu/png/adult-32px.png';
 import larva from 'assets/icons/map-page-right-menu/png/larva-32px.png';
 import virus from 'assets/icons/map-page-right-menu/png/013-coronavirus-32px.png';
 import impact from 'assets/icons/map-page-right-menu/png/015-heart rate-32px.png';
-
 import prpin from 'assets/icons/map-page-right-menu/png/027-pin-32px.png';
+
 const tileBase = process.env.REACT_APP_BASE_URL;
 
 const fcastDateRange = '2026-03-01:2026-06-01';
