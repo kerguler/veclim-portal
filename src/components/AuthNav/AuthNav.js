@@ -100,15 +100,17 @@ function AuthNav({ variant = 'default' }) {
           >
             {isLoggedIn ? (
               <div className="auth-nav__account">
-                <span className="auth-nav__username">{username}</span>
-                <button
-                  type="button"
-                  className="auth-nav__logout"
-                  onClick={handleLogout}
-                  disabled={loggingOut}
-                >
-                  {loggingOut ? 'Logging out…' : 'Log out'}
-                </button>
+                <div className="auth-nav__user-row">
+                  <span className="auth-nav__username">{username}</span>
+                  <button
+                    type="button"
+                    className="auth-nav__logout"
+                    onClick={handleLogout}
+                    disabled={loggingOut}
+                  >
+                    {loggingOut ? 'Logging out…' : 'Log out'}
+                  </button>
+                </div>
                 <GrantedVectorsAccess
                   isStaff={isStaff}
                   grantedVectorIds={grantedVectorIds}

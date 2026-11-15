@@ -23,7 +23,7 @@
 
 .account-panel__username {
 	font-weight: 600;
-	font-size: 1.05rem;
+	font-size: 1.26rem; /* keep 1.05 : 1 ratio with logout */
 }
 
 .account-panel__logout {
@@ -32,7 +32,7 @@
 	color: inherit;
 	text-decoration: underline;
 	cursor: pointer;
-	font-size: 1rem;
+	font-size: 1.2rem;
 	padding: 0;
 }
 

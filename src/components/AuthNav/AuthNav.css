@@ -95,10 +95,21 @@
 	text-align: center;
 }
 
+/* username left, log out right (same as the map account panel) */
+.auth-nav__user-row {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 0.6rem;
+	width: 100%;
+}
+
 .auth-nav__username {
 	font-weight: 600;
+	font-size: 1.26rem; /* keep 1.05 : 1 ratio with logout */
 	color: var(--primary-color1);
 	word-break: break-word;
+	text-align: left;
 }
 
 .auth-nav__logout {
@@ -107,7 +118,9 @@
 	color: var(--primary-color1);
 	text-decoration: underline;
 	cursor: pointer;
-	font-size: 0.85rem;
+	font-size: 1.2rem;
+	padding: 0;
+	white-space: nowrap;
 }
 
 .auth-nav__logout:disabled {
