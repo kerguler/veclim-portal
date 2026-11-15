@@ -202,33 +202,33 @@ const VectorCarousel = ({ className = '', onChange }) => {
         onClick={() => setIsSearchOpen((prev) => !prev)}
         aria-label="Open vector search"
       >
-        <span
-          className="vector-carousel__name"
-          title={
-            currentVector?.shortLabel ||
-            currentVector?.label ||
-            currentVector?.id ||
-            ''
-          }
-        >
-          {currentVector?.shortLabel ||
-            currentVector?.label ||
-            currentVector?.id ||
-            'Unknown'}
+        <span className="vector-carousel__text">
+          <span
+            className="vector-carousel__name"
+            title={
+              currentVector?.shortLabel ||
+              currentVector?.label ||
+              currentVector?.id ||
+              ''
+            }
+          >
+            {currentVector?.shortLabel ||
+              currentVector?.label ||
+              currentVector?.id ||
+              'Unknown'}
+          </span>
+
+          <span className="vector-carousel__index">
+            {currentIndex + 1} / {vectorOrder.length} · Search
+          </span>
         </span>
 
-        <span
-          className={`draft-badge ${
-            currentVector?.status === 'draft' ? '' : 'draft-badge--hidden'
-          }`}
-          title="Draft - hidden from public"
-        >
-          Draft
-        </span>
-
-        <span className="vector-carousel__index">
-          {currentIndex + 1} / {vectorOrder.length} · Search
-        </span>
+        {/* beside the text, not between rows */}
+        {currentVector?.status === 'draft' && (
+          <span className="draft-badge" title="Draft - hidden from public">
+            Draft
+          </span>
+        )}
       </button>
 
       <button
