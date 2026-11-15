@@ -6,8 +6,8 @@ import prpin from 'assets/icons/map-page-right-menu/png/027-pin-32px.png';
 
 const tileBase = process.env.REACT_APP_BASE_URL;
 
-const fcastDateRange = '2026-03-01:2026-06-01';
-const fcastDateLabel = 'March-May 2026';
+const fcastDateRange = '2026-09-01:2027-01-01';
+const fcastDateLabel = 'September-December 2026';
 
 export const tileIcons = [
   {
