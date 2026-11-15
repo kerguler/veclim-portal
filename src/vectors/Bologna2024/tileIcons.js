@@ -6,10 +6,30 @@ import metelmann from 'assets/icons/map-page-right-menu/png/metelmann-32px.png';
 import vectri from 'assets/icons/map-page-right-menu/png/vectri-32px.png';
 import aedesdde from 'assets/icons/map-page-right-menu/png/aedesdde-32px.png';
 import stackedml from 'assets/icons/map-page-right-menu/png/stackedml-32px.png';
+import emblI from 'assets/icons/map-page-right-menu/png/emblI-32px.png';
 import XLink from 'components/xlink';
 const tileBase = process.env.REACT_APP_BASE_URL;
 
 export const tileIcons = [
+  {
+    key: 'Bologna2024_EI',
+    colkey: 'Bologna2024_EI',
+
+    label: 'Week of peak seasonal activity by Ensemble I',
+    icon: emblI,
+    tileLayer: {
+      tile: tileBase + '?v=Bologna2024_EI&z={z}&x={x}&y={y}',
+      props: { attribution: '', noWrap: true },
+      displayIndex: 12,
+    },
+    description: (
+      <>
+        <p>
+          The timing of peak seasonal activity is the week when egg laying is predicted to be highest by Ensemble I, based on weekly averages across five years and smoothed using a Gaussian filter.        
+        </p>
+      </>
+    ),
+  },
   {
     key: 'Bologna2024_vabun',
     colkey: 'Bologna2024_vabun',

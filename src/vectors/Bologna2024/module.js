@@ -63,7 +63,7 @@ const moduleObj = {
     },
   },
   defaults: {
-    tileArray: ['Bologna2024_vabun'],
+    tileArray: ['Bologna2024_EI'],
     firstPanelKey: 'location_info_panel',
   },
 };
