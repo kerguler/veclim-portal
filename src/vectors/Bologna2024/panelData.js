@@ -87,6 +87,10 @@ export const panelData = [
           key: 'g8',
           levels: ['models', 'Stacked Machine Learning'],
         },
+        {
+          key: 'g9',
+          levels: ['models', 'Ensemble I'],
+        },
       ],
       sliceInfo: {
         g1: {
@@ -121,6 +125,10 @@ export const panelData = [
           sliceLabels: { slice0: 'Stacked Machine Learning' },
           sliceColors: { slice0: '#bcbd22' },
         },
+        g9: {
+          sliceLabels: { slice0: 'Ensemble I' },
+          sliceColors: { slice0: 'black' },
+        },
       },
       horizontalAxis: 'date',
       chartType: 'rechart',
@@ -134,6 +142,7 @@ export const panelData = [
         'VECTRI',
         'AedesDDE',
         'Stacked Machine Learning',
+        'Ensemble I',
       ],
       colors: [
         '#1f77b4',
@@ -144,6 +153,7 @@ export const panelData = [
         '#8c564b',
         '#e377c2',
         '#bcbd22',
+        'black',
       ],
       labels: [
         'VectAbundance (2019-2022)',
@@ -154,6 +164,7 @@ export const panelData = [
         'VECTRI',
         'AedesDDE',
         'Stacked Machine Learning',
+        'Ensemble I',
       ],
       lineStyle: { g1: 'dots' },
       lineSlice: [],

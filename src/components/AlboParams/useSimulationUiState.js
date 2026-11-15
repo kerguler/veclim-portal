@@ -120,19 +120,19 @@ export default function useSimulationUiState(direction, simulationFieldValues) {
 
   const message = useMemo(() => {
     if (maxSimsReached) {
-      return 'You have reached the maximum number of simulations. Please delete some simulations to run new ones.';
+      return 'You have reached the maximum number of custom simulations. Please delete some of them to run new ones.';
     }
 
     if (!hasSelectedCell) {
-      return 'You need to pick a coordinate from the map to simulate.';
+      return 'Please pick a coordinate from the map to run custom simulations.';
     }
 
     if (alreadySubmittedCurrentSetup) {
       if (isSimProcessing) {
-        return 'Your simulation was submitted. Change the coordinates or any slider to run another simulation.';
+        // return 'Your simulation was submitted. Change the coordinates or any slider to run another simulation.';
       }
 
-      return 'This setup was already submitted. Change the coordinates or any slider to run again.';
+      return 'Your simulation request has been submitted. Change the coordinates or adjust a slider to submit another request.';
     }
 
     if (errorSim && !invalidateSimData) {
@@ -147,10 +147,10 @@ export default function useSimulationUiState(direction, simulationFieldValues) {
     }
 
     if (invalidateSimData) {
-      return 'Ready to run simulation with new coordinates.';
+      return 'Ready to run a simulation with new coordinates.';
     }
 
-    return 'Ready to simulate.';
+    return 'Ready to run.';
   }, [
     maxSimsReached,
     hasSelectedCell,

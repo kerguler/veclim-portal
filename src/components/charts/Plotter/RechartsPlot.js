@@ -501,6 +501,10 @@ function buildLines(
         'lineStyle' in chartParameters &&
         primaryKey in chartParameters.lineStyle &&
         chartParameters.lineStyle[primaryKey] === 'dots';
+      let dashed =
+        'lineStyle' in chartParameters &&
+        primaryKey in chartParameters.lineStyle &&
+        chartParameters.lineStyle[primaryKey] === 'dashes';
 
       if (
         !yaxisInfo[key] ||
@@ -526,6 +530,22 @@ function buildLines(
           >
             {' '}
           </Line>
+        );
+      } else if (dashed) {
+        return (
+          <Line
+            hide={!activeKeys.includes(key)}
+            id={uniqueKey}
+            key={uniqueKey}
+            yAxisId={yDirection}
+            type="linear"
+            dataKey={key}
+            stroke={color}
+            strokeWidth={2}
+            strokeDasharray="5 5"
+            dot={false}
+            connectNulls={false}
+          />
         );
       } else {
         return (

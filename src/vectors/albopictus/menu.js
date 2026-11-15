@@ -24,7 +24,7 @@ export const ALB_MENU = [
   { key: 'tile_selector_panel', parent: 'tile_selector' },
   { key: 'vector_selector', parent: 'menu_icon' },
   { key: 'model_selector_panel', parent: 'vector_selector' },
-  { key: 'options_selector_panel', parent: 'vector_selector' },
+  { key: 'options_selector_panel', parent: 'tile_selector' },
   // hidden until a later release: simulation icon, sim panel and sim list
   // { key: 'simulation_adjustment', parent: 'menu_icon' },
   // { key: 'simulation_adjustment_panel', parent: 'simulation_adjustment' },
