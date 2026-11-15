@@ -7,7 +7,6 @@ const ContextMenu = ({ children, className, backgroundColor, onClick }) => {
 	const dispatch = useDispatch();
 	const handleClick = () => {
 		onClick();
-		// console.log("we have set papatasi");
 		dispatch(setVectorName("papatasi"));
 		dispatch(setTileArray(["papatasi_aprdec"]));
 	};

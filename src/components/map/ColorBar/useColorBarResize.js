@@ -24,14 +24,6 @@ export default function useColorBarResize(
       const vh = window.visualViewport?.height || window.innerHeight;
       const leftH = leftRef.current?.getBoundingClientRect().height || 0;
       const rightH = rightRef.current?.getBoundingClientRect().height || 0;
-      // console.log({
-      //   innerWidth: window.innerWidth,
-      //   panelOpen,
-      //   panelTop,
-      //   leftH,
-      //   computed: panelTop - leftH - 20,
-      // });
-
       let topL, topR;
       if (window.innerWidth <= 499) {
         if (panelOpen) {

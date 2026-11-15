@@ -1,7 +1,6 @@
 import { parseDate } from "store/apis/utils";
 
 function calculatePlotMat(data, chartType) {
-	// console.log(data);
 	let dataB;
 	const date0 = parseDate('date0' in data.date ? data.date.date0 : data.date[0]);
 	const date1 = parseDate('date1' in data.date ? data.date.date1 : data.date[data.date.length-1]);
