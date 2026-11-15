@@ -2,10 +2,11 @@ import { menu } from './menu';
 import { tileIcons } from './tileIcons';
 import { panelData } from './panelData';
 import { tileIconRowHeadings } from './tileIconRowHeadings';
-import tileIconFly from 'assets/icons/map-page-right-menu/png/mosquito-3-32px.png';
+import tileIconISMED from 'assets/icons/map-page-right-menu/png/logo-ISMED-32px.png';
 import { indicators } from './indicators';
 import { timeseries } from './timeSeries';
 import IsmedClimLeftPanel from './LeftPanel';
+import { methodsPage } from './methodsPage';
 const colorKeys = Object.fromEntries(
   (tileIcons || []).map((t) => [t.key, t.colkey])
 );
@@ -22,7 +23,7 @@ const moduleObj = {
 
   displayOrder: 5,
   meta: {
-    icon: tileIconFly,
+    icon: tileIconISMED,
 
     description: (
       <p>Zoonotic disease risk assessment for the ISMED-CLIM project</p>
@@ -35,6 +36,7 @@ const moduleObj = {
       label: 'ISMED-CLIM',
     },
   },
+  methodsPage,
   tileIcons,
   indicators,
   panelData,

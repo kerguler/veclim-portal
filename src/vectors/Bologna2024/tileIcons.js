@@ -25,7 +25,8 @@ export const tileIcons = [
     description: (
       <>
         <p>
-          The timing of peak seasonal activity is the week when egg laying is predicted to be highest by Ensemble I, based on weekly averages across five years and smoothed using a Gaussian filter.        
+          The 7-model ensemble (Ensemble I). The map shows the week 
+          of peak seasonal activity, averaged over five years of simulations.
         </p>
       </>
     ),

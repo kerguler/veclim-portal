@@ -2,9 +2,10 @@ import { Bologna2024_MENU } from './menu';
 import { tileIcons } from './tileIcons';
 import { panelData } from './panelData';
 import { tileIconRowHeadings } from './tileIconRowHeadings';
-import tileIconFly from 'assets/icons/map-page-right-menu/png/mosquito-3-32px.png';
+import tileIconCSVD from 'assets/icons/map-page-right-menu/png/logo-CSVD-32px.png';
 import { indicators } from './indicators';
 import { timeseries } from './timeSeries';
+import { methodsPage } from './methodsPage';
 import Bologna2024LeftPanel from './LeftPanel';
 import PackageMapServices from 'components/map/mapPackage/PackageMapServices';
 const colorKeys = Object.fromEntries(
@@ -17,10 +18,9 @@ const BOLOGNA_BOUNDS = [
 const moduleObj = {
   id: 'Bologna2024',
   // draft, hidden until ready
-  status: 'draft',
   displayOrder: 3,
   meta: {
-    icon: tileIconFly,
+    icon: tileIconCSVD,
     description: <p>CSVD Bologna Workshop (September 2024)</p>,
     // this one still uses the session param
     route: '/MapPage?session=Bologna2024',
@@ -30,6 +30,7 @@ const moduleObj = {
       label: 'Bologna2024',
     },
   },
+  methodsPage,
   tileIcons,
   indicators,
   panelData,
