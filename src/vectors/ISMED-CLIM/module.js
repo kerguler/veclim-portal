@@ -6,6 +6,7 @@ import tileIconISMED from 'assets/icons/map-page-right-menu/png/logo-ISMED-32px.
 import { indicators } from './indicators';
 import { timeseries } from './timeSeries';
 import IsmedClimLeftPanel from './LeftPanel';
+import { methodsPage } from './methodsPage';
 const colorKeys = Object.fromEntries(
   (tileIcons || []).map((t) => [t.key, t.colkey])
 );
@@ -35,6 +36,7 @@ const moduleObj = {
       label: 'ISMED-CLIM',
     },
   },
+  methodsPage,
   tileIcons,
   indicators,
   panelData,
