@@ -19,19 +19,16 @@ function OptionsPanel() {
     );
     const dispatch = useDispatch();
     const handleShowVectorAbundance =(e)=>{
-        // console.log("Show Vector Abundance: ", e.target.checked);
         dispatch(setShowVectorAbundance(e.target.checked));
 
     }
     const handleChangeOpacity = (e) => {
         const opacityValue = tileOpacity < 1 ? 1.0 : 0.5;
-        // console.log("Tile Opacity: ", opacityValue);
      dispatch(setTileOpacity(opacityValue));
     }
 
     const handleShowLabels = (e) => {
         const showLabels = showMapLabels ? false : true;
-        // console.log("Show Labels: ", showLabels);
        dispatch(setShowMapLabels(showLabels));
     }
 

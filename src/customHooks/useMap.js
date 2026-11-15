@@ -26,7 +26,6 @@ const mapOptions=useSelector(
 			(state) => state.fetcher.fetcherStates.map.optionsPanel
 	);	
 	const {showVectorAbundance,tileOpacity,showMapLabels}=mapOptions;
-	// console.log({tileArray});
 	useEffect(() => {
 		let p = mapParRef.current;
 		MapAdjustmentsService.mapBounds(

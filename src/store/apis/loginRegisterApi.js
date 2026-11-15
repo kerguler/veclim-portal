@@ -13,7 +13,6 @@ const loginRegisterApi = createApi({
       const token = fromRedux || fromCookie;
       if (token) {
         headers.set('X-CSRFToken', token);
-        // console.log("CSRF attached:", token);
       }
       return headers;
     },

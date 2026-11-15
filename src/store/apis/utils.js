@@ -110,7 +110,6 @@ export function useUserLocation() {
         lng: vec.map.defaultCenter.lng,
       })
     );
-    // console.log(error);
   };
 
   const handleRequestLocation = useCallback(() => {

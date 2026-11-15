@@ -17,7 +17,6 @@ function useOutsideClickClose(reference, closefun, ignoreSelector) {
 				closefun(false);
 			}
 		};
-		// console.log("useOutsideClickClose.js");
 		window.addEventListener("click", handleClickOnDoc, true);
 		return () => {
 			window.removeEventListener("click", handleClickOnDoc);

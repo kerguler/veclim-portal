@@ -22,12 +22,10 @@ function LanguageChanger() {
 
 	const handleClickLanguage = () => {
 		setLanBar((lanBar) => !lanBar);
-		// console.log(lanBar);
 	};
 
 	const handleChangeLanguage = (event) => {
 		setLanBar((lanBar) => !lanBar);
-		// console.log("selected language", event.target.value);
 		// i18n.changeLanguage(event.target.value);
 	};
 
