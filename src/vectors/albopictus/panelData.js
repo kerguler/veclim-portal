@@ -771,6 +771,7 @@ export const panelData = [
       </div>
     ),
   },
+  /*
   {
     key: 'simulation_adjustment',
     icon: seasonal,
@@ -807,4 +808,5 @@ export const panelData = [
       </div>
     ),
   },
+  */
 ];

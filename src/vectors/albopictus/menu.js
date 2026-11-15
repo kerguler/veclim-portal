@@ -25,7 +25,7 @@ export const ALB_MENU = [
   { key: 'vector_selector', parent: 'menu_icon' },
   { key: 'model_selector_panel', parent: 'vector_selector' },
   { key: 'options_selector_panel', parent: 'vector_selector' },
-  { key: 'simulation_adjustment', parent: 'menu_icon' },
-  { key: 'simulation_adjustment_panel', parent: 'simulation_adjustment' },
-  { key: 'simulation_list_panel', parent: 'simulation_adjustment' },
+//  { key: 'simulation_adjustment', parent: 'menu_icon' },
+//  { key: 'simulation_adjustment_panel', parent: 'simulation_adjustment' },
+//  { key: 'simulation_list_panel', parent: 'simulation_adjustment' },
 ];
