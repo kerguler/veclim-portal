@@ -30,7 +30,9 @@
 	}
 }
 
+/* icon scales with navbar text: clamp(0.92rem, 1.35vw, 1.4rem) x ~1.57 */
 .auth-nav--icon {
+	--auth-icon-size: clamp(1.45rem, 2.12vw, 2.2rem);
 	margin-top: 0;
 	margin-left: -6px;
 	margin-right: 6px;
@@ -41,8 +43,8 @@
 
 .auth-nav__toggle--icon {
 	max-width: none;
-	width: 2.2rem;
-	height: 2.2rem;
+	width: var(--auth-icon-size, 2.2rem);
+	height: var(--auth-icon-size, 2.2rem);
 	padding: 0;
 	border-radius: 4px;
 	background: #fff;
@@ -61,8 +63,8 @@
 
 .auth-nav__icon-mask {
 	display: inline-block;
-	width: 2.2rem;
-	height: 2.2rem;
+	width: var(--auth-icon-size, 2.2rem);
+	height: var(--auth-icon-size, 2.2rem);
 	background-color: var(--primary-color1);
 	-webkit-mask-size: 150%;
 	mask-size: 150%;

@@ -115,30 +115,34 @@ const SliderRow = ({ direction }) => {
           <span className="sim-param-card__value">{field.value}</span>
         </div>
         <span className="sim-param-card__tooltip">{field.detail}</span>
-        <div className="sim-param-card__limits">
-          <span>{field.min}</span>
-          <span>{field.max}</span>
+        {/* min | slider | max on one row */}
+        <div className="sim-param-card__range">
+          <span className="sim-param-card__limit sim-param-card__limit--min">
+            {field.min}
+          </span>
+          <input
+            id={inputId}
+            className="sim-param-card__slider"
+            type="range"
+            min={field.min}
+            max={field.max}
+            step={field.step ?? 1}
+            value={field.value}
+            disabled={disableSliders}
+            onChange={(e) =>
+              dispatch(
+                setSimulationFieldValue({
+                  direction,
+                  key,
+                  value: Number(e.target.value),
+                })
+              )
+            }
+          />
+          <span className="sim-param-card__limit sim-param-card__limit--max">
+            {field.max}
+          </span>
         </div>
-
-        <input
-          id={inputId}
-          className="sim-param-card__slider"
-          type="range"
-          min={field.min}
-          max={field.max}
-          step={field.step ?? 1}
-          value={field.value}
-          disabled={disableSliders}
-          onChange={(e) =>
-            dispatch(
-              setSimulationFieldValue({
-                direction,
-                key,
-                value: Number(e.target.value),
-              })
-            )
-          }
-        />
       </div>
     );
   };

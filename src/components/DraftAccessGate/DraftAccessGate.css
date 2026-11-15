@@ -127,17 +127,28 @@
   }
 }
 
+/* vector access card (account popover / panel); 1rem = 10px here */
+.collaborator-access-request h2 {
+  font-size: 1.6rem;
+  margin-bottom: 0.8rem;
+}
+
+.collaborator-access-request p {
+  font-size: 1.3rem;
+}
+
 .collaborator-access-request__row {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 0.75rem;
-  padding: 0.4rem 0;
+  padding: 0.5rem 0;
   text-align: left;
+  font-size: 1.4rem;
 }
 
 .collaborator-access-request__row .draft-access-btn {
-  padding: 0.4rem 0.75rem;
+  padding: 0.5rem 0.9rem;
   min-height: 32px;
-  font-size: 0.85rem;
+  font-size: 1.3rem;
 }

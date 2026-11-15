@@ -165,7 +165,8 @@
 }
 
 .sim-adjustment__scroll {
-  overflow-y: scroll;
+  /* scrollbar only when content overflows */
+  overflow-y: auto;
   max-height: 400px;
   scrollbar-width: thin;
   scrollbar-color: rgba(12, 76, 110, 0.25);
@@ -227,7 +228,7 @@
 
 .sim-param-card__header {
   display: grid;
-  grid-template-columns: 155px 46px 175px;
+  grid-template-columns: 155px 46px;
   align-items: baseline;
   gap: 1rem;
 }
@@ -249,23 +250,44 @@
   font-variant-numeric: tabular-nums;
 }
 
-.sim-param-card__limits {
-  display: flex;
-  justify-content: space-between;
+/* fixed label columns keep every slider the same length */
+.sim-param-card__range {
+  display: grid;
+  grid-template-columns: 3rem minmax(0, 1fr) 4.5rem;
   align-items: center;
+  column-gap: 0.8rem;
+  margin-top: 0.2rem;
+}
 
-  padding: 0 1px;
+.sim-param-card__limit {
   font-size: 0.92rem;
   line-height: 1;
   color: #4d6478;
   font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.sim-param-card__limit--min {
+  text-align: right;
+}
+
+.sim-param-card__limit--max {
+  text-align: left;
 }
 
 .sim-param-card__slider {
   width: 100%;
+  min-width: 0;
   margin: 0;
   cursor: pointer;
   accent-color: #2b83ee;
+}
+
+/* slightly narrower panel for the simulation sliders (desktop only) */
+@media (min-width: 500px) {
+  .panel-container:has(.sim-adjustment) {
+    width: 400px;
+  }
 }
 
 .sim-param-card__tooltip {
@@ -381,7 +403,7 @@
     font-size: 0.76rem;
   }
 
-  .sim-param-card__limits {
+  .sim-param-card__limit {
     font-size: 0.72rem;
   }
 }
