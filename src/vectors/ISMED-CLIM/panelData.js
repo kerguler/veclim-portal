@@ -110,7 +110,7 @@ export const panelData = [
     ),
   },
   {
-    key: 'sandfly_population_panel_hires',
+    key: 'sandfly_population_hires_panel',
     positionDependent: true,
 
     label: 'CERRA Grid',
@@ -162,7 +162,7 @@ export const panelData = [
     ),
   },
   {
-    key: 'sandfly_population_panel_midres',
+    key: 'sandfly_population_midres_panel',
     positionDependent: true,
 
     label: 'ERA Grid',
