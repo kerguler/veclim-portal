@@ -5,9 +5,9 @@ ARG REACT_APP_PORT
 WORKDIR /veclim
 
 COPY ./package*.json .
-RUN yarn install
+RUN npm install
 
 COPY . .
 
 EXPOSE ${REACT_APP_PORT}
-CMD ["yarn", "start"]
+CMD ["npm", "start"]
