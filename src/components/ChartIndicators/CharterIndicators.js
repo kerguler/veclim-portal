@@ -5,6 +5,7 @@ import ErrorComponent from '../charts/Plotter/errorComponent/ErrorComponent';
 import { parseDate, dateToString } from 'store/apis/utils';
 import useDirectorFun from 'customHooks/useDirectorFun';
 import { getVector } from 'vectors/registry';
+import XLink from 'components/xlink';
 
 function ChartIndicators() {
   const { mapPagePosition, vectorName, mapVector } = useDirectorFun('left');
@@ -146,11 +147,11 @@ function ChartIndicators() {
           <p>
             {modelDescription.includes('V2609C') ? (
               <>
-                Model of <i>Phlebotomus papatasi</i>, version{' '}
+                Model of <i>Phlebotomus</i> spp., version{' '}
                 <strong style={{ fontFamily: "'Inter-Bold', sans-serif" }}>
                   V2609C
                 </strong>
-                , developed as part of ISMED-CLIM&apos;s early warning system
+                , developed as part of <XLink href="https://ismed-clim.eu/">ISMED-CLIM</XLink>&apos;s early warning system
                 against zoonotic diseases
               </>
             ) : (

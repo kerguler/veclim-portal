@@ -30,15 +30,17 @@ export const methodsPage = {
   rows: [
     {
       rowno: 1,
-      title: <h4>Following sand flies from climate to seasonal activity</h4>,
+      title: <h4>Developing a climate-sensitive sand fly activity model</h4>,
       content: (
         <>
           <p>
-            Sand flies are tiny insects, but some species have a major public health
-            importance. They transmit <span className="emph">Leishmania</span>
-            {' '}parasites among animal hosts, including dogs, and sometimes to people.
-            The time of year when sand flies are active therefore matters for
-            surveillance and prevention.
+            Sand flies transmit <it>Leishmania</it> parasites and several 
+            viruses, including Toscana virus, posing significant public health 
+            risks. Sand fly-borne diseases disproportionately affect disadvantaged 
+            communities with limited access to healthcare, even in developed 
+            countries. As climate and environmental conditions influence sand fly 
+            survival and seasonal activity, predicting these patterns is important 
+            for surveillance, prevention, and early warning.
           </p>
           <p>
             <strong>
@@ -48,8 +50,7 @@ export const methodsPage = {
             </strong>
           </p>
           <p>
-            Rather than describing a mosquito or sand fly season using temperature
-            alone, we combine laboratory observations, field surveillance, and
+            We combine laboratory observations, field surveillance, and
             information about land cover to estimate the conditions sand flies
             actually experience. The model produces daily estimates of population
             activity that can support seasonal monitoring and early warning.
@@ -64,37 +65,6 @@ export const methodsPage = {
     },
     {
       rowno: 2,
-      title: <h5>A population model, not just a temperature curve</h5>,
-      content: (
-        <>
-          <p>
-            Sand flies pass through four major life stages: eggs, larvae, pupae,
-            and adults. At each stage, individuals may survive, develop, or die;
-            adults reproduce, and larvae may enter dormancy. The rates of these
-            processes depend on environmental conditions.
-          </p>
-          <p>
-            <strong>
-              Our model follows the progression of these life stages through time,
-              allowing favourable and unfavourable periods to leave lasting effects
-              on the population.
-            </strong>
-          </p>
-          <p>
-            We represent temperature-dependent survival and development,
-            reproduction and egg laying, density-dependent processes, and dormancy.
-            These processes together generate a daily pattern of activity, rather
-            than assuming that sand flies are active whenever a temperature
-            threshold is crossed.
-          </p>
-        </>
-      ),
-      image: null,
-      wide: true,
-      reverse: false,
-    },
-    {
-      rowno: 3,
       title: <h5>Starting with evidence from the laboratory</h5>,
       content: (
         <>
@@ -106,7 +76,7 @@ export const methodsPage = {
           <p>
             Our initial parameterisation focuses on
             {' '}<span className="emph">Phlebotomus papatasi</span>, for which
-            temperature-dependent life-history observations are available.
+            a wide array of temperature-dependent life-history observations are available.
             We used observations reported by Guzman and Tesh (2000) and Kasap
             and Alten (2005, 2006) to reproduce the responses of different
             stages to changing temperatures.
@@ -124,11 +94,14 @@ export const methodsPage = {
       wide: true,
       reverse: true,
       newsStyle: true,
-      caption: <p>Examples of temperature-dependent life-history responses of <em>Ph. papatasi</em> represented by the model. Source: ESOVE 2026 presentation, slide 3.</p>,
+      caption: <p>
+        Examples of temperature-dependent life-history responses 
+        of <em>Ph. papatasi</em> represented by the model (ID: V2609C).
+        </p>
     },
     {
       rowno: 4,
-      title: <h5>Air temperature is not the whole story</h5>,
+      title: <h5>From climate to microclimate</h5>,
       content: (
         <>
           <p>
@@ -156,9 +129,11 @@ export const methodsPage = {
       ),
       image: sandflyTemperature,
       wide: true,
-      reverse: false,
+      reverse: true,
       newsStyle: true,
-      caption: <p>Illustration of temperature buffering and avoidance of extreme environmental exposure. Source: ESOVE 2026 presentation, slide 4.</p>,
+      caption: <p>Illustration of temperature buffering and avoidance of 
+        extreme environmental exposure.
+        </p>,
     },
     {
       rowno: 5,
@@ -190,7 +165,8 @@ export const methodsPage = {
       wide: true,
       reverse: true,
       newsStyle: true,
-      caption: <p>Conceptual moisture balance and the modelled soil moisture index. Source: ESOVE 2026 presentation, slide 5.</p>,
+      caption: <p>Conceptual moisture balance and the modelled soil 
+        moisture index.</p>,
     },
     {
       rowno: 6,
@@ -199,12 +175,6 @@ export const methodsPage = {
         <>
           <p>
             The model's next challenge is to explain what happens in nature.
-            Sand flies observed in the field may remain active through weather
-            extremes that would appear unsuitable according to laboratory
-            measurements alone. This suggests that local environmental exposure
-            must be considered alongside physiological responses.
-          </p>
-          <p>
             We used surveillance observations collected through the
             {' '}<strong>EDENext project</strong> to calibrate the model and
             adapt laboratory-derived responses to field conditions. The
@@ -229,112 +199,14 @@ export const methodsPage = {
       ),
       image: sandflyField,
       wide: true,
-      reverse: false,
+      reverse: true,
       newsStyle: true,
-      caption: <p>Field observation sites and example seasonal profiles from the EDENext dataset. Source: ESOVE 2026 presentation, slide 6.</p>,
+      caption: <p>Field observation sites and example seasonal profiles 
+        from the EDENext dataset.</p>,
     },
     {
       rowno: 7,
-      title: <h5>From climate and land cover to sand fly activity</h5>,
-      content: (
-        <>
-          <p>
-            To simulate a location, we combine six environmental drivers:
-            air temperature, relative humidity, surface solar radiation
-            downwards, precipitation, wind speed, and land cover. The model
-            uses these inputs to estimate local moisture availability and
-            buffered temperatures before calculating stage-specific
-            population dynamics.
-          </p>
-          <p>
-            Land cover matters because a coniferous forest, a cultivated
-            field, and a built-up area do not provide the same shelter or
-            breeding opportunities. We use land cover suitability to represent
-            these differences, drawing on the
-            {' '}<XLink href="https://land.copernicus.eu/en/products/corine-land-cover/clc2018">
-              CORINE Land Cover 2018
-            </XLink>{' '}dataset.
-          </p>
-          <p>
-            The model follows changes in each life stage, from dormant larvae
-            to newly laid eggs. Daily egg laying is one of the outputs used
-            to summarise the timing of seasonal activity.
-          </p>
-        </>
-      ),
-      image: sandflySimulation,
-      wide: true,
-      reverse: true,
-      newsStyle: true,
-      caption: <p>Example environmental drivers, land cover suitability, estimated microclimate and simulated population dynamics. Source: ESOVE 2026 presentation, slide 7.</p>,
-    },
-    {
-      rowno: 8,
-      title: <h5>Mapping seasonal activity</h5>,
-      content: (
-        <>
-          <p>
-            Once the model can simulate a single location, we can apply it to
-            many climate grid cells to explore patterns across a region.
-            We use <XLink href="https://cds.climate.copernicus.eu/datasets/reanalysis-cerra-single-levels">
-              CERRA
-            </XLink>{' '}regional reanalysis, at approximately 5.5 km
-            resolution, for higher-resolution applications, and
-            {' '}<XLink href="https://cds.climate.copernicus.eu/datasets/reanalysis-era5-single-levels">
-              ERA5
-            </XLink>{' '}for broader-scale assessments.
-          </p>
-          <p>
-            The maps shown here summarise modelled egg-laying activity over
-            2011–2013, illustrating both regional differences within Portugal
-            and broader spatial patterns across Europe. These maps represent
-            <strong> model outputs</strong>, not direct counts of sand flies
-            or observed infections.
-          </p>
-        </>
-      ),
-      image: sandflyCurrent,
-      wide: true,
-      reverse: false,
-      newsStyle: true,
-      caption: <p>Illustrative average annual modelled egg-laying activity for Portugal (CERRA, approximately 5.5 km) and Europe (ERA5, approximately 25 km), 2011–2013. Source: ESOVE 2026 presentation, slide 8.</p>,
-    },
-    {
-      rowno: 9,
-      title: <h5>Exploring future climate scenarios</h5>,
-      content: (
-        <>
-          <p>
-            The same model can be run using projected climate conditions to
-            explore how the timing and spatial distribution of suitable
-            seasonal activity might change. We use the
-            {' '}<XLink href="https://www.nccs.nasa.gov/services/data-collections/land-based-products/nex-gddp-cmip6">
-              NEX-GDDP-CMIP6
-            </XLink>{' '}downscaled climate projections for this purpose.
-          </p>
-          <p>
-            The example shown compares a historical period with an
-            end-of-century scenario using ACCESS-ESM1-5 under SSP5-8.5.
-            It demonstrates a <strong>scenario-based projection</strong>, not
-            a prediction of the exact sand fly population that will exist
-            in a particular future year.
-          </p>
-          <p>
-            Such applications should be interpreted alongside uncertainty
-            in future climate, local habitat conditions, and the biological
-            model itself.
-          </p>
-        </>
-      ),
-      image: sandflyFuture,
-      wide: true,
-      reverse: true,
-      newsStyle: true,
-      caption: <p>Example historical and future projections of annual egg-laying activity. Future climate: ACCESS-ESM1-5, SSP5-8.5, 2091–2093. Source: ESOVE 2026 presentation, slide 9.</p>,
-    },
-    {
-      rowno: 10,
-      title: <h5>Turning seasonal patterns into early warning</h5>,
+      title: <h5>Testing early warning in Living Labs</h5>,
       content: (
         <>
           <p>
@@ -365,48 +237,14 @@ export const methodsPage = {
           </p>
         </>
       ),
-      image: sandflyWarning,
       wide: true,
       reverse: false,
       newsStyle: true,
       caption: <p>Conceptual seasonal thresholds and the early warning approach used in the ISMED-CLIM Zoonotic Living Lab. Source: ESOVE 2026 presentation, slide 11.</p>,
     },
     {
-      rowno: 11,
-      title: <h5>Explore the model on VEClim</h5>,
-      content: (
-        <>
-          <p>
-            The sand fly model is being integrated into
-            {' '}<XLink href="https://veclim.com">VEClim</XLink>'s open model
-            repository alongside environmental datasets and surveillance
-            observations. An earlier version is accessible through the
-            {' '}<XLink href="https://veclim.com/api">VEClim API</XLink>.
-          </p>
-          <p>
-            Our aim is to make the modelling workflow reproducible and the
-            results useful, so that researchers can inspect the environmental
-            inputs and simulated activity, while public health stakeholders
-            can explore where and when prevention may be most relevant.
-          </p>
-          <p>
-            <strong>
-              Reliable early warning depends on both sound biological models
-              and sustained field monitoring. Predictions can complement
-              surveillance, but do not replace it.
-            </strong>
-          </p>
-        </>
-      ),
-      image: sandflyPlatform,
-      wide: true,
-      reverse: true,
-      newsStyle: true,
-      caption: <p>VEClim model repository and an example sand fly seasonal-activity display. Source: ESOVE 2026 presentation, slide 12.</p>,
-    },
-    {
-      rowno: 12,
-      title: <h5>Where this work stands</h5>,
+      rowno: 8,
+      title: <h5>Where we stand</h5>,
       content: (
         <>
           <p>
