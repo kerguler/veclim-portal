@@ -3,11 +3,6 @@ import sandflyLaboratory from 'assets/images/methods-ISMED-sandfly-laboratory.we
 import sandflyTemperature from 'assets/images/methods-ISMED-sandfly-temperature.webp';
 import sandflyMoisture from 'assets/images/methods-ISMED-sandfly-moisture.webp';
 import sandflyField from 'assets/images/methods-ISMED-sandfly-field.webp';
-import sandflySimulation from 'assets/images/methods-ISMED-sandfly-simulation.webp';
-import sandflyCurrent from 'assets/images/methods-ISMED-sandfly-maps-current.webp';
-import sandflyFuture from 'assets/images/methods-ISMED-sandfly-maps-future.webp';
-import sandflyWarning from 'assets/images/methods-ISMED-sandfly-early-warning.webp';
-import sandflyPlatform from 'assets/images/methods-ISMED-sandfly-platform.webp';
 import XLink from 'components/xlink';
 
 // Companion page to VEClim's existing Tiger Mosquito and Sand Fly Methods pages.
@@ -20,12 +15,16 @@ export const methodsPage = {
     topperTitle: null,
     topperContent: (
       <p>
-        A weather forecast tells us what happens above the ground.
-        But what do sand flies experience in the places where they live?
+        Climate change may alter the geographical distribution and seasonal activity<br/>
+        of sand flies, potentially affecting the transmission of leishmaniasis.
       </p>
     ),
-    topperWriter: <p>VEClim | Climate-sensitive sand fly modelling</p>,
-    topperReference: <p>Based on the ESOVE 2026 presentation and supporting research</p>,
+    topperWriter: (<p>Adapted from{' '}
+        <XLink style={{ color: 'var(--secondary-color2)' }} href="https://www.who.int/news-room/fact-sheets/detail/leishmaniasis">
+          WHO on leishmaniasis
+        </XLink>
+    </p>),
+    topperReference: (<></>)
   },
   rows: [
     {
