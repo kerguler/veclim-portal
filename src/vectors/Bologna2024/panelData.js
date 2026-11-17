@@ -46,12 +46,12 @@ export const panelData = [
   },
   {
     id: 1,
-    key: 'sandfly_population',
+    key: 'albopictus_population',
     icon: adult,
   },
   {
-    key: 'sandfly_population_panel',
-    label: 'Sandfly Population',
+    key: 'albopictus_population_panel',
+    label: 'Annual activity profiles',
     chartParameters: {
       years: 'Bologna2024',
       mixedKeys: [
@@ -175,7 +175,7 @@ export const panelData = [
         <h1>Female vector activity (egg laying)</h1>
         <div>
           <p>
-            Daily number of eggs laid by the Asian tiger mosquito as a proxy to
+            Weekly average number of eggs laid by the Asian tiger mosquito as a proxy to
             biting activity as predicted by the 7 climate-sensitive models.
             These models have been presented during the{' '}
             <XLink href="https://www.vectormodelling.com/Bologna2024/">
@@ -189,13 +189,13 @@ export const panelData = [
   },
   {
     id: 2,
-    key: 'sandfly_tile_selector',
+    key: 'albopictus_tile_selector',
 
     icon: suser,
   },
   {
     label: 'Tile Selector',
-    key: 'sandfly_tile_selector_panel',
+    key: 'albopictus_tile_selector_panel',
     forgetOpen: true,
 
     chartParameters: {},
@@ -204,12 +204,12 @@ export const panelData = [
   {
     id: 3,
 
-    key: 'sandfly_vector_selector',
+    key: 'albopictus_vector_selector',
     icon: model,
   },
   {
     label: 'Models',
-    key: 'sandfly_vector_selector_panel',
+    key: 'albopictus_vector_selector_panel',
     forgetOpen: true,
 
     chartParameters: {},
