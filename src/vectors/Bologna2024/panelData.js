@@ -175,7 +175,7 @@ export const panelData = [
         <h1>Female vector activity (egg laying)</h1>
         <div>
           <p>
-            Weekly average number of eggs laid by the Asian tiger mosquito as a proxy to
+            Weekly median number of eggs laid by the Asian tiger mosquito as a proxy to
             biting activity as predicted by the 7 climate-sensitive models.
             These models have been presented during the{' '}
             <XLink href="https://www.vectormodelling.com/Bologna2024/">
