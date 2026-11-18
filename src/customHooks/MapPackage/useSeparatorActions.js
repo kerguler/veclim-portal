@@ -138,6 +138,32 @@ function useSeparatorActions(mapParRef) {
     // releasing on the line must not count as a map click (marker / location panel)
     const swallowClick = (e) => e.stopPropagation();
 
+    // desktop only: the handle follows the mouse height anywhere over the map
+    // (touch devices keep the handle where it is)
+    const followMouse = window.matchMedia?.(
+      '(hover: hover) and (pointer: fine)'
+    ).matches;
+    let followRaf = null;
+    let followY = null;
+    const onMapMouseMove = (e) => {
+      if (drag.current) return; // the line drag moves the handle itself
+      const rect = mapEl.getBoundingClientRect();
+      if (
+        e.clientX < rect.left ||
+        e.clientX > rect.right ||
+        e.clientY < rect.top ||
+        e.clientY > rect.bottom
+      )
+        return;
+      followY = e.clientY;
+      if (followRaf) return;
+      followRaf = requestAnimationFrame(() => {
+        followRaf = null;
+        moveHandleTo(followY);
+      });
+    };
+    if (followMouse) window.addEventListener('mousemove', onMapMouseMove);
+
     divider.addEventListener('pointerenter', onHover);
     divider.addEventListener('pointermove', onHover);
     divider.addEventListener('pointerdown', onDown);
@@ -148,6 +174,8 @@ function useSeparatorActions(mapParRef) {
     divider.addEventListener('mousedown', swallowClick);
     divider.addEventListener('mouseup', swallowClick);
     return () => {
+      if (followMouse) window.removeEventListener('mousemove', onMapMouseMove);
+      if (followRaf) cancelAnimationFrame(followRaf);
       divider.removeEventListener('click', swallowClick);
       divider.removeEventListener('mousedown', swallowClick);
       divider.removeEventListener('mouseup', swallowClick);
