@@ -22,6 +22,21 @@
 }
 .leaflet-sbs-divider {
   pointer-events: auto;
+  cursor: ew-resize;
+  touch-action: none;
+}
+/* wider invisible grab area so the 4px line is easy to catch */
+.leaflet-sbs-divider::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: -8px;
+  right: -8px;
+}
+/* handle glides to the cursor height when hovering the line */
+.leaflet-sbs-range {
+  transition: top 0.12s ease-out;
 }
 #map1 {
   cursor: default !important;

@@ -12,6 +12,9 @@ import PackageMapServices from 'components/map/mapPackage/PackageMapServices';
 const moduleObj = {
   id: 'albopictus',
   displayOrder: 1,
+  // risk indicators (larva, biting, outbreak, impact) exist for this vector;
+  // false = no request to the risk endpoint
+  hasRiskIndicators: true,
   meta: {
     icon: tileIconMoz,
     description: (

@@ -20,6 +20,8 @@ const moduleObj = {
   id: 'ISMED-CLIM',
 
   displayOrder: 5,
+  // no risk indicators yet, so no request to the risk endpoint
+  hasRiskIndicators: false,
   meta: {
     icon: tileIconISMED,
 

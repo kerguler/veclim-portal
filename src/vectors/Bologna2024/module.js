@@ -19,6 +19,8 @@ const moduleObj = {
   id: 'Bologna2024',
   // draft, hidden until ready
   displayOrder: 3,
+  // no risk indicators yet, so no request to the risk endpoint
+  hasRiskIndicators: false,
   meta: {
     icon: tileIconCSVD,
     description: <p>CSVD Bologna Workshop (September 2024)</p>,

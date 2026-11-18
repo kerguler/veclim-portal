@@ -15,6 +15,8 @@ const colorKeys = Object.fromEntries(
 const moduleObj = {
   id: 'papatasi',
   displayOrder: 2,
+  // no risk indicators yet, so no request to the risk endpoint
+  hasRiskIndicators: false,
   meta: {
     icon: tileIconFly,
     description: (
