@@ -1,4 +1,4 @@
-// src/vectors/albopictus/LeftPanel.js
+// src/vectors/ISMED-CLIM/LeftPanel.js
 import 'components/LeftPanel/GeneralStyles/FloatPanel.css';
 import 'components/LeftPanel/GeneralStyles/FloatiesHeader.css';
 import 'components/LeftPanel/LeftPanel.css';
@@ -15,7 +15,7 @@ import Skeleton from 'components/skeleton/Skeleton';
 import VectorSelector from 'components/vectorSelection/Carousel/VectorCarousel';
 import XLink from 'components/xlink';
 
-function IsmedClimLeftPanel({ page, displayNews, displayContent }) {
+function IsmedClimLeftPanel({ displayNews, displayContent }) {
   const { webApp } = useWindowSize();
   const location = useLocation();
   const position = useSelector(

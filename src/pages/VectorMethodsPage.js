@@ -99,7 +99,7 @@ function VectorMethodsPage() {
     <TextProvider pageOverride={vectorToUse.methodsPage}>
       <>
         <NavBarContainer />
-        <LeftPanel page="home" displayContent displayNews />
+        <LeftPanel displayContent displayNews />
         <DesktopContentWrapper />
       </>
     </TextProvider>

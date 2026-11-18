@@ -16,7 +16,7 @@ import { useSelector } from 'react-redux';
 import Skeleton from 'components/skeleton/Skeleton';
 import VectorSelector from 'components/vectorSelection/Carousel/VectorCarousel';
 
-function AlbopictusLeftPanel({ page, displayNews, displayContent }) {
+function AlbopictusLeftPanel({ displayNews, displayContent }) {
   const { webApp } = useWindowSize();
   const location = useLocation();
   const position = useSelector(

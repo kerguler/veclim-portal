@@ -8,6 +8,21 @@ function useSeparatorActions(mapParRef) {
 
   const dispatch = useDispatch();
   const dragRef = useRef(false);
+  // store updates re-render the map component, so send at most one per frame
+  const storeRaf = useRef(null);
+  const storeValue = useRef(null);
+  const queueStore = (value) => {
+    storeValue.current = value;
+    if (storeRaf.current) return;
+    storeRaf.current = requestAnimationFrame(() => {
+      storeRaf.current = null;
+      dispatch(setDividerPosition(storeValue.current));
+    });
+  };
+  // line drag: latest pointer + grab offset, applied once per frame
+  const moveRaf = useRef(null);
+  const lastPointer = useRef(null);
+  const grabOffset = useRef(0);
   useEffect(() => {
     const handleMarkers = () => {
       PackageMapServices.markerHandler(mapParRef, 4, mapVector, dispatch, mapPagePosition);
@@ -18,8 +33,7 @@ function useSeparatorActions(mapParRef) {
       e.stopPropagation();
     };
     const handleDividerInput = (e) => {
-      const sliderValue = e.target.value;
-      dispatch(setDividerPosition(sliderValue));
+      queueStore(e.target.value);
     };
     const sliderElement = document.querySelector('.leaflet-sbs-range');
 
@@ -78,30 +92,46 @@ function useSeparatorActions(mapParRef) {
 
     const onDown = (e) => {
       drag.current = true;
+      // keep the grabbed point under the cursor instead of snapping the line to it
+      const r = divider.getBoundingClientRect();
+      grabOffset.current = e.clientX - (r.left + r.width / 2);
       divider.setPointerCapture?.(e.pointerId);
       map.dragging.disable();
+      mapEl.classList.add('sbs-dragging');
       moveHandleTo(e.clientY);
       e.preventDefault();
       e.stopPropagation();
     };
 
-    const applyX = (e) => {
-      range.value = valueFromX(e.clientX);
+    const applyPointer = (p) => {
+      range.value = valueFromX(p.x - grabOffset.current);
       // same path as dragging the handle: updates the clip and the store
       range.dispatchEvent(new Event('input', { bubbles: true }));
-      moveHandleTo(e.clientY);
+      moveHandleTo(p.y);
     };
 
     const onMove = (e) => {
-      if (drag.current) applyX(e);
+      if (!drag.current) return;
+      lastPointer.current = { x: e.clientX, y: e.clientY };
+      if (moveRaf.current) return;
+      moveRaf.current = requestAnimationFrame(() => {
+        moveRaf.current = null;
+        if (lastPointer.current) applyPointer(lastPointer.current);
+      });
     };
 
     const onUp = (e) => {
       if (!drag.current) return;
-      applyX(e);
+      if (moveRaf.current) {
+        cancelAnimationFrame(moveRaf.current);
+        moveRaf.current = null;
+      }
+      applyPointer({ x: e.clientX, y: e.clientY });
       drag.current = false;
+      lastPointer.current = null;
       divider.releasePointerCapture?.(e.pointerId);
       map.dragging.enable();
+      mapEl.classList.remove('sbs-dragging');
       e.stopPropagation();
     };
 

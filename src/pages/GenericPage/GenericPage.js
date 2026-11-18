@@ -10,7 +10,7 @@ function GenericPage() {
     <TextProvider>
       <>
         <NavBarContainer />
-        <LeftPanel page="home" displayContent displayNews />
+        <LeftPanel displayContent displayNews />
         <DesktopContentWrapper />
       </>
     </TextProvider>

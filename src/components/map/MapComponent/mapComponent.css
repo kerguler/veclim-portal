@@ -38,6 +38,15 @@
 .leaflet-sbs-range {
   transition: top 0.12s ease-out;
 }
+/* while dragging the line the handle follows the cursor 1:1, no easing lag */
+.sbs-dragging .leaflet-sbs-range {
+  transition: none;
+}
+.sbs-dragging,
+.sbs-dragging * {
+  cursor: ew-resize !important;
+  user-select: none;
+}
 #map1 {
   cursor: default !important;
   /* transform:rotate(180deg); */
